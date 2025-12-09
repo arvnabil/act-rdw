@@ -3331,12 +3331,13 @@ Last Update: 20-07-2025
 }
 
 .th-menu-toggle {
-  width: 56px;
-  height: 56px;
+  width: 42px;
+  height: 42px;
   padding: 0;
   font-size: 20px;
   border: none;
   border-radius: 8px;
+  margin-top:10px;
   background-color: var(--theme-color);
   color: var(--white-color);
   display: inline-block;
