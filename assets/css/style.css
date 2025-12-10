@@ -3337,7 +3337,7 @@ Last Update: 20-07-2025
   font-size: 20px;
   border: none;
   border-radius: 8px;
-  margin-top:10px;
+  margin-top: 10px;
   background-color: var(--theme-color);
   color: var(--white-color);
   display: inline-block;
@@ -3493,14 +3493,18 @@ Last Update: 20-07-2025
 }
 
 @keyframes bounceIn {
-	0%, 20%, 50%, 80%, 100% {
+  0%,
+  20%,
+  50%,
+  80%,
+  100% {
     transform: translateY(0);
     opacity: 1;
   }
-	40% {
+  40% {
     transform: translateY(-30px);
   }
-	60% {
+  60% {
     transform: translateY(-15px);
   }
 }
@@ -24781,7 +24785,7 @@ Last Update: 20-07-2025
 
 .about-contact-grid.inner-style {
   border: 0;
-  padding: 0 0 30px 0;
+  padding: 0 0 0 0;
   border-bottom: 1px solid var(--th-border-color);
   border-radius: 0;
 }
@@ -27680,7 +27684,7 @@ Last Update: 20-07-2025
   flex: 0 0 43%;
   font-size: 18px;
   font-weight: 400;
-  color: var(--title-color);
+  color: var(--title-color-dark);
   -webkit-box-align: center;
   -ms-flex-align: center;
   align-items: center;
