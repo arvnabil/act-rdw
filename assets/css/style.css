@@ -27719,14 +27719,14 @@ Last Update: 20-07-2025
   background-repeat: no-repeat;
 }
 .about-item.style-16 .th-btn {
-  background-color: var(--title-color);
-  border-radius: 16px;
+  background-color: var(--theme-color);
+  border-radius: 50px;
 }
 .about-item.style-16 .th-btn:hover {
   color: var(--white-color);
 }
 .about-item.style-16 .th-btn:hover::before {
-  background-color: var(--theme-color);
+  background-color: var(--title-color);
 }
 
 .ab-img16 {
