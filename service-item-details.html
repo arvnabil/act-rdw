@@ -21,6 +21,103 @@
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
 
+    <!--==============================
+        All CSS File
+    ============================== -->
+    <style>
+     /* General Wizard Styles */
+.configurator-wizard .wizard-step {
+  /* Remove the transition for display toggling to work instantly and correctly */
+  /* If you really want animation, you need complex Keyframes, 
+     but for now, let's make it functional first */
+  transition: none; 
+  
+}
+
+/* Initially hide all steps except the active one */
+.configurator-wizard .wizard-step {
+        margin-bottom: 50px;
+        /* transition: opacity 0.5s... HAPUS BARIS INI */
+      }
+.configurator-wizard .wizard-step:not(.active) {
+        display: none !important; 
+        opacity: 0;
+      }
+/* Only show the active step */
+.configurator-wizard .wizard-step.active {
+        display: block !important;
+        opacity: 1;
+        /* Gunakan animation agar layout langsung berubah, tapi visualnya halus */
+        animation: fadeIn 0.5s ease-in-out; 
+      }
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* FIX FOR STEP 2 CARDS */
+/* You applied styles to .platform-card but Step 2 uses .deployment-card */
+/* Use the same styles for both */
+.platform-card, .deployment-card {
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  margin-bottom: 15px;
+  border: 2px solid transparent;
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+  height: 100%; /* Ensure equal height */
+}
+
+.platform-card:hover, .deployment-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.platform-card.selected, .deployment-card.selected {
+  border-color: #6633FF;
+  box-shadow: 0 4px 15px rgba(102, 51, 255, 0.25);
+}
+
+/* Disabled visual state */
+.platform-card.disabled-visual, .deployment-card.disabled-visual {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Step 3 Styles */
+.camera-card {
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+  cursor: pointer;
+}
+.camera-card.selected-camera {
+  border-color: #6633FF;
+  background-color: #f9f9ff;
+}
+.accessory-card {
+  border: 1px solid #eee;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.accessory-card:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.accessory-card.selected-accessory {
+  border-color: #6633FF;
+  background-color: #f9f9ff;
+}
+.accessory-card.card-disabled {
+  opacity: 0.5;
+  pointer-events: none;
+  background-color: #f5f5f5;
+}
+    </style>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicons/favicon.png">
+    <link rel="manifest" href="assets/img/favicons/manifest.json">
+
     <!-- Favicons - Place favicon.ico in the root directory -->
     <link
       rel="shortcut icon"
@@ -388,7 +485,7 @@
                     </li>
                     <li class="d-none d-md-inline-block">
                       <a href="contact.html">Support</a>
-                    </li>
+</li>
                   </ul>
                 </div>
               </div>
@@ -398,7 +495,7 @@
       </div>
       <div class="sticky-wrapper">
         <!-- Main Menu Area -->
-        <div class="menu-area" data-bg-src="assets/img/bg/line-pattern.png">
+<div class="menu-area" data-bg-src="assets/img/bg/line-pattern.png">
           <div class="container th-container">
             <div class="row align-items-center justify-content-between">
               <div class="col-xl-2 col-xxl-2 col-auto">
@@ -412,14 +509,14 @@
                 <nav class="main-menu d-none d-xl-inline-block">
                   <ul>
                     <li>
-                      <a href="index.html">Home</a>
+<a href="index.html">Home</a>
                     </li>
                     <li>
                       <a href="services.html">Our Services</a>
                     </li>
                     <li>
                       <a href="abouts.html">About Us</a>
-                    </li>
+</li>
                     <li>
                       <a href="partners.html">Our Partners</a>
                     </li>
@@ -451,7 +548,7 @@
                   <a
                     href="contact.html"
                     class="th-btn th-radius th-icon d-none d-xxl-block"
-                    >Get In Touch <i class="fa-light fa-arrow-right-long"></i
+>Get In Touch <i class="fa-light fa-arrow-right-long"></i
                   ></a>
                 </div>
               </div>
@@ -463,7 +560,7 @@
     <!--==============================
     Breadcumb
 ============================== -->
-    <div class="breadcumb-area space-bottom">
+    <div class="breadcumb-area">
       <div
         class="breadcumb-wrapper"
         data-bg-src="assets/img/bg/breadcumb-bg.jpg"
@@ -485,7 +582,7 @@
 About Area  
 ==============================-->
     <div
-      class="about-area smoke-bg position-relative overflow-hidden"
+      class="about-area smoke-bg p-5 position-relative overflow-hidden"
       id="about-sec"
     >
       <div class="container">
@@ -554,7 +651,7 @@ About Area
     <!--==============================
 Category Area  
 ==============================-->
-    <section class="category-area3 space">
+    <!-- <section class="category-area3 space">
       <div class="container th-container">
         <div class="row justify-content-center">
           <div class="col-xl-6">
@@ -663,9 +760,382 @@ Category Area
           </div>
         </div>
       </div>
-    </section>
+    </section> -->
     <!-- portfolio-area start -->
-    <div class="case-area space-bottom">
+    <div class="case-area space">
+      <div class="container">
+        <div class="row justify-content-center text-center">
+          <div class="col-xl-12">
+            <span class="sub-title">Our Partner Product</span>
+            <h2 class="sec-title text-center mb-30">
+              Let’s configuration now!
+            </h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-xl-12">
+            <div class="case-menu mb-5 text-center">
+              <button class="case4-btn active" data-filter=".logitech">
+                Logitech
+              </button>
+              <button class="case4-btn" data-filter=".jabra">Jabra</button>
+              <button class="case4-btn" data-filter=".yealink">Yealink</button>
+            </div>
+          </div>
+        </div>
+        <div class="row gy-30 grid justify-content-center">
+          <div class="col-12 grid-item logitech">
+            <!-- Form Wizard -->
+            <div class="container">
+                <div class="row">
+                    <div class="col-12 bg-smoke p-3 rounded">
+                        <div class="configurator-wizard">
+                            <!-- Step 1: Platform Selection -->
+                            <div class="wizard-step active" id="step-platform">
+                                <h3 class="text-center">What is your primary video conferencing platform?</h3>
+                                <p class="text-center">Choose the video conferencing platform your organization uses most often.</p>
+                                <div class="row justify-content-center">
+                                    <!-- Google Workspace -->
+                                    <div class="col-md-4 gy-4">
+                                        <div class="card platform-card" data-platform="google">
+                                            <div class="card-body text-center">
+                                                <img src="assets/img/product/logitech meetup.jpg" alt="Google Meet Device" class="platform-device">
+                                                <h5 class="card-title mt-3">Google Meet</h5>
+                                                <input type="radio" name="platform" value="google" class="d-none">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Zoom -->
+                                    <div class="col-md-4 gy-4">
+                                        <div class="card platform-card" data-platform="zoom">
+                                            <div class="card-body text-center">
+                                                <img src="assets/img/product/logitech meetup.jpg" alt="Zoom Device" class="platform-device">
+                                                <h5 class="card-title mt-3">Zoom</h5>
+                                                <input type="radio" name="platform" value="zoom" class="d-none">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Microsoft Teams -->
+                                    <div class="col-md-4 gy-4">
+                                        <div class="card platform-card" data-platform="teams">
+                                            <div class="card-body text-center">
+                                                <img src="assets/img/product/logitech meetup.jpg" alt="Microsoft Teams Device" class="platform-device">
+                                                <h5 class="card-title mt-3">Microsoft Teams</h5>
+                                                <input type="radio" name="platform" value="teams" class="d-none">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- BYOD -->
+                                    <div class="col-md-4 gy-4">
+                                        <div class="card platform-card" data-platform="byod">
+                                            <div class="card-body text-center">
+                                                <img src="assets/img/product/logitech meetup.jpg" alt="BYOD" class="platform-device">
+                                                <h5 class="card-title mt-3">Bring Your Own Device</h5>
+                                                <input type="radio" name="platform" value="byod" class="d-none">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center mt-4">
+                                    <button class="th-btn" id="platform-next-btn">Next</button>
+                                </div>
+                            </div>
+
+                            <!-- Step 2: Deployment Type -->
+                            <div class="wizard-step" id="step-deployment">
+                                <h3 class="text-center">Do you prefer a video conferencing appliance, or having a dedicated computing device?</h3>
+                                <div class="row justify-content-center">
+                                    <div class="col-md-6">
+                                        <div class="card deployment-card" data-deployment="appliance">
+                                            <div class="card-body text-center">
+                                                <h5 class="card-title mt-3">Appliance</h5>
+                                                <input type="radio" name="deployment" value="appliance" class="d-none">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card deployment-card" data-deployment="pc-based">
+                                            <div class="card-body text-center">
+                                                <h5 class="card-title mt-3">PC Based</h5>
+                                                <input type="radio" name="deployment" value="pc-based" class="d-none">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-center mt-4">
+                                    <button class="th-btn" id="deployment-back-btn" style="display: none;">Back</button>
+                                    <button class="th-btn" id="deployment-next-btn" style="display: none;">Next</button>
+                                </div>
+                            </div>
+
+                            <!-- Step 3: Conference Camera -->
+                            <div class="wizard-step" id="step-3" style="display: none;">
+                                <h3 class="text-center">Choose your conferencing camera(s).</h3>
+                                <p class="text-center">These recommendations are based on your previous answers. You selected: <span id="step3-summary" class="fw-bold" style="color: var(--theme-color);"></span></p>
+                                
+                                <div class="row justify-content-center">
+                                    <!-- Camera 1: Logitech Rally Bar Mini -->
+                                    <div class="col-12 mb-4">
+                                        <div class="card camera-card">
+                                            <div class="card-body">
+                                                <div class="row align-items-center">
+                                                    <div class="col-md-3 text-center mb-3 mb-md-0">
+                                                        <img src="assets/img/product/logitech meetup.jpg" alt="Rally Bar Mini" class="img-fluid rounded" style="max-height: 150px;">
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <div class="d-flex justify-content-between align-items-start">
+                                                            <div>
+                                                                <h4 class="card-title mb-1">Logitech Rally Bar Mini</h4>
+                                                                <p class="text-muted mb-2">Premier All-in-One Video Bar for Small Rooms</p>
+                                                            </div>
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input camera-select" type="radio" name="camera_group" id="cam_rally_mini" value="rally-bar-mini" style="width: 3em; height: 1.5em;">
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <!-- Accessories Container -->
+                                                        <div class="accessories-container mt-4 pt-3 border-top" style="display: none;">
+                                                            <h6 class="mb-3">Select Accessories for Rally Bar Mini:</h6>
+                                                            <div class="row g-3">
+                                                                <!-- Accessory 1 -->
+                                                                <div class="col-sm-6 col-lg-4">
+                                                                    <label class="card accessory-card h-100 mb-0">
+                                                                        <div class="card-body p-3 d-flex align-items-center">
+                                                                            <div class="form-check me-2">
+                                                                                <input class="form-check-input" type="checkbox" value="tv-mount">
+                                                                            </div>
+                                                                            <div>
+                                                                                <h6 class="mb-0" style="font-size: 14px;">TV Mount</h6>
+                                                                                <small class="text-muted">Secure mounting</small>
+                                                                            </div>
+                                                                        </div>
+                                                                    </label>
+                                                                </div>
+                                                                <!-- Accessory 2 -->
+                                                                <div class="col-sm-6 col-lg-4">
+                                                                    <label class="card accessory-card h-100 mb-0">
+                                                                        <div class="card-body p-3 d-flex align-items-center">
+                                                                            <div class="form-check me-2">
+                                                                                <input class="form-check-input" type="checkbox" value="wall-mount">
+                                                                            </div>
+                                                                            <div>
+                                                                                <h6 class="mb-0" style="font-size: 14px;">Wall Mount</h6>
+                                                                                <small class="text-muted">Space saving</small>
+                                                                            </div>
+                                                                        </div>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Camera 2: Logitech MeetUp -->
+                                    <div class="col-12 mb-4">
+                                        <div class="card camera-card">
+                                            <div class="card-body">
+                                                <div class="row align-items-center">
+                                                    <div class="col-md-3 text-center mb-3 mb-md-0">
+                                                        <img src="assets/img/product/logitech meetup.jpg" alt="MeetUp" class="img-fluid rounded" style="max-height: 150px;">
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <div class="d-flex justify-content-between align-items-start">
+                                                            <div>
+                                                                <h4 class="card-title mb-1">Logitech MeetUp</h4>
+                                                                <p class="text-muted mb-2">All-in-One ConferenceCam for Huddle Rooms</p>
+                                                            </div>
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input camera-select" type="radio" name="camera_group" id="cam_meetup" value="meetup" style="width: 3em; height: 1.5em;">
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <!-- Accessories Container -->
+                                                        <div class="accessories-container mt-4 pt-3 border-top" style="display: none;">
+                                                            <h6 class="mb-3">Select Accessories for MeetUp:</h6>
+                                                            <div class="row g-3">
+                                                                <div class="col-sm-6 col-lg-4">
+                                                                    <label class="card accessory-card h-100 mb-0">
+                                                                        <div class="card-body p-3 d-flex align-items-center">
+                                                                            <div class="form-check me-2">
+                                                                                <input class="form-check-input" type="checkbox" value="exp-mic">
+                                                                            </div>
+                                                                            <div>
+                                                                                <h6 class="mb-0" style="font-size: 14px;">Expansion Mic</h6>
+                                                                                <small class="text-muted">Extended range</small>
+                                                                            </div>
+                                                                        </div>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="text-center mt-4">
+                                    <button class="th-btn" id="step3-back-btn">Back</button>
+                                    <button class="th-btn" id="step3-next-btn">Next</button>
+                                </div>
+                            </div>
+
+                            <!-- Step 4: Add-ons -->
+                            <div class="wizard-step" id="step-4" style="display: none;">
+                                <h3 class="text-center">Choose your add-ons.</h3>
+                                <p class="text-center">Enhance the meeting experience with add-ons.</p>
+                                
+                                <div class="row justify-content-center">
+                                    <!-- Add-on 1: Logitech Tap Scheduler -->
+                                    <div class="col-12 mb-4">
+                                        <div class="card camera-card addon-card">
+                                            <div class="card-body">
+                                                <div class="row align-items-center">
+                                                    <div class="col-md-3 text-center mb-3 mb-md-0">
+                                                        <img src="assets/img/product/logitech meetup.jpg" alt="Tap Scheduler" class="img-fluid rounded" style="max-height: 150px;">
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <div class="d-flex justify-content-between align-items-start">
+                                                            <div>
+                                                                <h4 class="card-title mb-1">Logitech Tap Scheduler</h4>
+                                                                <p class="text-muted mb-2">Purpose-built scheduling panel for meeting rooms</p>
+                                                            </div>
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input addon-select" type="checkbox" value="tap-scheduler" style="width: 3em; height: 1.5em;">
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        <!-- Accessories Container -->
+                                                        <div class="accessories-container mt-4 pt-3 border-top" style="display: none;">
+                                                            <h6 class="mb-3">Select Accessories for Tap Scheduler:</h6>
+                                                            <div class="row g-3">
+                                                                <div class="col-sm-6 col-lg-4">
+                                                                    <label class="card accessory-card h-100 mb-0">
+                                                                        <div class="card-body p-3 d-flex align-items-center">
+                                                                            <div class="form-check me-2">
+                                                                                <input class="form-check-input" type="checkbox" value="angle-mount">
+                                                                            </div>
+                                                                            <div>
+                                                                                <h6 class="mb-0" style="font-size: 14px;">Angle Mount</h6>
+                                                                                <small class="text-muted">Adjustable viewing</small>
+                                                                            </div>
+                                                                        </div>
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-sm-6 col-lg-4">
+                                                                    <label class="card accessory-card h-100 mb-0">
+                                                                        <div class="card-body p-3 d-flex align-items-center">
+                                                                            <div class="form-check me-2">
+                                                                                <input class="form-check-input" type="checkbox" value="glass-mount">
+                                                                            </div>
+                                                                            <div>
+                                                                                <h6 class="mb-0" style="font-size: 14px;">Glass Mount</h6>
+                                                                                <small class="text-muted">Clean glass install</small>
+                                                                            </div>
+                                                                        </div>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Add-on 2: Logitech Active USB Cable -->
+                                    <div class="col-12 mb-4">
+                                        <div class="card camera-card addon-card">
+                                            <div class="card-body">
+                                                <div class="row align-items-center">
+                                                    <div class="col-md-3 text-center mb-3 mb-md-0">
+                                                        <img src="assets/img/product/logitech meetup.jpg" alt="Active USB Cable" class="img-fluid rounded" style="max-height: 150px;">
+                                                    </div>
+                                                    <div class="col-md-9">
+                                                        <div class="d-flex justify-content-between align-items-start">
+                                                            <div>
+                                                                <h4 class="card-title mb-1">Logitech Active USB Cable</h4>
+                                                                <p class="text-muted mb-2">Extended range USB cable for clean setups</p>
+                                                            </div>
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input addon-select" type="checkbox" value="usb-cable" style="width: 3em; height: 1.5em;">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="text-center mt-4">
+                                    <button class="th-btn" id="step4-back-btn">Back</button>
+                                    <button class="th-btn" id="step4-next-btn">Next</button>
+                                </div>
+                            </div>
+
+                            <!-- Step 5: Summary (Formerly Step 4) -->
+                            <div class="wizard-step" id="step-5" style="display: none;">
+                                <h3 class="text-center" id="step5-title">Configuration Summary</h3>
+                                <p class="text-center" id="step5-subtitle">Review your selected configuration.</p>
+                                
+                                <div class="row justify-content-center">
+                                    <div class="col-lg-8">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <h5 class="card-title border-bottom pb-2">Room Details</h5>
+                                                <div class="mb-3">
+                                                    <strong>Platform:</strong> <span id="summary-platform"></span>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <strong>Deployment:</strong> <span id="summary-deployment"></span>
+                                                </div>
+                                                
+                                                <h5 class="card-title border-bottom pb-2 mt-4">Hardware</h5>
+                                                <div class="mb-3">
+                                                    <strong>Camera System:</strong> <span id="summary-camera"></span>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <strong>Accessories:</strong>
+                                                    <ul id="summary-accessories" class="list-unstyled ps-3">
+                                                        <!-- List items will be injected here -->
+                                                    </ul>
+                                                    <span id="no-accessories" class="text-muted" style="display:none;">None selected</span>
+                                                </div>
+
+                                                <h5 class="card-title border-bottom pb-2 mt-4">Add-ons</h5>
+                                                <div class="mb-3">
+                                                    <ul id="summary-addons" class="list-unstyled ps-3">
+                                                        <!-- Add-ons will be injected here -->
+                                                    </ul>
+                                                    <span id="no-addons" class="text-muted" style="display:none;">None selected</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="text-center mt-4">
+                                    <button class="th-btn" id="step5-back-btn">Back</button>
+                                    <button class="th-btn" id="step5-finish-btn">Request Quote</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="case-area space">
       <div class="container">
         <div class="row justify-content-center text-center">
           <div class="col-xl-12">
@@ -804,33 +1274,7 @@ Category Area
                 <a href="product-detail.html" class="icon-btn"
                   ><i class="fa-light fa-arrow-right-long"></i
                 ></a>
-              </div>
-              <div class="case-content">
-                <div class="media-left">
-                  <h4 class="box-title">
-                    <a href="product-detail.html">Logitech Meetup</a>
-                  </h4>
-                  <span class="case-subtitle">Logitech Meetup</span>
-                </div>
-              </div>
-              <div class="case-action">
-                <a href="product-detail.html" class="case-btn">
-                  <i class="fa-light fa-arrow-right-long"></i>
-                </a>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-4 col-lg-6 col-md-6 grid-item logitech">
-            <div class="case-box style2 inner-style1 position-relative">
-              <div class="case-img global-img">
-                <img
-                  src="assets/img/product/logitech meetup.jpg"
-                  alt="case image"
-                />
-                <a href="product-detail.html" class="icon-btn"
-                  ><i class="fa-light fa-arrow-right-long"></i
-                ></a>
-              </div>
+</div>
               <div class="case-content">
                 <div class="media-left">
                   <h4 class="box-title">
@@ -848,7 +1292,7 @@ Category Area
           </div>
         </div>
       </div>
-    </div>
+    </div> -->
     <!--==============================
 destination Area  
 ==============================-->
@@ -955,7 +1399,7 @@ destination Area
                       <span class="case-categ">Logitech</span>
                       <a href="case-study-details.html" class="case-icon">
                         <i class="fa-light fa-arrow-right-long"></i>
-                      </a>
+</a>
                     </div>
                   </div>
                 </div>
@@ -980,20 +1424,20 @@ destination Area
                 </div>
               </div>
             </div>
-          </div>
+</div>
           <div class="icon-box mt-60 text-center">
             <button
-              data-slider-prev="#caseSlider1"
+data-slider-prev="#caseSlider1"
               class="slider-arrow style5 default"
             >
               <img src="assets/img/icon/right-arrow2.svg" alt="" />
             </button>
             <button
               data-slider-next="#caseSlider1"
-              class="slider-arrow style5 default"
+class="slider-arrow style5 default"
             >
               <img src="assets/img/icon/left-arrow2.svg" alt="" />
-            </button>
+</button>
           </div>
         </div>
         <div
@@ -1036,7 +1480,7 @@ destination Area
                       ><i class="fab fa-facebook-f"></i
                     ></a>
                     <a href="https://www.twitter.com/"
-                      ><i class="fab fa-twitter"></i
+><i class="fab fa-twitter"></i
                     ></a>
                     <a href="https://www.linkedin.com/"
                       ><i class="fab fa-linkedin-in"></i
@@ -1249,8 +1693,416 @@ destination Area
     <script src="assets/js/ScrollTrigger.min.js"></script>
     <!-- Lenis Smooth Scroll -->
     <script src="assets/js/lenis.min.js"></script>
-
     <!-- Main Js File -->
     <script src="assets/js/main.js"></script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const platformCards = document.querySelectorAll('.platform-card');
+        const deploymentCards = document.querySelectorAll('.deployment-card');
+
+        const stepPlatform = document.getElementById('step-platform');
+        const stepDeployment = document.getElementById('step-deployment');
+        const step3 = document.getElementById('step-3');
+
+        const platformNextBtn = document.getElementById('platform-next-btn');
+        const deploymentBackBtn = document.getElementById('deployment-back-btn');
+        const deploymentNextBtn = document.getElementById('deployment-next-btn');
+        const step3BackBtn = document.getElementById('step3-back-btn');
+        const step3NextBtn = document.getElementById('step3-next-btn');
+        const step4 = document.getElementById('step-4');
+        const step4BackBtn = document.getElementById('step4-back-btn');
+        const step4NextBtn = document.getElementById('step4-next-btn');
+        const step5 = document.getElementById('step-5');
+        const step5BackBtn = document.getElementById('step5-back-btn');
+        const step5FinishBtn = document.getElementById('step5-finish-btn');
+
+        let selectedPlatform = null;
+        let selectedDeployment = null;
+
+        // Initialize the first step as active
+        stepPlatform.classList.add('active');
+
+        platformCards.forEach(card => {
+          card.addEventListener('click', function () {
+            platformCards.forEach(c => {
+                c.classList.remove('selected');
+                c.querySelector('input[type="radio"]').checked = false;
+                if (c !== this) {
+                    c.classList.add('disabled-visual');
+                } else {
+                    c.classList.remove('disabled-visual');
+                }
+            });
+
+            this.classList.add('selected');
+            this.querySelector('input[type="radio"]').checked = true;
+            selectedPlatform = this.dataset.platform;
+            platformNextBtn.style.display = 'inline-block';
+          });
+        });
+
+        platformNextBtn.addEventListener('click', function () {
+          if (selectedPlatform) {
+            localStorage.setItem('selectedPlatform', selectedPlatform);
+            stepPlatform.classList.remove('active');
+            if (selectedPlatform === 'byod') {
+              localStorage.setItem('deploymentType', 'no-data');
+              step3.classList.add('active');
+              updateStep3Summary();
+            } else {
+              stepDeployment.classList.add('active');
+            }
+          }
+        });
+
+        deploymentCards.forEach(card => {
+            card.addEventListener('click', function () {
+                deploymentCards.forEach(c => {
+                    c.classList.remove('selected');
+                    c.querySelector('input[type="radio"]').checked = false;
+                    if (c !== this) {
+                        c.classList.add('disabled-visual');
+                    } else {
+                        c.classList.remove('disabled-visual');
+                    }
+                });
+                this.classList.add('selected');
+                this.querySelector('input[type="radio"]').checked = true;
+                selectedDeployment = this.dataset.deployment;
+                deploymentBackBtn.style.display = 'inline-block';
+                deploymentNextBtn.style.display = 'inline-block';
+            });
+        });
+
+        deploymentBackBtn.addEventListener('click', function() {
+            stepDeployment.classList.remove('active');
+            stepPlatform.classList.add('active');
+        });
+
+        deploymentNextBtn.addEventListener('click', function () {
+            if(selectedDeployment) {
+                localStorage.setItem('deploymentType', selectedDeployment);
+                stepDeployment.classList.remove('active');
+                step3.classList.add('active');
+                updateStep3Summary();
+            } else {
+                alert('Please select a deployment type.');
+            }
+        });
+
+        step3BackBtn.addEventListener('click', function() {
+            step3.classList.remove('active');
+            const prevPlatform = localStorage.getItem('selectedPlatform');
+            if (prevPlatform === 'byod') {
+                stepPlatform.classList.add('active');
+            } else {
+                stepDeployment.classList.add('active');
+            }
+        });
+
+        // Step 3 Logic
+        const cameraSelects = document.querySelectorAll('.camera-select');
+        
+        cameraSelects.forEach(radio => {
+            radio.addEventListener('change', function() {
+                updateCameraSelection(this);
+            });
+        });
+
+        // Make entire card clickable (Step 3 - Camera)
+        document.querySelectorAll('.camera-card:not(.addon-card)').forEach(card => {
+            card.addEventListener('click', function(e) {
+                if (e.target.closest('.accessories-container')) return;
+                if (e.target.type === 'radio' || e.target.type === 'checkbox') return;
+
+                const radio = this.querySelector('input.camera-select');
+                if (radio && !radio.checked) {
+                    radio.checked = true;
+                    updateCameraSelection(radio);
+                }
+            });
+        });
+        
+        // Make entire card clickable (Step 4 - Addons)
+        document.querySelectorAll('.addon-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                 if (e.target.closest('.accessories-container')) return;
+                 if (e.target.type === 'radio' || e.target.type === 'checkbox') return;
+
+                 const checkbox = this.querySelector('input.addon-select');
+                 if (checkbox) {
+                         checkbox.checked = !checkbox.checked;
+                         updateAddonSelection(checkbox);
+                 }
+            });
+        });
+        
+        // Add-on checkbox change listener
+        document.querySelectorAll('.addon-select').forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                updateAddonSelection(this);
+            });
+        });
+        
+        function updateAddonSelection(checkbox) {
+            const card = checkbox.closest('.addon-card');
+            const accContainer = card.querySelector('.accessories-container');
+            
+            if (checkbox.checked) {
+                card.classList.add('selected-camera'); // Reuse selected style
+                if (accContainer) accContainer.style.display = 'block';
+            } else {
+                card.classList.remove('selected-camera');
+                if (accContainer) accContainer.style.display = 'none';
+                
+                // Uncheck accessories if parent is unchecked
+                if (accContainer) {
+                    accContainer.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+                        cb.checked = false;
+                        cb.disabled = false;
+                    });
+                    accContainer.querySelectorAll('.accessory-card').forEach(c => {
+                        c.classList.remove('selected-accessory');
+                        c.classList.remove('card-disabled');
+                    });
+                }
+            }
+        }
+
+        // Accessory Selection Logic (Single Select with Disable others)
+        const accessoryCheckboxes = document.querySelectorAll('.accessories-container input[type="checkbox"]');
+        
+        accessoryCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const card = this.closest('.accessory-card');
+                const container = this.closest('.accessories-container');
+                const allCardsInGroup = container.querySelectorAll('.accessory-card');
+                const allCheckboxesInGroup = container.querySelectorAll('input[type="checkbox"]');
+
+                if (this.checked) {
+                    // Highlight selected
+                    card.classList.add('selected-accessory');
+                    
+                    // Disable others
+                    allCardsInGroup.forEach(c => {
+                        if (c !== card) {
+                            c.classList.add('card-disabled');
+                        }
+                    });
+                    allCheckboxesInGroup.forEach(cb => {
+                        if (cb !== this) {
+                            cb.disabled = true;
+                        }
+                    });
+                } else {
+                    // Unhighlight selected
+                    card.classList.remove('selected-accessory');
+                    
+                    // Enable others
+                    allCardsInGroup.forEach(c => c.classList.remove('card-disabled'));
+                    allCheckboxesInGroup.forEach(cb => cb.disabled = false);
+                }
+            });
+        });
+
+        function updateCameraSelection(radio) {
+                if (radio.classList.contains('addon-select')) return; // Skip for add-ons
+
+                // Reset all camera cards
+                document.querySelectorAll('.camera-card:not(.addon-card)').forEach(card => {
+                    card.classList.remove('selected-camera');
+                    const acc = card.querySelector('.accessories-container');
+                    if (acc) acc.style.display = 'none';
+                });
+
+                // Reset accessories within all cards (optional but good for UX)
+                document.querySelectorAll('.accessory-card').forEach(c => {
+                    c.classList.remove('selected-accessory');
+                    c.classList.remove('card-disabled');
+                });
+                document.querySelectorAll('.accessories-container input[type="checkbox"]').forEach(cb => {
+                    cb.checked = false;
+                    cb.disabled = false;
+                });
+
+                // Activate selected card
+                if(radio.checked) {
+                    const card = radio.closest('.camera-card');
+                    card.classList.add('selected-camera');
+                    const accContainer = card.querySelector('.accessories-container');
+                    if(accContainer) {
+                        accContainer.style.display = 'block';
+                    }
+                }
+        }
+
+        step3NextBtn.addEventListener('click', function() {
+            const selectedCameraRadio = document.querySelector('input[name="camera_group"]:checked');
+            
+            if (!selectedCameraRadio) {
+                alert("Please select a camera system.");
+                return;
+            }
+
+            // Save Camera and Accessories to LocalStorage
+            const cameraCard = selectedCameraRadio.closest('.camera-card');
+            const cameraName = cameraCard.querySelector('.card-title').textContent;
+            const cameraValue = selectedCameraRadio.value;
+            
+            const selectedAccs = cameraCard.querySelectorAll('.accessories-container input[type="checkbox"]:checked');
+            const accessoriesData = [];
+            selectedAccs.forEach(acc => {
+                accessoriesData.push({
+                    name: acc.closest('.accessory-card').querySelector('h6').textContent,
+                    value: acc.value
+                });
+            });
+
+            localStorage.setItem('config_camera', JSON.stringify({ name: cameraName, value: cameraValue }));
+            localStorage.setItem('config_accessories', JSON.stringify(accessoriesData));
+
+            // Move to Step 4
+            step3.classList.remove('active');
+            step4.classList.add('active');
+        });
+
+        step4BackBtn.addEventListener('click', function() {
+            step4.classList.remove('active');
+            step3.classList.add('active');
+        });
+
+        step4NextBtn.addEventListener('click', function() {
+            // Save Add-ons to LocalStorage
+            const selectedAddons = [];
+            document.querySelectorAll('.addon-select:checked').forEach(addonCb => {
+                const card = addonCb.closest('.addon-card');
+                const name = card.querySelector('.card-title').textContent;
+                
+                const accs = [];
+                card.querySelectorAll('.accessories-container input[type="checkbox"]:checked').forEach(acc => {
+                    accs.push(acc.closest('.accessory-card').querySelector('h6').textContent);
+                });
+                
+                selectedAddons.push({ name: name, accessories: accs });
+            });
+            
+            localStorage.setItem('config_addons', JSON.stringify(selectedAddons));
+
+            // Populate Step 5 (Summary)
+            populateSummary();
+            
+            step4.classList.remove('active');
+            step5.classList.add('active');
+        });
+
+        function populateSummary() {
+            const platform = localStorage.getItem('selectedPlatform');
+            const deployment = localStorage.getItem('deploymentType');
+            const cameraConfig = JSON.parse(localStorage.getItem('config_camera'));
+            const accessoriesConfig = JSON.parse(localStorage.getItem('config_accessories'));
+            const addonsConfig = JSON.parse(localStorage.getItem('config_addons'));
+
+            // Format Platform
+            let platformText = platform;
+            if(platform === 'google') platformText = 'Google Meet';
+            else if(platform === 'teams') platformText = 'Microsoft Teams';
+            else if(platform === 'zoom') platformText = 'Zoom';
+            else if(platform === 'byod') platformText = 'Bring-Your-Own-Device';
+            
+            document.getElementById('summary-platform').textContent = platformText;
+            
+            // Update Step 5 Title and Subtitle
+            document.getElementById('step5-title').textContent = "Your Configuration Summary";
+            
+            let summarySubtitle = `You selected: ${platformText}`;
+            if(deployment && deployment !== 'no-data') {
+                summarySubtitle += deployment === 'appliance' ? ' Appliance' : ' PC Based';
+            }
+            summarySubtitle += ' setup in a Small Room.';
+            document.getElementById('step5-subtitle').textContent = summarySubtitle;
+
+            // Format Deployment
+            let deploymentText = 'N/A';
+            if(deployment === 'appliance') deploymentText = 'Appliance Mode';
+            else if(deployment === 'pc-based') deploymentText = 'PC Based';
+            else if(deployment === 'no-data') deploymentText = 'BYOD (No dedicated compute)';
+            
+            document.getElementById('summary-deployment').textContent = deploymentText;
+
+            // Camera
+            document.getElementById('summary-camera').textContent = cameraConfig ? cameraConfig.name : 'None';
+
+            // Accessories
+            const accList = document.getElementById('summary-accessories');
+            const noAcc = document.getElementById('no-accessories');
+            accList.innerHTML = '';
+            
+            if (accessoriesConfig && accessoriesConfig.length > 0) {
+                noAcc.style.display = 'none';
+                accessoriesConfig.forEach(acc => {
+                    const li = document.createElement('li');
+                    li.innerHTML = `<i class="fas fa-check text-success me-2"></i> ${acc.name}`;
+                    accList.appendChild(li);
+                });
+            } else {
+                noAcc.style.display = 'block';
+            }
+
+            // Add-ons
+            const addonList = document.getElementById('summary-addons');
+            const noAddons = document.getElementById('no-addons');
+            addonList.innerHTML = '';
+
+            if (addonsConfig && addonsConfig.length > 0) {
+                noAddons.style.display = 'none';
+                addonsConfig.forEach(addon => {
+                    const li = document.createElement('li');
+                    let html = `<i class="fas fa-plus-circle text-primary me-2"></i> <strong>${addon.name}</strong>`;
+                    if (addon.accessories.length > 0) {
+                        html += `<ul class="list-unstyled ps-4 small text-muted">`;
+                        addon.accessories.forEach(acc => html += `<li>+ ${acc}</li>`);
+                        html += `</ul>`;
+                    }
+                    li.innerHTML = html;
+                    addonList.appendChild(li);
+                });
+            } else {
+                noAddons.style.display = 'block';
+            }
+        }
+
+        step5BackBtn.addEventListener('click', function() {
+            step5.classList.remove('active');
+            step4.classList.add('active');
+        });
+
+        step5FinishBtn.addEventListener('click', function() {
+            alert("Thank you! Your configuration has been submitted.");
+        });
+
+        function updateStep3Summary() {
+            const platform = localStorage.getItem('selectedPlatform');
+            const deployment = localStorage.getItem('deploymentType');
+            const summarySpan = document.getElementById('step3-summary');
+            
+            let platformName = platform;
+            if(platform === 'google') platformName = 'Google Meet';
+            else if(platform === 'teams') platformName = 'Microsoft Teams';
+            else if(platform === 'zoom') platformName = 'Zoom';
+            else if(platform === 'byod') platformName = 'Bring-Your-Own-Device';
+
+            let text = `Choose a ${platformName}`;
+            if(deployment && deployment !== 'no-data') {
+                text += deployment === 'appliance' ? ' Appliance' : ' PC Based';
+            }
+            text += ' setup in a Small Room room.';
+            
+            summarySpan.textContent = text;
+        }
+
+      });
+    </script> 
+
   </body>
 </html>
