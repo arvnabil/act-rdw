@@ -1,0 +1,1885 @@
+<!DOCTYPE html>
+<html class="no-js" lang="zxx">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>PT Alfa Cipta Teknologi Virtual - ACTiV</title>
+    <meta name="author" content="Atek" />
+    <meta
+      name="description"
+      content="Atek - IT Solution & Technology Html Template"
+    />
+    <meta
+      name="keywords"
+      content="Atek - IT Solution & Technology Html Template"
+    />
+    <meta name="robots" content="INDEX,FOLLOW" />
+
+    <!-- Mobile Specific Metas -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+
+    <!-- Favicons - Place favicon.ico in the root directory -->
+    <link
+      rel="shortcut icon"
+      href="assets/img/favicons/favicon.ico"
+      type="image/x-icon"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="57x57"
+      href="assets/img/favicons/apple-icon-57x57.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="60x60"
+      href="assets/img/favicons/apple-icon-60x60.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="72x72"
+      href="assets/img/favicons/apple-icon-72x72.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="76x76"
+      href="assets/img/favicons/apple-icon-76x76.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="114x114"
+      href="assets/img/favicons/apple-icon-114x114.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="120x120"
+      href="assets/img/favicons/apple-icon-120x120.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="144x144"
+      href="assets/img/favicons/apple-icon-144x144.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="152x152"
+      href="assets/img/favicons/apple-icon-152x152.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="assets/img/favicons/apple-icon-180x180.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="192x192"
+      href="assets/img/favicons/android-icon-192x192.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="assets/img/favicons/favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="96x96"
+      href="assets/img/favicons/favicon-96x96.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="assets/img/favicons/favicon-16x16.png"
+    />
+    <link rel="manifest" href="assets/img/favicons/manifest.json" />
+    <meta name="msapplication-TileColor" content="#ffffff" />
+    <meta
+      name="msapplication-TileImage"
+      content="assets/img/favicons/ms-icon-144x144.png"
+    />
+    <meta name="theme-color" content="#ffffff" />
+
+    <!--==============================
+	  Google Fonts
+	============================== -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!--==============================
+	    All CSS File
+	============================== -->
+    <!--==============================
+	    All CSS File
+	============================== -->
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css" />
+    <!-- Fontawesome Icon -->
+    <link rel="stylesheet" href="assets/css/fontawesome.min.css" />
+    <!-- Magnific Popup -->
+    <link rel="stylesheet" href="assets/css/magnific-popup.min.css" />
+
+    <!-- Swiper css -->
+    <link rel="stylesheet" href="assets/css/swiper-bundle.min.css" />
+
+    <style>
+      :root {
+        --theme-color: #0b59db; /* Matching the template theme color */
+        --theme-bg-light: #f4f7ff;
+      }
+      .wizard-card {
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        padding: 40px;
+        min-height: 500px;
+      }
+      .wizard-step {
+        display: none;
+        animation: fadeIn 0.4s ease-in-out;
+      }
+      .wizard-step.active {
+        display: block;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .selection-card {
+        border: 2px solid #e1e4e6;
+        border-radius: 16px;
+        padding: 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        height: 100%;
+        background: #fff;
+        position: relative;
+        overflow: hidden;
+      }
+      .selection-card:hover {
+        border-color: var(--theme-color);
+        transform: translateY(-5px);
+        box-shadow: 0 15px 30px rgba(11, 89, 219, 0.1);
+      }
+      .selection-card.selected {
+        border-color: var(--theme-color);
+        background-color: var(--theme-bg-light);
+      }
+      .selection-card.selected::after {
+        content: "\f00c";
+        font-family: "Font Awesome 6 Pro";
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: var(--theme-color);
+        color: #fff;
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+      }
+      .selection-card img {
+        max-height: 120px;
+        object-fit: contain;
+        margin-bottom: 20px;
+      }
+      .selection-card h5 {
+        font-weight: 600;
+        margin-bottom: 5px;
+        font-size: 18px;
+      }
+      .selection-card p {
+        font-size: 14px;
+        color: #666;
+        margin-bottom: 0;
+      }
+      /* Stepper Styles */
+      .step-progress {
+        margin-bottom: 40px;
+      }
+      .stepper-wrapper {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+      }
+      .stepper-track {
+        position: absolute;
+        top: 15px; /* Center of 30px circle */
+        left: 30px; /* Half of min-width 60px */
+        right: 30px;
+        height: 3px;
+        background: #e9ecef;
+        z-index: 0;
+      }
+      .stepper-bar {
+        height: 100%;
+        background-color: var(--theme-color);
+        width: 0%;
+        transition: width 0.4s ease;
+      }
+      .stepper-item {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-width: 60px;
+      }
+      .step-counter {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: #fff;
+        border: 2px solid #e9ecef;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: 700;
+        font-size: 14px;
+        color: #999;
+        margin-bottom: 8px;
+        transition: all 0.3s ease;
+      }
+      .step-name {
+        font-size: 12px;
+        font-weight: 600;
+        color: #999;
+        text-transform: uppercase;
+        text-align: center;
+      }
+
+      /* Active Step */
+      .stepper-item.active .step-counter {
+        border-color: var(--theme-color);
+        background: #fff;
+        color: var(--theme-color);
+        transform: scale(1.1);
+      }
+      .stepper-item.active .step-name {
+        color: var(--theme-color);
+        font-weight: 700;
+      }
+
+      /* Completed Step */
+      .stepper-item.completed .step-counter {
+        border-color: var(--theme-color);
+        background: var(--theme-color);
+        color: #fff;
+      }
+      .stepper-item.completed .step-name {
+        color: var(--theme-color);
+      }
+
+      .summary-item {
+        background: #f8f9fa;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        border-left: 4px solid var(--theme-color);
+      }
+      .product-card {
+        border: 2px solid #f0f0f0 !important;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+      .product-card:hover {
+        border-color: var(--theme-color) !important;
+        transform: translateY(-5px);
+      }
+      .product-card.selected-product {
+        border-color: var(--theme-color) !important;
+        background-color: var(--theme-bg-light);
+      }
+    </style>
+
+    <!-- Theme Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css" />
+  </head>
+
+  <body>
+    <!-- <div class="cursor-follower"></div> -->
+
+    <!-- slider drag cursor -->
+    <div
+      class="slider-drag-cursor d-flex align-items-center justify-content-between"
+    >
+      <span class="drag-icon-left"
+        ><img src="assets/img/icon/drag-arrow-left.svg" alt=""
+      /></span>
+      DRAG
+      <span class="drag-icon-right">
+        <img src="assets/img/icon/drag-arrow-right.svg" alt="" />
+      </span>
+    </div>
+    <!--==============================
+     Preloader
+  ==============================-->
+    <div class="preloader">
+      <button class="th-btn preloaderCls">Cancel Preloader</button>
+      <div class="preloader-inner">
+        <img src="assets/img/logo-icon3.svg" alt="img" />
+        <!-- <span class="loader">
+                Atek
+                <span class="loading-text">Atek</span>
+            </span> -->
+      </div>
+    </div>
+    <!--==============================
+    Sidemenu
+============================== -->
+    <div class="sidemenu-wrapper sidemenu-info">
+      <div class="sidemenu-content">
+        <button class="closeButton sideMenuCls">
+          <i class="far fa-times"></i>
+        </button>
+        <div class="widget">
+          <div class="th-widget-about">
+            <div class="about-logo">
+              <a href="index.html"
+                ><img src="assets/img/logo2.svg" alt="Atek"
+              /></a>
+            </div>
+            <p class="about-text">
+              Quick access to essential system features, including the dashboard
+              for an overview of operations, network settings for managing
+              connectivity, system logs for tracking activities.
+            </p>
+            <div class="th-social">
+              <a href="https://www.facebook.com/"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a href="https://www.twitter.com/"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a href="https://www.linkedin.com/"
+                ><i class="fab fa-linkedin-in"></i
+              ></a>
+              <a href="https://www.whatsapp.com/"
+                ><i class="fab fa-whatsapp"></i
+              ></a>
+              <a href="https://instagram.com/"
+                ><i class="fab fa-instagram"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+        <div class="widget">
+          <h3 class="widget_title">Recent Posts</h3>
+          <div class="recent-post-wrap">
+            <div class="recent-post d-flex align-items-center">
+              <div class="media-img">
+                <a href="blog-details.html"
+                  ><img
+                    src="assets/img/blog/recent-post-1-1.jpg"
+                    alt="Blog Image"
+                /></a>
+              </div>
+              <div class="media-body">
+                <div class="recent-post-meta">
+                  <a href="blog.html"
+                    ><i class="far fa-calendar"></i>24 Jun , 2025</a
+                  >
+                </div>
+                <h4 class="post-title">
+                  <a class="text-inherit" href="blog-details.html"
+                    >Where Vision Meets Concrete Reality</a
+                  >
+                </h4>
+              </div>
+            </div>
+            <div class="recent-post d-flex align-items-center">
+              <div class="media-img">
+                <a href="blog-details.html"
+                  ><img
+                    src="assets/img/blog/recent-post-1-2.jpg"
+                    alt="Blog Image"
+                /></a>
+              </div>
+              <div class="media-body">
+                <div class="recent-post-meta">
+                  <a href="blog.html"
+                    ><i class="far fa-calendar"></i>22 Jun , 2025</a
+                  >
+                </div>
+                <h4 class="post-title">
+                  <a class="text-inherit" href="blog-details.html"
+                    >Raising the Bar in Construction.</a
+                  >
+                </h4>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="widget">
+          <h3 class="widget_title">Get In Touch</h3>
+          <div class="th-widget-contact">
+            <div class="info-box_text">
+              <div class="icon">
+                <img src="assets/img/icon/phone.svg" alt="img" />
+              </div>
+              <div class="details">
+                <p>
+                  <a href="tel:+01234567890" class="info-box_link"
+                    >+01 234 567 890</a
+                  >
+                </p>
+                <p>
+                  <a href="tel:+09876543210" class="info-box_link"
+                    >+09 876 543 210</a
+                  >
+                </p>
+              </div>
+            </div>
+            <div class="info-box_text">
+              <div class="icon">
+                <img src="assets/img/icon/envelope.svg" alt="img" />
+              </div>
+              <div class="details">
+                <p>
+                  <a href="mailto:mailinfo00@atek.com" class="info-box_link"
+                    >mailinfo00@atek.com</a
+                  >
+                </p>
+                <p>
+                  <a href="mailto:support24@atek.com" class="info-box_link"
+                    >support24@atek.com</a
+                  >
+                </p>
+              </div>
+            </div>
+            <div class="info-box_text">
+              <div class="icon">
+                <img src="assets/img/icon/location-dot.svg" alt="img" />
+              </div>
+              <div class="details">
+                <p>789 Inner Lane, Holy park, California, USA</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="popup-search-box">
+      <button class="searchClose"><i class="fal fa-times"></i></button>
+      <form action="#">
+        <input type="text" placeholder="What are you looking for?" />
+        <button type="submit"><i class="fal fa-search"></i></button>
+      </form>
+    </div>
+    <!--==============================
+    Mobile Menu
+  ============================== -->
+    <div class="th-menu-wrapper onepage-nav">
+      <div class="th-menu-area text-center">
+        <button class="th-menu-toggle"><i class="fal fa-times"></i></button>
+        <div class="mobile-logo">
+          <a href="index.html"><img src="assets/img/logo2.svg" alt="Atek" /></a>
+        </div>
+        <div class="th-mobile-menu allow-natural-scroll">
+          <ul>
+            <li>
+              <a href="index.html">Home</a>
+            </li>
+            <li>
+              <a href="services.html">Our Services</a>
+            </li>
+            <li>
+              <a href="abouts.html">About Us</a>
+            </li>
+            <li>
+              <a href="partners.html">Our Partners</a>
+            </li>
+            <li>
+              <a href="products.html">Products</a>
+            </li>
+            <li>
+              <a href="projects.html">Projects</a>
+            </li>
+            <li class="menu-item-has-children">
+              <a href="#">Media</a>
+              <ul class="sub-menu">
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="blog.html">Articles</a></li>
+              </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!--==============================
+	Header Area  
+==============================-->
+    <header class="th-header header-layout1 header-layout2">
+      <div class="header-top">
+        <div class="container th-container">
+          <div
+            class="row justify-content-center justify-content-xl-between align-items-center"
+          >
+            <div class="col-auto d-none d-md-block">
+              <div class="header-links">
+                <ul>
+                  <li class="d-none d-xl-inline-block">
+                    <i class="fa-brands fa-instagram"></i>
+                    <span
+                      ><a
+                        href="https://www.instagram.com/activ_teknologi/"
+                        target="__BLANK"
+                        >@activ_teknologi</a
+                      ></span
+                    >
+                  </li>
+                  <li class="d-none d-xl-inline-block">
+                    <i class="fa-regular fa-clock"></i>
+                    <span>Sun to Friday: 8.30 am - 05.30 pm</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="col-auto">
+              <div class="header-right">
+                <div class="currency-menu">
+                  <i class="fa-light fa-earth-africa"></i>
+                  <select class="form-select nice-select">
+                    <option selected="">English</option>
+                    <option>Indonesian</option>
+                  </select>
+                </div>
+                <div class="header-links">
+                  <ul>
+                    <li class="d-none d-md-inline-block">
+                      <a href="faq.html">FAQ</a>
+                    </li>
+                    <li class="d-none d-md-inline-block">
+                      <a href="contact.html">Support</a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sticky-wrapper">
+        <!-- Main Menu Area -->
+        <div class="menu-area" data-bg-src="assets/img/bg/line-pattern.png">
+          <div class="container th-container">
+            <div class="row align-items-center justify-content-between">
+              <div class="col-xl-2 col-xxl-2 col-auto">
+                <div class="header-logo">
+                  <a href="index.html">
+                    <img src="assets/img/logo2.svg" alt="Atek" />
+                  </a>
+                </div>
+              </div>
+              <div class="col-xl-8 col-xxl-7 col-auto text-start">
+                <nav class="main-menu d-none d-xl-inline-block">
+                  <ul>
+                    <li>
+                      <a href="index.html">Home</a>
+                    </li>
+                    <li>
+                      <a href="services.html">Our Services</a>
+                    </li>
+                    <li>
+                      <a href="abouts.html">About Us</a>
+                    </li>
+                    <li>
+                      <a href="partners.html">Our Partners</a>
+                    </li>
+                    <li>
+                      <a href="products.html">Products</a>
+                    </li>
+                    <li>
+                      <a href="projects.html">Projects</a>
+                    </li>
+                    <li class="menu-item-has-children">
+                      <a href="#">Media</a>
+                      <ul class="sub-menu">
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="blog.html">Articles</a></li>
+                      </ul>
+                    </li>
+                  </ul>
+                </nav>
+                <button type="button" class="th-menu-toggle d-block d-xl-none">
+                  <i class="far fa-bars"></i>
+                </button>
+              </div>
+              <div class="col-xl-2 col-xxl-3 col-auto d-none d-xl-block">
+                <div class="header-button">
+                  <button type="button" class="icon-btn searchBoxToggler">
+                    <img src="assets/img/icon/search.svg" alt="icon" />
+                  </button>
+                  <a
+                    href="contact.html"
+                    class="th-btn th-radius th-icon d-none d-xxl-block"
+                    >Get In Touch <i class="fa-light fa-arrow-right-long"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!--==============================
+    Breadcumb
+============================== -->
+    <div class="breadcumb-area">
+      <div
+        class="breadcumb-wrapper"
+        data-bg-src="assets/img/bg/breadcumb-bg.jpg"
+      >
+        <div class="container">
+          <div class="breadcumb-content">
+            <h1 class="breadcumb-title">Room Configurator</h1>
+            <ul class="breadcumb-menu">
+              <li><a href="index.html">Home</a></li>
+              <li>Room Configurator</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Wizard Steps Area -->
+
+    <section
+      class="position-relative bg-top-center overflow-hidden space-top configurator-section"
+    >
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <div class="title-area service-title-box text-center">
+              <span class="sub-title mb-15 text-anime-style-2"
+                >Room Configurator</span
+              >
+              <h2 class="sec-title text-anime-style-3">
+                Design Your Perfect Meeting Room
+              </h2>
+              <p class="sec-text mb-50 wow fadeInUp" data-wow-delay=".3s">
+                Select your room size, preferred platform, and hardware to
+                create a tailored <br />
+                video conferencing solution that fits your needs.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-xl-10">
+            <div class="wizard-card">
+              <!-- Progress Bar -->
+              <div class="step-progress">
+                <div class="stepper-wrapper">
+                  <div class="stepper-track">
+                    <div class="stepper-bar" id="stepper-progress-bar"></div>
+                  </div>
+                  <div class="stepper-item active" id="step-indicator-1">
+                    <div class="step-counter">1</div>
+                    <div class="step-name">Room & Brand</div>
+                  </div>
+                  <div class="stepper-item" id="step-indicator-2">
+                    <div class="step-counter">2</div>
+                    <div class="step-name">Platform</div>
+                  </div>
+                  <div class="stepper-item" id="step-indicator-3">
+                    <div class="step-counter">3</div>
+                    <div class="step-name">Deployment</div>
+                  </div>
+                  <div class="stepper-item" id="step-indicator-4">
+                    <div class="step-counter">4</div>
+                    <div class="step-name">Hardware</div>
+                  </div>
+                  <div class="stepper-item" id="step-indicator-5">
+                    <div class="step-counter">5</div>
+                    <div class="step-name">Summary</div>
+                  </div>
+                </div>
+              </div>
+
+              <form id="configurator-form">
+                <!-- Step 1: Room Type & Brand -->
+                <div class="wizard-step active" id="step-1">
+                  <div class="text-center mb-5">
+                    <h3 class="mb-2">Let's start with your room details</h3>
+                    <p class="text-muted">
+                      Select the room size and your preferred hardware brand.
+                    </p>
+                  </div>
+
+                  <h5 class="mb-3">1. Select Room Type</h5>
+                  <div class="row g-4 mb-5" id="room-type-container">
+                    <!-- Injected via JS -->
+                  </div>
+
+                  <h5 class="mb-3">2. Select Brand</h5>
+                  <div class="row g-4 mb-4" id="brand-container">
+                    <!-- Injected via JS -->
+                  </div>
+
+                  <div class="text-center mt-5">
+                    <button type="button" class="th-btn" onclick="nextStep(2)">
+                      Next Step <i class="fa-regular fa-arrow-right ms-2"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Step 2: Platform -->
+                <div class="wizard-step" id="step-2">
+                  <div class="text-center mb-5">
+                    <h3 class="mb-2">
+                      Choose your Video Conferencing Platform
+                    </h3>
+                    <p class="text-muted">
+                      What software does your organization use most often?
+                    </p>
+                  </div>
+                  <div
+                    class="row g-4 justify-content-center"
+                    id="platform-container"
+                  >
+                    <!-- Injected via JS -->
+                  </div>
+                  <div
+                    class="text-center mt-5 d-flex justify-content-center gap-3"
+                  >
+                    <button
+                      type="button"
+                      class="th-btn style4 th-icon"
+                      onclick="prevStep(1)"
+                    >
+                      Back
+                    </button>
+                    <button type="button" class="th-btn" onclick="nextStep(3)">
+                      Next Step <i class="fa-regular fa-arrow-right ms-2"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Step 3: Deployment -->
+                <div class="wizard-step" id="step-3">
+                  <div class="text-center mb-5">
+                    <h3 class="mb-2">Deployment Preference</h3>
+                    <p class="text-muted">
+                      Do you prefer a dedicated appliance or a PC-based setup?
+                    </p>
+                  </div>
+                  <div class="row g-4 justify-content-center">
+                    <div class="col-md-5">
+                      <div
+                        class="selection-card"
+                        onclick="selectOption('deployment', 'appliance', this)"
+                      >
+                        <div class="text-center">
+                          <img
+                            src="assets/img/icon/service_2_1.svg"
+                            alt="Appliance"
+                          />
+                          <h5>Appliance Mode</h5>
+                          <p>
+                            Runs natively on the device (Android/CollabOS). No
+                            PC required.
+                          </p>
+                        </div>
+                        <input
+                          type="radio"
+                          name="deployment"
+                          value="appliance"
+                          class="d-none"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-5">
+                      <div
+                        class="selection-card"
+                        onclick="selectOption('deployment', 'pc-based', this)"
+                      >
+                        <div class="text-center">
+                          <img
+                            src="assets/img/icon/service_2_2.svg"
+                            alt="PC Based"
+                          />
+                          <h5>PC Based</h5>
+                          <p>
+                            Requires a dedicated meeting room PC (Windows/Mac).
+                          </p>
+                        </div>
+                        <input
+                          type="radio"
+                          name="deployment"
+                          value="pc-based"
+                          class="d-none"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="text-center mt-5 d-flex justify-content-center gap-3"
+                  >
+                    <button
+                      type="button"
+                      class="th-btn style4 th-icon"
+                      onclick="prevStep(2)"
+                    >
+                      Back
+                    </button>
+                    <button type="button" class="th-btn" onclick="nextStep(4)">
+                      Next Step <i class="fa-regular fa-arrow-right ms-2"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Step 4: Hardware & Accessories -->
+                <div class="wizard-step" id="step-4">
+                  <div class="text-center mb-5">
+                    <h3 class="mb-2">Recommended Hardware</h3>
+                    <p class="text-muted">
+                      Based on your selections, here are the best matches.
+                    </p>
+                  </div>
+
+                  <div id="products-container">
+                    <!-- Products Injected via JS -->
+                  </div>
+
+                  <div
+                    class="text-center mt-5 d-flex justify-content-center gap-3"
+                  >
+                    <button
+                      type="button"
+                      class="th-btn style4 th-icon"
+                      onclick="prevStep(3)"
+                    >
+                      Back
+                    </button>
+                    <button type="button" class="th-btn" onclick="nextStep(5)">
+                      Next Step <i class="fa-regular fa-arrow-right ms-2"></i>
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Step 5: Summary -->
+                <div class="wizard-step" id="step-5">
+                  <div class="text-center mb-5">
+                    <h3 class="mb-2">Configuration Summary</h3>
+                    <p class="text-muted">
+                      Review your configuration before requesting a quote.
+                    </p>
+                  </div>
+
+                  <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                      <div class="summary-content">
+                        <h5 class="border-bottom pb-2 mb-3">Room Details</h5>
+                        <div class="summary-item">
+                          <strong>Room Type:</strong>
+                          <span id="sum-room"></span>
+                        </div>
+                        <div class="summary-item">
+                          <strong>Brand:</strong>
+                          <span id="sum-brand" class="text-capitalize"></span>
+                        </div>
+                        <div class="summary-item">
+                          <strong>Platform:</strong>
+                          <span
+                            id="sum-platform"
+                            class="text-capitalize"
+                          ></span>
+                        </div>
+                        <div class="summary-item">
+                          <strong>Deployment:</strong>
+                          <span
+                            id="sum-deployment"
+                            class="text-capitalize"
+                          ></span>
+                        </div>
+
+                        <h5 class="border-bottom pb-2 mb-3 mt-4">
+                          Selected Hardware
+                        </h5>
+                        <div id="sum-products-list"></div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div
+                    class="text-center mt-5 d-flex justify-content-center gap-3"
+                  >
+                    <button
+                      type="button"
+                      class="th-btn style4 th-icon"
+                      onclick="prevStep(4)"
+                    >
+                      Back
+                    </button>
+                    <a
+                      href="configurator-complete.html"
+                      type="button"
+                      class="th-btn"
+                    >
+                      Finalization Now!
+                    </a>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!--==============================
+	Footer Area
+==============================-->
+    <footer class="footer-wrapper bg-title footer-layout2 space-top">
+      <div class="widget-area">
+        <div class="container">
+          <div class="row justify-content-between">
+            <div class="col-md-6 col-xl-3">
+              <div class="widget footer-widget">
+                <div class="th-widget-about">
+                  <div class="about-logo">
+                    <a href="index.html"
+                      ><img src="assets/img/logo3.svg" alt="Atek"
+                    /></a>
+                  </div>
+                  <p class="about-text">
+                    we are dedicated to delivering the best comprehensive
+                    technology solutions to our clients.
+                  </p>
+                  <div class="th-social">
+                    <a href="https://www.facebook.com/"
+                      ><i class="fab fa-facebook-f"></i
+                    ></a>
+                    <a href="https://www.twitter.com/"
+                      ><i class="fab fa-twitter"></i
+                    ></a>
+                    <a href="https://www.linkedin.com/"
+                      ><i class="fab fa-linkedin-in"></i
+                    ></a>
+                    <a href="https://www.whatsapp.com/"
+                      ><i class="fab fa-whatsapp"></i
+                    ></a>
+                    <a href="https://instagram.com/"
+                      ><i class="fab fa-instagram"></i
+                    ></a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-auto">
+              <div class="widget widget_nav_menu footer-widget">
+                <h3 class="widget_title">Useful Link</h3>
+                <div class="menu-all-pages-container">
+                  <ul class="menu">
+                    <li><a href="index.html" style="color: #fff">Home</a></li>
+                    <li>
+                      <a href="about.html" style="color: #fff">About us</a>
+                    </li>
+                    <li>
+                      <a href="service.html" style="color: #fff">Our Service</a>
+                    </li>
+                    <li>
+                      <a href="contact.html" style="color: #fff"
+                        >Terms of Service</a
+                      >
+                    </li>
+                    <li>
+                      <a href="service.html" style="color: #fff"
+                        >News & Media</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-auto">
+              <div class="widget footer-widget">
+                <h3 class="widget_title">Get In Touch</h3>
+                <div class="th-widget-contact">
+                  <div class="info-box_text">
+                    <div class="icon">
+                      <img src="assets/img/icon/phone.svg" alt="img" />
+                    </div>
+                    <div class="details">
+                      <p>
+                        <a
+                          style="color: #fff"
+                          href="tel:+622150110987"
+                          class="info-box_link"
+                        >
+                          Tel: (+62) 2150110987</a
+                        >
+                      </p>
+                      <p>
+                        <a
+                          style="color: #fff"
+                          href="https://api.whatsapp.com/send?phone=6285162994602"
+                          class="info-box_link"
+                          >WA: (+62) 851-6299-4602</a
+                        >
+                      </p>
+                    </div>
+                  </div>
+                  <div class="info-box_text">
+                    <div class="icon">
+                      <img src="assets/img/icon/envelope.svg" alt="img" />
+                    </div>
+                    <div class="details">
+                      <p>
+                        <a
+                          style="color: #fff"
+                          href="mailto:info@activ.co.id"
+                          class="info-box_link"
+                          >info@activ.co.id</a
+                        >
+                      </p>
+                      <p>
+                        <a
+                          style="color: #fff"
+                          href="mailto:sales@activ.co.id"
+                          class="info-box_link"
+                          >sales@activ.co.id</a
+                        >
+                      </p>
+                    </div>
+                  </div>
+                  <div class="info-box_text">
+                    <div class="icon">
+                      <img src="assets/img/icon/location-dot.svg" alt="img" />
+                    </div>
+                    <div class="details">
+                      <p>
+                        <a
+                          style="color: #fff"
+                          href="https://maps.app.goo.gl/td2c6mkExW9zmY7C8"
+                          target="_blank"
+                          >Infinity Office, Belleza BSA 1st Floor Unit 106, Jl.
+                          Letjen Soepeno, Keb. Lama Jakarta Selatan 12210</a
+                        >
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-xl-auto">
+              <div class="widget footer-widget footer-newsletter-style3">
+                <h4 class="widget_title">Get updated the latest newsletter</h4>
+                <div class="newsletter-widget">
+                  <div class="footer-search-contact">
+                    <h4 class="newsletter-title">Email Address</h4>
+                    <form>
+                      <input
+                        class="form-control"
+                        type="email"
+                        placeholder="Enter your email address...."
+                      />
+                      <button type="submit" class="icon-btn style2">
+                        <i class="fas fa-paper-plane"></i>
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="copyright-wrap">
+        <div class="container">
+          <div class="row justify-content-between align-items-center">
+            <div class="col-lg-6">
+              <p class="copyright-text">
+                Copyright © 2025 <a href="index.html">ACTiV</a>. All rights
+                reserved.
+              </p>
+            </div>
+            <div class="col-lg-6 text-lg-end text-center">
+              <div class="footer-links">
+                <ul>
+                  <li><a href="contact.html">Terms &amp; Conditions</a></li>
+                  <li><a href="contact.html">Partner Us</a></li>
+                  <li><a href="contact.html">Privacy Policy</a></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!--********************************
+			Code End  Here 
+	******************************** -->
+
+    <!-- Scroll To Top -->
+    <div class="scroll-top">
+      <svg
+        class="progress-circle svg-content"
+        width="100%"
+        height="100%"
+        viewBox="-1 -1 102 102"
+      >
+        <path
+          d="M50,1 a49,49 0 0,1 0,98 a49,49 0 0,1 0,-98"
+          style="
+            transition: stroke-dashoffset 10ms linear 0s;
+            stroke-dasharray: 307.919, 307.919;
+            stroke-dashoffset: 307.919;
+          "
+        ></path>
+      </svg>
+    </div>
+    <!--==============================
+    All Js File
+============================== -->
+    <!-- Jquery -->
+    <script src="assets/js/vendor/jquery-3.7.1.min.js"></script>
+    <!-- Swiper Js -->
+    <script src="assets/js/swiper-bundle.min.js"></script>
+    <!-- Bootstrap -->
+    <script src="assets/js/bootstrap.min.js"></script>
+    <!-- Magnific Popup -->
+    <script src="assets/js/jquery.magnific-popup.min.js"></script>
+    <!-- Counter Up -->
+    <script src="assets/js/jquery.counterup.min.js"></script>
+    <!-- circle-progress -->
+    <script src="assets/js/circle-progress.js"></script>
+    <!-- Range Slider -->
+    <script src="assets/js/jquery-ui.min.js"></script>
+    <!-- imagesloaded -->
+    <script src="assets/js/imagesloaded.pkgd.min.js"></script>
+    <!-- isotope -->
+    <script src="assets/js/isotope.pkgd.min.js"></script>
+
+    <!-- nice select -->
+    <script src="assets/js/nice-select.min.js"></script>
+    <!-- wow -->
+    <script src="assets/js/wow.min.js"></script>
+    <!-- gsap -->
+    <script src="assets/js/gsap.min.js"></script>
+    <script src="assets/js/ScrollTrigger.min.js"></script>
+    <script src="assets/js/SplitText.js"></script>
+    <!-- Scroll Trigger -->
+    <script src="assets/js/ScrollTrigger.min.js"></script>
+    <!-- Lenis Smooth Scroll -->
+    <script src="assets/js/lenis.min.js"></script>
+
+    <!-- Main Js File -->
+    <script src="assets/js/main.js"></script>
+    <script>
+      // --- Data Definitions ---
+      const metaData = {
+        roomTypes: [
+          {
+            id: "huddle_room",
+            name: "Huddle Room",
+            desc: "1-5 People",
+            icon: "assets/img/icon/service_1_1.svg",
+          },
+          {
+            id: "small_room",
+            name: "Small Room",
+            desc: "4-6 People",
+            icon: "assets/img/icon/service_1_2.svg",
+          },
+          {
+            id: "medium_room",
+            name: "Medium Room",
+            desc: "6-10 People",
+            icon: "assets/img/icon/service_1_3.svg",
+          },
+        ],
+        brands: [
+          {
+            id: "logitech",
+            name: "Logitech",
+            logo: "assets/img/brand/brand_1_1.svg",
+          },
+          {
+            id: "yealink",
+            name: "Yealink",
+            logo: "assets/img/brand/brand_1_2.svg",
+          },
+          {
+            id: "jabra",
+            name: "Jabra",
+            logo: "assets/img/brand/brand_1_3.svg",
+          },
+        ],
+        platforms: [
+          {
+            id: "google",
+            name: "Google Meet",
+            icon: "assets/img/icon/google-meet.svg",
+          },
+          { id: "zoom", name: "Zoom", icon: "assets/img/icon/zoom.svg" },
+          {
+            id: "teams",
+            name: "Microsoft Teams",
+            icon: "assets/img/icon/teams.svg",
+          },
+          { id: "byod", name: "BYOD", icon: "assets/img/icon/byod.svg" },
+        ],
+        accessories: [
+          {
+            id: "tv-mount",
+            name: "TV Mount",
+            desc: "Secure mounting above/below TV",
+          },
+          {
+            id: "wall-mount",
+            name: "Wall Mount",
+            desc: "Space saving wall installation",
+          },
+          {
+            id: "mic-pod",
+            name: "Expansion Mic Pod",
+            desc: "Extend audio coverage",
+          },
+          {
+            id: "exp-mic",
+            name: "Expansion Mic",
+            desc: "For larger huddle rooms",
+          },
+          {
+            id: "ctp18",
+            name: "CTP18 Touch Panel",
+            desc: "Collaboration Touch Panel",
+          },
+          {
+            id: "tap",
+            name: "Logitech Tap",
+            desc: "Touch Controller",
+          },
+          {
+            id: "spk-mount",
+            name: "Speaker Mount",
+            desc: "Mounting for speakers",
+          },
+          {
+            id: "wpp20",
+            name: "WPP20",
+            desc: "Wireless Presentation Pod",
+          },
+          {
+            id: "soundbar",
+            name: "Soundbar",
+            desc: "External Audio System",
+          },
+          {
+            id: "tc8",
+            name: "Poly TC8",
+            desc: "Touch Interface",
+          },
+          {
+            id: "eagleeye",
+            name: "EagleEye Camera",
+            desc: "Director II or IV USB Camera",
+          },
+        ],
+      };
+
+      // Data JSON terpisah tiap brand dengan tipe ruangannya
+      const productsData = {
+        logitech: {
+          huddle_room: [
+            {
+              id: "meetup",
+              name: "Logitech MeetUp",
+              image: "assets/img/product/product_1_3.jpg",
+              desc: "All-in-One ConferenceCam for Huddle Rooms",
+              accessories: ["exp-mic", "tv-mount"],
+            },
+            {
+              id: "rally-bar-mini",
+              name: "Logitech Rally Bar Mini",
+              image: "assets/img/product/product_1_1.jpg",
+              desc: "Premier All-in-One Video Bar for Small Rooms",
+              accessories: ["tv-mount", "wall-mount", "tap"],
+            },
+            {
+              id: "logitech-connect",
+              name: "Logitech Connect",
+              image: "assets/img/product/product_1_3.jpg",
+              desc: "Portable ConferenceCam with Bluetooth speakerphone",
+              accessories: [],
+            },
+          ],
+          small_room: [
+            {
+              id: "rally-bar",
+              name: "Logitech Rally Bar",
+              image: "assets/img/product/product_1_2.jpg",
+              desc: "All-in-One Video Bar for Medium Rooms",
+              accessories: ["tv-mount", "mic-pod", "tap"],
+            },
+            {
+              id: "rally-system",
+              name: "Logitech Rally System",
+              image: "assets/img/product/product_1_2.jpg",
+              desc: "Premium Ultra-HD ConferenceCam system",
+              accessories: ["mic-pod", "tap", "spk-mount"],
+            },
+          ],
+          medium_room: [
+            {
+              id: "rally-plus",
+              name: "Logitech Rally Plus",
+              image: "assets/img/product/product_1_2.jpg",
+              desc: "Premier modular video conferencing system for large rooms",
+              accessories: ["mic-pod", "tap", "tv-mount", "spk-mount"],
+            },
+          ],
+        },
+        yealink: {
+          huddle_room: [
+            {
+              id: "yealink-a20",
+              name: "Yealink MeetingBar A20",
+              image: "assets/img/product/product_1_4.jpg",
+              desc: "All-in-one Video Collaboration Bar",
+              accessories: ["ctp18", "tv-mount"],
+            },
+            {
+              id: "yealink-u10",
+              name: "Yealink MeetingBar U10",
+              image: "assets/img/product/product_1_4.jpg",
+              desc: "Compact Video Bar for Huddle Spaces",
+              accessories: ["ctp18"],
+            },
+          ],
+          small_room: [
+            {
+              id: "yealink-a30",
+              name: "Yealink MeetingBar A30",
+              image: "assets/img/product/product_1_4.jpg",
+              desc: "Dual-camera Video Bar for Medium Rooms",
+              accessories: ["ctp18", "mic-pod"],
+            },
+            {
+              id: "yealink-mvc640",
+              name: "Yealink MVC640",
+              image: "assets/img/product/product_1_4.jpg",
+              desc: "Microsoft Teams Rooms System for Medium Rooms",
+              accessories: ["mic-pod", "wpp20"],
+            },
+          ],
+          medium_room: [
+            {
+              id: "yealink-mvc840",
+              name: "Yealink MVC840",
+              image: "assets/img/product/product_1_4.jpg",
+              desc: "Microsoft Teams Rooms System for Large Rooms",
+              accessories: ["mic-pod", "wpp20", "soundbar"],
+            },
+            {
+              id: "yealink-mvc860",
+              name: "Yealink MVC860",
+              image: "assets/img/product/product_1_4.jpg",
+              desc: "Dual-eye Intelligent Tracking Camera System",
+              accessories: ["mic-pod", "wpp20", "soundbar"],
+            },
+          ],
+        },
+        poly: {
+          huddle_room: [
+            {
+              id: "poly-x30",
+              name: "Poly Studio X30",
+              image: "assets/img/product/product_1_1.jpg",
+              desc: "All-in-one Video Bar for Huddle Rooms",
+              accessories: ["tc8", "tv-mount"],
+            },
+            {
+              id: "poly-r30",
+              name: "Poly Studio R30",
+              image: "assets/img/product/product_1_1.jpg",
+              desc: "USB Video Bar for Small Rooms",
+              accessories: [],
+            },
+          ],
+          small_room: [
+            {
+              id: "poly-x50",
+              name: "Poly Studio X50",
+              image: "assets/img/product/product_1_2.jpg",
+              desc: "Video Bar for Medium Rooms",
+              accessories: ["tc8", "mic-pod"],
+            },
+            {
+              id: "poly-x52",
+              name: "Poly Studio X52",
+              image: "assets/img/product/product_1_2.jpg",
+              desc: "All-in-one Video Bar with Smart Camera",
+              accessories: ["tc8", "mic-pod"],
+            },
+          ],
+          medium_room: [
+            {
+              id: "poly-x70",
+              name: "Poly Studio X70",
+              image: "assets/img/product/product_1_2.jpg",
+              desc: "Dual-camera Video Bar for Large Rooms",
+              accessories: ["tc8", "mic-pod"],
+            },
+            {
+              id: "poly-g7500",
+              name: "Poly G7500",
+              image: "assets/img/product/product_1_2.jpg",
+              desc: "Modular Video Conferencing System",
+              accessories: ["tc8", "mic-pod", "eagleeye"],
+            },
+          ],
+        },
+      };
+
+      // --- State Management ---
+      let currentSelection = {
+        roomType: localStorage.getItem("roomType") || null,
+        brand: localStorage.getItem("brand") || null,
+        platform: localStorage.getItem("platform") || null,
+        deployment: localStorage.getItem("deployment") || null,
+        products: JSON.parse(localStorage.getItem("products") || "[]"),
+        accessories: JSON.parse(localStorage.getItem("accessories") || "[]"),
+      };
+
+      // --- Initialization ---
+      document.addEventListener("DOMContentLoaded", () => {
+        renderStep1();
+        renderStep2();
+        restoreSelectionVisuals(); // Restore visuals from localStorage
+        checkUrlParams();
+      });
+
+      function restoreSelectionVisuals() {
+        // Helper to restore radio buttons based on currentSelection
+        if (currentSelection.roomType) {
+          const el = document.querySelector(
+            `input[name="roomType"][value="${currentSelection.roomType}"]`
+          );
+          if (el) {
+            el.checked = true;
+            el.closest(".selection-card").classList.add("selected");
+          }
+        }
+        if (currentSelection.brand) {
+          const el = document.querySelector(
+            `input[name="brand"][value="${currentSelection.brand}"]`
+          );
+          if (el) {
+            el.checked = true;
+            el.closest(".selection-card").classList.add("selected");
+          }
+        }
+        if (currentSelection.platform) {
+          const el = document.querySelector(
+            `input[name="platform"][value="${currentSelection.platform}"]`
+          );
+          if (el) {
+            el.checked = true;
+            el.closest(".selection-card").classList.add("selected");
+          }
+        }
+        if (currentSelection.deployment) {
+          const el = document.querySelector(
+            `input[name="deployment"][value="${currentSelection.deployment}"]`
+          );
+          if (el) {
+            el.checked = true;
+            el.closest(".selection-card").classList.add("selected");
+          }
+        }
+      }
+
+      function checkUrlParams() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const roomType = urlParams.get("roomType") || urlParams.get("room");
+        const brand = urlParams.get("brand");
+
+        if (roomType && brand) {
+          const validRoom = metaData.roomTypes.find((r) => r.id === roomType);
+          const validBrand = metaData.brands.find((b) => b.id === brand);
+
+          if (validRoom && validBrand) {
+            // Update State & LocalStorage
+            selectOption(
+              "roomType",
+              roomType,
+              document
+                .querySelector(`input[name="roomType"][value="${roomType}"]`)
+                .closest(".selection-card")
+            );
+            selectOption(
+              "brand",
+              brand,
+              document
+                .querySelector(`input[name="brand"][value="${brand}"]`)
+                .closest(".selection-card")
+            );
+
+            // Skip to Step 2
+            goToStep(2);
+          }
+        }
+      }
+
+      // --- Rendering Functions ---
+      function renderStep1() {
+        // Render Room Types
+        const roomContainer = document.getElementById("room-type-container");
+        roomContainer.innerHTML = metaData.roomTypes
+          .map(
+            (room) => `
+                <div class="col-md-4">
+                    <div class="selection-card" onclick="selectOption('roomType', '${room.id}', this)">
+                        <div class="text-center">
+                            <img src="${room.icon}" alt="${room.name}" onerror="this.onerror=null; this.src='assets/img/logo2.svg'; this.style.opacity='0.5';">
+                            <h5>${room.name}</h5>
+                            <p>${room.desc}</p>
+                        </div>
+                        <input type="radio" name="roomType" value="${room.id}" class="d-none">
+                    </div>
+                </div>
+            `
+          )
+          .join("");
+
+        // Render Brands
+        const brandContainer = document.getElementById("brand-container");
+        brandContainer.innerHTML = metaData.brands
+          .map(
+            (brand) => `
+                <div class="col-md-4">
+                    <div class="selection-card" onclick="selectOption('brand', '${
+                      brand.id
+                    }', this)">
+                        <div class="text-center">
+                            <img src="${brand.logo}" alt="${
+              brand.name
+            }" style="max-height: 60px;" onerror="this.onerror=null; this.style.display='none'; this.nextElementSibling.style.display='block'">
+                            <h5 style="display: ${
+                              brand.logo ? "none" : "block"
+                            }">${brand.name}</h5>
+                        </div>
+                        <input type="radio" name="brand" value="${
+                          brand.id
+                        }" class="d-none">
+                    </div>
+                </div>
+            `
+          )
+          .join("");
+      }
+
+      function renderStep2() {
+        const container = document.getElementById("platform-container");
+        container.innerHTML = metaData.platforms
+          .map(
+            (p) => `
+                <div class="col-md-3">
+                    <div class="selection-card" onclick="selectOption('platform', '${p.id}', this)">
+                        <div class="text-center">
+                            <h5>${p.name}</h5>
+                        </div>
+                        <input type="radio" name="platform" value="${p.id}" class="d-none">
+                    </div>
+                </div>
+            `
+          )
+          .join("");
+      }
+
+      function renderProducts() {
+        const container = document.getElementById("products-container");
+        container.className = "row g-3"; // Vertical list layout
+
+        // Fetch data based on selection (Panggil data ketika step dipilih)
+        const brandData = productsData[currentSelection.brand];
+        const products = brandData ? brandData[currentSelection.roomType] : [];
+
+        if (!products || products.length === 0) {
+          container.innerHTML =
+            '<div class="col-12"><div class="alert alert-info text-center">No specific products found for this combination. Please try different criteria.</div></div>';
+          return;
+        }
+
+        container.innerHTML = products
+          .map((p) => {
+            // Generate accessories HTML
+            const accHtml = p.accessories
+              ? p.accessories
+                  .map((accId) => {
+                    const acc = metaData.accessories.find(
+                      (a) => a.id === accId
+                    );
+                    if (!acc) return "";
+                    const isChecked = currentSelection.accessories.includes(
+                      acc.id
+                    )
+                      ? "checked"
+                      : "";
+                    return `
+                        <div class="col-md-6">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="${acc.id}" id="acc-${p.id}-${acc.id}" onchange="toggleAccessory('${acc.id}', this.checked); event.stopPropagation();" ${isChecked}>
+                                <label class="form-check-label small" for="acc-${p.id}-${acc.id}">
+                                    <strong>${acc.name}</strong> - <span class="text-muted">${acc.desc}</span>
+                                </label>
+                            </div>
+                        </div>
+                    `;
+                  })
+                  .join("")
+              : "";
+
+            const isProdChecked = currentSelection.products.includes(p.id)
+              ? "checked"
+              : "";
+            const selectedClass = isProdChecked ? "selected-product" : "";
+            const accDisplay = isProdChecked ? "block" : "none";
+
+            return `
+                <div class="col-12">
+                    <div class="card border-0 shadow-sm product-card ${selectedClass}" onclick="selectProduct('${
+              p.id
+            }')">
+                        <div class="card-body">
+                            <div class="row align-items-center">
+                                <div class="col-md-3 col-sm-4 mb-3 mb-sm-0 text-center bg-light rounded p-2">
+                                    <img src="${
+                                      p.image
+                                    }" class="img-fluid" style="max-height: 120px; object-fit: contain;" alt="${
+              p.name
+            }" onerror="this.onerror=null; this.src='assets/img/logo2.svg'; this.style.opacity='0.5';">
+                                </div>
+                                <div class="col-md-9 col-sm-8">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h5 class="card-title mb-1">${
+                                              p.name
+                                            }</h5>
+                                            <p class="card-text text-muted small">${
+                                              p.desc
+                                            }</p>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="hardware_select" id="radio-${
+                                              p.id
+                                            }" ${isProdChecked} onchange="selectProduct('${
+              p.id
+            }');">
+                                        </div>
+                                    </div>
+                                    
+                                    <div id="acc-container-${
+                                      p.id
+                                    }" class="mt-3 pt-3 border-top" style="display: ${accDisplay};">
+                                        ${
+                                          accHtml
+                                            ? `<h6 class="small fw-bold mb-2">Accessories:</h6><div class="row g-2">${accHtml}</div>`
+                                            : ""
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+          })
+          .join("");
+      }
+
+      function renderSummary() {
+        document.getElementById("sum-room").textContent =
+          metaData.roomTypes.find((r) => r.id === currentSelection.roomType)
+            ?.name || "-";
+        document.getElementById("sum-brand").textContent =
+          metaData.brands.find((b) => b.id === currentSelection.brand)?.name ||
+          "-";
+        document.getElementById("sum-platform").textContent =
+          metaData.platforms.find((p) => p.id === currentSelection.platform)
+            ?.name || "-";
+        document.getElementById("sum-deployment").textContent =
+          currentSelection.deployment === "byod"
+            ? "BYOD (No Appliance/PC)"
+            : currentSelection.deployment || "-";
+
+        const list = document.getElementById("sum-products-list");
+        if (currentSelection.products.length === 0) {
+          list.innerHTML = '<p class="text-muted">No hardware selected.</p>';
+        } else {
+          // Flatten all products to find names
+          const allProducts = [];
+          Object.values(productsData).forEach((brand) => {
+            Object.values(brand).forEach((room) => {
+              allProducts.push(...room);
+            });
+          });
+
+          list.innerHTML = currentSelection.products
+            .map((pid) => {
+              const prod = allProducts.find((p) => p.id === pid);
+              return `
+                        <div class="summary-item">
+                            <strong>${prod ? prod.name : pid}</strong>
+                        </div>
+                    `;
+            })
+            .join("");
+
+          if (currentSelection.accessories.length > 0) {
+            list.innerHTML += `<div class="mt-3"><strong>Accessories:</strong> ${currentSelection.accessories
+              .map(
+                (aid) => metaData.accessories.find((a) => a.id === aid)?.name
+              )
+              .join(", ")}</div>`;
+          }
+        }
+      }
+
+      // --- Interaction Functions ---
+      function selectOption(category, value, element) {
+        currentSelection[category] = value;
+        localStorage.setItem(category, value); // Save to LocalStorage
+
+        // Visual update
+        const container = element.closest(".row");
+        container
+          .querySelectorAll(".selection-card")
+          .forEach((el) => el.classList.remove("selected"));
+        element.classList.add("selected");
+
+        // Check radio input
+        const input = element.querySelector("input");
+        if (input) input.checked = true;
+      }
+
+      function selectProduct(id) {
+        if (currentSelection.products.includes(id)) return;
+
+        currentSelection.products = [id];
+        localStorage.setItem(
+          "products",
+          JSON.stringify(currentSelection.products)
+        );
+        renderProducts();
+      }
+
+      function toggleAccessory(id, isChecked) {
+        if (isChecked) {
+          if (!currentSelection.accessories.includes(id))
+            currentSelection.accessories.push(id);
+        } else {
+          currentSelection.accessories = currentSelection.accessories.filter(
+            (a) => a !== id
+          );
+        }
+        localStorage.setItem(
+          "accessories",
+          JSON.stringify(currentSelection.accessories)
+        );
+      }
+
+      function nextStep(stepNumber) {
+        // Validation
+        if (stepNumber === 2) {
+          if (!currentSelection.roomType || !currentSelection.brand) {
+            alert("Please select both a Room Type and a Brand.");
+            return;
+          }
+        }
+        if (stepNumber === 3) {
+          if (!currentSelection.platform) {
+            alert("Please select a platform.");
+            return;
+          }
+          // BYOD Logic: Skip Step 3 (Deployment) if BYOD is selected
+          if (currentSelection.platform === "byod") {
+            currentSelection.deployment = "byod";
+            localStorage.setItem("deployment", "byod");
+            renderProducts();
+            goToStep(4);
+            return;
+          }
+        }
+        if (stepNumber === 4 && !currentSelection.deployment) {
+          alert("Please select a deployment type.");
+          return;
+        }
+
+        if (stepNumber === 4) renderProducts();
+        if (stepNumber === 5) renderSummary();
+
+        goToStep(stepNumber);
+      }
+
+      function prevStep(stepNumber) {
+        // If going back from Step 4 and platform is BYOD, go back to Step 2 (Platform)
+        if (stepNumber === 3 && currentSelection.platform === "byod") {
+          goToStep(2);
+          return;
+        }
+        goToStep(stepNumber);
+      }
+
+      function goToStep(stepNumber) {
+        // Hide all steps
+        document
+          .querySelectorAll(".wizard-step")
+          .forEach((el) => el.classList.remove("active"));
+        // Show target step
+        document.getElementById(`step-${stepNumber}`).classList.add("active");
+
+        // Update Progress Bar
+        const totalSteps = 5;
+        const progress = ((stepNumber - 1) / (totalSteps - 1)) * 100;
+        document.getElementById(
+          "stepper-progress-bar"
+        ).style.width = `${progress}%`;
+
+        // Update Stepper Indicators
+        for (let i = 1; i <= totalSteps; i++) {
+          const item = document.getElementById(`step-indicator-${i}`);
+          item.classList.remove("active", "completed");
+          if (i < stepNumber) {
+            item.classList.add("completed");
+            item.querySelector(".step-counter").innerHTML =
+              '<i class="fa-solid fa-check"></i>';
+          } else if (i === stepNumber) {
+            item.classList.add("active");
+            item.querySelector(".step-counter").textContent = i;
+          } else {
+            item.querySelector(".step-counter").textContent = i;
+          }
+        }
+
+        // Scroll to top
+        document
+          .querySelector(".configurator-section")
+          .scrollIntoView({ behavior: "smooth" });
+      }
+    </script>
+  </body>
+</html>
