@@ -64,9 +64,6 @@ export default function WhyChooseUsSection() {
                     </div>
                 </div>
             </div>
-            <div className="shape-mockup d-none d-xxl-block" data-bottom="0%" data-right="0%">
-                <img src="/assets/img/shape/about-5-shape.png" alt="" />
-            </div>
         </div>
     );
 }
