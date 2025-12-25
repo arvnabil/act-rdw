@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import { Head, Link } from '@inertiajs/react';
-import MainLayout from '@/Layouts/MainLayout';
-import Breadcrumb from '@/Components/Common/Breadcrumb';
+import React, { useState } from "react";
+import { Head, Link } from "@inertiajs/react";
+import MainLayout from "@/Layouts/MainLayout";
+import Breadcrumb from "@/Components/Common/Breadcrumb";
 
 export default function ProductDetail({ product }) {
-    const [activeTab, setActiveTab] = useState('description');
+    const [activeTab, setActiveTab] = useState("description");
 
     return (
         <MainLayout>
@@ -13,9 +13,9 @@ export default function ProductDetail({ product }) {
             <Breadcrumb
                 title={product.name}
                 items={[
-                    { label: 'Home', link: '/' },
-                    { label: 'Products', link: '/products' },
-                    { label: product.name }
+                    { label: "Home", link: "/" },
+                    { label: "Products", link: "/products" },
+                    { label: product.name },
                 ]}
             />
 
@@ -27,7 +27,10 @@ export default function ProductDetail({ product }) {
                             <div className="col-xxl-5 mb-4">
                                 <div className="th-team team-grid">
                                     <div className="team-img m-auto text-center text-xxl-start">
-                                        <img src={product.image} alt={product.name} />
+                                        <img
+                                            src={product.image}
+                                            alt={product.name}
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -36,51 +39,92 @@ export default function ProductDetail({ product }) {
                                     <div className="team-content mb-25 d-md-flex justify-content-between">
                                         <div className="media-body">
                                             <h3 className="box-title">
-                                                <Link href="#">{product.name}</Link>
+                                                <Link href="#">
+                                                    {product.name}
+                                                </Link>
                                             </h3>
-                                            <span className="team-desig">{product.specification.find(s => s.name === 'Brand')?.value || 'Brand'}</span>
+                                            <span className="team-desig">
+                                                {product.specification.find(
+                                                    (s) => s.name === "Brand"
+                                                )?.value || "Brand"}
+                                            </span>
                                         </div>
                                     </div>
                                     <div className="team-infobox mb-40">
                                         <div className="row gx-0">
                                             <div className="col-xl-6 col-lg-6 col-md-6">
                                                 <div className="team-info-item d-sm-flex align-items-center text-center text-sm-start">
-                                                    <span className="team-info-icon"><i className="fa-solid fa-barcode"></i></span>
+                                                    <span className="team-info-icon">
+                                                        <i className="fa-solid fa-barcode"></i>
+                                                    </span>
                                                     <div className="team-info-content">
-                                                        <span className="team-info-subtitle">SKU: </span>
-                                                        <h4 className="team-info-title">{product.sku}</h4>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-xl-6 col-lg-6 col-md-6">
-                                                <div className="team-info-item d-sm-flex align-items-center text-center text-sm-start">
-                                                    <span className="team-info-icon"><i className="fa-solid fa-fire"></i></span>
-                                                    <div className="team-info-content">
-                                                        <span className="team-info-subtitle">Solution Type</span>
+                                                        <span className="team-info-subtitle">
+                                                            SKU:{" "}
+                                                        </span>
                                                         <h4 className="team-info-title">
-                                                            <a href="#">{product.solution_type}</a>
+                                                            {product.sku}
                                                         </h4>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="col-xl-6 col-lg-6 col-md-6">
                                                 <div className="team-info-item d-sm-flex align-items-center text-center text-sm-start">
-                                                    <span className="team-info-icon"><i className="fa-solid fa-copyright"></i></span>
+                                                    <span className="team-info-icon">
+                                                        <i className="fa-solid fa-fire"></i>
+                                                    </span>
                                                     <div className="team-info-content">
-                                                        <span className="team-info-subtitle">Brand</span>
+                                                        <span className="team-info-subtitle">
+                                                            Solution Type
+                                                        </span>
                                                         <h4 className="team-info-title">
-                                                            <a href="#">{product.specification.find(s => s.name === 'Brand')?.value || 'Brand'}</a>
+                                                            <a href="#">
+                                                                {
+                                                                    product.solution_type
+                                                                }
+                                                            </a>
                                                         </h4>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div className="col-xl-6 col-lg-6 col-md-6">
                                                 <div className="team-info-item d-sm-flex align-items-center text-center text-sm-start">
-                                                    <span className="team-info-icon"><i className="fa-solid fa-download"></i></span>
+                                                    <span className="team-info-icon">
+                                                        <i className="fa-solid fa-copyright"></i>
+                                                    </span>
                                                     <div className="team-info-content">
-                                                        <span className="team-info-subtitle">Datasheet</span>
+                                                        <span className="team-info-subtitle">
+                                                            Brand
+                                                        </span>
                                                         <h4 className="team-info-title">
-                                                            <a href={product.datasheet_url}>See datasheet</a>
+                                                            <a href="#">
+                                                                {product.specification.find(
+                                                                    (s) =>
+                                                                        s.name ===
+                                                                        "Brand"
+                                                                )?.value ||
+                                                                    "Brand"}
+                                                            </a>
+                                                        </h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="col-xl-6 col-lg-6 col-md-6">
+                                                <div className="team-info-item d-sm-flex align-items-center text-center text-sm-start">
+                                                    <span className="team-info-icon">
+                                                        <i className="fa-solid fa-download"></i>
+                                                    </span>
+                                                    <div className="team-info-content">
+                                                        <span className="team-info-subtitle">
+                                                            Datasheet
+                                                        </span>
+                                                        <h4 className="team-info-title">
+                                                            <a
+                                                                href={
+                                                                    product.datasheet_url
+                                                                }
+                                                            >
+                                                                See datasheet
+                                                            </a>
                                                         </h4>
                                                     </div>
                                                 </div>
@@ -88,17 +132,36 @@ export default function ProductDetail({ product }) {
                                         </div>
                                     </div>
                                     <div className="product_meta mb-4">
-                                        <span className="posted_in">Category:
-                                            <Link href="/products"> {product.category}</Link>
+                                        <span className="posted_in">
+                                            Category:
+                                            <Link href="/products">
+                                                {" "}
+                                                {product.category}
+                                            </Link>
                                         </span>
-                                        <span>Tags: {product.tags.map((tag, index) => (
-                                            <React.Fragment key={index}>
-                                                <Link href="/products">{tag}</Link>{index < product.tags.length - 1 ? ', ' : ''}
-                                            </React.Fragment>
-                                        ))}</span>
+                                        <span>
+                                            Tags:{" "}
+                                            {product.tags.map((tag, index) => (
+                                                <React.Fragment key={index}>
+                                                    <Link href="/products">
+                                                        {tag}
+                                                    </Link>
+                                                    {index <
+                                                    product.tags.length - 1
+                                                        ? ", "
+                                                        : ""}
+                                                </React.Fragment>
+                                            ))}
+                                        </span>
                                     </div>
                                     <div className="team-btn">
-                                        <a href="/contact" className="th-btn th-icon">Get A Quote <i className="fa-solid fa-arrow-right"></i></a>
+                                        <a
+                                            href="/contact"
+                                            className="th-btn th-icon"
+                                        >
+                                            Get A Quote{" "}
+                                            <i className="fa-solid fa-arrow-right"></i>
+                                        </a>
                                     </div>
                                 </div>
                             </div>
@@ -107,42 +170,67 @@ export default function ProductDetail({ product }) {
 
                     {/* Product Tabs */}
                     <div className="mt-5 pt-5">
-                        <ul className="nav product-tab-style2" id="productTab" role="tablist">
+                        <ul
+                            className="nav product-tab-style2"
+                            id="productTab"
+                            role="tablist"
+                        >
                             <li className="nav-item" role="presentation">
                                 <a
-                                    className={`nav-link ${activeTab === 'description' ? 'active' : ''}`}
+                                    className={`nav-link ${
+                                        activeTab === "description"
+                                            ? "active"
+                                            : ""
+                                    }`}
                                     id="description-tab"
-                                    onClick={(e) => { e.preventDefault(); setActiveTab('description'); }}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setActiveTab("description");
+                                    }}
                                     href="#description"
                                     role="tab"
                                     aria-controls="description"
-                                    aria-selected={activeTab === 'description'}
+                                    aria-selected={activeTab === "description"}
                                 >
                                     Description
                                 </a>
                             </li>
                             <li className="nav-item" role="presentation">
                                 <a
-                                    className={`nav-link ${activeTab === 'specification' ? 'active' : ''}`}
+                                    className={`nav-link ${
+                                        activeTab === "specification"
+                                            ? "active"
+                                            : ""
+                                    }`}
                                     id="additional-tab"
-                                    onClick={(e) => { e.preventDefault(); setActiveTab('specification'); }}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setActiveTab("specification");
+                                    }}
                                     href="#additional"
                                     role="tab"
                                     aria-controls="additional"
-                                    aria-selected={activeTab === 'specification'}
+                                    aria-selected={
+                                        activeTab === "specification"
+                                    }
                                 >
                                     Specification
                                 </a>
                             </li>
                             <li className="nav-item" role="presentation">
                                 <a
-                                    className={`nav-link ${activeTab === 'features' ? 'active' : ''}`}
+                                    className={`nav-link ${
+                                        activeTab === "features" ? "active" : ""
+                                    }`}
                                     id="features-tab"
-                                    onClick={(e) => { e.preventDefault(); setActiveTab('features'); }}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setActiveTab("features");
+                                    }}
                                     href="#features"
                                     role="tab"
                                     aria-controls="features"
-                                    aria-selected={activeTab === 'features'}
+                                    aria-selected={activeTab === "features"}
                                 >
                                     Features
                                 </a>
@@ -150,7 +238,11 @@ export default function ProductDetail({ product }) {
                         </ul>
                         <div className="tab-content" id="productTabContent">
                             <div
-                                className={`tab-pane fade ${activeTab === 'description' ? 'show active' : ''}`}
+                                className={`tab-pane fade ${
+                                    activeTab === "description"
+                                        ? "show active"
+                                        : ""
+                                }`}
                                 id="description"
                                 role="tabpanel"
                                 aria-labelledby="description-tab"
@@ -158,68 +250,122 @@ export default function ProductDetail({ product }) {
                                 <p className="mt-4">{product.description}</p>
                             </div>
                             <div
-                                className={`tab-pane fade ${activeTab === 'specification' ? 'show active' : ''}`}
+                                className={`tab-pane fade ${
+                                    activeTab === "specification"
+                                        ? "show active"
+                                        : ""
+                                }`}
                                 id="additional"
                                 role="tabpanel"
                                 aria-labelledby="additional-tab"
                             >
-                                <p className="mt-4 mb-4">{product.specification_text}</p>
+                                <p className="mt-4 mb-4">
+                                    {product.specification_text}
+                                </p>
                                 <div className="woocommerce-Reviews">
                                     <div className="th-comments-wrap">
                                         <table className="cart_table">
                                             <thead>
                                                 <tr>
-                                                    <th className="cart-col-image">Specification</th>
-                                                    <th className="cart-col-productname">Details</th>
+                                                    <th className="cart-col-image">
+                                                        Specification
+                                                    </th>
+                                                    <th className="cart-col-productname">
+                                                        Details
+                                                    </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {product.specification.map((spec, index) => (
-                                                    <tr className="cart_item" key={index}>
-                                                        <td data-title="Specification">
-                                                            <span className="amount">{spec.name}</span>
-                                                        </td>
-                                                        <td data-title="Details">
-                                                            <span className="amount">{spec.value}</span>
-                                                        </td>
-                                                    </tr>
-                                                ))}
+                                                {product.specification.map(
+                                                    (spec, index) => (
+                                                        <tr
+                                                            className="cart_item"
+                                                            key={index}
+                                                        >
+                                                            <td data-title="Specification">
+                                                                <span className="amount">
+                                                                    {spec.name}
+                                                                </span>
+                                                            </td>
+                                                            <td data-title="Details">
+                                                                <span className="amount">
+                                                                    {spec.value}
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                )}
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
                             <div
-                                className={`tab-pane fade ${activeTab === 'features' ? 'show active' : ''}`}
+                                className={`tab-pane fade ${
+                                    activeTab === "features"
+                                        ? "show active"
+                                        : ""
+                                }`}
                                 id="features"
                                 role="tabpanel"
                                 aria-labelledby="features-tab"
                             >
-                                <p className="mt-4 mb-4">{product.features_text}</p>
+                                <p className="mt-4 mb-4">
+                                    {product.features_text}
+                                </p>
                                 <div className="woocommerce-Reviews">
                                     <div className="th-comments-wrap">
                                         <table className="cart_table">
                                             <thead>
                                                 <tr>
-                                                    <th className="cart-col-image">Features</th>
-                                                    <th className="cart-col-productname">Description</th>
-                                                    <th className="cart-col-price">Additional</th>
+                                                    <th className="cart-col-image">
+                                                        Features
+                                                    </th>
+                                                    <th className="cart-col-productname">
+                                                        Description
+                                                    </th>
+                                                    <th className="cart-col-price">
+                                                        Additional
+                                                    </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {product.features.map((feature, index) => (
-                                                    <tr className="cart_item" key={index}>
-                                                        <td data-title="Features">
-                                                            <a className="cart-productname" href="#">{feature.name}</a>
-                                                        </td>
-                                                        <td data-title="Description">
-                                                            <a className="cart-productname" href="#">{feature.description}</a>
-                                                        </td>
-                                                        <td data-title="Additional">
-                                                            <span className="amount">{feature.additional}</span>
-                                                        </td>
-                                                    </tr>
-                                                ))}
+                                                {product.features.map(
+                                                    (feature, index) => (
+                                                        <tr
+                                                            className="cart_item"
+                                                            key={index}
+                                                        >
+                                                            <td data-title="Features">
+                                                                <a
+                                                                    className="cart-productname"
+                                                                    href="#"
+                                                                >
+                                                                    {
+                                                                        feature.name
+                                                                    }
+                                                                </a>
+                                                            </td>
+                                                            <td data-title="Description">
+                                                                <a
+                                                                    className="cart-productname"
+                                                                    href="#"
+                                                                >
+                                                                    {
+                                                                        feature.description
+                                                                    }
+                                                                </a>
+                                                            </td>
+                                                            <td data-title="Additional">
+                                                                <span className="amount">
+                                                                    {
+                                                                        feature.additional
+                                                                    }
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                )}
                                             </tbody>
                                         </table>
                                     </div>
@@ -232,8 +378,12 @@ export default function ProductDetail({ product }) {
                     <div className="space-extra-top mb-30">
                         <div className="row">
                             <div className="title-area mb-25 text-center">
-                                <span className="sub-title">Similar Products</span>
-                                <h2 className="sec-title">Recently Solution Products</h2>
+                                <span className="sub-title">
+                                    Similar Products
+                                </span>
+                                <h2 className="sec-title">
+                                    Recently Solution Products
+                                </h2>
                             </div>
                         </div>
                         <div
@@ -242,37 +392,74 @@ export default function ProductDetail({ product }) {
                             data-slider-options='{"breakpoints":{"0":{"slidesPerView":1},"576":{"slidesPerView":"2"},"768":{"slidesPerView":"2"},"992":{"slidesPerView":"3"},"1200":{"slidesPerView":"4"}}}'
                         >
                             <div className="swiper-wrapper">
-                                {product.related_products.map((related, index) => (
-                                    <div className="swiper-slide style2" key={related.id}>
-                                        <div className="th-product">
-                                            <div className="product-img">
-                                                <img src={related.image} onError={(e) => e.target.src = '/assets/img/product/logitech meetup.jpg'} alt={related.name} />
-                                                {related.tag && <span className="product-tag">{related.tag}</span>}
-                                                <div className="actions">
-                                                    <Link href={`/products/${related.id}`} className="icon-btn">
-                                                        <i className="far fa-eye"></i>
-                                                    </Link>
-                                                    <a href="#" className="icon-btn" onClick={(e) => e.preventDefault()}>
-                                                        <i className="far fa-phone"></i>
-                                                    </a>
+                                {product.related_products.map(
+                                    (related, index) => (
+                                        <div
+                                            className="swiper-slide style2"
+                                            key={related.id}
+                                        >
+                                            <div className="th-product">
+                                                <div className="product-img">
+                                                    <img
+                                                        src={related.image}
+                                                        onError={(e) =>
+                                                            (e.target.src =
+                                                                "/assets/img/product/logitech meetup.jpg")
+                                                        }
+                                                        alt={related.name}
+                                                    />
+                                                    {related.tag && (
+                                                        <span className="product-tag">
+                                                            {related.tag}
+                                                        </span>
+                                                    )}
+                                                    <div className="actions">
+                                                        <Link
+                                                            href={`/products/${related.slug}`}
+                                                            className="icon-btn"
+                                                        >
+                                                            <i className="far fa-eye"></i>
+                                                        </Link>
+                                                        <a
+                                                            href="#"
+                                                            className="icon-btn"
+                                                            onClick={(e) =>
+                                                                e.preventDefault()
+                                                            }
+                                                        >
+                                                            <i className="far fa-phone"></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <div className="product-content">
+                                                    <span className="price">
+                                                        {related.category}
+                                                    </span>
+                                                    <h3 className="product-title">
+                                                        <Link
+                                                            href={`/products/${related.slug}`}
+                                                        >
+                                                            {related.name}
+                                                        </Link>
+                                                    </h3>
                                                 </div>
                                             </div>
-                                            <div className="product-content">
-                                                <span className="price">{related.category}</span>
-                                                <h3 className="product-title">
-                                                    <Link href={`/products/${related.id}`}>{related.name}</Link>
-                                                </h3>
-                                            </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    )
+                                )}
                             </div>
                             <div className="d-block d-md-none mt-40 text-center">
                                 <div className="icon-box">
-                                    <button data-slider-prev="#productSlider1" className="slider-arrow default">
+                                    <button
+                                        data-slider-prev="#productSlider1"
+                                        className="slider-arrow default"
+                                    >
                                         <i className="far fa-arrow-left"></i>
                                     </button>
-                                    <button data-slider-next="#productSlider1" className="slider-arrow default">
+                                    <button
+                                        data-slider-next="#productSlider1"
+                                        className="slider-arrow default"
+                                    >
                                         <i className="far fa-arrow-right"></i>
                                     </button>
                                 </div>

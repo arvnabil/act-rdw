@@ -52,96 +52,9 @@ Route::get('/partners', function () {
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 
-Route::get('/products', function (Request $request) {
-    // Generate Dummy Data (simulating a database)
-    $allProducts = collect(range(1, 50))->map(function ($id) {
-        return [
-            'id' => $id,
-            'name' => 'Product Name ' . $id,
-            'price' => '$' . rand(100, 500) . '.00',
-            'original_price' => rand(0, 1) ? '$' . rand(501, 1000) . '.00' : null,
-            'image' => '/assets/img/product/product_1_' . (rand(1, 8)) . '.png',
-            'rating' => 5.0,
-            'category' => 'Technology',
-            'tag' => rand(0, 1) ? 'Sale' : null,
-        ];
-    });
+Route::get('/products', [App\Http\Controllers\ProductController::class, 'index'])->name('products');
 
-    // Pagination Logic
-    $page = $request->input('page', 1);
-    $perPage = 9; // Grid: 3x3 or similar
-    $offset = ($page - 1) * $perPage;
-
-    $paginatedItems = $allProducts->slice($offset, $perPage)->values();
-
-    $products = new LengthAwarePaginator(
-        $paginatedItems,
-        $allProducts->count(),
-        $perPage,
-        $page,
-        ['path' => $request->url(), 'query' => $request->query()]
-    );
-
-    return Inertia::render('Products', [
-        'products' => $products
-    ]);
-})->name('products');
-
-Route::get('/products/{id}', function ($id) {
-    // Simulate fetching a specific product
-    $product = [
-        'id' => $id,
-        'name' => 'Product Name ' . $id,
-        'price' => '$' . rand(100, 500) . '.00',
-        'original_price' => rand(0, 1) ? '$' . rand(501, 1000) . '.00' : null,
-        'description' => 'Bluetooth headphones are a wireless audio accessory that connects to your devices, like smartphones, tablets, or computers, via Bluetooth technology. Here\'s a typical description Introducing our Bluetooth Headphones, the ultimate companion for your on-the-go audio experience. Immerse yourself in high-fidelity sound without the hassle of wires, thanks to the latest Bluetooth technology.',
-        'image' => '/assets/img/product/product_1_' . ((($id - 1) % 8) + 1) . '.png',
-        'rating' => 5.0,
-        'review_count' => rand(1, 20),
-        'category' => 'Technology',
-        'tags' => ['Wireless', 'Sports', 'Gaming'],
-        'sku' => 'BH-100' . $id . '-BT',
-        'stock_status' => 'In Stock',
-        'features_text' => 'Our product features are designed to enhance your experience with cutting-edge technology and user-centric design.',
-        'features' => [
-            ['name' => 'Rightsight', 'description' => 'Advanced automated camera control', 'additional' => 'Link Youtube'],
-            ['name' => 'RightLight', 'description' => 'Light compensation technology', 'additional' => 'More Info'],
-            ['name' => 'RightSound', 'description' => 'Modular audio for clear conversations', 'additional' => 'Audio Demo'],
-            ['name' => 'Bluetooth Connectivity', 'description' => 'Wireless connection up to 30ft', 'additional' => 'Specs'],
-            ['name' => 'Battery Life', 'description' => 'Up to 20 hours of listening time', 'additional' => 'Details']
-        ],
-        'specification_text' => 'Below are the detailed specifications of the product, ensuring you have all the technical information needed.',
-        'specification' => [
-            ['name' => 'Brand', 'value' => 'Logitech'],
-            ['name' => 'Model', 'value' => 'MeetUp'],
-            ['name' => 'Color', 'value' => 'Black'],
-            ['name' => 'Connectivity', 'value' => 'Bluetooth 5.0, USB-C'],
-            ['name' => 'Microphone', 'value' => 'Integrated beamforming mic'],
-            ['name' => 'Warranty', 'value' => '2 Years Limited Hardware'],
-            ['name' => 'Dimensions', 'value' => '400mm x 104mm x 85mm'],
-            ['name' => 'Weight', 'value' => '1.04 kg'],
-            ['name' => 'Camera Lens', 'value' => 'Custom Logitech lens with 5x HD zoom'],
-            ['name' => 'Video Quality', 'value' => '4K Ultra HD video calling']
-        ],
-        'solution_type' => 'Small Room',
-        'datasheet_url' => '#',
-        'related_products' => collect(range(1, 6))->map(function ($id) {
-            return [
-                'id' => $id,
-                'name' => 'Product Name ' . $id,
-                'price' => '$' . rand(100, 500) . '.00',
-                'original_price' => rand(0, 1) ? '$' . rand(501, 1000) . '.00' : null,
-                'image' => '/assets/img/product/product_1_' . (rand(1, 8)) . '.png',
-                'category' => 'Technology',
-                'tag' => rand(0, 1) ? 'Sale' : null,
-            ];
-        })
-    ];
-
-    return Inertia::render('ProductDetail', [
-        'product' => $product
-    ]);
-})->name('product.detail');
+Route::get('/products/{slug}', [App\Http\Controllers\ProductController::class, 'show'])->name('products.show');
 
 // Projects Page
 Route::get('/projects', function () {
