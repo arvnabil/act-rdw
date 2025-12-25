@@ -12,7 +12,33 @@ Route::get('/about', function () {
 })->name('about');
 
 Route::get('/services', function () {
-    return Inertia::render('Services');
+    $services = [
+        [
+            'title' => 'Video Conference',
+            'desc' => 'High-quality AV solutions for seamless collaboration in meetings.',
+            'image' => '/assets/img/service/service_6_1.jpg',
+            'icon' => '/assets/img/icon/sv-6-1.svg',
+            'link' => '/services/video-conference'
+        ],
+        [
+            'title' => 'Server & Storage',
+            'desc' => 'Robust and secure infrastructure for high-performance data management.',
+            'image' => '/assets/img/service/service_2_2.jpg',
+            'icon' => '/assets/img/icon/sv-6-2.svg',
+            'link' => '/services/server-storage'
+        ],
+        [
+            'title' => 'Smart Surveillance',
+            'desc' => 'Advanced 24/7 security monitoring and CCTV systems.',
+            'image' => '/assets/img/service/service_2_3.jpg',
+            'icon' => '/assets/img/icon/sv-6-3.svg',
+            'link' => '/services/smart-surveillance'
+        ]
+    ];
+
+    return Inertia::render('Services', [
+        'services' => $services
+    ]);
 })->name('services');
 
 Route::get('/projects', function () {
@@ -45,9 +71,9 @@ Route::get('/products', function (Request $request) {
     $page = $request->input('page', 1);
     $perPage = 9; // Grid: 3x3 or similar
     $offset = ($page - 1) * $perPage;
-    
+
     $paginatedItems = $allProducts->slice($offset, $perPage)->values();
-    
+
     $products = new LengthAwarePaginator(
         $paginatedItems,
         $allProducts->count(),
@@ -182,7 +208,7 @@ Route::get('/projects', function () {
 Route::get('/projects/{id}', function ($id) {
     // Generate consistent dummy data based on ID
     srand($id);
-    
+
     $titles = [
         'Cloud Infrastructure Migration',
         'Enterprise ERP Implementation',
@@ -197,7 +223,7 @@ Route::get('/projects/{id}', function ($id) {
 
     $categories = ['Cloud Services', 'Enterprise Software', 'Security', 'Mobile Dev', 'AI & ML', 'IoT', 'Blockchain', 'DevOps', 'Infrastructure'];
     $clients = ['TechCorp Global', 'RetailGiant Inc.', 'SecureBank Ltd.', 'SmartCity Gov', 'Logistics Pro', 'HealthPlus Group'];
-    
+
     $project = [
         'id' => $id,
         'title' => $titles[($id - 1) % count($titles)] ?? 'Custom IT Solution Project',
@@ -286,7 +312,7 @@ Route::get('/blog', function () {
 // Blog Detail Page
 Route::get('/blog/{id}', function ($id) {
     srand($id);
-    
+
     $titles = [
         'Top 10 IT Solutions Every Business Needs in 2025',
         'Exploring the Benefits of End-to-End IT Services',
@@ -437,7 +463,7 @@ Route::get('/events/list', function () {
             'time' => '09:00 AM - 05:00 PM',
             'location' => ['Grand Hall, Jakarta', 'Online Webinar', 'Tech Hub, Bandung', 'Convention Center, Bali'][$id % 4],
             'price' => $id % 3 === 0 ? 'Free' : '$' . ($id * 10 + 50),
-            'image' => '/assets/img/blog/blog-s-1-' . ($id % 3 + 1) . '.jpg', 
+            'image' => '/assets/img/blog/blog-s-1-' . ($id % 3 + 1) . '.jpg',
             'link' => '/events/' . $id,
             'category' => ['Business', 'Technology', 'Education', 'Social'][$id % 4] // Dummy categories
         ];
@@ -477,7 +503,7 @@ Route::get('/events/list', function () {
 // Event Detail Page
 Route::get('/events/{id}', function ($id) {
     srand($id);
-    
+
     $titles = [
         'Global AI Summit 2025',
         'Cybersecurity Defense Hackathon',
@@ -488,7 +514,7 @@ Route::get('/events/{id}', function ($id) {
         'Data Science Bootcamp',
         'IoT Smart City Expo'
     ];
-    
+
     $locations = ['Grand Hall, Jakarta', 'Online Webinar', 'Tech Hub, Bandung', 'Convention Center, Bali'];
     $categories = ['Conference', 'Workshop', 'Hackathon', 'Networking'];
 
@@ -497,9 +523,9 @@ Route::get('/events/{id}', function ($id) {
         'title' => $titles[($id - 1) % count($titles)] ?? 'Tech Event',
         'description' => 'Join industry leaders and tech enthusiasts for an immersive experience exploring the latest trends and innovations in the technology sector. This event features keynote speeches, interactive workshops, and networking opportunities designed to empower professionals and businesses.',
         'date' => [
-            'day' => '15', 
-            'month' => 'MAY', 
-            'year' => '2025', 
+            'day' => '15',
+            'month' => 'MAY',
+            'year' => '2025',
             'full' => 'May 15, 2025'
         ],
         'time' => '09:00 AM - 05:00 PM',
@@ -532,40 +558,151 @@ Route::get('/events/{id}', function ($id) {
 
 // Service Category Page (e.g., /services/video-conference)
 Route::get('/services/{service}', function ($service) {
-    // Dummy Data for Service Category Page
-    $serviceData = [
-        'id' => $service,
-        'title' => ucfirst(str_replace('-', ' ', $service)),
-        'rooms' => [
-            [
-                'id' => 'huddle-room',
-                'title' => 'Huddle room',
-                'description' => 'Get a first-class experience and create inclusive experiences for all in your huddle meeting rooms.',
-                'capacity' => '2-4',
-                'size' => '8-12m2 / 85-130ft2',
-                'image' => '/assets/img/rooms/huddle-room.jpg',
-                'category' => 'meetings-rooms training-education-space'
+    if ($service === 'server-and-storage' || $service === 'server-storage') {
+        $serviceData = [
+            'id' => $service,
+            'title' => 'Server & Storage',
+            'hero_subtitle' => 'Power Your Infrastructure',
+            'grid_title' => 'Explore Our Server & Storage Solutions',
+            'filters' => [
+                ['label' => 'Data Center', 'value' => '.enterprise-data-center'],
+                ['label' => 'Office', 'value' => '.small-office'],
+                ['label' => 'Industrial', 'value' => '.edge-industrial']
             ],
-            [
-                'id' => 'small-room',
-                'title' => 'Small Room',
-                'description' => 'Get a first-class experience and create inclusive experiences for all in your Small meeting rooms.',
-                'capacity' => '4-6',
-                'size' => '12-28m2 / 130-300ft2',
-                'image' => '/assets/img/rooms/small-room.jpg',
-                'category' => 'meetings-rooms individual-space training-education-space'
-            ],
-             [
-                'id' => 'medium-room',
-                'title' => 'Medium Rooms',
-                'description' => 'Medium rooms designed for effective team collaboration.',
-                'capacity' => '6-10',
-                'size' => '14-36m2 / 150-390ft2',
-                'image' => '/assets/img/rooms/medium-room.jpg',
-                'category' => 'meetings-rooms'
+            'rooms' => [
+                [
+                    'id' => 'database',
+                    'title' => 'Database Server',
+                    'description' => 'High-performance servers optimized for database management and heavy transaction processing.',
+                    'capacity' => 'High IOPS',
+                    'size' => 'Rackmount',
+                    'image' => '/assets/img/service/service_2_1.jpg',
+                    'category' => 'enterprise-data-center'
+                ],
+                [
+                    'id' => 'virtualization',
+                    'title' => 'Virtualization',
+                    'description' => 'Consolidate your infrastructure with servers designed for VMware and Hyper-V.',
+                    'capacity' => 'Multi-VM',
+                    'size' => 'Blade/Rack',
+                    'image' => '/assets/img/service/service_2_2.jpg',
+                    'category' => 'enterprise-data-center'
+                ],
+                [
+                    'id' => 'file-storage',
+                    'title' => 'File & Storage Server',
+                    'description' => 'Secure and scalable storage solutions for your growing data needs.',
+                    'capacity' => 'High Cap',
+                    'size' => 'Tower/Rack',
+                    'image' => '/assets/img/service/service_2_3.jpg',
+                    'category' => 'small-office'
+                ],
+                [
+                    'id' => 'app-web',
+                    'title' => 'Application & Web',
+                    'description' => 'Reliable servers for hosting internal applications and public-facing websites.',
+                    'capacity' => 'Standard',
+                    'size' => '1U/2U',
+                    'image' => '/assets/img/service/service_2_4.jpg',
+                    'category' => 'edge-industrial'
+                ]
             ]
-        ]
-    ];
+        ];
+    } elseif ($service === 'smart-surveillance' || $service === 'surveillance') {
+        $serviceData = [
+            'id' => $service,
+            'title' => 'Smart Surveillance',
+            'hero_subtitle' => 'Secure Your World',
+            'grid_title' => 'Explore Our Surveillance Solutions',
+            'filters' => [
+                ['label' => 'Retail', 'value' => '.commercial-retail'],
+                ['label' => 'Corporate', 'value' => '.office-corporate'],
+                ['label' => 'Industrial', 'value' => '.industrial'],
+                ['label' => 'Public', 'value' => '.public-safety']
+            ],
+            'rooms' => [
+                [
+                    'id' => 'retail-commercial',
+                    'title' => 'Retail & Commercial',
+                    'description' => 'Loss prevention and customer analytics for stores and shopping centers.',
+                    'capacity' => 'Ind/Out',
+                    'size' => 'Multi-cam',
+                    'image' => '/assets/img/service/service_3_1.jpg',
+                    'category' => 'commercial-retail'
+                ],
+                [
+                    'id' => 'office-corporate',
+                    'title' => 'Office & Corporate',
+                    'description' => 'Integrated access control and monitoring for secure office environments.',
+                    'capacity' => 'Indoor',
+                    'size' => 'Discrete',
+                    'image' => '/assets/img/service/service_3_2.jpg',
+                    'category' => 'office-corporate'
+                ],
+                [
+                    'id' => 'industrial',
+                    'title' => 'Industrial & Warehouse',
+                    'description' => 'Ruggedized cameras for thermal monitoring and perimeter defense.',
+                    'capacity' => 'Outdoor',
+                    'size' => 'Long Range',
+                    'image' => '/assets/img/service/service_3_3.jpg',
+                    'category' => 'industrial'
+                ],
+                [
+                    'id' => 'public-safety',
+                    'title' => 'Public Safety',
+                    'description' => 'Advanced surveillance for city monitoring, traffic, and public spaces.',
+                    'capacity' => 'Wide Area',
+                    'size' => 'PTZ/Pano',
+                    'image' => '/assets/img/service/service_3_4.jpg',
+                    'category' => 'public-safety'
+                ]
+            ]
+        ];
+    } else {
+        // Default: Video Conference
+        $serviceData = [
+            'id' => $service,
+            'title' => ucfirst(str_replace('-', ' ', $service)),
+            'hero_subtitle' => 'Reimagine your workspaces.',
+            'grid_title' => 'Explore a full range of workspaces',
+            'filters' => [
+                ['label' => 'Meetings Rooms', 'value' => '.meetings-rooms'],
+                ['label' => 'Individual Space', 'value' => '.individual-space'],
+                ['label' => 'Training & Education Space', 'value' => '.training-education-space'],
+                ['label' => 'Divisible Space', 'value' => '.divisible-space']
+            ],
+            'rooms' => [
+                [
+                    'id' => 'huddle-room',
+                    'title' => 'Huddle room',
+                    'description' => 'Get a first-class experience and create inclusive experiences for all in your huddle meeting rooms.',
+                    'capacity' => '2-4',
+                    'size' => '8-12m2',
+                    'image' => '/assets/img/rooms/huddle-room.jpg',
+                    'category' => 'meetings-rooms training-education-space'
+                ],
+                [
+                    'id' => 'small-room',
+                    'title' => 'Small Room',
+                    'description' => 'Get a first-class experience and create inclusive experiences for all in your Small meeting rooms.',
+                    'capacity' => '4-6',
+                    'size' => '12-28m2',
+                    'image' => '/assets/img/rooms/small-room.jpg',
+                    'category' => 'meetings-rooms individual-space training-education-space'
+                ],
+                [
+                    'id' => 'medium-room',
+                    'title' => 'Medium Rooms',
+                    'description' => 'Medium rooms designed for effective team collaboration.',
+                    'capacity' => '6-10',
+                    'size' => '14-36m2',
+                    'image' => '/assets/img/rooms/medium-room.jpg',
+                    'category' => 'meetings-rooms'
+                ]
+            ]
+        ];
+    }
 
     return Inertia::render('ServiceDetail', [
         'service' => $serviceData
@@ -574,38 +711,63 @@ Route::get('/services/{service}', function ($service) {
 
 // Service Item Detail Page (e.g., /services/video-conference/small-room)
 Route::get('/services/{service}/{item}', function ($service, $item) {
-    // Dummy Data for Service Item Detail Page
+
+    $configuratorRoute = '/room-configurator';
+    $brands = [];
+    $subtitle = 'Smart, Simple, and Ready for Collaboration';
+    $desc = 'Designed for optimal performance in your selected environment.';
+
+    if ($service === 'server-and-storage' || $service === 'server-storage') {
+        $configuratorRoute = '/server-configurator';
+        $subtitle = 'Power Your Business with Enterprise Reliability';
+        $desc = 'Select a brand to configure your ' . str_replace('-', ' ', $item) . ' solution.';
+        $brands = [
+            ['name' => 'Dell Technologies', 'image' => '/assets/img/partners/dell.png', 'desc' => 'PowerEdge Servers'],
+            ['name' => 'HPE', 'image' => '/assets/img/partners/hpe.png', 'desc' => 'ProLiant Servers'],
+            ['name' => 'Lenovo', 'image' => '/assets/img/partners/lenovo.png', 'desc' => 'ThinkSystem'],
+            ['name' => 'Supermicro', 'image' => '/assets/img/partners/supermicro.png', 'desc' => 'SuperServer']
+        ];
+    } elseif ($service === 'smart-surveillance' || $service === 'surveillance') {
+        $configuratorRoute = '/surveillance-configurator';
+        $subtitle = 'Secure Your Assets with Intelligent Vision';
+        $desc = 'Choose a surveillance partner to secure your ' . str_replace('-', ' ', $item) . '.';
+        $brands = [
+            ['name' => 'Hikvision', 'image' => '/assets/img/partners/hikvision.png', 'desc' => 'Leading AIoT Solutions'],
+            ['name' => 'Dahua', 'image' => '/assets/img/partners/dahua.png', 'desc' => 'Smart Security'],
+            ['name' => 'Axis', 'image' => '/assets/img/partners/axis.png', 'desc' => 'Network Video'],
+            ['name' => 'Hanwha', 'image' => '/assets/img/partners/hanwha.png', 'desc' => 'Vision Solutions']
+        ];
+    } else {
+        // Default Video Conf
+        $brands = [
+            ['name' => 'Logitech', 'image' => '/assets/img/partners/logi.jpg', 'desc' => 'Logitech device ready for small room'],
+            ['name' => 'Yealink', 'image' => '/assets/img/partners/yealink.jpg', 'desc' => 'Yealink'],
+            ['name' => 'Jabra', 'image' => '/assets/img/partners/jabra.jpg', 'desc' => 'Jabra']
+        ];
+    }
+
     $itemData = [
         'id' => $item,
         'title' => ucfirst(str_replace('-', ' ', $item)),
         'parent_service' => $service,
         'parent_title' => ucfirst(str_replace('-', ' ', $service)),
-        'subtitle' => 'Smart, Simple, and Ready for Collaboration',
-        'description' => 'Designed for 4–6 people, Small Room solutions deliver clear video, crisp audio, and an easy meeting experience in a compact space. With a streamlined setup of camera, mic, and speaker, your room becomes a modern collaboration hub that’s always ready to use.',
+        'subtitle' => $subtitle,
+        'description' => $desc,
         'features' => [
-            ['title' => 'People support', 'text' => '4-6 People capacity for small meeting rooms.', 'icon' => '/assets/img/icon/shield.svg'],
-            ['title' => 'Size', 'text' => '12-28m2 / 130-300ft2', 'icon' => '/assets/img/icon/shield.svg']
+            ['title' => 'Capacity', 'text' => 'Scalable Solutions', 'icon' => '/assets/img/icon/shield.svg'],
+            ['title' => 'Support', 'text' => '24/7 Enterprise Support Available', 'icon' => '/assets/img/icon/shield.svg']
         ],
         'images' => [
             '/assets/img/normal/about_6_1.jpg',
             '/assets/img/normal/about_6_1.jpg'
         ],
-        'brands' => [
-            ['name' => 'Logitech', 'image' => '/assets/img/partners/logi.jpg', 'desc' => 'Logitech device ready for small room'],
-            ['name' => 'Yealink', 'image' => '/assets/img/partners/yealink.jpg', 'desc' => 'Yealink'],
-            ['name' => 'Jabra', 'image' => '/assets/img/partners/jabra.jpg', 'desc' => 'Jabra']
-        ],
-        'products' => [
-            ['name' => 'Logitech Meetup', 'image' => '/assets/img/product/logitech meetup.jpg', 'category' => 'Logitech'],
-            ['name' => 'Yealink UVC30', 'image' => '/assets/img/product/logitech meetup.jpg', 'category' => 'Yealink'],
-            ['name' => 'Jabra PanaCast', 'image' => '/assets/img/product/logitech meetup.jpg', 'category' => 'Jabra']
-        ],
+        'brands' => $brands,
+        'products' => [], // Can be populated if needed
         'projects' => [
-            ['title' => 'Purnomo', 'category' => 'Logitech', 'image' => '/assets/img/project/project_3_9_.jpg'],
-            ['title' => 'Suharto', 'category' => 'Yealink', 'image' => '/assets/img/project/project_3_9_.jpg'],
-            ['title' => 'Slamet', 'category' => 'Jabra', 'image' => '/assets/img/project/project_3_9_.jpg'],
-            ['title' => 'Slamet', 'category' => 'Jabra', 'image' => '/assets/img/project/project_3_9_.jpg']
-        ]
+            ['title' => 'Reference Project 1', 'category' => 'Enterprise', 'image' => '/assets/img/project/project_3_9_.jpg'],
+            ['title' => 'Reference Project 2', 'category' => 'SMB', 'image' => '/assets/img/project/project_3_9_.jpg']
+        ],
+        'configurator_route' => $configuratorRoute
     ];
 
     return Inertia::render('ServiceItemDetail', [
@@ -625,3 +787,29 @@ Route::match(['get', 'post'], '/room-configurator/complete', function (\Illumina
         'uuid' => $request->input('uuid')
     ]);
 })->name('room.configurator.complete');
+
+// Server Configurator Routes
+Route::get('/server-configurator', function () {
+    return Inertia::render('ServerConfigurator');
+})->name('server.configurator');
+
+Route::match(['get', 'post'], '/server-configurator/complete', function (\Illuminate\Http\Request $request) {
+    return Inertia::render('ConfiguratorComplete', [
+        'selection' => $request->input('selection'),
+        'userInfo' => $request->input('userInfo'),
+        'uuid' => $request->input('uuid')
+    ]);
+})->name('server.configurator.complete');
+
+// Surveillance Configurator Routes
+Route::get('/surveillance-configurator', function () {
+    return Inertia::render('SurveillanceConfigurator');
+})->name('surveillance.configurator');
+
+Route::match(['get', 'post'], '/surveillance-configurator/complete', function (\Illuminate\Http\Request $request) {
+    return Inertia::render('ConfiguratorComplete', [
+        'selection' => $request->input('selection'),
+        'userInfo' => $request->input('userInfo'),
+        'uuid' => $request->input('uuid')
+    ]);
+})->name('surveillance.configurator.complete');
