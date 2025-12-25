@@ -1,0 +1,8 @@
+@import 'bootstrap.min.css';
+@import 'fontawesome.min.css';
+@import 'magnific-popup.min.css';
+@import 'swiper-bundle.min.css';
+@import 'style.css';
+
+/* Tailwind is cool but let's prioritize the template styles for now to ensure 100% match */
+/* @import 'tailwindcss'; -- We can bring this back if we want to mix matches */
