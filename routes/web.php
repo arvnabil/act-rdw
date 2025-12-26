@@ -566,3 +566,9 @@ Route::match(['get', 'post'], '/surveillance-configurator/complete', function (\
         'uuid' => $request->input('uuid')
     ]);
 })->name('surveillance.configurator.complete');
+
+// Certificate Designer Routes (Admin only, add middleware as needed)
+Route::group(['prefix' => 'admin/events/certificates', 'middleware' => ['auth']], function () {
+    Route::get('/{id}/design', [\Modules\Events\Http\Controllers\CertificateDesignerController::class, 'edit'])->name('events.certificates.design');
+    Route::post('/{id}/design', [\Modules\Events\Http\Controllers\CertificateDesignerController::class, 'update'])->name('events.certificates.update-design');
+});

@@ -170,14 +170,16 @@ class DashboardController extends Controller
         }
 
         // 4. Create Certificate Record
-        // In a real app, we would generate a PDF here.
-        // For now, we point to a placeholder or a dynamic route.
-        // Let's assume we have a generic certificate template.
+        $template = \Modules\Events\Models\EventCertificate::where('event_id', $event->id)->firstOrFail();
+
+        $generator = new \Modules\Events\Services\CertificateGenerator();
+        $result = $generator->generate($user, $event, $template);
+
         $cert = \Modules\Events\Models\EventUserCertificate::create([
             'event_id' => $event->id,
             'event_user_id' => $user->id,
-            'certificate_code' => 'CERT-' . strtoupper(uniqid()),
-            'file_path' => 'certificates/sample.pdf', // Placeholder
+            'certificate_code' => $result['code'],
+            'file_path' => $result['path'],
         ]);
 
         return back()->with('success', 'Certificate claimed successfully!');

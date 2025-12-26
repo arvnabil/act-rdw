@@ -37,6 +37,11 @@ class EventCertificateTable
                     ->relationship('event', 'title'),
             ])
             ->recordActions([
+                Actions\Action::make('design')
+                    ->label('Design')
+                    ->icon('heroicon-o-paint-brush')
+                    ->url(fn (EventCertificate $record) => route('events.certificates.design', $record->id))
+                    ->openUrlInNewTab(),
                 Actions\EditAction::make(),
             ])
             ->toolbarActions([
