@@ -9,6 +9,19 @@ use Illuminate\Support\Str;
 class Organizer extends Model
 {
     use HasFactory;
+    use \Modules\Events\Traits\HasEventFileManagement;
+
+    protected function fileFields(): array
+    {
+        return [
+            'logo' => 'logo',
+        ];
+    }
+
+    protected function getStorageBasePath(): string
+    {
+        return "events/organizer";
+    }
 
     protected $fillable = [
         'name',
@@ -28,6 +41,11 @@ class Organizer extends Model
     public function events()
     {
         return $this->hasMany(Event::class);
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(EventUser::class, 'event_user_organizer');
     }
 
     protected static function boot()

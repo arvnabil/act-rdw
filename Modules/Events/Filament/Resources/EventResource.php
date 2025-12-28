@@ -16,7 +16,7 @@ class EventResource extends Resource
 
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-calendar';
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Events Management';
+    protected static string | \UnitEnum | null $navigationGroup = 'Event Management';
 
     protected static ?string $navigationLabel = 'Events';
 
@@ -24,7 +24,7 @@ class EventResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Events';
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 3;
 
     public static function form(Schema $schema): Schema
     {

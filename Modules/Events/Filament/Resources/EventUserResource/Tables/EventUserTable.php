@@ -13,6 +13,7 @@ class EventUserTable
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('avatar')
+                    ->disk('public')
                     ->circular(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),

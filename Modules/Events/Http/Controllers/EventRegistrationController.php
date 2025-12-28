@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Modules\Events\Models\Event;
 use Modules\Events\Models\EventUser;
 use Modules\Events\Models\EventRegistration;
+use Illuminate\Support\Str;
 
 class EventRegistrationController extends Controller
 {
@@ -20,12 +21,21 @@ class EventRegistrationController extends Controller
             // User is already logged in
         } else {
             // Guest or New User
-            $validated = $request->validate([
-                'name' => 'required|string|max:255',
+            // Dynamic validation: Name is only required if user does not exist
+            $email = $request->input('email');
+            $userExists = EventUser::where('email', $email)->exists();
+
+            $rules = [
                 'email' => 'required|string|email|max:255',
-                'phone' => 'nullable|string|max:20',
                 'password' => 'nullable|string|min:8',
-            ]);
+                'phone' => 'nullable|string|max:20',
+            ];
+
+            if (!$userExists) {
+                $rules['name'] = 'required|string|max:255';
+            }
+
+            $validated = $request->validate($rules);
 
             $user = EventUser::where('email', $validated['email'])->first();
 
@@ -56,10 +66,12 @@ class EventRegistrationController extends Controller
         }
 
         // Determine status and amount
-        // Assuming price is stored as string like "Free" or "50000"
-        $price = $event->price;
-        $isFree = $price === 'Free' || empty($price) || $price == 0;
-        $amount = $isFree ? 0 : (float) preg_replace('/[^0-9.]/', '', $price);
+        $price = (float) $event->price;
+        $isFree = $price == 0;
+        $amount = $price;
+
+        $invoiceNumber = 'ACT-INV' . str_pad(mt_rand(1, 9999999), 7, '0', STR_PAD_LEFT);
+        $ticketCode = strtoupper(Str::random(5)); // Simple 5 char code e.g. VDR50
 
         $registration = EventRegistration::firstOrCreate(
             [
@@ -71,10 +83,16 @@ class EventRegistrationController extends Controller
                 'email' => $user->email,
                 'phone' => $user->phone,
                 'amount' => $amount,
-                'status' => $isFree ? 'confirmed' : 'pending',
+                'status' => $isFree ? 'Joined' : 'Pending',
+                'invoice_number' => $invoiceNumber,
+                'ticket_code' => $ticketCode,
             ]
         );
 
-        return redirect()->route('events.my-events')->with('success', 'Successfully registered for the event!');
+        $message = $registration->wasRecentlyCreated 
+            ? 'Successfully registered for the event!' 
+            : 'You have already joined this event!';
+
+        return redirect()->route('events.my-events')->with('success', $message);
     }
 }

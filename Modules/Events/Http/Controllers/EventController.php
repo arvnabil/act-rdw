@@ -78,7 +78,17 @@ class EventController extends Controller
             $statusLabel = 'Hari Ini';
         }
 
+        $registrationStatus = null;
+        if (auth('event')->check()) {
+            $registration = \Modules\Events\Models\EventRegistration::where('event_id', $event->id)
+                ->where('event_user_id', auth('event')->id())
+                ->first();
+            $registrationStatus = $registration ? $registration->status : null;
+        }
+
         $eventData = [
+            'is_registered' => $registrationStatus !== null,
+            'registration_status' => $registrationStatus,
             'id' => $event->id,
             'title' => $event->title,
             'slug' => $event->slug,

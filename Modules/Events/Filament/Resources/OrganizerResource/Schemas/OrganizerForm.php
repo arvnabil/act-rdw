@@ -28,8 +28,11 @@ class OrganizerForm
                 ->unique(ignoreRecord: true),
             Forms\Components\FileUpload::make('logo')
                 ->image()
-                ->directory('organizers')
-                ->visibility('public'),
+                ->disk('public')
+                ->directory('events/organizer')
+                ->visibility('public')
+                ->preserveFilenames()
+                ->maxSize(1024),
             Forms\Components\TextInput::make('website')
                 ->url()
                 ->maxLength(255),

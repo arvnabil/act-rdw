@@ -22,11 +22,19 @@ class EventRegistrationTable
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
-                        'pending' => 'warning',
-                        'confirmed' => 'success',
-                        'rejected' => 'danger',
-                        'cancelled' => 'gray',
+                        'Pending' => 'warning',
+                        'Joined' => 'success',
+                        'Registered' => 'success',
+                        'Certified' => 'success',
+                        'Rejected' => 'danger',
+                        'Cancelled' => 'gray',
                     }),
+                Tables\Columns\TextColumn::make('invoice_number')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('ticket_code')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('amount')
                     ->money('IDR')
                     ->sortable(),

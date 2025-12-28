@@ -3,7 +3,7 @@
 namespace Modules\Events\Filament\Resources\EventDocumentationResource\Schemas;
 
 use Filament\Forms;
-use Filament\Schemas\Components\Utilities\Get;
+
 
 class EventDocumentationForm
 {
@@ -25,17 +25,30 @@ class EventDocumentationForm
             Forms\Components\FileUpload::make('file_path')
                 ->label('Upload Files')
                 ->disk('public')
-                ->directory('event-documentations')
+                ->directory(function ($get, ?\Illuminate\Database\Eloquent\Model $record) {
+                    $slug = 'default';
+                     if ($record && $record->event) {
+                        $slug = $record->event->slug;
+                    } elseif ($eventId = $get('event_id')) {
+                        $event = \Modules\Events\Models\Event::find($eventId);
+                        if ($event) {
+                             $slug = $event->slug;
+                        }
+                    }
+                    return "events/{$slug}/documentations";
+                })
                 ->visibility('public')
+                ->maxSize(2048)
+                ->preserveFilenames()
                 ->multiple() // multiple upload
                 ->reorderable()
-                ->required(fn (Get $get) => $get('type') !== 'video_link')
-                ->hidden(fn (Get $get) => $get('type') === 'video_link'),
+                ->required(fn ($get) => $get('type') !== 'video_link')
+                ->hidden(fn ($get) => $get('type') === 'video_link'),
             Forms\Components\TagsInput::make('file_path')
                 ->label('Video Links (YouTube)')
                 ->placeholder('Add link and press Enter')
-                ->required(fn (Get $get) => $get('type') === 'video_link')
-                ->hidden(fn (Get $get) => $get('type') !== 'video_link'),
+                ->required(fn ($get) => $get('type') === 'video_link')
+                ->hidden(fn ($get) => $get('type') !== 'video_link'),
             Forms\Components\Textarea::make('caption')
                 ->maxLength(65535)
                 ->columnSpanFull(),

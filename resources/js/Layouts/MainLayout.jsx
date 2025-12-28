@@ -1,10 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, usePage } from "@inertiajs/react";
 import { useTemplateInit } from "@/hooks/useTemplateInit";
+import Toast from "@/Components/Common/Toast";
 
 export default function MainLayout({ children }) {
     useTemplateInit();
-    const { auth } = usePage().props;
+    const { auth, flash } = usePage().props;
+    const [toast, setToast] = useState(null);
+
+    useEffect(() => {
+        if (flash?.success) {
+            setToast({ message: flash.success, type: "success" });
+            const timer = setTimeout(() => setToast(null), 3000);
+            return () => clearTimeout(timer);
+        }
+        if (flash?.error) {
+            setToast({ message: flash.error, type: "danger" });
+            const timer = setTimeout(() => setToast(null), 3000);
+            return () => clearTimeout(timer);
+        }
+    }, [flash]);
 
     return (
         <>
@@ -532,6 +547,13 @@ export default function MainLayout({ children }) {
             </header>
 
             {children}
+
+            <Toast
+                show={!!toast}
+                message={toast?.message}
+                type={toast?.type}
+                onClose={() => setToast(null)}
+            />
 
             <footer className="footer-wrapper bg-title footer-layout2 space-top">
                 <div className="widget-area">

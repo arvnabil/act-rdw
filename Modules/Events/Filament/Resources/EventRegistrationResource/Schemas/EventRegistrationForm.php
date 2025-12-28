@@ -4,6 +4,7 @@ namespace Modules\Events\Filament\Resources\EventRegistrationResource\Schemas;
 
 use Filament\Forms;
 
+
 class EventRegistrationForm
 {
     public static function schema(): array
@@ -26,19 +27,40 @@ class EventRegistrationForm
                 ->numeric()
                 ->prefix('IDR')
                 ->default(0),
+            Forms\Components\TextInput::make('ticket_code')
+                ->maxLength(255),
+            Forms\Components\TextInput::make('invoice_number')
+                ->maxLength(255),
+            Forms\Components\TextInput::make('payment_method')
+                ->maxLength(255),
             Forms\Components\Select::make('status')
                 ->options([
-                    'pending' => 'Pending',
-                    'confirmed' => 'Confirmed',
-                    'rejected' => 'Rejected',
-                    'cancelled' => 'Cancelled',
+                    'Pending' => 'Pending',
+                    'Joined' => 'Joined',
+                    'Registered' => 'Registered',
+                    'Certified' => 'Certified',
+                    'Rejected' => 'Rejected',
+                    'Cancelled' => 'Cancelled',
                 ])
                 ->required(),
             Forms\Components\FileUpload::make('payment_proof')
                 ->image()
                 ->disk('public')
-                ->directory('payment-proofs')
-                ->visibility('public'),
+                ->preserveFilenames()
+                ->directory(function ($get, ?\Illuminate\Database\Eloquent\Model $record) {
+                    $slug = 'default';
+                    if ($record && $record->event) {
+                        $slug = $record->event->slug;
+                    } elseif ($eventId = $get('event_id')) {
+                        $event = \Modules\Events\Models\Event::find($eventId);
+                        if ($event) {
+                             $slug = $event->slug;
+                        }
+                    }
+                    return "events/{$slug}/payment_proof";
+                })
+                ->visibility('public')
+                ->maxSize(2048),
         ];
     }
 }

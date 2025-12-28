@@ -10,6 +10,30 @@ use Modules\Events\Models\Organizer;
 class Event extends Model
 {
     use HasFactory;
+    use \Modules\Events\Traits\HasEventFileManagement;
+
+    protected function fileFields(): array
+    {
+        return [
+            'thumbnail' => 'thumbnail',
+            'speakers' => 'speakers',
+        ];
+    }
+
+    protected function getStorageBasePath(): string
+    {
+        return "events/" . ($this->slug ?? 'default');
+    }
+
+    protected function richEditorFields(): array
+    {
+        return ['description'];
+    }
+
+    protected function shouldDeleteEntireDirectory(): bool
+    {
+        return true;
+    }
 
     protected $fillable = [
         'title',
@@ -18,7 +42,7 @@ class Event extends Model
         'start_date',
         'end_date',
         'location',
-        'thumbnail',
+        'RichEditor',
         'is_active',
         'is_certificate_available',
         'event_category_id',
@@ -41,6 +65,7 @@ class Event extends Model
         'schedule' => 'array',
         'faq' => 'array',
         'is_certificate_available' => 'boolean',
+        'price' => 'decimal:2',
     ];
 
     protected $appends = ['available_seats'];

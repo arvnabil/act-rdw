@@ -12,7 +12,7 @@ class EventSeeder extends Seeder
     public function run()
     {
         // 1. Create Requested Categories
-        $categories = ['Talk Show', 'Seminar', 'Workshop', 'Business', 'Technology'];
+        $categories = ['Seminar', 'Talkshow', 'Business', 'Workshop', 'Technology'];
         $categoryModels = [];
 
         foreach ($categories as $cat) {
@@ -25,17 +25,34 @@ class EventSeeder extends Seeder
         // 2. Create Requested Organizers
         $organizersData = [
             [
-                'name' => 'ACTIV',
-                'phone' => '08782323123',
+                'name' => 'ACTIV Event',
+                'phone' => '6287881049606',
                 'website' => 'https://activ.co.id',
-                'email' => 'contact@activ.co.id', // inferred
+                'email' => 'nabil@activ.co.id',
                 'is_active' => true,
             ],
+            // Dummy Data 1
             [
-                'name' => 'Accocommerce',
-                'phone' => '087823232',
-                'website' => 'https://accommerce.id',
-                'email' => 'contact@accommerce.id', // inferred
+                'name' => 'Tech Nusantara',
+                'phone' => '081234567890',
+                'website' => 'https://technusantara.com',
+                'email' => 'info@technusantara.com',
+                'is_active' => true,
+            ],
+            // Dummy Data 2
+            [
+                'name' => 'Creative Indo',
+                'phone' => '089876543210',
+                'website' => 'https://creativeindo.com',
+                'email' => 'hello@creativeindo.com',
+                'is_active' => true,
+            ],
+            // Dummy Data 3
+            [
+                'name' => 'Bisnis Maju',
+                'phone' => '085512345678',
+                'website' => 'https://bisnismaju.id',
+                'email' => 'contact@bisnismaju.id',
                 'is_active' => true,
             ]
         ];
@@ -53,7 +70,7 @@ class EventSeeder extends Seeder
             [
                 'title' => 'Global AI Summit 2025',
                 'category' => 'Technology', // Will map to ID
-                'organizer_name' => 'ACTIV', // Will map to ID
+                'organizer_name' => 'ACTIV Event', // Will map to ID
                 'description' => 'Join industry leaders and tech enthusiasts for an immersive experience exploring the latest trends and innovations in the technology sector.',
                 'start_date' => '2025-05-15 09:00:00',
                 'end_date' => '2025-05-15 17:00:00',
@@ -68,7 +85,7 @@ class EventSeeder extends Seeder
             [
                 'title' => 'Digital Marketing Workshop',
                 'category' => 'Workshop',
-                'organizer_name' => 'Accocommerce',
+                'organizer_name' => 'Tech Nusantara',
                 'description' => 'Hands-on workshop to master digital marketing channels.',
                 'start_date' => '2025-06-22 09:00:00',
                 'end_date' => '2025-06-22 16:00:00',
@@ -79,8 +96,8 @@ class EventSeeder extends Seeder
             ],
             [
                 'title' => 'Future of E-Commerce Talk Show',
-                'category' => 'Talk Show',
-                'organizer_name' => 'ACTIV',
+                'category' => 'Talkshow',
+                'organizer_name' => 'ACTIV Event',
                 'description' => 'Insightful talk show about the future of online retail.',
                 'start_date' => '2025-07-05 10:00:00',
                 'end_date' => '2025-07-05 12:00:00',
@@ -101,7 +118,7 @@ class EventSeeder extends Seeder
             $data['slug'] = Str::slug($data['title']);
             $data['is_active'] = true;
             $data['event_category_id'] = $categoryModels[$catName]->id ?? $categoryModels['Technology']->id;
-            $data['organizer_id'] = $organizerModels[$orgName]->id ?? $organizerModels['ACTIV']->id;
+            $data['organizer_id'] = $organizerModels[$orgName]->id ?? $organizerModels['ACTIV Event']->id;
             // Default images/other fields if needed can be handled here
 
             Event::updateOrCreate(

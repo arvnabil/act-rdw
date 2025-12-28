@@ -26,7 +26,7 @@ class AuthController extends Controller
         if (Auth::guard('event')->attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->route('events.dashboard');
+            return redirect()->route('events.dashboard')->with('success', 'Login Berhasil!');
         }
 
         return back()->withErrors([

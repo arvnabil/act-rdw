@@ -8,6 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 class EventUserCertificate extends Model
 {
     use HasFactory;
+    use \Modules\Events\Traits\HasEventFileManagement;
+
+    protected function fileFields(): array
+    {
+        return [
+            'file_path' => 'certificates',
+        ];
+    }
+
+    protected function getStorageBasePath(): string
+    {
+        $slug = $this->event->slug ?? 'default';
+        return "events/{$slug}/certificates";
+    }
 
     protected $fillable = [
         'event_certificate_id',

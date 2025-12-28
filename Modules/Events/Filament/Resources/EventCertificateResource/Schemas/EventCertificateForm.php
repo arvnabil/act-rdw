@@ -17,24 +17,31 @@ class EventCertificateForm
                 ->label('Background Image')
                 ->image()
                 ->disk('public')
-                ->directory('certificates/backgrounds')
+                ->directory(function ($get) {
+                    $eventId = $get('event_id');
+                    $slug = $eventId ? \Modules\Events\Models\Event::find($eventId)?->slug : 'default';
+                    return "certificates/backgrounds/{$slug}";
+                })
+                ->preserveFilenames()
+                ->maxSize(4096)
                 ->visibility('public')
                 ->required(),
-            Forms\Components\FileUpload::make('signature')
-                ->label('Signature Image')
+            Forms\Components\FileUpload::make('image_files')
+                ->label('Image Assets (Signatures, Logos, etc.)')
                 ->image()
+                ->multiple()
                 ->disk('public')
-                ->directory('certificates/signatures')
+                ->directory(function ($get) {
+                    $eventId = $get('event_id');
+                    $slug = $eventId ? \Modules\Events\Models\Event::find($eventId)?->slug : 'default';
+                    return "certificates/assets/{$slug}";
+                })
+                ->maxSize(2048)
                 ->visibility('public')
-                ->nullable(),
-            Forms\Components\TextInput::make('signer_name')
-                ->label('Signer Name')
-                ->required()
-                ->maxLength(255),
-            Forms\Components\TextInput::make('signer_position')
-                ->label('Signer Position')
-                ->required()
-                ->maxLength(255),
+                ->columnSpanFull()
+                ->formatStateUsing(fn ($state) => collect($state ?? [])
+                    ->map(fn ($item) => is_array($item) && isset($item['path']) ? $item['path'] : $item)
+                    ->toArray()),
             // json layout or other fields if needed
         ];
     }

@@ -7,6 +7,10 @@ Route::get('/', function () {
     return Inertia::render('Home');
 })->name('home');
 
+Route::get('/login', function () {
+    return redirect()->route('filament.activioncms.auth.login');
+})->name('login');
+
 Route::get('/about', function () {
     return Inertia::render('About');
 })->name('about');
@@ -303,12 +307,6 @@ Route::get('/blog/{id}', function ($id) {
     ]);
 })->name('blog.detail');
 
-
-
-// Events List Page
-
-
-
 // Service Category Page (e.g., /services/video-conference)
 Route::get('/services/{service}', function ($service) {
     if ($service === 'server-and-storage' || $service === 'server-storage') {
@@ -567,8 +565,3 @@ Route::match(['get', 'post'], '/surveillance-configurator/complete', function (\
     ]);
 })->name('surveillance.configurator.complete');
 
-// Certificate Designer Routes (Admin only, add middleware as needed)
-Route::group(['prefix' => 'admin/events/certificates', 'middleware' => ['auth']], function () {
-    Route::get('/{id}/design', [\Modules\Events\Http\Controllers\CertificateDesignerController::class, 'edit'])->name('events.certificates.design');
-    Route::post('/{id}/design', [\Modules\Events\Http\Controllers\CertificateDesignerController::class, 'update'])->name('events.certificates.update-design');
-});

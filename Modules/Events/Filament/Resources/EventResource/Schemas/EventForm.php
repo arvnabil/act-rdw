@@ -4,6 +4,7 @@ namespace Modules\Events\Filament\Resources\EventResource\Schemas;
 
 use Filament\Forms;
 use Filament\Forms\Form;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class EventForm
@@ -25,7 +26,12 @@ class EventForm
                 ->maxLength(255),
             Forms\Components\RichEditor::make('description')
                 ->required()
-                ->columnSpanFull(),
+                ->columnSpanFull()
+                ->fileAttachmentsAcceptedFileTypes(['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'])
+                ->fileAttachmentsMaxSize(2048)
+                ->fileAttachmentsDisk('public')
+                ->fileAttachmentsDirectory(fn ($get) => 'events/' . ($get('slug') ?? 'default') . '/media-descriptions')
+                ->fileAttachmentsVisibility('public'),
             Forms\Components\DateTimePicker::make('start_date')
                 ->required(),
             Forms\Components\DateTimePicker::make('end_date'),
@@ -56,8 +62,9 @@ class EventForm
                 ->image()
                 ->disk('public')
                 ->visibility('public')
-                ->directory('events/thumbnails')
-                ->preserveFilenames(),
+                ->directory(fn ($get) => 'events/' . ($get('slug') ?? 'default') . '/thumbnail')
+                ->preserveFilenames()
+                ->maxSize(2048),
             Forms\Components\Toggle::make('is_active')
                 ->required(),
             Forms\Components\Toggle::make('is_certificate_available')
@@ -71,8 +78,9 @@ class EventForm
                         ->image()
                         ->disk('public')
                         ->visibility('public')
-                        ->directory('events/speakers')
-                        ->preserveFilenames(),
+                        ->directory(fn ($get) => 'events/' . ($get('../../slug') ?? 'default') . '/speakers')
+                        ->preserveFilenames()
+                        ->maxSize(2048),
                     Forms\Components\TextInput::make('linkedin_link')->url()->label('LinkedIn'),
                     Forms\Components\TextInput::make('instagram_link')->url()->label('Instagram'),
                     Forms\Components\TextInput::make('tiktok_link')->url()->label('TikTok'),

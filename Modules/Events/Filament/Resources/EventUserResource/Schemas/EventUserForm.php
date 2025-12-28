@@ -27,8 +27,11 @@ class EventUserForm
                 ->maxLength(255),
             Forms\Components\FileUpload::make('avatar')
                 ->image()
-                ->directory('event-users')
-                ->visibility('public'),
+                ->disk('public')
+                ->directory('events/users/avatar')
+                ->visibility('public')
+                ->preserveFilenames()
+                ->maxSize(2048),
         ];
     }
 }

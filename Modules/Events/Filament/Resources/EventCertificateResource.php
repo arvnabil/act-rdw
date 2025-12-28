@@ -16,7 +16,7 @@ class EventCertificateResource extends Resource
 
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-academic-cap';
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Events Management';
+    protected static string | \UnitEnum | null $navigationGroup = 'Event Manage Data';
 
     protected static ?string $navigationLabel = 'Event Certificates';
 
@@ -24,7 +24,7 @@ class EventCertificateResource extends Resource
 
     protected static ?string $pluralModelLabel = 'Event Certificates';
 
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 2;
 
     public static function form(Schema $schema): Schema
     {

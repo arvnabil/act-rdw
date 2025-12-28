@@ -9,6 +9,20 @@ use Illuminate\Database\Eloquent\Model;
 class EventRegistration extends Model
 {
     use HasFactory;
+    use \Modules\Events\Traits\HasEventFileManagement;
+
+    protected function fileFields(): array
+    {
+        return [
+            'payment_proof' => 'payment_proof',
+        ];
+    }
+
+    protected function getStorageBasePath(): string
+    {
+        $slug = $this->event->slug ?? 'default';
+        return "events/{$slug}/payment_proof";
+    }
 
     protected $fillable = [
         'event_id',
@@ -20,6 +34,8 @@ class EventRegistration extends Model
         'status', // pending, paid, rejected, cancelled
         'payment_method',
         'payment_proof',
+        'invoice_number',
+        'ticket_code',
     ];
 
     public function event()
@@ -29,7 +45,7 @@ class EventRegistration extends Model
 
     public function user()
     {
-        return $this->belongsTo(EventUser::class);
+        return $this->belongsTo(EventUser::class, 'event_user_id');
     }
 
     public function certificate()

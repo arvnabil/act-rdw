@@ -19,6 +19,8 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
+use Modules\Events\Filament\Pages\EventDashboard;
+
 class ActivioncmsPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
@@ -34,10 +36,13 @@ class ActivioncmsPanelProvider extends PanelProvider
             ->discoverResources(in: app_path('Filament/Activioncms/Resources'), for: 'App\Filament\Activioncms\Resources')
             ->discoverResources(in: base_path('Modules/Events/Filament/Resources'), for: 'Modules\\Events\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Activioncms/Pages'), for: 'App\Filament\Activioncms\Pages')
+            ->discoverPages(in: base_path('Modules/Events/Filament/Pages'), for: 'Modules\\Events\\Filament\\Pages')
             ->pages([
                 Dashboard::class,
+                EventDashboard::class,
             ])
             ->discoverWidgets(in: app_path('Filament/Activioncms/Widgets'), for: 'App\Filament\Activioncms\Widgets')
+            ->discoverWidgets(in: base_path('Modules/Events/Filament/Widgets'), for: 'Modules\\Events\\Filament\\Widgets')
             ->widgets([
                 AccountWidget::class,
                 FilamentInfoWidget::class,
