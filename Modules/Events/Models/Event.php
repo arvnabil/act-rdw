@@ -73,7 +73,7 @@ class Event extends Model
     public function getAvailableSeatsAttribute()
     {
         $booked = $this->registrations()
-            ->whereIn('status', ['pending', 'paid', 'approved', 'confirmed'])
+            ->whereIn('status', ['Pending', 'Joined', 'Claimed', 'Registered', 'Certified'])
             ->count();
 
         return max(0, $this->quota - $booked);
