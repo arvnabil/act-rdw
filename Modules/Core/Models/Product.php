@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace Modules\Core\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Modules\ServiceSolutions\Models\Service;
 
 class Product extends Model
 {
@@ -13,7 +14,8 @@ class Product extends Model
         'service_id', 'brand_id', 'name', 'slug',
         'description', 'image_path', 'sku', 'solution_type',
         'datasheet_url', 'tags', 'specs', 'specification_text',
-        'features', 'features_text', 'is_active'
+        'features', 'features_text', 'is_active',
+        'price', 'link_accommerce'
     ];
 
     protected $casts = [
@@ -33,9 +35,10 @@ class Product extends Model
         return $this->belongsTo(Brand::class);
     }
 
-    // A Product matches multiple criteria (e.g. "Small Room", "Budget Friendly")
-    public function criteria()
+
+
+    public function configuratorOptions()
     {
-        return $this->belongsToMany(ConfiguratorCriteria::class, 'product_criteria', 'product_id', 'configurator_criteria_id');
+        return $this->belongsToMany(\Modules\ServiceSolutions\Models\ConfiguratorOption::class, 'product_configurator_option');
     }
 }

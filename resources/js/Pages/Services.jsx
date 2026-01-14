@@ -6,6 +6,13 @@ import ClientSection from "@/Components/Sections/ClientSection";
 import SolutionSection from "@/Components/Sections/SolutionSection";
 
 export default function Services({ services }) {
+    // Helper to resolve image paths
+    const getImageUrl = (path) => {
+        if (!path) return "/assets/img/service/service_6_1.jpg"; // Default fallback
+        if (path.startsWith("http") || path.startsWith("/assets")) return path;
+        return `/storage/${path}`;
+    };
+
     return (
         <MainLayout>
             <Head title="Our Services" />
@@ -52,25 +59,36 @@ export default function Services({ services }) {
                                     >
                                         <div className="service-box service-style-1">
                                             <div className="service-img">
-                                                <Link href={service.link}>
+                                                <Link
+                                                    href={`/services/${service.slug}`}
+                                                >
                                                     <img
-                                                        src={service.image}
-                                                        alt={service.title}
+                                                        src={getImageUrl(
+                                                            service.thumbnail
+                                                        )}
+                                                        alt={service.name}
                                                     />
                                                 </Link>
                                             </div>
                                             <div className="service-content">
                                                 <h3 className="box-title">
-                                                    <Link href={service.link}>
-                                                        {service.title}
+                                                    <Link
+                                                        href={`/services/${service.slug}`}
+                                                    >
+                                                        {service.name}
                                                     </Link>
                                                 </h3>
                                                 <p className="service-box_text">
-                                                    {service.desc}
+                                                    {service.description
+                                                        ? service.description.substring(
+                                                              0,
+                                                              100
+                                                          ) + "..."
+                                                        : ""}
                                                 </p>
                                                 <Link
                                                     className="th-btn style4"
-                                                    href={service.link}
+                                                    href={`/services/${service.slug}`}
                                                 >
                                                     Read More{" "}
                                                     <i className="fa-light fa-arrow-right-long"></i>
@@ -89,8 +107,12 @@ export default function Services({ services }) {
                 </div>
             </section>
 
+            <ClientSection />
+
+            <SolutionSection />
+
             {/* CTA Area */}
-            <div className="position-relative overflow-hidden space">
+            {/* <div className="position-relative overflow-hidden space-bottom">
                 <div className="cta-sec6 theme-bg position-relative overflow-hidden">
                     <div className="container">
                         <div className="row">
@@ -135,11 +157,7 @@ export default function Services({ services }) {
                         <img src="/assets/img/normal/cta-img-6.jpg" alt="" />
                     </div>
                 </div>
-            </div>
-
-            <ClientSection />
-
-            <SolutionSection />
+            </div> */}
         </MainLayout>
     );
 }

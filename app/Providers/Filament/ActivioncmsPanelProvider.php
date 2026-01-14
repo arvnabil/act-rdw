@@ -35,6 +35,8 @@ class ActivioncmsPanelProvider extends PanelProvider
             ])
             ->discoverResources(in: app_path('Filament/Activioncms/Resources'), for: 'App\Filament\Activioncms\Resources')
             ->discoverResources(in: base_path('Modules/Events/Filament/Resources'), for: 'Modules\\Events\\Filament\\Resources')
+            ->discoverResources(in: base_path('Modules/ServiceSolutions/Filament/Resources'), for: 'Modules\\ServiceSolutions\\Filament\\Resources')
+            ->discoverResources(in: base_path('Modules/Core/Filament/Resources'), for: 'Modules\\Core\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Activioncms/Pages'), for: 'App\Filament\Activioncms\Pages')
             ->discoverPages(in: base_path('Modules/Events/Filament/Pages'), for: 'Modules\\Events\\Filament\\Pages')
             ->pages([

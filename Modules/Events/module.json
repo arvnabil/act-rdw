@@ -1,0 +1,11 @@
+{
+    "name": "Events",
+    "alias": "events",
+    "description": "Events Manager Module",
+    "keywords": [],
+    "priority": 0,
+    "providers": ["Modules\\Events\\Providers\\EventsModuleServiceProvider"],
+    "aliases": {},
+    "files": [],
+    "requires": []
+}

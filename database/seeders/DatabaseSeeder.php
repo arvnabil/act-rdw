@@ -26,14 +26,14 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        $this->call(ProductConfiguratorSeeder::class);
+        // $this->call(\Modules\ServiceSolutions\Database\Seeders\ProductConfiguratorSeeder::class);
 
         // Auto-discover and run Module seeders
         $modules = glob(base_path('Modules/*'), GLOB_ONLYDIR);
         foreach ($modules as $modulePath) {
             $moduleName = basename($modulePath);
             $seederClass = "Modules\\{$moduleName}\\Database\\Seeders\\{$moduleName}DatabaseSeeder";
-            
+
             if (class_exists($seederClass)) {
                 $this->call($seederClass);
             }

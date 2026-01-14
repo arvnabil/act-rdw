@@ -89,7 +89,7 @@ export default function MainLayout({ children }) {
                         <div className="recent-post-wrap">
                             <div className="recent-post d-flex align-items-center">
                                 <div className="media-img">
-                                    <Link href="/blog">
+                                    <Link href="/news">
                                         <img
                                             src="/assets/img/blog/recent-post-1-1.jpg"
                                             alt="Blog Image"
@@ -98,7 +98,7 @@ export default function MainLayout({ children }) {
                                 </div>
                                 <div className="media-body">
                                     <div className="recent-post-meta">
-                                        <Link href="/blog">
+                                        <Link href="/news">
                                             <i className="far fa-calendar"></i>
                                             24 Jun , 2025
                                         </Link>
@@ -115,7 +115,7 @@ export default function MainLayout({ children }) {
                             </div>
                             <div className="recent-post d-flex align-items-center">
                                 <div className="media-img">
-                                    <Link href="/blog">
+                                    <Link href="/news">
                                         <img
                                             src="/assets/img/blog/recent-post-1-2.jpg"
                                             alt="Blog Image"
@@ -124,7 +124,7 @@ export default function MainLayout({ children }) {
                                 </div>
                                 <div className="media-body">
                                     <div className="recent-post-meta">
-                                        <Link href="/blog">
+                                        <Link href="/news">
                                             <i className="far fa-calendar"></i>
                                             22 Jun , 2025
                                         </Link>
@@ -306,7 +306,7 @@ export default function MainLayout({ children }) {
                                         <Link href="/events">Events</Link>
                                     </li>
                                     <li>
-                                        <Link href="/blog">Articles</Link>
+                                        <Link href="/news">News</Link>
                                     </li>
                                 </ul>
                             </li>
@@ -505,8 +505,8 @@ export default function MainLayout({ children }) {
                                                         </Link>
                                                     </li>
                                                     <li>
-                                                        <Link href="/blog">
-                                                            Articles
+                                                        <Link href="/news">
+                                                            News
                                                         </Link>
                                                     </li>
                                                 </ul>

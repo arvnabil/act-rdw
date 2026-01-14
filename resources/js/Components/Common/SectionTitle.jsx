@@ -1,6 +1,11 @@
-import React from 'react';
+import React from "react";
 
-export default function SectionTitle({ subTitle, title, align = 'text-center text-lg-start', mb = 'mb-20' }) {
+export default function SectionTitle({
+    subTitle,
+    title,
+    align = "text-center text-lg-start",
+    mb = "mb-20",
+}) {
     return (
         <div className={`title-area ${align} ${mb}`}>
             {subTitle && (
@@ -10,9 +15,7 @@ export default function SectionTitle({ subTitle, title, align = 'text-center tex
                     <span className="squre-shape d-lg-none right ms-3"></span>
                 </span>
             )}
-            <h2 className="sec-title scroll-text-ani">
-                {title}
-            </h2>
+            <h2 className="sec-title scroll-text-ani">{title}</h2>
         </div>
     );
 }

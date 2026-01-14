@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Modules\Core\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,5 +14,10 @@ class Brand extends Model
     public function products()
     {
         return $this->hasMany(Product::class);
+    }
+
+    public function serviceSolutions()
+    {
+        return $this->belongsToMany(\Modules\ServiceSolutions\Models\ServiceSolution::class, 'service_solution_brand');
     }
 }

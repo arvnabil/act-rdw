@@ -1,0 +1,68 @@
+Referensi Logitech
+
+Step 1 - Choose Room Size [Room & Brand]
+Brand Logitech
+Room Type:
+
+-   Up to 2 - Phone Booth
+-   Up to 4 - Huddle Room
+-   Up to 6 - Small Room
+-   Up to 12 - Medium Room
+-   Up to 20 - Large Room
+-   More than 20 - Alternative
+
+Step 2 - Choose Platform [Platform]
+
+-   Google Meet
+-   Zoom
+-   Microsoft Teams
+-   BYOD
+    Step 3 - Deployment Type [Deployment]
+-   Appliance-Based - A pre-configured video conferencing system with built-in computing capabilities, no external PC required.
+-   PC-Based - Plug and play with any PC, Mac, or Chromebox via USB to complete your room solution.
+
+Step 4 - Conference Camera - [short desc: Choose your conferencing camera(s).] [Main Device]
+Flow ex: These recommendations are based on your previous answers. You selected: Phone Booth running Google Meet in a PC-Based room.
+
+
+-   MeetUp 2 [short desc: USB conference camera with built-in AI] [Icon Info modal]
+    -   Accessories [TV Mount for MeetUp - [short desc: Mount MeetUp 2 to a TV]] [Icon Info modal]
+-   GENERIC PC COMPUTE [If using PC Based] - [short desc: Mini PC (from verified partner reseller)] [Icon Info modal][Auto Selected default if using PC Based] - Accessories - COMPUTE MOUNT - [short desc: Mount for RoomMate and PCs][Icon Info modal]
+    Ex flow: Appliance - These recommendations are based on your previous answers. You selected: Phone Booth running Google Meet in a Appliance-Based room.
+-   Rally Bar Huddle - [Short desc: Video bar for small rooms with built-in AI - coming soon!][Icon Info modal]
+    -   Accessories - Logitech TV Mount - [short desc: TV mount for video bars][Icon Info modal]
+
+Step [Audio] Choose Universal Audio Support, if not yet skip next
+Step Meeting Controller [Controller]
+
+-   2 Card - 1 label RECOMMENDED
+-   Logitech Tap IP - [short desc: Network-connected room controller] [recomended][option color: Graphite & white] Option Max (10) qty [for this accessories only 1 selected if change qty selected in qty change]
+    -   Accessories Tap Table Mount - Secure Tap controllers to the table [info Max 1][Icon Info modal]
+    -   Accessories Tap Riser Mount - Raise Tap controllers at the table [info Max 1][Icon Info modal]
+    -   Accessories Tap Wall Mount - Mount Tap controllers to the wall [info Max 1][Icon Info modal]
+-   Logitech Tap - [short desc: USB-connected room controller with Cat5e kit]
+
+Step Add On [Add-Ons] title: Choose your add-ons. Short desc: Enhance the meeting experience with add-ons.
+
+-   Tap Scheduler - [short desc: Room scheduling panel][Icon Info modal]
+-   Logitech Extend - [short desc: Single cable bring-your-own-device extended connection][recomended][Icon Info modal]
+
+Step Software and Services [Services]
+
+-   Question and answer
+-   Software [Pilih year ]
+    [ini ada di step yang sama jika tidak dipilih year nya maka muncul ini:]
+    Based on your answers, we recommend:
+    SELECT SERVICE PLAN
+    Comprehensive service and support with advanced software. Everything in Essential, plus:
+
+*   24/7 technical assistance
+*   Advanced replacements (next business day)
+*   Product warranty up to 5 years
+
+Step No Summery. Only Configurator complete
+
+￼
+￼
+￼
+￼

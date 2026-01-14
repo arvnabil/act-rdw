@@ -1,22 +1,42 @@
-import React, { useState } from 'react';
-import { Head, Link } from '@inertiajs/react';
-import MainLayout from '@/Layouts/MainLayout';
-import Breadcrumb from '@/Components/Common/Breadcrumb';
+import React, { useState } from "react";
+import { Head, Link } from "@inertiajs/react";
+import MainLayout from "@/Layouts/MainLayout";
+import Breadcrumb from "@/Components/Common/Breadcrumb";
 
 const categories = [
-    { id: '*', label: 'All', filter: '*' },
-    { id: 'Video Conference', label: 'Video Conference', filter: '.case4' }, // Assuming mapped to case4 based on HTML
-    { id: 'Audio Visual', label: 'Audio Visual', filter: '.case1' },
-    { id: 'Network & Security', label: 'Network & Security', filter: '.case2' },
-    { id: 'Server & Storage', label: 'Server & Storage', filter: '.case3' },
-    { id: 'Cloud Meeting', label: 'Cloud Meeting', filter: '.case4' },
-    { id: 'Surveillance & Security System', label: 'Surveillance & Security System', filter: '.case4' },
-    { id: 'IP PBX, IPPhone, Server Cloud', label: 'IP PBX, IPPhone, Server Cloud', filter: '.case4' },
-    { id: 'Rack, Power & Cooling', label: 'Rack, Power & Cooling', filter: '.case4' },
-    { id: 'Printing, Peripheral & Tools', label: 'Printing, Peripheral & Tools', filter: '.case4' },
-    { id: 'Data Protection', label: 'Data Protection', filter: '.case4' },
-    { id: 'PC and Computing', label: 'PC and Computing', filter: '.case4' },
-    { id: 'SaaS (Software as a Service)', label: 'SaaS (Software as a Service)', filter: '.case4' },
+    { id: "*", label: "All", filter: "*" },
+    { id: "Video Conference", label: "Video Conference", filter: ".case4" }, // Assuming mapped to case4 based on HTML
+    { id: "Audio Visual", label: "Audio Visual", filter: ".case1" },
+    { id: "Network & Security", label: "Network & Security", filter: ".case2" },
+    { id: "Server & Storage", label: "Server & Storage", filter: ".case3" },
+    { id: "Cloud Meeting", label: "Cloud Meeting", filter: ".case4" },
+    {
+        id: "Surveillance & Security System",
+        label: "Surveillance & Security System",
+        filter: ".case4",
+    },
+    {
+        id: "IP PBX, IPPhone, Server Cloud",
+        label: "IP PBX, IPPhone, Server Cloud",
+        filter: ".case4",
+    },
+    {
+        id: "Rack, Power & Cooling",
+        label: "Rack, Power & Cooling",
+        filter: ".case4",
+    },
+    {
+        id: "Printing, Peripheral & Tools",
+        label: "Printing, Peripheral & Tools",
+        filter: ".case4",
+    },
+    { id: "Data Protection", label: "Data Protection", filter: ".case4" },
+    { id: "PC and Computing", label: "PC and Computing", filter: ".case4" },
+    {
+        id: "SaaS (Software as a Service)",
+        label: "SaaS (Software as a Service)",
+        filter: ".case4",
+    },
 ];
 
 const partners = [
@@ -26,7 +46,7 @@ const partners = [
         image: "/assets/img/partners/maxhub.jpg",
         categories: ["Audio Visual", "Server & Storage"],
         // Audio Visual -> case1, Server & Storage -> case3
-        displayCategory: "Maxhub"
+        displayCategory: "Maxhub",
     },
     {
         id: 2,
@@ -34,7 +54,7 @@ const partners = [
         image: "/assets/img/partners/logi.jpg",
         categories: ["Network & Security", "Cloud Meeting"],
         // Network -> case2, Cloud -> case4
-        displayCategory: "Logi"
+        displayCategory: "Logi",
     },
     {
         id: 3,
@@ -42,7 +62,7 @@ const partners = [
         image: "/assets/img/partners/zoom.jpg",
         categories: ["Audio Visual", "Cloud Meeting"],
         // Audio -> case1, Cloud -> case4
-        displayCategory: "Zoom"
+        displayCategory: "Zoom",
     },
     {
         id: 4,
@@ -50,7 +70,7 @@ const partners = [
         image: "/assets/img/partners/jabra.jpg",
         categories: ["Network & Security", "Cloud Meeting"],
         // Network -> case2, Cloud -> case4
-        displayCategory: "Jabra"
+        displayCategory: "Jabra",
     },
     {
         id: 5,
@@ -58,7 +78,7 @@ const partners = [
         image: "/assets/img/partners/microsoft-teams.jpg",
         categories: ["Audio Visual", "Cloud Meeting", "Network & Security"],
         // Audio -> case1, Cloud -> case4, Network -> case2
-        displayCategory: "Microsoft"
+        displayCategory: "Microsoft",
     },
     {
         id: 6,
@@ -66,21 +86,21 @@ const partners = [
         image: "/assets/img/partners/yealink.jpg",
         categories: ["Audio Visual", "Cloud Meeting", "Network & Security"],
         // Audio -> case1, Cloud -> case4, Network -> case2
-        displayCategory: "Yealink"
+        displayCategory: "Yealink",
     },
 ];
 
 // Helper to get classes
 const getPartnerClasses = (cats) => {
     let classes = [];
-    cats.forEach(c => {
-        if (c === 'Audio Visual') classes.push('case1');
-        else if (c === 'Network & Security') classes.push('case2');
-        else if (c === 'Server & Storage') classes.push('case3');
-        else classes.push('case4');
+    cats.forEach((c) => {
+        if (c === "Audio Visual") classes.push("case1");
+        else if (c === "Network & Security") classes.push("case2");
+        else if (c === "Server & Storage") classes.push("case3");
+        else classes.push("case4");
     });
     // Deduplicate
-    return [...new Set(classes)].join(' ');
+    return [...new Set(classes)].join(" ");
 };
 
 export default function Partners() {
@@ -90,10 +110,7 @@ export default function Partners() {
             <Head title="Partners" />
             <Breadcrumb
                 title="Partners"
-                items={[
-                    { label: 'Home', link: '/' },
-                    { label: 'Partners' }
-                ]}
+                items={[{ label: "Home", link: "/" }, { label: "Partners" }]}
             />
 
             <div className="case-area space-bottom space">
@@ -113,7 +130,9 @@ export default function Partners() {
                                 {categories.map((cat, index) => (
                                     <button
                                         key={index}
-                                        className={`case4-btn ${cat.id === '*' ? 'active' : ''}`}
+                                        className={`case4-btn ${
+                                            cat.id === "*" ? "active" : ""
+                                        }`}
                                         data-filter={cat.filter}
                                     >
                                         {cat.label}
@@ -124,25 +143,63 @@ export default function Partners() {
                     </div>
 
                     <div className="row gy-30 grid">
-                        {partners.map(partner => (
-                            <div key={partner.id} className={`col-xl-4 col-lg-6 col-md-6 grid-item ${getPartnerClasses(partner.categories)}`}>
+                        {partners.map((partner) => (
+                            <div
+                                key={partner.id}
+                                className={`col-xl-4 col-lg-6 col-md-6 grid-item ${getPartnerClasses(
+                                    partner.categories
+                                )}`}
+                            >
                                 <div className="case-box style2 inner-style1 position-relative">
                                     <div className="case-img global-img">
-                                        <img src={partner.image} alt="case image" />
-                                        <Link href="#" className="icon-btn">
+                                        <img
+                                            src={partner.image}
+                                            alt="case image"
+                                        />
+                                        <Link
+                                            href={
+                                                "/" +
+                                                partner.name
+                                                    .toLowerCase()
+                                                    .replace(/\s+/g, "-")
+                                            }
+                                            className="icon-btn"
+                                        >
                                             <i className="fa-light fa-arrow-right-long"></i>
                                         </Link>
                                     </div>
                                     <div className="case-content">
                                         <div className="media-left">
                                             <h4 className="box-title">
-                                                <Link href="#">{partner.name}</Link>
+                                                <Link
+                                                    href={
+                                                        "/" +
+                                                        partner.name
+                                                            .toLowerCase()
+                                                            .replace(
+                                                                /\s+/g,
+                                                                "-"
+                                                            )
+                                                    }
+                                                >
+                                                    {partner.name}
+                                                </Link>
                                             </h4>
-                                            <span className="case-subtitle">{partner.displayCategory}</span>
+                                            <span className="case-subtitle">
+                                                {partner.displayCategory}
+                                            </span>
                                         </div>
                                     </div>
                                     <div className="case-action">
-                                        <Link href="#" className="case-btn">
+                                        <Link
+                                            href={
+                                                "/" +
+                                                partner.name
+                                                    .toLowerCase()
+                                                    .replace(/\s+/g, "-")
+                                            }
+                                            className="case-btn"
+                                        >
                                             <i className="fa-light fa-arrow-right-long"></i>
                                         </Link>
                                     </div>

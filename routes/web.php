@@ -3,9 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('Home');
-})->name('home');
+
 
 Route::get('/login', function () {
     return redirect()->route('filament.activioncms.auth.login');
@@ -15,35 +13,7 @@ Route::get('/about', function () {
     return Inertia::render('About');
 })->name('about');
 
-Route::get('/services', function () {
-    $services = [
-        [
-            'title' => 'Video Conference',
-            'desc' => 'High-quality AV solutions for seamless collaboration in meetings.',
-            'image' => '/assets/img/service/service_6_1.jpg',
-            'icon' => '/assets/img/icon/sv-6-1.svg',
-            'link' => '/services/video-conference'
-        ],
-        [
-            'title' => 'Server & Storage',
-            'desc' => 'Robust and secure infrastructure for high-performance data management.',
-            'image' => '/assets/img/service/service_2_2.jpg',
-            'icon' => '/assets/img/icon/sv-6-2.svg',
-            'link' => '/services/server-storage'
-        ],
-        [
-            'title' => 'Smart Surveillance',
-            'desc' => 'Advanced 24/7 security monitoring and CCTV systems.',
-            'image' => '/assets/img/service/service_2_3.jpg',
-            'icon' => '/assets/img/icon/sv-6-3.svg',
-            'link' => '/services/smart-surveillance'
-        ]
-    ];
-
-    return Inertia::render('Services', [
-        'services' => $services
-    ]);
-})->name('services');
+// Services routes are now handled by Modules/ServiceSolutions
 
 Route::get('/projects', function () {
     return Inertia::render('Projects');
@@ -56,9 +26,7 @@ Route::get('/partners', function () {
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;
 
-Route::get('/products', [App\Http\Controllers\ProductController::class, 'index'])->name('products');
-
-Route::get('/products/{slug}', [App\Http\Controllers\ProductController::class, 'show'])->name('products.show');
+// Product and Configurator API routes are now handled by Modules/Core
 
 // Projects Page
 Route::get('/projects', function () {
@@ -166,8 +134,8 @@ Route::get('/projects/{id}', function ($id) {
     ]);
 })->name('projects.detail');
 
-// Blog Page
-Route::get('/blog', function () {
+// News Page
+Route::get('/news', function () {
     $page = request()->query('page', 1);
     $perPage = 4;
     $total = 12;
@@ -191,7 +159,7 @@ Route::get('/blog', function () {
             'category' => 'Technology',
             'image' => '/assets/img/blog/blog-s-1-' . ($id % 3 + 1) . '.jpg',
             'excerpt' => 'In today’s fast-evolving digital landscape, businesses need a clear IT strategy to align technology with their long-term goals. IT Strategy & Planning services help organizations optimize resources.',
-            'link' => '/blog/' . $id
+            'link' => '/news/' . $id
         ];
     });
 
@@ -202,21 +170,23 @@ Route::get('/blog', function () {
             'data' => $items,
             'current_page' => (int)$page,
             'last_page' => $lastPage,
+            'per_page' => $perPage,
+            'total' => $total,
             'links' => [
                 [
-                    'url' => $page > 1 ? '/blog?page=' . ($page - 1) : null,
+                    'url' => $page > 1 ? '/news?page=' . ($page - 1) : null,
                     'label' => '<i class="far fa-arrow-left"></i>',
                     'active' => false,
                 ],
                 ...collect(range(1, $lastPage))->map(function ($p) use ($page) {
                     return [
-                        'url' => '/blog?page=' . $p,
+                        'url' => '/news?page=' . $p,
                         'label' => (string)$p,
                         'active' => $p === (int)$page,
                     ];
                 }),
                 [
-                    'url' => $page < $lastPage ? '/blog?page=' . ($page + 1) : null,
+                    'url' => $page < $lastPage ? '/news?page=' . ($page + 1) : null,
                     'label' => '<i class="far fa-arrow-right"></i>',
                     'active' => false,
                     'className' => 'next-page'
@@ -224,10 +194,10 @@ Route::get('/blog', function () {
             ]
         ]
     ]);
-})->name('blog');
+})->name('news');
 
-// Blog Detail Page
-Route::get('/blog/{id}', function ($id) {
+// News Detail Page
+Route::get('/news/{id}', function ($id) {
     srand($id);
 
     $titles = [
@@ -240,7 +210,7 @@ Route::get('/blog/{id}', function ($id) {
 
     $post = [
         'id' => $id,
-        'title' => $titles[($id - 1) % count($titles)] ?? 'Technology Blog Post',
+        'title' => $titles[($id - 1) % count($titles)] ?? 'Technology News Post',
         'author' => 'David Smith',
         'date' => '05 May, 2025',
         'category' => 'Technology',
@@ -291,7 +261,7 @@ Route::get('/blog/{id}', function ($id) {
             'title' => ['5 Common IT Issues and How to Solve Them', 'Hybrid Cloud Solutions: The Best of Both Worlds', 'Top 10 IT Solutions Every Business.'][$i-1],
             'date' => (20 + $i) . ' Sep, 2025',
             'image' => '/assets/img/blog/recent-post-1-' . $i . '.jpg',
-            'link' => '/blog/' . $i
+            'link' => '/news/' . $i
         ];
     });
 
@@ -305,226 +275,13 @@ Route::get('/blog/{id}', function ($id) {
         'recentPosts' => $recentPosts,
         'categories' => $categories
     ]);
-})->name('blog.detail');
+})->name('news.detail');
 
-// Service Category Page (e.g., /services/video-conference)
-Route::get('/services/{service}', function ($service) {
-    if ($service === 'server-and-storage' || $service === 'server-storage') {
-        $serviceData = [
-            'id' => $service,
-            'title' => 'Server & Storage',
-            'hero_subtitle' => 'Power Your Infrastructure',
-            'grid_title' => 'Explore Our Server & Storage Solutions',
-            'filters' => [
-                ['label' => 'Data Center', 'value' => '.enterprise-data-center'],
-                ['label' => 'Office', 'value' => '.small-office'],
-                ['label' => 'Industrial', 'value' => '.edge-industrial']
-            ],
-            'rooms' => [
-                [
-                    'id' => 'database',
-                    'title' => 'Database Server',
-                    'description' => 'High-performance servers optimized for database management and heavy transaction processing.',
-                    'capacity' => 'High IOPS',
-                    'size' => 'Rackmount',
-                    'image' => '/assets/img/service/service_2_1.jpg',
-                    'category' => 'enterprise-data-center'
-                ],
-                [
-                    'id' => 'virtualization',
-                    'title' => 'Virtualization',
-                    'description' => 'Consolidate your infrastructure with servers designed for VMware and Hyper-V.',
-                    'capacity' => 'Multi-VM',
-                    'size' => 'Blade/Rack',
-                    'image' => '/assets/img/service/service_2_2.jpg',
-                    'category' => 'enterprise-data-center'
-                ],
-                [
-                    'id' => 'file-storage',
-                    'title' => 'File & Storage Server',
-                    'description' => 'Secure and scalable storage solutions for your growing data needs.',
-                    'capacity' => 'High Cap',
-                    'size' => 'Tower/Rack',
-                    'image' => '/assets/img/service/service_2_3.jpg',
-                    'category' => 'small-office'
-                ],
-                [
-                    'id' => 'app-web',
-                    'title' => 'Application & Web',
-                    'description' => 'Reliable servers for hosting internal applications and public-facing websites.',
-                    'capacity' => 'Standard',
-                    'size' => '1U/2U',
-                    'image' => '/assets/img/service/service_2_4.jpg',
-                    'category' => 'edge-industrial'
-                ]
-            ]
-        ];
-    } elseif ($service === 'smart-surveillance' || $service === 'surveillance') {
-        $serviceData = [
-            'id' => $service,
-            'title' => 'Smart Surveillance',
-            'hero_subtitle' => 'Secure Your World',
-            'grid_title' => 'Explore Our Surveillance Solutions',
-            'filters' => [
-                ['label' => 'Retail', 'value' => '.commercial-retail'],
-                ['label' => 'Corporate', 'value' => '.office-corporate'],
-                ['label' => 'Industrial', 'value' => '.industrial'],
-                ['label' => 'Public', 'value' => '.public-safety']
-            ],
-            'rooms' => [
-                [
-                    'id' => 'retail-commercial',
-                    'title' => 'Retail & Commercial',
-                    'description' => 'Loss prevention and customer analytics for stores and shopping centers.',
-                    'capacity' => 'Ind/Out',
-                    'size' => 'Multi-cam',
-                    'image' => '/assets/img/service/service_3_1.jpg',
-                    'category' => 'commercial-retail'
-                ],
-                [
-                    'id' => 'office-corporate',
-                    'title' => 'Office & Corporate',
-                    'description' => 'Integrated access control and monitoring for secure office environments.',
-                    'capacity' => 'Indoor',
-                    'size' => 'Discrete',
-                    'image' => '/assets/img/service/service_3_2.jpg',
-                    'category' => 'office-corporate'
-                ],
-                [
-                    'id' => 'industrial',
-                    'title' => 'Industrial & Warehouse',
-                    'description' => 'Ruggedized cameras for thermal monitoring and perimeter defense.',
-                    'capacity' => 'Outdoor',
-                    'size' => 'Long Range',
-                    'image' => '/assets/img/service/service_3_3.jpg',
-                    'category' => 'industrial'
-                ],
-                [
-                    'id' => 'public-safety',
-                    'title' => 'Public Safety',
-                    'description' => 'Advanced surveillance for city monitoring, traffic, and public spaces.',
-                    'capacity' => 'Wide Area',
-                    'size' => 'PTZ/Pano',
-                    'image' => '/assets/img/service/service_3_4.jpg',
-                    'category' => 'public-safety'
-                ]
-            ]
-        ];
-    } else {
-        // Default: Video Conference
-        $serviceData = [
-            'id' => $service,
-            'title' => ucfirst(str_replace('-', ' ', $service)),
-            'hero_subtitle' => 'Reimagine your workspaces.',
-            'grid_title' => 'Explore a full range of workspaces',
-            'filters' => [
-                ['label' => 'Meetings Rooms', 'value' => '.meetings-rooms'],
-                ['label' => 'Individual Space', 'value' => '.individual-space'],
-                ['label' => 'Training & Education Space', 'value' => '.training-education-space'],
-                ['label' => 'Divisible Space', 'value' => '.divisible-space']
-            ],
-            'rooms' => [
-                [
-                    'id' => 'huddle-room',
-                    'title' => 'Huddle room',
-                    'description' => 'Get a first-class experience and create inclusive experiences for all in your huddle meeting rooms.',
-                    'capacity' => '2-4',
-                    'size' => '8-12m2',
-                    'image' => '/assets/img/rooms/huddle-room.jpg',
-                    'category' => 'meetings-rooms training-education-space'
-                ],
-                [
-                    'id' => 'small-room',
-                    'title' => 'Small Room',
-                    'description' => 'Get a first-class experience and create inclusive experiences for all in your Small meeting rooms.',
-                    'capacity' => '4-6',
-                    'size' => '12-28m2',
-                    'image' => '/assets/img/rooms/small-room.jpg',
-                    'category' => 'meetings-rooms individual-space training-education-space'
-                ],
-                [
-                    'id' => 'medium-room',
-                    'title' => 'Medium Rooms',
-                    'description' => 'Medium rooms designed for effective team collaboration.',
-                    'capacity' => '6-10',
-                    'size' => '14-36m2',
-                    'image' => '/assets/img/rooms/medium-room.jpg',
-                    'category' => 'meetings-rooms'
-                ]
-            ]
-        ];
-    }
-
-    return Inertia::render('ServiceDetail', [
-        'service' => $serviceData
+Route::get('/', function () {
+    return Inertia::render('Home', [
+        'services' => \Modules\ServiceSolutions\Models\Service::orderBy('sort_order', 'asc')->take(3)->get()
     ]);
-})->name('services.detail');
-
-// Service Item Detail Page (e.g., /services/video-conference/small-room)
-Route::get('/services/{service}/{item}', function ($service, $item) {
-
-    $configuratorRoute = '/room-configurator';
-    $brands = [];
-    $subtitle = 'Smart, Simple, and Ready for Collaboration';
-    $desc = 'Designed for optimal performance in your selected environment.';
-
-    if ($service === 'server-and-storage' || $service === 'server-storage') {
-        $configuratorRoute = '/server-configurator';
-        $subtitle = 'Power Your Business with Enterprise Reliability';
-        $desc = 'Select a brand to configure your ' . str_replace('-', ' ', $item) . ' solution.';
-        $brands = [
-            ['name' => 'Dell Technologies', 'image' => '/assets/img/partners/dell.png', 'desc' => 'PowerEdge Servers'],
-            ['name' => 'HPE', 'image' => '/assets/img/partners/hpe.png', 'desc' => 'ProLiant Servers'],
-            ['name' => 'Lenovo', 'image' => '/assets/img/partners/lenovo.png', 'desc' => 'ThinkSystem'],
-            ['name' => 'Supermicro', 'image' => '/assets/img/partners/supermicro.png', 'desc' => 'SuperServer']
-        ];
-    } elseif ($service === 'smart-surveillance' || $service === 'surveillance') {
-        $configuratorRoute = '/surveillance-configurator';
-        $subtitle = 'Secure Your Assets with Intelligent Vision';
-        $desc = 'Choose a surveillance partner to secure your ' . str_replace('-', ' ', $item) . '.';
-        $brands = [
-            ['name' => 'Hikvision', 'image' => '/assets/img/partners/hikvision.png', 'desc' => 'Leading AIoT Solutions'],
-            ['name' => 'Dahua', 'image' => '/assets/img/partners/dahua.png', 'desc' => 'Smart Security'],
-            ['name' => 'Axis', 'image' => '/assets/img/partners/axis.png', 'desc' => 'Network Video'],
-            ['name' => 'Hanwha', 'image' => '/assets/img/partners/hanwha.png', 'desc' => 'Vision Solutions']
-        ];
-    } else {
-        // Default Video Conf
-        $brands = [
-            ['name' => 'Logitech', 'image' => '/assets/img/partners/logi.jpg', 'desc' => 'Logitech device ready for small room'],
-            ['name' => 'Yealink', 'image' => '/assets/img/partners/yealink.jpg', 'desc' => 'Yealink'],
-            ['name' => 'Jabra', 'image' => '/assets/img/partners/jabra.jpg', 'desc' => 'Jabra']
-        ];
-    }
-
-    $itemData = [
-        'id' => $item,
-        'title' => ucfirst(str_replace('-', ' ', $item)),
-        'parent_service' => $service,
-        'parent_title' => ucfirst(str_replace('-', ' ', $service)),
-        'subtitle' => $subtitle,
-        'description' => $desc,
-        'features' => [
-            ['title' => 'Capacity', 'text' => 'Scalable Solutions', 'icon' => '/assets/img/icon/shield.svg'],
-            ['title' => 'Support', 'text' => '24/7 Enterprise Support Available', 'icon' => '/assets/img/icon/shield.svg']
-        ],
-        'images' => [
-            '/assets/img/normal/about_6_1.jpg',
-            '/assets/img/normal/about_6_1.jpg'
-        ],
-        'brands' => $brands,
-        'products' => [], // Can be populated if needed
-        'projects' => [
-            ['title' => 'Reference Project 1', 'category' => 'Enterprise', 'image' => '/assets/img/project/project_3_9_.jpg'],
-            ['title' => 'Reference Project 2', 'category' => 'SMB', 'image' => '/assets/img/project/project_3_9_.jpg']
-        ],
-        'configurator_route' => $configuratorRoute
-    ];
-
-    return Inertia::render('ServiceItemDetail', [
-        'item' => $itemData
-    ]);
-})->name('services.item.detail');
+})->name('home');
 
 // Room Configurator Page
 Route::get('/room-configurator', function () {
@@ -565,3 +322,95 @@ Route::match(['get', 'post'], '/surveillance-configurator/complete', function (\
     ]);
 })->name('surveillance.configurator.complete');
 
+// Dynamic Configurator Route
+Route::get('/configurator/{slug}', [\Modules\ServiceSolutions\Http\Controllers\DynamicConfiguratorController::class, 'show'])->name('configurator.show');
+
+Route::match(['get', 'post'], '/configurator/complete', function (\Illuminate\Http\Request $request) {
+    $selection = $request->input('selection', []);
+    $configurator = $request->input('configurator');
+    $summaryItems = collect();
+    $quantities = $selection['quantities'] ?? [];
+
+    if ($configurator && isset($configurator['steps'])) {
+        foreach ($configurator['steps'] as $step) {
+            if (!isset($step['questions'])) continue;
+
+            foreach ($step['questions'] as $question) {
+                // Check if this question has a selection
+                $varName = $question['variable_name'];
+                if (!isset($selection[$varName])) continue;
+
+                $selectedValue = $selection[$varName];
+
+                // If selection represents multiple values (checkboxes), handle array
+                $selectedValues = is_array($selectedValue) ? $selectedValue : [$selectedValue];
+
+                foreach ($selectedValues as $val) {
+                    // Find the matching option
+                    $option = collect($question['options'])->firstWhere('value', $val);
+
+                    if ($option) {
+                        // Priority 1: Linked Product
+                        if (!empty($option['products'])) {
+                            foreach ($option['products'] as $product) {
+                                $summaryItems->push([
+                                    'id' => $product['id'],
+                                    'step_label' => $step['title'] ?? 'Config',
+                                    'question_label' => $question['label'], // "Select your Room Size"
+                                    'name' => $product['name'],
+                                    'image' => $product['image_path'] ?? $product['image'] ?? null,
+                                    'sku' => $product['sku'] ?? '',
+                                    'quantity' => $quantities[$product['id']] ?? 1,
+                                    'type' => 'product'
+                                ]);
+                            }
+                        } else {
+                            // Priority 2: Standard Option (Text/Card)
+                            $summaryItems->push([
+                                'id' => $option['id'] ?? uniqid(),
+                                'step_label' => $step['title'] ?? 'Config',
+                                'question_label' => $question['label'], // "Select your Room Size"
+                                'name' => $option['label'],
+                                'image' => $option['image_path'] ?? $option['image'] ?? null,
+                                'sku' => '-', // No SKU for generic option
+                                'quantity' => 1,
+                                'type' => 'option'
+                            ]);
+                        }
+                    }
+                }
+            }
+        }
+    } else {
+        // Fallback for direct product ID selections (Legacy/Simple Mode)
+        $ids = collect($selection)->flatten()->filter(function ($value) {
+            return is_string($value) || is_int($value);
+        })->unique()->values();
+
+        if ($ids->isNotEmpty()) {
+            $products = \Modules\Core\Models\Product::whereIn('id', $ids)->get();
+            $summaryItems = $products->map(function ($product) use ($quantities) {
+                return [
+                    'id' => $product->id,
+                    'step_label' => 'Product Selection',
+                    'question_label' => 'Selected Item',
+                    'name' => $product->name,
+                    'image' => $product->image_path,
+                    'sku' => $product->sku,
+                    'quantity' => $quantities[$product->id] ?? 1,
+                    'type' => 'product'
+                ];
+            });
+        }
+    }
+
+    return Inertia::render('ConfiguratorComplete', [
+        'selection' => $selection,
+        'userInfo' => $request->input('userInfo'),
+        'uuid' => $request->input('uuid'),
+        'configurator' => $request->input('configurator'),
+        'summaryItems' => $summaryItems
+    ]);
+})->name('configurator.complete');
+
+// Brand routes are now handled by Modules/Core
