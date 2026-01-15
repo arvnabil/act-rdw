@@ -1,20 +1,20 @@
-import { Head, Link } from "@inertiajs/react";
+import { Head } from "@inertiajs/react";
 import MainLayout from "@/Layouts/MainLayout";
-import HeroSection from "@/Components/Sections/HeroSection";
-import AboutSection from "@/Components/Sections/AboutSection";
-import ServiceSection from "@/Components/Sections/ServiceSection";
-import BrandSection from "@/Components/Sections/BrandSection";
-import WhyChooseUsSection from "@/Components/Sections/WhyChooseUsSection";
-import ProjectSection from "@/Components/Sections/ProjectSection";
-import ClientSection from "@/Components/Sections/ClientSection";
-import NewsSection from "@/Components/Sections/NewsSection";
+import SliderSection from "@/Components/Sections/Home/SliderSection";
+import AboutSection from "@/Components/Sections/Home/AboutSection";
+import ServiceSection from "@/Components/Sections/Home/ServiceSection";
+import BrandSection from "@/Components/Sections/Home/BrandSection";
+import WhyChooseUsSection from "@/Components/Sections/Home/WhyChooseUsSection";
+import ProjectSection from "@/Components/Sections/Home/ProjectSection";
+import ClientSection from "@/Components/Sections/Common/ClientSection";
+import NewsSection from "@/Components/Sections/Home/NewsSection";
 
 export default function Home({ services }) {
     return (
         <MainLayout>
             <Head title="Home" />
 
-            <HeroSection />
+            <SliderSection />
 
             <AboutSection />
 

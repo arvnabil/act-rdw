@@ -3,6 +3,9 @@ import { Head, Link, router } from "@inertiajs/react";
 import MainLayout from "@/Layouts/MainLayout";
 import Breadcrumb from "@/Components/Common/Breadcrumb";
 import ConfiguratorSubmitModal from "@/Components/Configurator/ConfiguratorSubmitModal";
+import SelectionCard from "@/Components/Sections/Configurator/Common/SelectionCard";
+import WizardStepper from "@/Components/Sections/Configurator/Common/WizardStepper";
+import WizardNavigation from "@/Components/Sections/Configurator/Common/WizardNavigation";
 
 export default function SurveillanceConfigurator() {
     const [step, setStep] = useState(1);
@@ -305,79 +308,11 @@ export default function SurveillanceConfigurator() {
 
                     <div className="wizard-container bg-white rounded-20 shadow-sm p-4 p-lg-5">
                         {/* Stepper */}
-                        <div className="stepper mb-5">
-                            <div className="d-flex justify-content-between position-relative">
-                                <div
-                                    className="position-absolute w-100 top-50 start-0 translate-middle-y"
-                                    style={{
-                                        height: "2px",
-                                        background: "#E5E7EB",
-                                        zIndex: 0,
-                                    }}
-                                ></div>
-                                <div
-                                    className="position-absolute top-50 start-0 translate-middle-y"
-                                    style={{
-                                        height: "2px",
-                                        background: themeColor,
-                                        width: `${
-                                            ((step - 1) / (steps.length - 1)) *
-                                            100
-                                        }%`,
-                                        transition: "width 0.4s",
-                                        zIndex: 0,
-                                    }}
-                                ></div>
-
-                                {steps.map((s) => (
-                                    <div
-                                        key={s.id}
-                                        className="text-center position-relative"
-                                        style={{ zIndex: 1, width: "40px" }}
-                                    >
-                                        <div
-                                            className="d-flex align-items-center justify-content-center mx-auto mb-2 fw-bold"
-                                            style={{
-                                                width: "32px",
-                                                height: "32px",
-                                                borderRadius: "50%",
-                                                backgroundColor:
-                                                    step >= s.id
-                                                        ? themeColor
-                                                        : "#fff",
-                                                color:
-                                                    step >= s.id
-                                                        ? "#fff"
-                                                        : "#9CA3AF",
-                                                border: `2px solid ${
-                                                    step >= s.id
-                                                        ? themeColor
-                                                        : "#E5E7EB"
-                                                }`,
-                                                transition: "all 0.3s",
-                                                fontSize: "12px",
-                                            }}
-                                        >
-                                            {step > s.id ? (
-                                                <i className="fa-solid fa-check"></i>
-                                            ) : (
-                                                s.id
-                                            )}
-                                        </div>
-                                        <small
-                                            className={`d-none d-lg-block fw-bold pt-1 ${
-                                                step >= s.id
-                                                    ? "text-dark"
-                                                    : "text-muted"
-                                            }`}
-                                            style={{ fontSize: "10px" }}
-                                        >
-                                            {s.label}
-                                        </small>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+                        <WizardStepper
+                            steps={steps}
+                            currentStep={step}
+                            themeColor={themeColor}
+                        />
 
                         {/* Content */}
                         <div className="step-content animate-fade">
@@ -393,39 +328,22 @@ export default function SurveillanceConfigurator() {
                                                 className="col-md-6 col-lg-3"
                                                 key={item.id}
                                             >
-                                                <div
-                                                    className="selection-card p-4 rounded-3 text-center h-100 transition-all"
-                                                    style={{
-                                                        border: "2px solid",
-                                                        ...(selection.premise
+                                                <SelectionCard
+                                                    selected={
+                                                        selection.premise
                                                             ?.id === item.id
-                                                            ? activeStyle
-                                                            : defaultStyle),
-                                                        cursor: "pointer",
-                                                    }}
+                                                    }
                                                     onClick={() =>
                                                         handleSelection(
                                                             "premise",
                                                             item
                                                         )
                                                     }
-                                                >
-                                                    <div className="mb-3">
-                                                        <img
-                                                            src={item.icon}
-                                                            alt={item.name}
-                                                            style={{
-                                                                height: "40px",
-                                                            }}
-                                                        />
-                                                    </div>
-                                                    <h6 className="mb-2">
-                                                        {item.name}
-                                                    </h6>
-                                                    <small className="text-muted">
-                                                        {item.desc}
-                                                    </small>
-                                                </div>
+                                                    icon={item.icon}
+                                                    title={item.name}
+                                                    subtitle={item.desc}
+                                                    themeColor={themeColor}
+                                                />
                                             </div>
                                         ))}
                                     </div>
@@ -444,39 +362,22 @@ export default function SurveillanceConfigurator() {
                                                 className="col-md-4"
                                                 key={item.id}
                                             >
-                                                <div
-                                                    className="selection-card p-4 rounded-3 text-center h-100 transition-all"
-                                                    style={{
-                                                        border: "2px solid",
-                                                        ...(selection.areaSize
+                                                <SelectionCard
+                                                    selected={
+                                                        selection.areaSize
                                                             ?.id === item.id
-                                                            ? activeStyle
-                                                            : defaultStyle),
-                                                        cursor: "pointer",
-                                                    }}
+                                                    }
                                                     onClick={() =>
                                                         handleSelection(
                                                             "areaSize",
                                                             item
                                                         )
                                                     }
-                                                >
-                                                    <div className="mb-3">
-                                                        <img
-                                                            src={item.icon}
-                                                            alt={item.name}
-                                                            style={{
-                                                                height: "50px",
-                                                            }}
-                                                        />
-                                                    </div>
-                                                    <h5 className="h6 mb-2">
-                                                        {item.name}
-                                                    </h5>
-                                                    <small className="text-muted">
-                                                        {item.desc}
-                                                    </small>
-                                                </div>
+                                                    icon={item.icon}
+                                                    title={item.name}
+                                                    subtitle={item.desc}
+                                                    themeColor={themeColor}
+                                                />
                                             </div>
                                         ))}
                                     </div>
@@ -503,48 +404,19 @@ export default function SurveillanceConfigurator() {
                                                     className="col-md-4"
                                                     key={item.id}
                                                 >
-                                                    <div
-                                                        className="selection-card p-4 rounded-3 text-center h-100 transition-all position-relative"
-                                                        style={{
-                                                            border: "2px solid",
-                                                            ...(isSelected
-                                                                ? activeStyle
-                                                                : defaultStyle),
-                                                            cursor: "pointer",
-                                                        }}
+                                                    <SelectionCard
+                                                        selected={isSelected}
                                                         onClick={() =>
                                                             handleToggle(
                                                                 "cameraType",
                                                                 item
                                                             )
                                                         }
-                                                    >
-                                                        {isSelected && (
-                                                            <div
-                                                                className="position-absolute top-0 end-0 m-3"
-                                                                style={{
-                                                                    color: themeColor,
-                                                                }}
-                                                            >
-                                                                <i className="fa-solid fa-circle-check fa-lg"></i>
-                                                            </div>
-                                                        )}
-                                                        <div className="mb-3">
-                                                            <img
-                                                                src={item.icon}
-                                                                alt={item.name}
-                                                                style={{
-                                                                    height: "50px",
-                                                                }}
-                                                            />
-                                                        </div>
-                                                        <h5 className="h6 mb-2">
-                                                            {item.name}
-                                                        </h5>
-                                                        <small className="text-muted">
-                                                            {item.desc}
-                                                        </small>
-                                                    </div>
+                                                        icon={item.icon}
+                                                        title={item.name}
+                                                        subtitle={item.desc}
+                                                        themeColor={themeColor}
+                                                    />
                                                 </div>
                                             );
                                         })}
@@ -569,21 +441,16 @@ export default function SurveillanceConfigurator() {
                                                     className="col-md-6"
                                                     key={item.id}
                                                 >
-                                                    <div
-                                                        className="selection-card p-3 rounded-3 h-100 d-flex align-items-center bg-white border"
-                                                        style={{
-                                                            borderColor:
-                                                                isSelected
-                                                                    ? themeColor
-                                                                    : "#E5E7EB",
-                                                            cursor: "pointer",
-                                                        }}
+                                                    <SelectionCard
+                                                        selected={isSelected}
                                                         onClick={() =>
                                                             handleToggle(
                                                                 "features",
                                                                 item
                                                             )
                                                         }
+                                                        themeColor={themeColor}
+                                                        className="d-flex align-items-center text-start p-3" // Override text-center with text-start, reduce padding
                                                     >
                                                         <div className="me-3">
                                                             <i className="fa-solid fa-microchip text-muted"></i>
@@ -596,15 +463,7 @@ export default function SurveillanceConfigurator() {
                                                                 {item.desc}
                                                             </small>
                                                         </div>
-                                                        {isSelected && (
-                                                            <i
-                                                                className="fa-solid fa-check ms-auto"
-                                                                style={{
-                                                                    color: themeColor,
-                                                                }}
-                                                            ></i>
-                                                        )}
-                                                    </div>
+                                                    </SelectionCard>
                                                 </div>
                                             );
                                         })}
@@ -625,34 +484,25 @@ export default function SurveillanceConfigurator() {
                                                     className="col-md-3 col-6"
                                                     key={item.id}
                                                 >
-                                                    <div
-                                                        className="selection-card p-4 rounded-3 text-center h-100 transition-all"
-                                                        style={{
-                                                            border: "2px solid",
-                                                            ...(selection
-                                                                .retention
+                                                    <SelectionCard
+                                                        selected={
+                                                            selection.retention
                                                                 ?.id === item.id
-                                                                ? activeStyle
-                                                                : defaultStyle),
-                                                            cursor: "pointer",
-                                                        }}
+                                                        }
                                                         onClick={() =>
                                                             handleSelection(
                                                                 "retention",
                                                                 item
                                                             )
                                                         }
+                                                        title={item.name}
+                                                        subtitle={item.desc}
+                                                        themeColor={themeColor}
                                                     >
                                                         <h5 className="h4 fw-bold mb-1">
                                                             <i className="fa-regular fa-clock me-2 text-muted"></i>
                                                         </h5>
-                                                        <h6 className="mb-1">
-                                                            {item.name}
-                                                        </h6>
-                                                        <small className="text-muted">
-                                                            {item.desc}
-                                                        </small>
-                                                    </div>
+                                                    </SelectionCard>
                                                 </div>
                                             )
                                         )}
@@ -672,22 +522,18 @@ export default function SurveillanceConfigurator() {
                                                 className="col-6 col-md-3"
                                                 key={item.id}
                                             >
-                                                <div
-                                                    className="selection-card p-4 rounded-3 text-center h-100 transition-all"
-                                                    style={{
-                                                        border: "2px solid",
-                                                        ...(selection.brand
-                                                            ?.id === item.id
-                                                            ? activeStyle
-                                                            : defaultStyle),
-                                                        cursor: "pointer",
-                                                    }}
+                                                <SelectionCard
+                                                    selected={
+                                                        selection.brand?.id ===
+                                                        item.id
+                                                    }
                                                     onClick={() =>
                                                         handleSelection(
                                                             "brand",
                                                             item
                                                         )
                                                     }
+                                                    themeColor={themeColor}
                                                 >
                                                     <div
                                                         className="p-2 mb-2 d-flex align-items-center justify-content-center"
@@ -695,11 +541,24 @@ export default function SurveillanceConfigurator() {
                                                             height: "60px",
                                                         }}
                                                     >
-                                                        <h5 className="mb-0">
-                                                            {item.name}
-                                                        </h5>
+                                                        {item.logo ? (
+                                                            <img
+                                                                src={item.logo}
+                                                                alt={item.name}
+                                                                style={{
+                                                                    maxHeight:
+                                                                        "100%",
+                                                                    maxWidth:
+                                                                        "100%",
+                                                                }}
+                                                            />
+                                                        ) : (
+                                                            <h5 className="mb-0">
+                                                                {item.name}
+                                                            </h5>
+                                                        )}
                                                     </div>
-                                                </div>
+                                                </SelectionCard>
                                             </div>
                                         ))}
                                     </div>
@@ -796,34 +655,13 @@ export default function SurveillanceConfigurator() {
                         </div>
 
                         {/* Navigation Buttons */}
-                        <div className="d-flex justify-content-between mt-5 pt-4 border-top">
-                            <button
-                                className="th-btn style4 th-radius"
-                                onClick={prevStep}
-                                disabled={step === 1}
-                                style={{
-                                    visibility:
-                                        step === 1 ? "hidden" : "visible",
-                                    padding: "12px 30px",
-                                }}
-                            >
-                                <i className="fa-solid fa-arrow-left me-2"></i>{" "}
-                                Back
-                            </button>
-                            {step < 7 ? (
-                                <button
-                                    className="th-btn th-radius shadow-none"
-                                    style={{
-                                        backgroundColor: themeColor,
-                                        borderColor: themeColor,
-                                    }}
-                                    onClick={nextStep}
-                                >
-                                    Next Step{" "}
-                                    <i className="fa-solid fa-arrow-right ms-2"></i>
-                                </button>
-                            ) : null}
-                        </div>
+                        <WizardNavigation
+                            onNext={nextStep}
+                            onPrev={prevStep}
+                            isFirstStep={step === 1}
+                            isLastStep={step === 7}
+                            themeColor={themeColor}
+                        />
                     </div>
                 </div>
             </section>

@@ -4,6 +4,9 @@ import MainLayout from "@/Layouts/MainLayout";
 import Breadcrumb from "@/Components/Common/Breadcrumb";
 import Toast from "@/Components/Common/Toast";
 import ConfiguratorSubmitModal from "@/Components/Configurator/ConfiguratorSubmitModal";
+import SelectionCard from "@/Components/Sections/Configurator/Common/SelectionCard";
+import WizardStepper from "@/Components/Sections/Configurator/Common/WizardStepper";
+import WizardNavigation from "@/Components/Sections/Configurator/Common/WizardNavigation";
 
 export default function RoomConfigurator() {
     const [step, setStep] = useState(1);
@@ -791,78 +794,11 @@ export default function RoomConfigurator() {
 
                     <div className="wizard-container bg-white rounded-20 shadow-sm p-4 p-lg-5">
                         {/* Stepper */}
-                        <div className="stepper mb-5">
-                            <div className="d-flex justify-content-between position-relative">
-                                <div
-                                    className="position-absolute w-100 top-50 start-0 translate-middle-y"
-                                    style={{
-                                        height: "2px",
-                                        background: "#E5E7EB",
-                                        zIndex: 0,
-                                    }}
-                                ></div>
-                                <div
-                                    className="position-absolute top-50 start-0 translate-middle-y"
-                                    style={{
-                                        height: "2px",
-                                        background: themeColor,
-                                        width: `${
-                                            ((step - 1) / (steps.length - 1)) *
-                                            100
-                                        }%`,
-                                        transition: "width 0.4s",
-                                        zIndex: 0,
-                                    }}
-                                ></div>
-
-                                {steps.map((s) => (
-                                    <div
-                                        key={s.id}
-                                        className="text-center position-relative"
-                                        style={{ zIndex: 1, width: "80px" }}
-                                    >
-                                        <div
-                                            className="d-flex align-items-center justify-content-center mx-auto mb-2 fw-bold"
-                                            style={{
-                                                width: "32px",
-                                                height: "32px",
-                                                borderRadius: "50%",
-                                                backgroundColor:
-                                                    step >= s.id
-                                                        ? themeColor
-                                                        : "#fff",
-                                                color:
-                                                    step >= s.id
-                                                        ? "#fff"
-                                                        : "#9CA3AF",
-                                                border: `2px solid ${
-                                                    step >= s.id
-                                                        ? themeColor
-                                                        : "#E5E7EB"
-                                                }`,
-                                                transition: "all 0.3s",
-                                            }}
-                                        >
-                                            {step > s.id ? (
-                                                <i className="fa-solid fa-check"></i>
-                                            ) : (
-                                                s.id
-                                            )}
-                                        </div>
-                                        <small
-                                            className={`d-none d-md-block fw-bold pt-3 ${
-                                                step >= s.id
-                                                    ? "text-dark"
-                                                    : "text-muted"
-                                            }`}
-                                            style={{ fontSize: "12px" }}
-                                        >
-                                            {s.label}
-                                        </small>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
+                        <WizardStepper
+                            steps={steps}
+                            currentStep={step}
+                            themeColor={themeColor}
+                        />
 
                         {/* Step Content */}
                         <div className="step-content animate-fade">
@@ -883,38 +819,22 @@ export default function RoomConfigurator() {
                                                 className="col-md-4"
                                                 key={room.id}
                                             >
-                                                <div
-                                                    className="selection-card p-4 rounded-3 text-center h-100 transition-all"
-                                                    style={{
-                                                        border: "2px solid",
-                                                        ...(selection.roomType ===
-                                                        room.id
-                                                            ? activeStyle
-                                                            : defaultStyle),
-                                                        cursor: "pointer",
-                                                    }}
+                                                <SelectionCard
+                                                    selected={
+                                                        selection.roomType
+                                                            ?.id === room.id
+                                                    }
                                                     onClick={() =>
                                                         handleSelection(
                                                             "roomType",
-                                                            room.id
+                                                            room
                                                         )
                                                     }
-                                                >
-                                                    <img
-                                                        src={room.icon}
-                                                        alt={room.name}
-                                                        className="mb-3"
-                                                        style={{
-                                                            height: "50px",
-                                                        }}
-                                                    />
-                                                    <h5 className="h6 mb-1">
-                                                        {room.name}
-                                                    </h5>
-                                                    <small className="text-muted">
-                                                        {room.desc}
-                                                    </small>
-                                                </div>
+                                                    icon={room.icon}
+                                                    title={room.name}
+                                                    subtitle={room.desc}
+                                                    themeColor={themeColor}
+                                                />
                                             </div>
                                         ))}
                                     </div>
@@ -929,32 +849,43 @@ export default function RoomConfigurator() {
                                                 className="col-md-4"
                                                 key={brand.id}
                                             >
-                                                <div
-                                                    className="selection-card p-4 rounded-3 text-center h-100 transition-all"
-                                                    style={{
-                                                        border: "2px solid",
-                                                        ...(selection.brand ===
+                                                <SelectionCard
+                                                    selected={
+                                                        selection.brand?.id ===
                                                         brand.id
-                                                            ? activeStyle
-                                                            : defaultStyle),
-                                                        cursor: "pointer",
-                                                    }}
+                                                    }
                                                     onClick={() =>
                                                         handleSelection(
                                                             "brand",
-                                                            brand.id
+                                                            brand
                                                         )
                                                     }
+                                                    themeColor={themeColor}
                                                 >
-                                                    <img
-                                                        src={brand.logo}
-                                                        alt={brand.name}
-                                                        className="img-fluid"
+                                                    <div
+                                                        className="d-flex align-items-center justify-content-center p-3"
                                                         style={{
-                                                            maxHeight: "40px",
+                                                            height: "80px",
                                                         }}
-                                                    />
-                                                </div>
+                                                    >
+                                                        {brand.logo ? (
+                                                            <img
+                                                                src={brand.logo}
+                                                                alt={brand.name}
+                                                                style={{
+                                                                    maxHeight:
+                                                                        "100%",
+                                                                    maxWidth:
+                                                                        "100%",
+                                                                }}
+                                                            />
+                                                        ) : (
+                                                            <h5 className="mb-0 fw-bold text-secondary">
+                                                                {brand.name}
+                                                            </h5>
+                                                        )}
+                                                    </div>
+                                                </SelectionCard>
                                             </div>
                                         ))}
                                     </div>
@@ -973,35 +904,40 @@ export default function RoomConfigurator() {
                                                 className="col-6 col-md-3"
                                                 key={platform.id}
                                             >
-                                                <div
-                                                    className="selection-card p-4 rounded-3 text-center h-100 transition-all"
-                                                    style={{
-                                                        border: "2px solid",
-                                                        ...(selection.platform ===
-                                                        platform.id
-                                                            ? activeStyle
-                                                            : defaultStyle),
-                                                        cursor: "pointer",
-                                                    }}
+                                                <SelectionCard
+                                                    selected={
+                                                        selection.platform
+                                                            ?.id === platform.id
+                                                    }
                                                     onClick={() =>
                                                         handleSelection(
                                                             "platform",
-                                                            platform.id
+                                                            platform
                                                         )
                                                     }
+                                                    themeColor={themeColor}
                                                 >
-                                                    <img
-                                                        src={platform.icon}
-                                                        alt={platform.name}
-                                                        className="mb-3"
+                                                    <div
+                                                        className="d-flex align-items-center justify-content-center mb-3"
                                                         style={{
-                                                            height: "40px",
+                                                            height: "60px",
                                                         }}
-                                                    />
-                                                    <h6 className="mb-0 fs-6">
+                                                    >
+                                                        <img
+                                                            src={platform.icon}
+                                                            alt={platform.name}
+                                                            style={{
+                                                                maxHeight:
+                                                                    "100%",
+                                                                maxWidth:
+                                                                    "100%",
+                                                            }}
+                                                        />
+                                                    </div>
+                                                    <h6 className="mb-0 fw-bold">
                                                         {platform.name}
                                                     </h6>
-                                                </div>
+                                                </SelectionCard>
                                             </div>
                                         ))}
                                     </div>
@@ -1021,38 +957,40 @@ export default function RoomConfigurator() {
                                                     className="col-md-5"
                                                     key={deploy.id}
                                                 >
-                                                    <div
-                                                        className="selection-card p-4 rounded-3 text-center h-100 transition-all"
-                                                        style={{
-                                                            border: "2px solid",
-                                                            ...(selection.deployment ===
+                                                    <SelectionCard
+                                                        selected={
+                                                            selection.deployment
+                                                                ?.id ===
                                                             deploy.id
-                                                                ? activeStyle
-                                                                : defaultStyle),
-                                                            cursor: "pointer",
-                                                        }}
+                                                        }
                                                         onClick={() =>
                                                             handleSelection(
                                                                 "deployment",
-                                                                deploy.id
+                                                                deploy
                                                             )
                                                         }
+                                                        themeColor={themeColor}
                                                     >
-                                                        <img
-                                                            src={deploy.icon}
-                                                            alt={deploy.name}
-                                                            className="mb-3"
-                                                            style={{
-                                                                height: "50px",
-                                                            }}
-                                                        />
-                                                        <h5 className="h5 mb-2">
+                                                        <div className="mb-3">
+                                                            <img
+                                                                src={
+                                                                    deploy.icon
+                                                                }
+                                                                alt={
+                                                                    deploy.name
+                                                                }
+                                                                style={{
+                                                                    height: "50px",
+                                                                }}
+                                                            />
+                                                        </div>
+                                                        <h6 className="mb-2 fw-bold">
                                                             {deploy.name}
-                                                        </h5>
-                                                        <p className="small text-muted mb-0">
+                                                        </h6>
+                                                        <small className="text-muted">
                                                             {deploy.desc}
-                                                        </p>
-                                                    </div>
+                                                        </small>
+                                                    </SelectionCard>
                                                 </div>
                                             )
                                         )}
@@ -1090,23 +1028,20 @@ export default function RoomConfigurator() {
                                                             className="col-lg-6"
                                                             key={product.id}
                                                         >
-                                                            <div
-                                                                className={`selection-card p-4 rounded-4 h-100 position-relative ${
+                                                            <SelectionCard
+                                                                selected={
+                                                                    isSelected
+                                                                }
+                                                                themeColor={
+                                                                    themeColor
+                                                                }
+                                                                className={`p-4 h-100 position-relative ${
                                                                     isSelected
                                                                         ? "shadow-lg"
                                                                         : "shadow-sm"
                                                                 }`}
-                                                                style={{
-                                                                    border: "2px solid",
-                                                                    borderColor:
-                                                                        isSelected
-                                                                            ? themeColor
-                                                                            : "#E5E7EB",
-                                                                    transition:
-                                                                        "all 0.3s",
-                                                                }}
                                                             >
-                                                                {/* Main Product Selection (Single Select) */}
+                                                                {/* Main Product Selection */}
                                                                 <div
                                                                     className="d-flex align-items-center mb-4"
                                                                     style={{
@@ -1140,7 +1075,7 @@ export default function RoomConfigurator() {
                                                                     }
                                                                 >
                                                                     <div
-                                                                        className="flex-shrink-0 me-4 bg-white p-2 rounded border"
+                                                                        className="shrink-0 me-4 bg-white p-2 rounded border"
                                                                         style={{
                                                                             width: "100px",
                                                                             height: "100px",
@@ -1168,7 +1103,7 @@ export default function RoomConfigurator() {
                                                                             }}
                                                                         />
                                                                     </div>
-                                                                    <div className="flex-grow-1">
+                                                                    <div className="grow">
                                                                         <div className="d-flex justify-content-between align-items-center mb-1">
                                                                             <h5 className="h6 fw-bold mb-0">
                                                                                 {
@@ -1192,7 +1127,7 @@ export default function RoomConfigurator() {
                                                                     </div>
                                                                 </div>
 
-                                                                {/* Quantity Input (Only if selected) */}
+                                                                {/* Quantity Input */}
                                                                 {isSelected && (
                                                                     <div className="mb-3 d-flex align-items-center bg-light p-2 rounded">
                                                                         <label className="small fw-bold me-3 mb-0">
@@ -1228,19 +1163,22 @@ export default function RoomConfigurator() {
                                                                                         key={
                                                                                             acc.id
                                                                                         }
-                                                                                        className="d-flex justify-content-between align-items-center mb-2 p-2 rounded bg-white border"
+                                                                                        className={`d-flex align-items-center bg-white p-3 rounded mb-2 border transition-all ${
+                                                                                            isAccSelected
+                                                                                                ? "border-success bg-gradient-success-subtle"
+                                                                                                : ""
+                                                                                        }`}
                                                                                         style={{
                                                                                             cursor: "pointer",
                                                                                             borderColor:
                                                                                                 isAccSelected
                                                                                                     ? themeColor
-                                                                                                    : "#eee",
+                                                                                                    : "#E5E7EB",
                                                                                         }}
                                                                                         onClick={(
                                                                                             e
                                                                                         ) => {
                                                                                             e.stopPropagation();
-                                                                                            // Check if trying to select add-on without main product (camera)
                                                                                             if (
                                                                                                 !isSelected
                                                                                             ) {
@@ -1258,46 +1196,51 @@ export default function RoomConfigurator() {
                                                                                             );
                                                                                         }}
                                                                                     >
-                                                                                        <div className="d-flex align-items-center">
-                                                                                            <div
-                                                                                                className={`rounded-circle border d-flex align-items-center justify-content-center me-2 ${
+                                                                                        <div className="form-check">
+                                                                                            <input
+                                                                                                className="form-check-input"
+                                                                                                type="checkbox"
+                                                                                                checked={
                                                                                                     isAccSelected
-                                                                                                        ? "bg-success text-white"
-                                                                                                        : ""
-                                                                                                }`}
+                                                                                                }
+                                                                                                onChange={() => {}}
                                                                                                 style={{
-                                                                                                    width: "20px",
-                                                                                                    height: "20px",
-                                                                                                    borderColor:
-                                                                                                        isAccSelected
-                                                                                                            ? themeColor
-                                                                                                            : "#ddd",
+                                                                                                    cursor: "pointer",
                                                                                                 }}
-                                                                                            >
-                                                                                                {isAccSelected && (
-                                                                                                    <i
-                                                                                                        className="fa-solid fa-check"
-                                                                                                        style={{
-                                                                                                            fontSize:
-                                                                                                                "10px",
-                                                                                                        }}
-                                                                                                    ></i>
-                                                                                                )}
-                                                                                            </div>
-                                                                                            <span className="small fw-medium">
+                                                                                            />
+                                                                                        </div>
+                                                                                        <div className="ms-3 grow">
+                                                                                            <span className="fw-bold d-block text-sm">
                                                                                                 {
                                                                                                     acc.name
                                                                                                 }
                                                                                             </span>
+                                                                                            <small className="text-muted">
+                                                                                                {
+                                                                                                    acc.desc
+                                                                                                }
+                                                                                            </small>
                                                                                         </div>
-                                                                                        {/* Quantity for Accessory? User said "accesories optional in card", "If Device add form quantity". Assuming main device has quantity. */}
+                                                                                        {isAccSelected && (
+                                                                                            <div
+                                                                                                onClick={(
+                                                                                                    e
+                                                                                                ) =>
+                                                                                                    e.stopPropagation()
+                                                                                                }
+                                                                                            >
+                                                                                                {renderQuantityControl(
+                                                                                                    acc.id
+                                                                                                )}
+                                                                                            </div>
+                                                                                        )}
                                                                                     </div>
                                                                                 );
                                                                             }
                                                                         )}
                                                                     </div>
                                                                 )}
-                                                            </div>
+                                                            </SelectionCard>
                                                         </div>
                                                     );
                                                 }
@@ -1326,44 +1269,47 @@ export default function RoomConfigurator() {
                                                             className="col-md-6"
                                                             key={pc.id}
                                                         >
-                                                            <div
-                                                                className={`selection-card p-4 rounded-4 h-100 position-relative ${
+                                                            <SelectionCard
+                                                                selected={
+                                                                    isSelected
+                                                                }
+                                                                themeColor={
+                                                                    themeColor
+                                                                }
+                                                                className={`p-4 h-100 position-relative ${
                                                                     isSelected
                                                                         ? "shadow-lg"
                                                                         : "shadow-sm"
                                                                 }`}
-                                                                style={{
-                                                                    border: "2px solid",
-                                                                    borderColor:
-                                                                        isSelected
-                                                                            ? themeColor
-                                                                            : "#E5E7EB",
-                                                                    cursor: "pointer",
-                                                                }}
-                                                                onClick={() =>
-                                                                    setSelection(
-                                                                        (
-                                                                            prev
-                                                                        ) => ({
-                                                                            ...prev,
-                                                                            pc: pc,
-                                                                            quantities:
-                                                                                {
-                                                                                    ...prev.quantities,
-                                                                                    [pc.id]:
-                                                                                        prev
-                                                                                            .quantities[
-                                                                                            pc
-                                                                                                .id
-                                                                                        ] ||
-                                                                                        1,
-                                                                                },
-                                                                        })
-                                                                    )
-                                                                }
                                                             >
-                                                                <div className="d-flex align-items-center mb-3">
-                                                                    <div className="flex-shrink-0 me-3">
+                                                                <div
+                                                                    className="d-flex align-items-center mb-3"
+                                                                    style={{
+                                                                        cursor: "pointer",
+                                                                    }}
+                                                                    onClick={() =>
+                                                                        setSelection(
+                                                                            (
+                                                                                prev
+                                                                            ) => ({
+                                                                                ...prev,
+                                                                                pc: pc,
+                                                                                quantities:
+                                                                                    {
+                                                                                        ...prev.quantities,
+                                                                                        [pc.id]:
+                                                                                            prev
+                                                                                                .quantities[
+                                                                                                pc
+                                                                                                    .id
+                                                                                            ] ||
+                                                                                            1,
+                                                                                    },
+                                                                            })
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <div className="shrink-0 me-3">
                                                                         <i className="fa-solid fa-desktop fa-3x text-muted"></i>
                                                                     </div>
                                                                     <div>
@@ -1446,7 +1392,7 @@ export default function RoomConfigurator() {
                                                                         )}
                                                                     </div>
                                                                 )}
-                                                            </div>
+                                                            </SelectionCard>
                                                         </div>
                                                     );
                                                 })}
@@ -1476,16 +1422,14 @@ export default function RoomConfigurator() {
                                                     className="col-md-4 col-lg-3"
                                                     key={audio.id}
                                                 >
-                                                    <div
-                                                        className="selection-card p-4 rounded-4 text-center h-100 position-relative"
-                                                        style={{
-                                                            border: "2px solid",
-                                                            borderColor:
-                                                                isSelected
-                                                                    ? themeColor
-                                                                    : "#E5E7EB",
-                                                            cursor: "pointer",
-                                                        }}
+                                                    <SelectionCard
+                                                        selected={isSelected}
+                                                        themeColor={themeColor}
+                                                        className={`p-4 rounded-4 text-center h-100 position-relative ${
+                                                            isSelected
+                                                                ? "shadow-lg"
+                                                                : ""
+                                                        }`}
                                                         onClick={() =>
                                                             handleToggle(
                                                                 "audio",
@@ -1534,7 +1478,7 @@ export default function RoomConfigurator() {
                                                                 )}
                                                             </div>
                                                         )}
-                                                    </div>
+                                                    </SelectionCard>
                                                 </div>
                                             );
                                         })}
@@ -1564,16 +1508,14 @@ export default function RoomConfigurator() {
                                                     className="col-md-6"
                                                     key={ctrl.id}
                                                 >
-                                                    <div
-                                                        className="selection-card p-4 rounded-4 h-100 d-flex align-items-center"
-                                                        style={{
-                                                            border: "2px solid",
-                                                            borderColor:
-                                                                isSelected
-                                                                    ? themeColor
-                                                                    : "#E5E7EB",
-                                                            cursor: "pointer",
-                                                        }}
+                                                    <SelectionCard
+                                                        selected={isSelected}
+                                                        themeColor={themeColor}
+                                                        className={`p-4 h-100 d-flex align-items-center ${
+                                                            isSelected
+                                                                ? "shadow-lg"
+                                                                : "shadow-sm"
+                                                        }`}
                                                         onClick={() =>
                                                             setSelection(
                                                                 (prev) => ({
@@ -1587,7 +1529,7 @@ export default function RoomConfigurator() {
                                                         <div className="me-4">
                                                             <i className="fa-solid fa-tablet-screen-button fa-3x text-muted"></i>
                                                         </div>
-                                                        <div className="flex-grow-1">
+                                                        <div className="grow">
                                                             <div className="d-flex justify-content-between align-items-center">
                                                                 <h5 className="h6 fw-bold mb-1">
                                                                     {ctrl.name}
@@ -1621,7 +1563,7 @@ export default function RoomConfigurator() {
                                                                 )}
                                                             </div>
                                                         )}
-                                                    </div>
+                                                    </SelectionCard>
                                                 </div>
                                             );
                                         })}
@@ -1643,15 +1585,14 @@ export default function RoomConfigurator() {
                                                         className="col-md-4"
                                                         key={acc.id}
                                                     >
-                                                        <div
-                                                            className="selection-card p-3 rounded-3 h-100 d-flex align-items-center bg-white border"
-                                                            style={{
-                                                                borderColor:
-                                                                    isSelected
-                                                                        ? themeColor
-                                                                        : "#E5E7EB",
-                                                                cursor: "pointer",
-                                                            }}
+                                                        <SelectionCard
+                                                            selected={
+                                                                isSelected
+                                                            }
+                                                            themeColor={
+                                                                themeColor
+                                                            }
+                                                            className="p-3 h-100 d-flex align-items-center bg-white border"
                                                             onClick={() =>
                                                                 handleToggle(
                                                                     "accessories",
@@ -1684,7 +1625,7 @@ export default function RoomConfigurator() {
                                                                     }}
                                                                 ></i>
                                                             )}
-                                                        </div>
+                                                        </SelectionCard>
                                                         {isSelected && (
                                                             <div className="mt-1 d-flex justify-content-end p-1">
                                                                 <div
@@ -1738,16 +1679,14 @@ export default function RoomConfigurator() {
                                                     className="col-md-4 col-lg-3"
                                                     key={acc.id}
                                                 >
-                                                    <div
-                                                        className="selection-card p-4 rounded-4 text-center h-100 position-relative"
-                                                        style={{
-                                                            border: "2px solid",
-                                                            borderColor:
-                                                                isSelected
-                                                                    ? themeColor
-                                                                    : "#E5E7EB",
-                                                            cursor: "pointer",
-                                                        }}
+                                                    <SelectionCard
+                                                        selected={isSelected}
+                                                        themeColor={themeColor}
+                                                        className={`p-4 rounded-4 text-center h-100 position-relative ${
+                                                            isSelected
+                                                                ? "shadow-lg"
+                                                                : ""
+                                                        }`}
                                                         onClick={() =>
                                                             handleToggle(
                                                                 "accessories",
@@ -1772,13 +1711,18 @@ export default function RoomConfigurator() {
                                                         )}
 
                                                         <div
-                                                            className="mb-3 d-flex align-items-center justify-content-center bg-light rounded-3 mx-auto"
+                                                            className="mb-3 d-flex align-items-center justify-content-center bg-white rounded-circle shadow-sm mx-auto"
                                                             style={{
-                                                                height: "60px",
                                                                 width: "60px",
+                                                                height: "60px",
                                                             }}
                                                         >
-                                                            <i className="fa-solid fa-puzzle-piece fa-lg text-muted"></i>
+                                                            <i
+                                                                className={`fa-solid ${
+                                                                    acc.icon ||
+                                                                    "fa-box"
+                                                                } fa-lg text-muted`}
+                                                            ></i>
                                                         </div>
                                                         <h6 className="mb-1 fw-bold">
                                                             {acc.name}
@@ -1802,7 +1746,7 @@ export default function RoomConfigurator() {
                                                                 )}
                                                             </div>
                                                         )}
-                                                    </div>
+                                                    </SelectionCard>
                                                 </div>
                                             );
                                         })}
@@ -1877,7 +1821,7 @@ export default function RoomConfigurator() {
                                                                 <div className="me-3 text-success">
                                                                     <i className="fa-solid fa-circle-check fa-lg"></i>
                                                                 </div>
-                                                                <div className="flex-grow-1">
+                                                                <div className="grow">
                                                                     <small
                                                                         className="text-muted d-block text-uppercase fw-bold"
                                                                         style={{
@@ -1950,63 +1894,53 @@ export default function RoomConfigurator() {
                                                                     {q.options.map(
                                                                         (
                                                                             opt
-                                                                        ) => (
-                                                                            <div
-                                                                                className="col-md-6"
-                                                                                key={
-                                                                                    opt
-                                                                                }
-                                                                            >
+                                                                        ) => {
+                                                                            const isSelected =
+                                                                                selection
+                                                                                    .services[
+                                                                                    q
+                                                                                        .id
+                                                                                ] ===
+                                                                                opt;
+                                                                            return (
                                                                                 <div
-                                                                                    className="p-3 border rounded-3 cursor-pointer d-flex align-items-center justify-content-between transition-all hover-scale"
-                                                                                    style={{
-                                                                                        borderColor:
-                                                                                            selection
-                                                                                                .services[
-                                                                                                q
-                                                                                                    .id
-                                                                                            ] ===
-                                                                                            opt
-                                                                                                ? themeColor
-                                                                                                : "#E5E7EB",
-                                                                                        backgroundColor:
-                                                                                            selection
-                                                                                                .services[
-                                                                                                q
-                                                                                                    .id
-                                                                                            ] ===
-                                                                                            opt
-                                                                                                ? "#F0FDF4"
-                                                                                                : "#fff",
-                                                                                    }}
-                                                                                    onClick={() =>
-                                                                                        handleServiceAnswer(
-                                                                                            q.id,
-                                                                                            opt
-                                                                                        )
+                                                                                    className="col-md-6"
+                                                                                    key={
+                                                                                        opt
                                                                                     }
                                                                                 >
-                                                                                    <span className="small fw-medium">
-                                                                                        {
-                                                                                            opt
+                                                                                    <SelectionCard
+                                                                                        selected={
+                                                                                            isSelected
                                                                                         }
-                                                                                    </span>
-                                                                                    {selection
-                                                                                        .services[
-                                                                                        q
-                                                                                            .id
-                                                                                    ] ===
-                                                                                        opt && (
-                                                                                        <i
-                                                                                            className="fa-solid fa-circle-check"
-                                                                                            style={{
-                                                                                                color: themeColor,
-                                                                                            }}
-                                                                                        ></i>
-                                                                                    )}
+                                                                                        themeColor={
+                                                                                            themeColor
+                                                                                        }
+                                                                                        className="p-3 d-flex align-items-center justify-content-between"
+                                                                                        onClick={() =>
+                                                                                            handleServiceAnswer(
+                                                                                                q.id,
+                                                                                                opt
+                                                                                            )
+                                                                                        }
+                                                                                    >
+                                                                                        <span className="small fw-medium">
+                                                                                            {
+                                                                                                opt
+                                                                                            }
+                                                                                        </span>
+                                                                                        {isSelected && (
+                                                                                            <i
+                                                                                                className="fa-solid fa-circle-check"
+                                                                                                style={{
+                                                                                                    color: themeColor,
+                                                                                                }}
+                                                                                            ></i>
+                                                                                        )}
+                                                                                    </SelectionCard>
                                                                                 </div>
-                                                                            </div>
-                                                                        )
+                                                                            );
+                                                                        }
                                                                     )}
                                                                 </div>
                                                             </div>
@@ -2054,19 +1988,14 @@ export default function RoomConfigurator() {
                                                                                         lic.id
                                                                                     }
                                                                                 >
-                                                                                    <div
-                                                                                        className={`p-3 border rounded-3 position-relative ${
+                                                                                    <SelectionCard
+                                                                                        selected={
                                                                                             isSelected
-                                                                                                ? "bg-light border-success"
-                                                                                                : "bg-white"
-                                                                                        }`}
-                                                                                        style={{
-                                                                                            cursor: "pointer",
-                                                                                            borderColor:
-                                                                                                isSelected
-                                                                                                    ? themeColor
-                                                                                                    : "#E5E7EB",
-                                                                                        }}
+                                                                                        }
+                                                                                        themeColor={
+                                                                                            themeColor
+                                                                                        }
+                                                                                        className="p-3 position-relative"
                                                                                         onClick={() => {
                                                                                             const newSelection =
                                                                                                 isSelected
@@ -2116,7 +2045,6 @@ export default function RoomConfigurator() {
                                                                                                 lic.desc
                                                                                             }
                                                                                         </p>
-
                                                                                         {isSelected && (
                                                                                             <div
                                                                                                 className="mt-3 pt-2 border-top d-flex align-items-center"
@@ -2134,7 +2062,7 @@ export default function RoomConfigurator() {
                                                                                                 )}
                                                                                             </div>
                                                                                         )}
-                                                                                    </div>
+                                                                                    </SelectionCard>
                                                                                 </div>
                                                                             );
                                                                         }
@@ -2164,19 +2092,14 @@ export default function RoomConfigurator() {
                                                                                 lic.id
                                                                             }
                                                                         >
-                                                                            <div
-                                                                                className={`p-3 border rounded-3 position-relative ${
+                                                                            <SelectionCard
+                                                                                selected={
                                                                                     isSelected
-                                                                                        ? "bg-light border-success"
-                                                                                        : "bg-white"
-                                                                                }`}
-                                                                                style={{
-                                                                                    cursor: "pointer",
-                                                                                    borderColor:
-                                                                                        isSelected
-                                                                                            ? themeColor
-                                                                                            : "#E5E7EB",
-                                                                                }}
+                                                                                }
+                                                                                themeColor={
+                                                                                    themeColor
+                                                                                }
+                                                                                className="p-3 position-relative"
                                                                                 onClick={() => {
                                                                                     const newSelection =
                                                                                         isSelected
@@ -2226,7 +2149,6 @@ export default function RoomConfigurator() {
                                                                                         lic.desc
                                                                                     }
                                                                                 </p>
-
                                                                                 {isSelected && (
                                                                                     <div
                                                                                         className="mt-3 pt-2 border-top d-flex align-items-center"
@@ -2244,7 +2166,7 @@ export default function RoomConfigurator() {
                                                                                         )}
                                                                                     </div>
                                                                                 )}
-                                                                            </div>
+                                                                            </SelectionCard>
                                                                         </div>
                                                                     );
                                                                 }
@@ -2270,19 +2192,14 @@ export default function RoomConfigurator() {
                                                                             war.id
                                                                         }
                                                                     >
-                                                                        <div
-                                                                            className={`p-3 border rounded-3 h-100 position-relative ${
+                                                                        <SelectionCard
+                                                                            selected={
                                                                                 isSelected
-                                                                                    ? "bg-light border-success"
-                                                                                    : "bg-white"
-                                                                            }`}
-                                                                            style={{
-                                                                                cursor: "pointer",
-                                                                                borderColor:
-                                                                                    isSelected
-                                                                                        ? themeColor
-                                                                                        : "#E5E7EB",
-                                                                            }}
+                                                                            }
+                                                                            themeColor={
+                                                                                themeColor
+                                                                            }
+                                                                            className="p-3 h-100 position-relative"
                                                                             onClick={() =>
                                                                                 setSelection(
                                                                                     (
@@ -2342,7 +2259,13 @@ export default function RoomConfigurator() {
                                                                                         e.stopPropagation()
                                                                                     }
                                                                                 >
-                                                                                    <label className="small fw-bold me-2 mb-0">
+                                                                                    <label
+                                                                                        className="small fw-bold me-2 mb-0"
+                                                                                        style={{
+                                                                                            fontSize:
+                                                                                                "10px",
+                                                                                        }}
+                                                                                    >
                                                                                         Qty:
                                                                                     </label>
                                                                                     {renderQuantityControl(
@@ -2350,7 +2273,7 @@ export default function RoomConfigurator() {
                                                                                     )}
                                                                                 </div>
                                                                             )}
-                                                                        </div>
+                                                                        </SelectionCard>
                                                                     </div>
                                                                 );
                                                             }
@@ -2516,7 +2439,7 @@ export default function RoomConfigurator() {
                                                                                         "contain",
                                                                                 }}
                                                                             />
-                                                                            <div className="lh-1 flex-grow-1">
+                                                                            <div className="lh-1 grow">
                                                                                 <span className="fw-medium d-block mb-1">
                                                                                     {
                                                                                         p.name
@@ -2549,7 +2472,7 @@ export default function RoomConfigurator() {
                                                                         >
                                                                             <i className="fa-solid fa-desktop text-muted"></i>
                                                                         </div>
-                                                                        <div className="lh-1 flex-grow-1">
+                                                                        <div className="lh-1 grow">
                                                                             <span className="fw-medium d-block mb-1">
                                                                                 {
                                                                                     selection
@@ -2590,7 +2513,7 @@ export default function RoomConfigurator() {
                                                                             >
                                                                                 <i className="fa-solid fa-microphone-lines text-muted"></i>
                                                                             </div>
-                                                                            <div className="lh-1 flex-grow-1">
+                                                                            <div className="lh-1 grow">
                                                                                 <span className="fw-medium d-block mb-1">
                                                                                     {
                                                                                         a.name
@@ -2639,7 +2562,7 @@ export default function RoomConfigurator() {
                                                                             >
                                                                                 <i className="fa-solid fa-tablet-screen-button text-muted"></i>
                                                                             </div>
-                                                                            <div className="lh-1 flex-grow-1">
+                                                                            <div className="lh-1 grow">
                                                                                 <span className="fw-medium d-block mb-1">
                                                                                     {
                                                                                         c.name
@@ -2678,7 +2601,7 @@ export default function RoomConfigurator() {
                                                                             >
                                                                                 <i className="fa-solid fa-puzzle-piece text-muted"></i>
                                                                             </div>
-                                                                            <div className="lh-1 flex-grow-1">
+                                                                            <div className="lh-1 grow">
                                                                                 <span className="fw-medium d-block mb-1">
                                                                                     {
                                                                                         a.name
@@ -2711,7 +2634,7 @@ export default function RoomConfigurator() {
                                                                         >
                                                                             <i className="fa-solid fa-file-contract text-muted"></i>
                                                                         </div>
-                                                                        <div className="lh-1 flex-grow-1">
+                                                                        <div className="lh-1 grow">
                                                                             <span className="fw-medium d-block mb-1">
                                                                                 {
                                                                                     selection
@@ -2746,7 +2669,7 @@ export default function RoomConfigurator() {
                                                                         >
                                                                             <i className="fa-solid fa-shield-halved text-muted"></i>
                                                                         </div>
-                                                                        <div className="lh-1 flex-grow-1">
+                                                                        <div className="lh-1 grow">
                                                                             <span className="fw-medium d-block mb-1">
                                                                                 {
                                                                                     selection
@@ -2781,43 +2704,14 @@ export default function RoomConfigurator() {
                             )}
                         </div>
 
-                        {/* Actions */}
-                        <div className="d-flex justify-content-between mt-5 pt-3 border-top">
-                            {step > 1 ? (
-                                <button
-                                    className="th-btn style4 th-radius"
-                                    onClick={prevStep}
-                                    style={{ padding: "12px 30px" }}
-                                >
-                                    <i className="fa-solid fa-arrow-left me-2"></i>{" "}
-                                    Back
-                                </button>
-                            ) : (
-                                <span></span>
-                            )}
-
-                            {step < 9 ? (
-                                <button
-                                    className="th-btn th-radius shadow-none"
-                                    style={{
-                                        backgroundColor: themeColor,
-                                        borderColor: themeColor,
-                                    }}
-                                    onClick={nextStep}
-                                >
-                                    Next Step{" "}
-                                    <i className="fa-solid fa-arrow-right ms-2"></i>
-                                </button>
-                            ) : (
-                                <button
-                                    className="th-btn th-radius shadow-none style8"
-                                    onClick={handleFinalization}
-                                >
-                                    Finalization Now{" "}
-                                    <i className="fa-solid fa-check ms-2"></i>
-                                </button>
-                            )}
-                        </div>
+                        {/* Navigation Buttons */}
+                        <WizardNavigation
+                            onNext={nextStep}
+                            onPrev={prevStep}
+                            isFirstStep={step === 1}
+                            isLastStep={step === 9}
+                            themeColor={themeColor}
+                        />
                     </div>
                 </div>
             </section>
