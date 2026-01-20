@@ -50,9 +50,13 @@ export default function ClientSection({ clients, title, subtitle }) {
                             <div className="swiper-wrapper">
                                 {list.map((brand, index) => (
                                     <div className="swiper-slide" key={index}>
-                                        <div className="brand-box">
+                                        <div
+                                            className="brand-box d-flex justify-content-center align-items-center"
+                                            style={{ minHeight: "100px" }}
+                                        >
                                             <a
                                                 href="#"
+                                                className="d-flex justify-content-center align-items-center w-100 h-100"
                                                 onClick={(e) =>
                                                     e.preventDefault()
                                                 }
@@ -67,6 +71,13 @@ export default function ClientSection({ clients, title, subtitle }) {
                                                               brand
                                                     }
                                                     alt="Brand Logo"
+                                                    style={{
+                                                        objectFit: "contain",
+                                                        width: "auto",
+                                                        height: "auto",
+                                                        maxWidth: "100%",
+                                                        maxHeight: "90px", // Limit height to prevent cropping
+                                                    }}
                                                 />
                                                 <img
                                                     className="gray"
@@ -78,6 +89,13 @@ export default function ClientSection({ clients, title, subtitle }) {
                                                               brand
                                                     }
                                                     alt="Brand Logo"
+                                                    style={{
+                                                        objectFit: "contain",
+                                                        width: "auto",
+                                                        height: "auto",
+                                                        maxWidth: "100%",
+                                                        maxHeight: "90px", // Limit height to prevent cropping
+                                                    }}
                                                 />
                                             </a>
                                         </div>
