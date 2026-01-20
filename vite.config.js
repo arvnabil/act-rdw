@@ -2,6 +2,8 @@ import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
 import react from "@vitejs/plugin-react";
 
+import legacy from "@vitejs/plugin-legacy";
+
 export default defineConfig({
     plugins: [
         laravel({
@@ -9,9 +11,22 @@ export default defineConfig({
             refresh: true,
         }),
         react(),
+        legacy({
+            targets: ["defaults", "not IE 11"],
+        }),
     ],
     build: {
-        target: "es2019", // ⬅️ PENTING
+        target: "es2015",
+        minify: "terser",
+        rollupOptions: {
+            output: {
+                manualChunks(id) {
+                    if (id.includes("node_modules")) {
+                        return "vendor";
+                    }
+                },
+            },
+        },
     },
     resolve: {
         alias: {
