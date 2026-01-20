@@ -380,20 +380,19 @@ export function useTemplateInit() {
         );
 
         // --- Magnific Popup ---
-        import("magnific-popup/dist/jquery.magnific-popup.js")
-            .then(() => {
-                $(".popup-video").magnificPopup({ type: "iframe" });
-                $(".popup-image").magnificPopup({
-                    type: "image",
-                    gallery: { enabled: true },
-                });
-                $(".popup-login-register").magnificPopup({
-                    type: "inline",
-                    fixedContentPos: false,
-                    focus: "#name",
-                });
-            })
-            .catch((e) => console.error("Magnific Popup failed to load", e));
+        // --- Magnific Popup ---
+        if ($.fn.magnificPopup) {
+            $(".popup-video").magnificPopup({ type: "iframe" });
+            $(".popup-image").magnificPopup({
+                type: "image",
+                gallery: { enabled: true },
+            });
+            $(".popup-login-register").magnificPopup({
+                type: "inline",
+                fixedContentPos: false,
+                focus: "#name",
+            });
+        }
 
         // --- Isotope ---
         $(".filter-active, .masonry-active").imagesLoaded(function () {
