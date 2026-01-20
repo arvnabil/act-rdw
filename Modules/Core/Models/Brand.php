@@ -9,7 +9,7 @@ class Brand extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'logo_path', 'website_url'];
+    protected $fillable = ['name', 'slug', 'logo_path', 'website_url', 'image', 'desc'];
 
     public function products()
     {
@@ -19,5 +19,10 @@ class Brand extends Model
     public function serviceSolutions()
     {
         return $this->belongsToMany(\Modules\ServiceSolutions\Models\ServiceSolution::class, 'service_solution_brand');
+    }
+
+    public function seo()
+    {
+        return $this->morphOne(\App\Models\SeoMeta::class, 'seoable');
     }
 }

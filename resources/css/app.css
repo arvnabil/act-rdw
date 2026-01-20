@@ -1,8 +1,34 @@
-@import 'bootstrap.min.css';
-@import 'fontawesome.min.css';
-@import 'magnific-popup.min.css';
-@import 'swiper-bundle.min.css';
-@import 'style.css';
+@import "bootstrap.min.css";
+@import "fontawesome.min.css";
+@import "magnific-popup.min.css";
+@import "swiper-bundle.min.css";
+@import "style.css";
 
 /* Tailwind is cool but let's prioritize the template styles for now to ensure 100% match */
-/* @import 'tailwindcss'; -- We can bring this back if we want to mix matches */
+@import "tailwindcss";
+
+/* Fix Centering for Hero Slider Arrows */
+.hero-2 .hero-arrow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+/* Fix Centering for Scroll Down Arrow */
+.hero-2 .scroll-down .scroll-wrap span {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.hero-2 .scroll-down .scroll-wrap span img {
+    margin-bottom: 0 !important;
+}
+
+/*
+   Optional: If the SVG itself is asymmetric (has extra space on right),
+   we might need a slight nudging.
+   Usually flex centering + padding 0 fixes standard icon fonts/svgs.
+*/

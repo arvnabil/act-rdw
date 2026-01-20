@@ -5,16 +5,17 @@ namespace Modules\Core\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Modules\ServiceSolutions\Models\Service;
+use App\Traits\HasSeoMeta;
 
 class Product extends Model
 {
-    use HasFactory;
+    use HasFactory, HasSeoMeta;
 
     protected $fillable = [
-        'service_id', 'brand_id', 'name', 'slug',
+        'service_id', 'product_category_id', 'brand_id', 'name', 'slug',
         'description', 'image_path', 'sku', 'solution_type',
         'datasheet_url', 'tags', 'specs', 'specification_text',
-        'features', 'features_text', 'is_active',
+        'features', 'features_text', 'is_active', 'is_featured',
         'price', 'link_accommerce'
     ];
 
@@ -23,6 +24,7 @@ class Product extends Model
         'tags' => 'array',
         'features' => 'array',
         'is_active' => 'boolean',
+        'is_featured' => 'boolean',
     ];
 
     public function service()
@@ -40,5 +42,15 @@ class Product extends Model
     public function configuratorOptions()
     {
         return $this->belongsToMany(\Modules\ServiceSolutions\Models\ConfiguratorOption::class, 'product_configurator_option');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(ProductCategory::class, 'product_category_id');
+    }
+
+    public function solutions()
+    {
+        return $this->belongsToMany(\Modules\ServiceSolutions\Models\ServiceSolution::class, 'product_service_solution');
     }
 }

@@ -16,7 +16,7 @@ class BrandResource extends Resource
 
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-tag';
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Master Data';
+    protected static string | \UnitEnum | null $navigationGroup = 'Core';
 
     protected static ?string $navigationLabel = 'Brands';
 

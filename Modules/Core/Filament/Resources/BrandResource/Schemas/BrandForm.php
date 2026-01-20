@@ -20,14 +20,17 @@ class BrandForm
                 ->unique(ignoreRecord: true),
             Forms\Components\FileUpload::make('image')
                 ->image()
-                ->directory('brands'),
+                ->disk('public')
+                ->visibility('public')
+                ->directory('brands')
+                ->imageEditor(),
             Forms\Components\Textarea::make('desc')
                 ->label('Description')
                 ->columnSpanFull(),
-            Forms\Components\TextInput::make('website')
+            Forms\Components\TextInput::make('website_url') // Fixed field name
+                ->label('Website URL')
                 ->url()
                 ->prefix('https://'),
-
         ];
     }
 }

@@ -115,6 +115,7 @@ const BrandLanding = ({
             <BrandServiceSolutionsSection
                 relatedServices={relatedServices}
                 getImageUrl={getImageUrl}
+                brand={brand}
             />
 
             {/* All Categories Section */}

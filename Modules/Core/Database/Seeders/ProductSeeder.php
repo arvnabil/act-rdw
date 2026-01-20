@@ -60,6 +60,77 @@ class ProductSeeder extends Seeder
             ]
         );
 
+        // 4. Yealink MeetingBoard 65
+        Product::firstOrCreate(
+            ['slug' => 'yealink-meetingboard-65'],
+            [
+                'name' => 'Yealink MeetingBoard 65',
+                'service_id' => $svcVC->id,
+                'brand_id' => $brandYealink->id,
+                'description' => 'All-in-One Smart Collaboration Display for Modern Workspace.',
+                'image_path' => '/assets/img/product/product_1_6.png',
+                'price' => 85000000,
+                'is_active' => true,
+                'is_featured' => true
+            ]
+        );
+
+        // 5. Logitech Rally Plus
+        Product::firstOrCreate(
+            ['slug' => 'logitech-rally-plus'],
+            [
+                'name' => 'Logitech Rally Plus',
+                'service_id' => $svcVC->id,
+                'brand_id' => $brandLogi->id,
+                'description' => 'Premier modular video conferencing system for large rooms.',
+                'image_path' => '/assets/img/product/product_1_1.png',
+                'price' => 55000000,
+                'is_active' => true
+            ]
+        );
+
+        // 6. Yealink A30
+        Product::firstOrCreate(
+            ['slug' => 'yealink-a30'],
+            [
+                'name' => 'Yealink MeetingBar A30',
+                'service_id' => $svcVC->id,
+                'brand_id' => $brandYealink->id,
+                'description' => 'All-in-one generic video bar for medium rooms.',
+                'image_path' => '/assets/img/product/product_1_4.png',
+                'price' => 38000000,
+                'is_active' => true
+            ]
+        );
+
+        // 7. Logitech Swytch
+        Product::firstOrCreate(
+            ['slug' => 'logitech-swytch'],
+            [
+                'name' => 'Logitech Swytch',
+                'service_id' => $svcVC->id,
+                'brand_id' => $brandLogi->id,
+                'description' => 'Link laptop to room system with a single cable.',
+                'image_path' => '/assets/img/product/product_1_7.png',
+                'price' => 15000000,
+                'is_active' => true
+            ]
+        );
+
+        // 8. Jabra Speak 710
+        Product::firstOrCreate(
+            ['slug' => 'jabra-speak-710'],
+            [
+                'name' => 'Jabra Speak 710',
+                'service_id' => $svcVC->id,
+                'brand_id' => $brandJabra->id,
+                'description' => 'Premium portable speakerphone with amazing sound.',
+                'image_path' => '/assets/img/product/product_1_8.png',
+                'price' => 4500000,
+                'is_active' => true
+            ]
+        );
+
         // Add other referenced products as needed
     }
 }

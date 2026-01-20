@@ -4,7 +4,7 @@ import MainLayout from "@/Layouts/MainLayout";
 import Breadcrumb from "@/Components/Common/Breadcrumb";
 import PartnerListSection from "@/Components/Sections/Partners/PartnerListSection";
 
-export default function Partners() {
+export default function Partners({ brands }) {
     return (
         <MainLayout>
             <Head title="Partners" />
@@ -13,7 +13,7 @@ export default function Partners() {
                 items={[{ label: "Home", link: "/" }, { label: "Partners" }]}
             />
 
-            <PartnerListSection />
+            <PartnerListSection brands={brands} />
         </MainLayout>
     );
 }

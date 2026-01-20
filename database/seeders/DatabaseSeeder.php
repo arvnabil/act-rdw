@@ -26,6 +26,11 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
+        $this->call([
+            PageSeeder::class,
+            MenuSeeder::class,
+        ]);
+
         // $this->call(\Modules\ServiceSolutions\Database\Seeders\ProductConfiguratorSeeder::class);
 
         // Auto-discover and run Module seeders

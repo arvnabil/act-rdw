@@ -5,7 +5,7 @@ import Toast from "@/Components/Common/Toast";
 
 export default function MainLayout({ children }) {
     useTemplateInit();
-    const { auth, flash } = usePage().props;
+    const { auth, flash, menus } = usePage().props;
     const [toast, setToast] = useState(null);
 
     useEffect(() => {
@@ -20,6 +20,53 @@ export default function MainLayout({ children }) {
             return () => clearTimeout(timer);
         }
     }, [flash]);
+
+    // Helper to render menu items recursively
+    const renderMenuItems = (items) => {
+        return items.map((item, index) => {
+            const hasChildren = item.children && item.children.length > 0;
+            const liClass = hasChildren ? "menu-item-has-children" : "";
+
+            return (
+                <li key={index} className={liClass}>
+                    {item.type === "custom" ? (
+                        <a href={item.url} target={item.target}>
+                            {item.title}
+                        </a>
+                    ) : (
+                        <Link href={item.url}>{item.title}</Link>
+                    )}
+
+                    {hasChildren && (
+                        <ul className="sub-menu">
+                            {renderMenuItems(item.children)}
+                        </ul>
+                    )}
+                </li>
+            );
+        });
+    };
+
+    // Helper for footer links (simple list)
+    const renderFooterLinks = (items) => {
+        return items.map((item, index) => (
+            <li key={index}>
+                {item.type === "custom" ? (
+                    <a
+                        href={item.url}
+                        style={{ color: "#fff" }}
+                        target={item.target}
+                    >
+                        {item.title}
+                    </a>
+                ) : (
+                    <Link href={item.url} style={{ color: "#fff" }}>
+                        {item.title}
+                    </Link>
+                )}
+            </li>
+        ));
+    };
 
     return (
         <>
@@ -273,43 +320,16 @@ export default function MainLayout({ children }) {
                             </form>
                         </div>
                         <ul>
-                            <li>
-                                <Link href="/">Home</Link>
-                            </li>
-                            <li>
-                                <Link href="/services">Our Services</Link>
-                            </li>
-                            <li>
-                                <Link href="/about">About Us</Link>
-                            </li>
-                            <li>
-                                <Link href="/partners">Our Partners</Link>
-                            </li>
-                            <li>
-                                <Link href="/products">Products</Link>
-                            </li>
-                            <li>
-                                <Link href="/projects">Projects</Link>
-                            </li>
-                            <li className="menu-item-has-children">
-                                <a href="#">Media</a>
-                                <ul className="sub-menu">
+                            {menus?.primary ? (
+                                renderMenuItems(menus.primary)
+                            ) : (
+                                // Fallback static menu if dynamic fails (or empty)
+                                <>
                                     <li>
-                                        <a
-                                            href="https://accommerce.id"
-                                            target="_blank"
-                                        >
-                                            Shop
-                                        </a>
+                                        <Link href="/">Home</Link>
                                     </li>
-                                    <li>
-                                        <Link href="/events">Events</Link>
-                                    </li>
-                                    <li>
-                                        <Link href="/news">News</Link>
-                                    </li>
-                                </ul>
-                            </li>
+                                </>
+                            )}
                         </ul>
                         {/* Mobile Header Info */}
                         <div className="mobile-header-info mt-30 text-center">
@@ -460,57 +480,13 @@ export default function MainLayout({ children }) {
                                 <div className="col-xl-8 col-xxl-7 col-auto text-start">
                                     <nav className="main-menu d-none d-lg-inline-block">
                                         <ul>
-                                            <li>
-                                                <Link href="/">Home</Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/services">
-                                                    Our Services
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/about">
-                                                    About Us
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/partners">
-                                                    Our Partners
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/products">
-                                                    Products
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link href="/projects">
-                                                    Projects
-                                                </Link>
-                                            </li>
-                                            <li className="menu-item-has-children">
-                                                <a href="#">Media</a>
-                                                <ul className="sub-menu">
-                                                    <li>
-                                                        <a
-                                                            href="https://accommerce.id"
-                                                            target="_blank"
-                                                        >
-                                                            Shop
-                                                        </a>
-                                                    </li>
-                                                    <li>
-                                                        <Link href="/events">
-                                                            Events
-                                                        </Link>
-                                                    </li>
-                                                    <li>
-                                                        <Link href="/news">
-                                                            News
-                                                        </Link>
-                                                    </li>
-                                                </ul>
-                                            </li>
+                                            {menus?.primary ? (
+                                                renderMenuItems(menus.primary)
+                                            ) : (
+                                                <li>
+                                                    <Link href="/">Home</Link>
+                                                </li>
+                                            )}
                                         </ul>
                                     </nav>
                                     <button
@@ -524,7 +500,7 @@ export default function MainLayout({ children }) {
                                     <div className="header-button">
                                         <button
                                             type="button"
-                                            className="icon-btn searchBoxToggler"
+                                            className="icon-btn searchBoxToggler d-flex justify-content-center align-items-center"
                                         >
                                             <img
                                                 src="/assets/img/icon/search.svg"
@@ -602,46 +578,20 @@ export default function MainLayout({ children }) {
                                     </h3>
                                     <div className="menu-all-pages-container">
                                         <ul className="menu">
-                                            <li>
-                                                <Link
-                                                    href="/"
-                                                    style={{ color: "#fff" }}
-                                                >
-                                                    Home
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link
-                                                    href="/about"
-                                                    style={{ color: "#fff" }}
-                                                >
-                                                    About us
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link
-                                                    href="/services"
-                                                    style={{ color: "#fff" }}
-                                                >
-                                                    Our Service
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link
-                                                    href="/contact"
-                                                    style={{ color: "#fff" }}
-                                                >
-                                                    Terms of Service
-                                                </Link>
-                                            </li>
-                                            <li>
-                                                <Link
-                                                    href="/news"
-                                                    style={{ color: "#fff" }}
-                                                >
-                                                    News & Media
-                                                </Link>
-                                            </li>
+                                            {menus?.footer ? (
+                                                renderFooterLinks(menus.footer)
+                                            ) : (
+                                                <li>
+                                                    <Link
+                                                        href="/"
+                                                        style={{
+                                                            color: "#fff",
+                                                        }}
+                                                    >
+                                                        Home
+                                                    </Link>
+                                                </li>
+                                            )}
                                         </ul>
                                     </div>
                                 </div>

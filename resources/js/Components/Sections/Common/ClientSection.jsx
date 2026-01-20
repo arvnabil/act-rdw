@@ -1,7 +1,28 @@
 import React from "react";
 import { Link } from "@inertiajs/react";
 
-export default function ClientSection() {
+export default function ClientSection({ clients, title, subtitle }) {
+    const defaultClients = [
+        "1_1",
+        "1_2",
+        "1_3",
+        "1_4",
+        "1_5",
+        "1_6",
+        "1_7",
+        "1_1",
+        "1_4",
+        "1_3",
+        "1_2",
+        "1_1",
+        "1_1",
+        "1_1",
+    ];
+
+    const list = clients && clients.length > 0 ? clients : defaultClients;
+    const t = title || "Our Clients";
+    const st = subtitle || "Clients";
+
     return (
         <section className="overflow-hidden space-top">
             <div className="container">
@@ -10,13 +31,11 @@ export default function ClientSection() {
                         <div className="title-area text-center text-lg-start">
                             <span className="sub-title">
                                 <span className="squre-shape left me-3"></span>
-                                Clients
+                                {st}
                                 <span className="squre-shape d-lg-none right ms-3"></span>
                             </span>
                             <h2 className="sec-title">
-                                <span className="scroll-text-ani">
-                                    Our Clients
-                                </span>
+                                <span className="scroll-text-ani">{t}</span>
                             </h2>
                         </div>
                     </div>
@@ -29,22 +48,7 @@ export default function ClientSection() {
                             data-slider-options='{"breakpoints":{"0":{"slidesPerView":1},"576":{"slidesPerView":"2"},"768":{"slidesPerView":"3"},"992":{"slidesPerView":"3"},"1200":{"slidesPerView":"5"},"1400":{"slidesPerView":"6"}}}'
                         >
                             <div className="swiper-wrapper">
-                                {[
-                                    "1_1",
-                                    "1_2",
-                                    "1_3",
-                                    "1_4",
-                                    "1_5",
-                                    "1_6",
-                                    "1_7",
-                                    "1_1",
-                                    "1_4",
-                                    "1_3",
-                                    "1_2",
-                                    "1_1",
-                                    "1_1",
-                                    "1_1",
-                                ].map((brand, index) => (
+                                {list.map((brand, index) => (
                                     <div className="swiper-slide" key={index}>
                                         <div className="brand-box">
                                             <a
@@ -55,12 +59,24 @@ export default function ClientSection() {
                                             >
                                                 <img
                                                     className="original"
-                                                    src={`/assets/img/brand/brand_${brand}.svg`}
+                                                    src={
+                                                        typeof brand ===
+                                                        "string"
+                                                            ? `/assets/img/brand/brand_${brand}.svg`
+                                                            : brand.image ||
+                                                              brand
+                                                    }
                                                     alt="Brand Logo"
                                                 />
                                                 <img
                                                     className="gray"
-                                                    src={`/assets/img/brand/brand_${brand}.svg`}
+                                                    src={
+                                                        typeof brand ===
+                                                        "string"
+                                                            ? `/assets/img/brand/brand_${brand}.svg`
+                                                            : brand.image ||
+                                                              brand
+                                                    }
                                                     alt="Brand Logo"
                                                 />
                                             </a>

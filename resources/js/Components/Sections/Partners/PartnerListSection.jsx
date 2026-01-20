@@ -83,17 +83,11 @@ const partners = [
 ];
 
 const getPartnerClasses = (cats) => {
-    let classes = [];
-    cats.forEach((c) => {
-        if (c === "Audio Visual") classes.push("case1");
-        else if (c === "Network & Security") classes.push("case2");
-        else if (c === "Server & Storage") classes.push("case3");
-        else classes.push("case4");
-    });
-    return [...new Set(classes)].join(" ");
+    // Legacy filter logic - keep generic class or remove
+    return "case4";
 };
 
-export default function PartnerListSection() {
+export default function PartnerListSection({ brands = [] }) {
     return (
         <div className="case-area space-bottom space">
             <div className="container">
@@ -106,42 +100,19 @@ export default function PartnerListSection() {
                     </div>
                 </div>
 
-                <div className="row">
-                    <div className="col-xl-12">
-                        <div className="case-menu mb-5 text-center">
-                            {categories.map((cat, index) => (
-                                <button
-                                    key={index}
-                                    className={`case4-btn ${
-                                        cat.id === "*" ? "active" : ""
-                                    }`}
-                                    data-filter={cat.filter}
-                                >
-                                    {cat.label}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-                </div>
+                {/* Categories Removed - Database does not support yet */}
 
                 <div className="row gy-30 grid">
-                    {partners.map((partner) => (
+                    {brands.map((partner) => (
                         <div
                             key={partner.id}
-                            className={`col-xl-4 col-lg-6 col-md-6 grid-item ${getPartnerClasses(
-                                partner.categories
-                            )}`}
+                            className={`col-xl-4 col-lg-6 col-md-6 grid-item`}
                         >
                             <div className="case-box style2 inner-style1 position-relative">
                                 <div className="case-img global-img">
                                     <img src={partner.image} alt="case image" />
                                     <Link
-                                        href={
-                                            "/" +
-                                            partner.name
-                                                .toLowerCase()
-                                                .replace(/\s+/g, "-")
-                                        }
+                                        href={`/${partner.slug}`}
                                         className="icon-btn"
                                     >
                                         <i className="fa-light fa-arrow-right-long"></i>
@@ -150,30 +121,18 @@ export default function PartnerListSection() {
                                 <div className="case-content">
                                     <div className="media-left">
                                         <h4 className="box-title">
-                                            <Link
-                                                href={
-                                                    "/" +
-                                                    partner.name
-                                                        .toLowerCase()
-                                                        .replace(/\s+/g, "-")
-                                                }
-                                            >
+                                            <Link href={`/${partner.slug}`}>
                                                 {partner.name}
                                             </Link>
                                         </h4>
                                         <span className="case-subtitle">
-                                            {partner.displayCategory}
+                                            {partner.category || "Partner"}
                                         </span>
                                     </div>
                                 </div>
                                 <div className="case-action">
                                     <Link
-                                        href={
-                                            "/" +
-                                            partner.name
-                                                .toLowerCase()
-                                                .replace(/\s+/g, "-")
-                                        }
+                                        href={`/${partner.slug}`}
                                         className="case-btn"
                                     >
                                         <i className="fa-light fa-arrow-right-long"></i>

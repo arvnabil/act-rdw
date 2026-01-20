@@ -39,6 +39,8 @@ class HandleInertiaRequests extends Middleware
         //     ...parent::share($request),
         //     //
         // ];
+        $menuResolver = app(\App\Services\MenuResolver::class);
+
         return array_merge(parent::share($request), [
             'auth' => [
                 'user' => $request->user(),
@@ -47,6 +49,10 @@ class HandleInertiaRequests extends Middleware
                 'success' => fn () => $request->session()->get('success'),
                 'error' => fn () => $request->session()->get('error'),
                 'warning' => fn () => $request->session()->get('warning'),
+            ],
+            'menus' => [
+                'primary' => $menuResolver->resolve('primary'),
+                'footer' => $menuResolver->resolve('footer'),
             ],
         ]);
     }

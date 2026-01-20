@@ -2,6 +2,9 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import { createInertiaApp } from "@inertiajs/react";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
+import "../css/app.css";
+import "../css/tailwind-output.css";
+import "./bootstrap";
 
 createInertiaApp({
     resolve: (name) => {
@@ -13,7 +16,7 @@ createInertiaApp({
 
         if (!pages[pagePath]) {
             const modulePage = Object.keys(pages).find((path) =>
-                path.endsWith(`/${name}.jsx`)
+                path.endsWith(`/${name}.jsx`),
             );
             if (modulePage) {
                 pagePath = modulePage;

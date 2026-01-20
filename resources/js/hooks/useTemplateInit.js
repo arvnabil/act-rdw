@@ -78,7 +78,7 @@ export function useTemplateInit() {
                     subMenuToggleClass: "th-open",
                     toggleSpeed: 400,
                 },
-                options
+                options,
             );
 
             return this.each(function () {
@@ -227,20 +227,23 @@ export function useTemplateInit() {
 
         // --- 07. Swipers ---
         if ($(".hero-slider-2").length) {
-            var thumbs = new Swiper(".heroThumbs", {
+            var thumbs = null;
+            if ($(".heroThumbs").length) {
+                thumbs = new Swiper(".heroThumbs", {
+                    spaceBetween: 10,
+                    slidesPerView: 1,
+                    loop: true,
+                    watchSlidesProgress: true,
+                    slideToClickedSlide: true,
+                    navigation: {
+                        nextEl: ".slider-next",
+                        prevEl: ".slider-prev",
+                    },
+                });
+            }
+
+            var heroOptions = {
                 spaceBetween: 10,
-                slidesPerView: 1,
-                loop: true,
-                watchSlidesProgress: true,
-                slideToClickedSlide: true,
-                navigation: {
-                    nextEl: ".slider-next",
-                    prevEl: ".slider-prev",
-                },
-            });
-            new Swiper(".hero-slider-2", {
-                spaceBetween: 10,
-                thumbs: { swiper: thumbs },
                 effect: "fade",
                 pagination: { el: ".swiper-pagination", clickable: true },
                 navigation: {
@@ -270,7 +273,13 @@ export function useTemplateInit() {
                             });
                     },
                 },
-            });
+            };
+
+            if (thumbs) {
+                heroOptions.thumbs = { swiper: thumbs };
+            }
+
+            new Swiper(".hero-slider-2", heroOptions);
         }
 
         // Brands / Other Sliders
@@ -305,7 +314,7 @@ export function useTemplateInit() {
                         }
                     }
                 }
-            }
+            },
         );
 
         // --- Interactions (Hover Items) ---
@@ -343,7 +352,7 @@ export function useTemplateInit() {
             $searchBox,
             $searchOpen,
             $searchCls,
-            $toggleCls
+            $toggleCls,
         ) {
             $(document).on("click", $searchOpen, function (e) {
                 e.preventDefault();
@@ -367,7 +376,7 @@ export function useTemplateInit() {
             ".popup-search-box",
             ".searchBoxToggler",
             ".searchClose",
-            "show"
+            "show",
         );
 
         // --- Magnific Popup ---
@@ -441,7 +450,7 @@ export function useTemplateInit() {
         if (SplitText && $(".text-anime-style-2").length) {
             // Text Anime Style 2 (Subtitles) - Char Reveal
             let animatedTextElements = document.querySelectorAll(
-                ".text-anime-style-2"
+                ".text-anime-style-2",
             );
             animatedTextElements.forEach((element) => {
                 gsap.set(element, { autoAlpha: 1 });

@@ -21,23 +21,21 @@ export default function CategoryHero({ heroContent }) {
                 </div>
                 <div className="col-md-6 position-relative text-center">
                     {/* Abstract circle or geometric shape background if possible */}
-                    <div
-                        className="position-absolute top-50 start-50 translate-middle rounded-circle"
-                        style={{
-                            width: "250px",
-                            height: "250px",
-                            backgroundColor: "rgba(255,255,255,0.1)",
-                        }}
-                    ></div>
-                    <img
-                        src={heroContent.image}
-                        alt={heroContent.title}
-                        className="position-relative z-index-common"
-                        style={{
-                            maxHeight: "200px",
-                            objectFit: "contain",
-                        }}
-                    />
+
+                    {heroContent.image ? (
+                        <img
+                            src={heroContent.image}
+                            alt={heroContent.title}
+                            className="position-relative z-index-common"
+                            style={{
+                                maxHeight: "200px",
+                                objectFit: "contain",
+                            }}
+                            onError={(e) => {
+                                e.target.style.display = "none"; // Hide if broken
+                            }}
+                        />
+                    ) : null}
                 </div>
             </div>
         </div>

@@ -13,6 +13,9 @@ Route::get('/about', function () {
     return Inertia::render('About');
 })->name('about');
 
+Route::post('/form/submit', [\App\Http\Controllers\FormSubmissionController::class, 'store'])->name('form.submit')->middleware('throttle:10,1');
+Route::post('/form/view', [\App\Http\Controllers\FormSubmissionController::class, 'trackView'])->name('form.view');
+
 // Services routes are now handled by Modules/ServiceSolutions
 
 Route::get('/projects', function () {
@@ -20,7 +23,27 @@ Route::get('/projects', function () {
 })->name('projects');
 
 Route::get('/partners', function () {
-    return Inertia::render('Partners');
+    $brands = \Modules\Core\Models\Brand::all()->map(function($b) {
+        $resolvePath = function($path) {
+            if (!$path) return null;
+            if (str_starts_with($path, 'http')) return $path;
+            if (str_starts_with($path, 'assets') || str_starts_with($path, '/assets')) {
+                return str_starts_with($path, '/') ? $path : "/{$path}";
+            }
+            return "/storage/{$path}";
+        };
+        return [
+            'id' => $b->id,
+            'name' => $b->name,
+            'slug' => $b->slug,
+            'image' => $resolvePath($b->image ?? $b->logo_path),
+            'website_url' => $b->website_url,
+            'category' => 'General' // Default category
+        ];
+    });
+    return Inertia::render('Partners', [
+        'brands' => $brands
+    ]);
 })->name('partners');
 
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -29,259 +52,10 @@ use Illuminate\Http\Request;
 // Product and Configurator API routes are now handled by Modules/Core
 
 // Projects Page
-Route::get('/projects', function () {
-    $page = request()->query('page', 1);
-    $perPage = 6;
-    $total = 18;
-    $lastPage = ceil($total / $perPage);
-
-    $projects = collect(range(1, $total))->map(function ($id) {
-        $imgId = ($id - 1) % 9 + 1; // 1-9
-        return [
-            'id' => $id,
-            'title' => [
-                'Web & Mobile Development',
-                'UiUx Design',
-                'Website Design',
-                'WordPress Development',
-                'Game Development',
-                'Python Development',
-                'Java Development',
-                'Php Development',
-                'Digital Marketing'
-            ][$id % 9],
-            'subtitle' => ['Development', 'Design', 'Management', 'Project Analysis', 'Designer', 'Developer', 'Engineer', 'Backend', 'Marketing'][rand(0, 8)],
-            'image' => '/assets/img/project/project-inner' . $imgId . '.jpg',
-            'link' => '/projects/' . $id
-        ];
-    });
-
-    $items = $projects->forPage($page, $perPage)->values();
-
-    return Inertia::render('Projects', [
-        'projects' => [
-            'data' => $items,
-            'current_page' => (int)$page,
-            'last_page' => $lastPage,
-            'per_page' => $perPage,
-            'total' => $total,
-            'links' => [
-                [
-                    'url' => $page > 1 ? '/projects?page=' . ($page - 1) : null,
-                    'label' => '<i class="far fa-arrow-left"></i>',
-                    'active' => false,
-                ],
-                ...collect(range(1, $lastPage))->map(function ($p) use ($page) {
-                    return [
-                        'url' => '/projects?page=' . $p,
-                        'label' => (string)$p,
-                        'active' => $p === (int)$page,
-                    ];
-                }),
-                [
-                    'url' => $page < $lastPage ? '/projects?page=' . ($page + 1) : null,
-                    'label' => '<i class="far fa-arrow-right"></i>',
-                    'active' => false,
-                    'className' => 'next-page'
-                ],
-            ]
-        ]
-    ]);
-})->name('projects');
-
-// Project Detail Configuration
-Route::get('/projects/{id}', function ($id) {
-    // Generate consistent dummy data based on ID
-    srand($id);
-
-    $titles = [
-        'Cloud Infrastructure Migration',
-        'Enterprise ERP Implementation',
-        'Cybersecurity Audit & Hardening',
-        'Mobile App Development for Retail',
-        'AI-Powered Analytics Dashboard',
-        'IoT Smart Building Solution',
-        'Blockchain Supply Chain Platform',
-        'DevOps Pipeline Automation',
-        'Data Center Virtualization'
-    ];
-
-    $categories = ['Cloud Services', 'Enterprise Software', 'Security', 'Mobile Dev', 'AI & ML', 'IoT', 'Blockchain', 'DevOps', 'Infrastructure'];
-    $clients = ['TechCorp Global', 'RetailGiant Inc.', 'SecureBank Ltd.', 'SmartCity Gov', 'Logistics Pro', 'HealthPlus Group'];
-
-    $project = [
-        'id' => $id,
-        'title' => $titles[($id - 1) % count($titles)] ?? 'Custom IT Solution Project',
-        'description' => 'Implementing a robust and scalable solution to meet the complex digital demands of modern enterprise. This project focuses on optimizing workflows, enhancing security, and delivering a seamless user experience through cutting-edge technology stacks.',
-        'challenge_text' => 'The client faced significant challenges with legacy systems that were hindering scalability and performance. Key issues included data silos, slow processing times, and security vulnerabilities that needed immediate attention to prevent potential data breaches and operational downtime.',
-        'image' => '/assets/img/project/project-inner' . (($id - 1) % 8 + 1) . '.jpg',
-        // Random gallery images
-        'gallery' => [
-            '/assets/img/service/sv-sm-' . rand(1, 2) . '.jpg',
-            '/assets/img/service/sv-sm-' . rand(1, 2) . '.jpg'
-        ],
-        'client' => $clients[rand(0, count($clients) - 1)],
-        'category' => $categories[($id - 1) % count($categories)] ?? 'Technology',
-        'date' => date('d F, Y', strtotime('-' . rand(10, 100) . ' days')),
-        'address' => 'Jakarta, Indonesia',
-        'map_url' => 'https://maps.google.com',
-        'prev_id' => $id > 1 ? $id - 1 : null,
-        'next_id' => $id + 1
-    ];
-
-    return Inertia::render('ProjectDetail', [
-        'project' => $project
-    ]);
-})->name('projects.detail');
+Route::get('/projects', [\App\Http\Controllers\ProjectController::class, 'index'])->name('projects.index');
 
 // News Page
-Route::get('/news', function () {
-    $page = request()->query('page', 1);
-    $perPage = 4;
-    $total = 12;
-    $lastPage = ceil($total / $perPage);
-
-    $posts = collect(range(1, $total))->map(function ($id) {
-        return [
-            'id' => $id,
-            'title' => [
-                'Top 10 IT Solutions Every Business Needs',
-                'Exploring the Benefits of End-to-End IT Services',
-                'The Impact of AI on IT Solutions',
-                'The Benefits of 24/7 IT Support',
-                'Cybersecurity Best Practices for 2025',
-                'Cloud Migration Strategies',
-                'Digital Transformation Trends',
-                'Data Analytics for Growth'
-            ][$id % 8],
-            'author' => 'David Smith',
-            'date' => '05 May, 2025',
-            'category' => 'Technology',
-            'image' => '/assets/img/blog/blog-s-1-' . ($id % 3 + 1) . '.jpg',
-            'excerpt' => 'In today’s fast-evolving digital landscape, businesses need a clear IT strategy to align technology with their long-term goals. IT Strategy & Planning services help organizations optimize resources.',
-            'link' => '/news/' . $id
-        ];
-    });
-
-    $items = $posts->forPage($page, $perPage)->values();
-
-    return Inertia::render('Blog', [
-        'posts' => [
-            'data' => $items,
-            'current_page' => (int)$page,
-            'last_page' => $lastPage,
-            'per_page' => $perPage,
-            'total' => $total,
-            'links' => [
-                [
-                    'url' => $page > 1 ? '/news?page=' . ($page - 1) : null,
-                    'label' => '<i class="far fa-arrow-left"></i>',
-                    'active' => false,
-                ],
-                ...collect(range(1, $lastPage))->map(function ($p) use ($page) {
-                    return [
-                        'url' => '/news?page=' . $p,
-                        'label' => (string)$p,
-                        'active' => $p === (int)$page,
-                    ];
-                }),
-                [
-                    'url' => $page < $lastPage ? '/news?page=' . ($page + 1) : null,
-                    'label' => '<i class="far fa-arrow-right"></i>',
-                    'active' => false,
-                    'className' => 'next-page'
-                ],
-            ]
-        ]
-    ]);
-})->name('news');
-
-// News Detail Page
-Route::get('/news/{id}', function ($id) {
-    srand($id);
-
-    $titles = [
-        'Top 10 IT Solutions Every Business Needs in 2025',
-        'Exploring the Benefits of End-to-End IT Services',
-        'The Impact of AI on IT Solutions',
-        'Cybersecurity Best Practices for 2025',
-        'Cloud Migration Strategies for Enterprise'
-    ];
-
-    $post = [
-        'id' => $id,
-        'title' => $titles[($id - 1) % count($titles)] ?? 'Technology News Post',
-        'author' => 'David Smith',
-        'date' => '05 May, 2025',
-        'category' => 'Technology',
-        'image' => '/assets/img/blog/blog-s-1-' . ($id % 3 + 1) . '.jpg',
-        'location' => 'Sea Beach',
-        'content_intro' => 'In today’s fast-evolving digital landscape, businesses need a clear IT strategy to align technology with their long-term goals. IT Strategy & Planning services help organizations optimize resources, improve efficiency, enhance security, and drive innovation through a structured approach to technology adoption.',
-        'content_main' => 'In addition to protecting against external threats, cybersecurity also plays a crucial role in ensuring business continuity. In the event of a cyber attack or data breach, systems may be disrupted, data may be lost or corrupted, and downtime can result in significant financial losses. By investing in cybersecurity measures such as firewalls, intrusion detection systems, and security awareness training, businesses can reduce their susceptibility.',
-        'quote' => [
-            'text' => 'Join your neighbors for an eco-friendly social gathering as the day comes to a conclusion. Savor refreshments made with sustainable ingredients and have discussions on sustainable life.',
-            'author' => 'Michel Clarck'
-        ],
-        'gallery_images' => [
-            '/assets/img/blog/blog_inner_1.jpg',
-            '/assets/img/blog/blog_inner_2.jpg'
-        ],
-        'tags' => ['Apartment', 'Buyer', 'Modern', 'Luxury'],
-        'comments' => [
-            [
-                'id' => 1,
-                'author' => 'Daniel Adam',
-                'date' => '15 Jun, 2025 08:56pm',
-                'text' => 'Empower multifunctional e-commerce for prospective applications. Seamlessly productivate plug-and-play markets whereas synergistic scenarios.',
-                'avatar' => '/assets/img/blog/comment-author-1.jpg',
-                'replies' => [
-                    [
-                        'id' => 2,
-                        'author' => 'Zenelia Lozhe',
-                        'date' => '25 Jun, 2025 08:56pm',
-                        'text' => 'Empower multifunctional e-commerce for prospective applications. Seamlessly productivate plug-and-play markets whereas synergistic scenarios.',
-                        'avatar' => '/assets/img/blog/comment-author-2.jpg'
-                    ]
-                ]
-            ],
-            [
-                'id' => 3,
-                'author' => 'Daniel Adam',
-                'date' => '27 Jun, 2025 08:56pm',
-                'text' => 'Empower multifunctional e-commerce for prospective applications. Seamlessly productivate plug-and-play markets whereas synergistic scenarios.',
-                'avatar' => '/assets/img/blog/comment-author-3.jpg',
-                'replies' => []
-            ]
-        ]
-    ];
-
-    $recentPosts = collect(range(1, 3))->map(function($i) {
-        return [
-            'id' => $i,
-            'title' => ['5 Common IT Issues and How to Solve Them', 'Hybrid Cloud Solutions: The Best of Both Worlds', 'Top 10 IT Solutions Every Business.'][$i-1],
-            'date' => (20 + $i) . ' Sep, 2025',
-            'image' => '/assets/img/blog/recent-post-1-' . $i . '.jpg',
-            'link' => '/news/' . $i
-        ];
-    });
-
-    $categories = [
-        'IT Strategy & Planning', 'Web Developments', 'Cloud Consulting',
-        'Machine Learning', 'Database Security', 'IT Management'
-    ];
-
-    return Inertia::render('BlogDetail', [
-        'post' => $post,
-        'recentPosts' => $recentPosts,
-        'categories' => $categories
-    ]);
-})->name('news.detail');
-
-Route::get('/', function () {
-    return Inertia::render('Home', [
-        'services' => \Modules\ServiceSolutions\Models\Service::orderBy('sort_order', 'asc')->take(3)->get()
-    ]);
-})->name('home');
+Route::get('/news', [\App\Http\Controllers\NewsController::class, 'index'])->name('news.index');
 
 // Room Configurator Page
 Route::get('/room-configurator', function () {
@@ -413,4 +187,120 @@ Route::match(['get', 'post'], '/configurator/complete', function (\Illuminate\Ht
     ]);
 })->name('configurator.complete');
 
-// Brand routes are now handled by Modules/Core
+// Brand routes are now handled by Modules/Core - MIGRATED TO MAIN DUE TO PRIORITY ISSUE
+// Brand Product List Page
+Route::get('/{brandSlug}/products', function ($brandSlug) {
+    // 1. Fetch Brand
+    $brand = \Modules\Core\Models\Brand::where('slug', $brandSlug)
+        ->orWhere('name', 'LIKE', str_replace('-', ' ', $brandSlug))
+        ->first();
+
+    if (!$brand) {
+        abort(404);
+    }
+
+    // 2. Base Query
+    $query = $brand->products()->where('is_active', true)->with('service');
+
+    // 3. Filter by Device Category (ProductCategory)
+    if (request()->filled('category')) {
+        $categorySlug = request()->input('category');
+        $query->whereHas('category', function ($q) use ($categorySlug) {
+             $q->where('slug', $categorySlug);
+        });
+    }
+
+    // Filter by Service Item (ServiceSolution)
+    if (request()->filled('service_item')) {
+        $solutionSlug = request()->input('service_item');
+        $query->whereHas('solutions', function ($q) use ($solutionSlug) {
+             $q->where('slug', $solutionSlug);
+        });
+    }
+
+    // 4. Sort
+    $sort = request()->input('sort', 'newest');
+    if ($sort === 'price_asc') {
+        $query->orderBy('price', 'asc');
+    } elseif ($sort === 'price_desc') {
+         $query->orderBy('price', 'desc');
+    } else {
+        $query->orderBy('created_at', 'desc');
+    }
+
+    $products = $query->paginate(12)->withQueryString();
+
+    // 5. Get filtering options (Services available for this brand)
+    // REFACTOR: Use ProductCategory here too? No, "Categories" in Sidebar usually means Product Type.
+    // The previous code fetched 'Service' as Categories.
+    // The user wanted "ProductCategory" (Device Type).
+    $categories = \Modules\Core\Models\ProductCategory::whereHas('products', function ($q) use ($brand) {
+        $q->where('brand_id', $brand->id)->where('is_active', true);
+    })->orderBy('sort_order')->get()->map(function ($cat) use ($brand) {
+        return (object) [
+            'name' => $cat->name,
+            'slug' => $cat->slug,
+            'image' => $cat->icon ?? '/assets/img/product/product_1_1.png',
+            'count' => $cat->products()->where('brand_id', $brand->id)->where('is_active', true)->count()
+        ];
+    });
+
+    // 6. Get Service Items (Solutions) available for this brand
+    $serviceSolutions = collect([]);
+    $serviceItemLabel = 'Solutions';
+
+    // Enable dynamic solution filtering based on current context (Category + Brand)
+    $serviceSolutions = \Modules\ServiceSolutions\Models\ServiceSolution::whereHas('products', function($q) use ($brand) {
+          $q->where('brand_id', $brand->id)->where('is_active', true);
+          if (request()->filled('category')) {
+              $q->whereHas('category', fn($c) => $c->where('slug', request()->input('category')));
+          }
+    })
+    ->get()
+    ->map(function($sol) use ($brand) {
+        $countQuery = \Modules\Core\Models\Product::where('brand_id', $brand->id)->where('is_active', true);
+
+        // FIX: Qualify 'id' to avoid ambiguity (SQL integrity violation 1052)
+        $countQuery->whereHas('solutions', fn($s) => $s->where('service_solutions.id', $sol->id));
+
+        if (request()->filled('category')) {
+            $countQuery->whereHas('category', fn($c) => $c->where('slug', request()->input('category')));
+        }
+
+        return [
+           'id' => $sol->id,
+           'name' => $sol->title,
+           'slug' => $sol->slug,
+           'count' => $countQuery->count()
+        ];
+    })
+    ->filter(function($item) { return $item['count'] > 0; })
+    ->values();
+
+    return Inertia::render('BrandProductList', [
+        'brand' => $brand,
+        'products' => $products,
+        'categories' => $categories,
+        'serviceSolutions' => $serviceSolutions,
+        'serviceItemLabel' => $serviceItemLabel, // "Solutions"
+        'filters' => request()->all()
+    ]);
+})->name('brand.products');
+
+// Page Builder Routes
+Route::middleware(['auth', 'verified'])->prefix('admin')->group(function () {
+    Route::get('/page-builder/{page}', [\App\Http\Controllers\Admin\PageBuilderController::class, 'edit'])->name('admin.page-builder.edit');
+    Route::post('/page-builder/{page}/save', [\App\Http\Controllers\Admin\PageBuilderController::class, 'update'])->name('admin.page-builder.update');
+
+    // Simple Media Upload Helper
+    Route::post('/upload-media', [\App\Http\Controllers\Admin\PageBuilderController::class, 'upload'])->name('admin.upload-media');
+});
+
+// Dynamic Pages (CMS)
+use App\Http\Controllers\PageController;
+
+Route::get('/', [PageController::class, 'resolveHomepage'])->name('home');
+Route::get('/{slug}', [\App\Http\Controllers\DynamicResolverController::class, 'resolve'])
+    ->name('dynamic.resolve')
+    ->where('slug', '^(?!events|services|products|configurator|admin|nova|api|storage|build|assets|favicon).*$');
+

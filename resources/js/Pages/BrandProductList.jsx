@@ -34,14 +34,14 @@ const BrandProductList = ({
             {
                 preserveState: true,
                 preserveScroll: true,
-            }
+            },
         );
     };
 
     // Find current category for Hero Section
     const currentCategorySlug = filters.category;
     const currentCategory = categories.find(
-        (c) => c.slug === currentCategorySlug
+        (c) => c.slug === currentCategorySlug,
     );
 
     // Default Hero Content (if no category selected, show Brand general info)
@@ -49,7 +49,7 @@ const BrandProductList = ({
         ? {
               title: currentCategory.name,
               desc: `Explore ${currentCategory.name} solutions from ${brand.name}.`,
-              image: getImageUrl(brand.logo_path), //Ideally a category specific image if available
+              image: getImageUrl(currentCategory.image || brand.logo_path), // Use Category Icon if available
           }
         : {
               title: `${brand.name} Products`,
@@ -76,6 +76,11 @@ const BrandProductList = ({
 
             <div className="product-list-area space-top space-extra-bottom">
                 <div className="container th-container">
+                    {/* Hero Card for Category - Moved to Top */}
+                    <div className="mb-4">
+                        <CategoryHero heroContent={heroContent} />
+                    </div>
+
                     {/* Controls Component */}
                     <ProductFilterTopBar
                         showFilters={showFilters}
@@ -100,9 +105,6 @@ const BrandProductList = ({
                         />
 
                         <div className={showFilters ? "col-lg-9" : "col-lg-12"}>
-                            {/* Hero Card for Category */}
-                            <CategoryHero heroContent={heroContent} />
-
                             {/* Product Grid */}
                             <ProductList
                                 products={products}

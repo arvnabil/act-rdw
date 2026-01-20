@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect, useMemo } from "react";
 import { Head, router } from "@inertiajs/react";
-import DraggableElement from "../../../../Components/Events/Certificate/DraggableElement";
-import Ruler from "../../../../Components/Events/Certificate/Ruler";
+import DraggableElement from "@/Components/Events/Certificate/DraggableElement";
+import Ruler from "@/Components/Events/Certificate/Ruler";
 import Toast from "@/Components/Common/Toast";
-import MediaManager from "../../../../Components/Events/Certificate/MediaManager";
+import MediaManager from "@/Components/Events/Certificate/MediaManager";
 
 export default function CertificateDesigner({ certificate, event }) {
     // Parse initial layout: legacy array or new object
@@ -11,17 +11,17 @@ export default function CertificateDesigner({ certificate, event }) {
     const isLegacy = Array.isArray(initialLayout);
 
     const [elements, setElements] = useState(
-        isLegacy ? initialLayout : initialLayout.elements || []
+        isLegacy ? initialLayout : initialLayout.elements || [],
     );
     const [canvasSize, setCanvasSize] = useState(
         !isLegacy && initialLayout.canvas
             ? initialLayout.canvas
-            : { width: 1056, height: 816 }
+            : { width: 1056, height: 816 },
     );
     const [bgConfig, setBgConfig] = useState(
         !isLegacy && initialLayout.background
             ? initialLayout.background
-            : { x: 0, y: 0, scale: 1 }
+            : { x: 0, y: 0, scale: 1 },
     );
     const [bgUrl, setBgUrl] = useState(certificate.certificate_background);
     const [isBgEditMode, setIsBgEditMode] = useState(false);
@@ -151,7 +151,7 @@ export default function CertificateDesigner({ certificate, event }) {
             }),
             certificate_code: "CERT-SAMPLE-123",
         }),
-        [event.title]
+        [event.title],
     );
 
     useEffect(() => {
@@ -323,7 +323,7 @@ export default function CertificateDesigner({ certificate, event }) {
         // For inputs, probably yes for "final" change, but typing?
         // Let's use history for now to be safe, though chatty.
         const newElements = elements.map((el) =>
-            selectedIds.has(el.id) ? { ...el, ...changes } : el
+            selectedIds.has(el.id) ? { ...el, ...changes } : el,
         );
         updateElements(newElements);
     };
@@ -349,6 +349,68 @@ export default function CertificateDesigner({ certificate, event }) {
         setSelectedIds(new Set(clones.map((c) => c.id)));
     };
 
+    const handleUploadMedia = (file) => {
+        if (!file) return;
+
+        // Generate ID for progress tracking
+        const tempId = Date.now();
+        const url = URL.createObjectURL(file);
+
+        // Add initial file with uploading state
+        setMediaFiles((prev) => [
+            ...prev,
+            {
+                id: tempId,
+                name: file.name,
+                path: url,
+                url: url,
+                size: file.size,
+                type: file.type,
+                uploading: true,
+                progress: 0,
+            },
+        ]);
+
+        // Simulate progress
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += 10;
+            setMediaFiles((prev) =>
+                prev.map((f) => {
+                    if (f.id === tempId) {
+                        return { ...f, progress: progress };
+                    }
+                    return f;
+                }),
+            );
+
+            if (progress >= 100) {
+                clearInterval(interval);
+                setMediaFiles((prev) =>
+                    prev.map((f) => {
+                        if (f.id === tempId) {
+                            return { ...f, uploading: false };
+                        }
+                        return f;
+                    }),
+                );
+                setToast({
+                    message: "Image uploaded successfully",
+                    type: "success",
+                });
+                setTimeout(() => setToast(null), 3000);
+            }
+        }, 200);
+    };
+
+    const handleDeleteMedia = (path) => {
+        setMediaFiles((prev) => prev.filter((f) => f.path !== path));
+    };
+
+    const handleRenameMedia = (path, newName) => {
+        console.log("Renaming implementation pending", path, newName);
+    };
+
     const handleDrag = (deltaX, deltaY) => {
         if (!canvasRef.current || !containerRef.current) return;
 
@@ -371,7 +433,7 @@ export default function CertificateDesigner({ certificate, event }) {
                     };
                 }
                 return el;
-            })
+            }),
         );
     };
 
@@ -419,7 +481,7 @@ export default function CertificateDesigner({ certificate, event }) {
                     width: Math.max(10, newW),
                     height: Math.max(10, newH),
                 };
-            })
+            }),
         );
     };
 
@@ -441,7 +503,7 @@ export default function CertificateDesigner({ certificate, event }) {
                             .querySelector('meta[name="csrf-token"]')
                             ?.getAttribute("content"),
                     },
-                }
+                },
             );
 
             if (response.ok) {
@@ -510,12 +572,12 @@ export default function CertificateDesigner({ certificate, event }) {
                             ?.getAttribute("content"),
                     },
                     body: JSON.stringify(body),
-                }
+                },
             );
 
             if (response.ok) {
                 setMediaFiles((prev) =>
-                    prev.filter((f) => !pathsToDelete.includes(f.path))
+                    prev.filter((f) => !pathsToDelete.includes(f.path)),
                 );
 
                 // Sync Deletion: Remove elements using these images
@@ -525,7 +587,7 @@ export default function CertificateDesigner({ certificate, event }) {
                             return true;
                         // Check if src contains any of the deleted paths
                         return !pathsToDelete.some((p) => el.src.includes(p));
-                    })
+                    }),
                 );
 
                 // Sync Deletion: Clear background if it matches
@@ -560,13 +622,13 @@ export default function CertificateDesigner({ certificate, event }) {
                             ?.getAttribute("content"),
                     },
                     body: JSON.stringify({ old_path: path, new_name: newName }),
-                }
+                },
             );
 
             if (response.ok) {
                 const data = await response.json();
                 setMediaFiles((prev) =>
-                    prev.map((f) => (f.path === path ? data : f))
+                    prev.map((f) => (f.path === path ? data : f)),
                 );
                 setToast({
                     message: "File renamed successfully",
@@ -616,7 +678,7 @@ export default function CertificateDesigner({ certificate, event }) {
                         type: "error",
                     });
                 },
-            }
+            },
         );
     };
 
@@ -868,8 +930,8 @@ export default function CertificateDesigner({ certificate, event }) {
                             }`}
                             onClick={() => {
                                 // 2x2 Grid (Center Lines)
-                                const width = 842;
-                                const height = 595;
+                                const width = canvasSize.width;
+                                const height = canvasSize.height;
                                 setPersistentGuides([
                                     { type: "x", pos: width / 2 },
                                     { type: "y", pos: height / 2 },
@@ -885,8 +947,8 @@ export default function CertificateDesigner({ certificate, event }) {
                             }`}
                             onClick={() => {
                                 // 3x3 Grid (Thirds)
-                                const width = 842;
-                                const height = 595;
+                                const width = canvasSize.width;
+                                const height = canvasSize.height;
                                 setPersistentGuides([
                                     { type: "x", pos: width / 3 },
                                     { type: "x", pos: (width / 3) * 2 },
@@ -914,8 +976,8 @@ export default function CertificateDesigner({ certificate, event }) {
                                 layoutGrid.enabled
                                     ? "bg-primary text-white border-primary"
                                     : isDarkMode
-                                    ? "text-white border-slate-600 bg-slate-800"
-                                    : "text-slate-600 border-slate-300 bg-white"
+                                      ? "text-white border-slate-600 bg-slate-800"
+                                      : "text-slate-600 border-slate-300 bg-white"
                             }`}
                             onClick={() =>
                                 setShowGridSettings(!showGridSettings)
@@ -1004,7 +1066,7 @@ export default function CertificateDesigner({ certificate, event }) {
                                         value={layoutGrid.columns}
                                         onChange={(e) => {
                                             const val = parseInt(
-                                                e.target.value
+                                                e.target.value,
                                             );
                                             setLayoutGrid((p) => ({
                                                 ...p,
@@ -1013,7 +1075,7 @@ export default function CertificateDesigner({ certificate, event }) {
                                                     ? ""
                                                     : Math.max(
                                                           1,
-                                                          Math.min(24, val)
+                                                          Math.min(24, val),
                                                       ),
                                             }));
                                         }}
@@ -1043,7 +1105,7 @@ export default function CertificateDesigner({ certificate, event }) {
                                             value={layoutGrid.margin}
                                             onChange={(e) => {
                                                 const val = parseInt(
-                                                    e.target.value
+                                                    e.target.value,
                                                 );
                                                 setLayoutGrid((p) => ({
                                                     ...p,
@@ -1075,7 +1137,7 @@ export default function CertificateDesigner({ certificate, event }) {
                                             value={layoutGrid.gutter}
                                             onChange={(e) => {
                                                 const val = parseInt(
-                                                    e.target.value
+                                                    e.target.value,
                                                 );
                                                 setLayoutGrid((p) => ({
                                                     ...p,
@@ -1112,7 +1174,7 @@ export default function CertificateDesigner({ certificate, event }) {
                                             }`}
                                         >
                                             {Math.round(
-                                                layoutGrid.opacity * 100
+                                                layoutGrid.opacity * 100,
                                             )}
                                             %
                                         </span>
@@ -1129,7 +1191,7 @@ export default function CertificateDesigner({ certificate, event }) {
                                                 ...p,
                                                 enabled: true,
                                                 opacity: parseFloat(
-                                                    e.target.value
+                                                    e.target.value,
                                                 ),
                                             }))
                                         }
@@ -1282,8 +1344,8 @@ export default function CertificateDesigner({ certificate, event }) {
                                     canvasSize.width > canvasSize.height
                                         ? "btn-tech"
                                         : isDarkMode
-                                        ? "btn-outline-secondary"
-                                        : "btn-outline-dark"
+                                          ? "btn-outline-secondary"
+                                          : "btn-outline-dark"
                                 }`}
                                 onClick={() =>
                                     setCanvasSize({ width: 1056, height: 816 })
@@ -1310,8 +1372,8 @@ export default function CertificateDesigner({ certificate, event }) {
                                     canvasSize.width < canvasSize.height
                                         ? "btn-tech"
                                         : isDarkMode
-                                        ? "btn-outline-secondary"
-                                        : "btn-outline-dark"
+                                          ? "btn-outline-secondary"
+                                          : "btn-outline-dark"
                                 }`}
                                 onClick={() =>
                                     setCanvasSize({ width: 816, height: 1056 })
@@ -1649,7 +1711,7 @@ export default function CertificateDesigner({ certificate, event }) {
                                         if (
                                             e.target === canvasRef.current ||
                                             e.target.classList?.contains(
-                                                "bg-layer"
+                                                "bg-layer",
                                             )
                                         ) {
                                             setIsBgEditMode(!isBgEditMode);
@@ -1715,7 +1777,7 @@ export default function CertificateDesigner({ certificate, event }) {
                                             >
                                                 {[
                                                     ...Array(
-                                                        layoutGrid.columns
+                                                        layoutGrid.columns,
                                                     ),
                                                 ].map((_, i) => (
                                                     <div
@@ -1742,7 +1804,7 @@ export default function CertificateDesigner({ certificate, event }) {
                                                 handleGuideDragStart(
                                                     g.type,
                                                     e,
-                                                    i
+                                                    i,
                                                 )
                                             }
                                             style={{
@@ -1820,7 +1882,7 @@ export default function CertificateDesigner({ certificate, event }) {
                                             onMouseDown={(e) => {
                                                 if (e.shiftKey) {
                                                     const newSet = new Set(
-                                                        selectedIds
+                                                        selectedIds,
                                                     );
                                                     if (newSet.has(el.id))
                                                         newSet.delete(el.id);
@@ -1829,7 +1891,7 @@ export default function CertificateDesigner({ certificate, event }) {
                                                 } else {
                                                     if (!selectedIds.has(el.id))
                                                         setSelectedIds(
-                                                            new Set([el.id])
+                                                            new Set([el.id]),
                                                         );
                                                 }
                                             }}
@@ -1837,7 +1899,7 @@ export default function CertificateDesigner({ certificate, event }) {
                                             onResize={handleResize}
                                             onDragStop={() =>
                                                 updateElements(
-                                                    elementsRef.current
+                                                    elementsRef.current,
                                                 )
                                             }
                                             onDelete={deleteElement}
@@ -1940,9 +2002,9 @@ export default function CertificateDesigner({ certificate, event }) {
                                                                                 parseInt(
                                                                                     e
                                                                                         .target
-                                                                                        .value
+                                                                                        .value,
                                                                                 ),
-                                                                        }
+                                                                        },
                                                                     )
                                                                 }
                                                                 placeholder="Size"
@@ -1981,7 +2043,7 @@ export default function CertificateDesigner({ certificate, event }) {
                                                                             color: e
                                                                                 .target
                                                                                 .value,
-                                                                        }
+                                                                        },
                                                                     )
                                                                 }
                                                             />
@@ -2159,7 +2221,7 @@ export default function CertificateDesigner({ certificate, event }) {
                                                     onChange={(e) =>
                                                         updateSelected({
                                                             width: parseInt(
-                                                                e.target.value
+                                                                e.target.value,
                                                             ),
                                                         })
                                                     }
@@ -2183,7 +2245,7 @@ export default function CertificateDesigner({ certificate, event }) {
                                                     onChange={(e) =>
                                                         updateSelected({
                                                             height: parseInt(
-                                                                e.target.value
+                                                                e.target.value,
                                                             ),
                                                         })
                                                     }
@@ -2247,8 +2309,8 @@ export default function CertificateDesigner({ certificate, event }) {
                                     onClick={() => {
                                         setElements(
                                             elements.filter(
-                                                (el) => !selectedIds.has(el.id)
-                                            )
+                                                (el) => !selectedIds.has(el.id),
+                                            ),
                                         );
                                         setSelectedIds(new Set());
                                     }}
@@ -2281,6 +2343,9 @@ export default function CertificateDesigner({ certificate, event }) {
                 show={showMediaManager}
                 onClose={() => setShowMediaManager(false)}
                 files={mediaFiles}
+                onUpload={handleUploadMedia}
+                onDelete={handleDeleteMedia}
+                onRename={handleRenameMedia}
                 onSelect={(files) => {
                     if (Array.isArray(files)) {
                         // Multi-select
@@ -2290,7 +2355,7 @@ export default function CertificateDesigner({ certificate, event }) {
                                 src: file.url,
                                 name: file.name,
                                 path: file.path, // Store path for reference
-                            }))
+                            })),
                         );
                     } else {
                         // Single select (fallback)
@@ -2307,11 +2372,9 @@ export default function CertificateDesigner({ certificate, event }) {
                 }}
                 uploadUrl={route(
                     "events.certificates.upload-media",
-                    certificate.id
+                    certificate.id,
                 )}
                 onUploadSuccess={() => fetchMedia()}
-                onDelete={handleMediaDelete}
-                onRename={handleMediaRename}
             />
         </div>
     );

@@ -1,225 +1,170 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "@inertiajs/react";
+import Swiper from "swiper";
+import { Navigation, Pagination, EffectFade, Autoplay } from "swiper/modules";
+// Import Swiper styles if not globally imported, but app.css has them.
+// We rely on app.css for custom template styles but ensuring modules load is key.
 
-export default function SliderSection() {
+export default function SliderSection({ slides, elementId = "heroSlide2" }) {
+    const defaultSlides = [
+        {
+            bg_image: "/assets/img/hero/hero_bg_3_1.png",
+            title: "Seamless ICT Integration for Business",
+            description:
+                "Your trusted partner for digital transformation. We specialize in delivering tailored technology across Video Conferencing, Data Infrastructure, and Security systems.",
+            buttons: [
+                {
+                    text: "Explore Our Services",
+                    url: "/services",
+                    style: "style7",
+                },
+                { text: "Get In Touch", url: "/contact", style: "style2" },
+            ],
+        },
+        {
+            bg_image: "/assets/img/hero/hero_bg_2_1.png",
+            title: "Connect Your Teams, Wherever They Are",
+            description:
+                "Experience professional video conferencing for every space. Whether it’s a small huddle room or a large auditorium, we ensure crystal-clear communication.",
+            buttons: [
+                {
+                    text: "Meeting Room Solutions",
+                    url: "/contact",
+                    style: "style7",
+                },
+                { text: "View Products", url: "/services", style: "style2" },
+            ],
+        },
+        {
+            bg_image: "/assets/img/hero/hero_bg_2_2.png",
+            title: "A Strong Foundation for Your Data",
+            description:
+                "Keep your operations running smoothly with reliable servers and scalable storage. We provide the performance and capacity your business needs to stay ahead.",
+            buttons: [
+                {
+                    text: "Infrastructure Solutions",
+                    url: "/contact",
+                    style: "style7",
+                },
+                { text: "Contact Us", url: "/services", style: "style2" },
+            ],
+        },
+        {
+            bg_image: "/assets/img/hero/hero_bg_4_1.png",
+            title: "Smart Security for Peace of Mind",
+            description:
+                "Protect what matters most with advanced surveillance systems. Monitor your environment in real-time and ensure safety around the clock with our integrated solutions.",
+            buttons: [
+                {
+                    text: "See Security Systems",
+                    url: "/contact",
+                    style: "style7",
+                },
+                { text: "Contact Sales", url: "/services", style: "style2" },
+            ],
+        },
+    ];
+
+    const items = slides && slides.length > 0 ? slides : defaultSlides;
+
+    useEffect(() => {
+        const swiperInstance = new Swiper(`#${elementId}`, {
+            modules: [Navigation, Pagination, EffectFade, Autoplay],
+            effect: "fade", // Revert to fade to fix blank screen
+            fadeEffect: {
+                crossFade: true, // Restore crossFade for non-overlapping transitions
+            },
+            loop: true, // Keep loop enabled as requested
+            speed: 1000,
+            observer: true,
+            observeParents: true,
+            autoplay: {
+                delay: 5000,
+                disableOnInteraction: false,
+            },
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            navigation: {
+                nextEl: `[data-slider-next="#${elementId}"]`,
+                prevEl: `[data-slider-prev="#${elementId}"]`,
+            },
+        });
+
+        return () => {
+            if (swiperInstance) swiperInstance.destroy();
+        };
+    }, [elementId, items]);
+
     return (
         <div className="hero-2" id="hero">
             <div
                 className="hero2-overlay"
                 data-bg-src="/assets/img/bg/line-pattern.png"
             ></div>
-            <div className="swiper hero-slider-2" id="heroSlide2">
+            <div className="swiper hero-slider-2" id={elementId}>
                 <div className="swiper-wrapper">
-                    {/* Slide 1 */}
-                    <div className="swiper-slide">
-                        <div className="hero-inner">
+                    {items.map((slide, index) => (
+                        <div className="swiper-slide" key={index}>
                             <div
-                                className="th-hero-bg"
-                                data-bg-src="/assets/img/hero/hero_bg_3_1.png"
-                            ></div>
-                            <div className="container">
-                                <div className="hero-style2 text-center text-md-start">
-                                    <h1
-                                        className="hero-title mb-20"
-                                        data-ani="slideinup"
-                                        data-ani-delay="0.4s"
-                                    >
-                                        Seamless ICT Integration for Business
-                                    </h1>
-                                    <p
-                                        className="hero-desc"
-                                        data-ani="slideinup"
-                                        data-ani-delay="0.5s"
-                                    >
-                                        Your trusted partner for digital
-                                        transformation. We specialize in
-                                        delivering tailored technology across
-                                        Video Conferencing, Data Infrastructure,
-                                        and Security systems.
-                                    </p>
-                                    <div
-                                        className="btn-group text-center text-md-start"
-                                        data-ani="slideinup"
-                                        data-ani-delay="0.8s"
-                                    >
-                                        <Link
-                                            href="/services"
-                                            className="th-btn th-radius style7 th-icon"
+                                className="hero-inner"
+                                style={{ minHeight: "900px" }}
+                            >
+                                <div
+                                    className="th-hero-bg"
+                                    data-bg-src={slide.bg_image}
+                                    style={{
+                                        backgroundImage: `url(${slide.bg_image})`,
+                                        backgroundSize: "cover",
+                                        backgroundPosition: "center",
+                                    }}
+                                ></div>
+                                <div className="container">
+                                    <div className="hero-style2 text-center text-md-start">
+                                        <h1
+                                            className="hero-title mb-20"
+                                            data-ani="slideinup"
+                                            data-ani-delay="0.4s"
                                         >
-                                            Explore Our Services
-                                            <i className="fa-light fa-arrow-right-long"></i>
-                                        </Link>
-                                        <Link
-                                            href="/contact"
-                                            className="th-btn th-radius style2 th-icon"
+                                            {slide.title}
+                                        </h1>
+                                        <p
+                                            className="hero-desc"
+                                            data-ani="slideinup"
+                                            data-ani-delay="0.5s"
                                         >
-                                            Get In Touch
-                                            <i className="fa-light fa-arrow-right-long"></i>
-                                        </Link>
+                                            {slide.description}
+                                        </p>
+                                        <div
+                                            className="btn-group text-center text-md-start"
+                                            data-ani="slideinup"
+                                            data-ani-delay="0.8s"
+                                        >
+                                            {slide.buttons?.map(
+                                                (btn, btnIndex) => (
+                                                    <Link
+                                                        key={btnIndex}
+                                                        href={btn.url}
+                                                        className={`th-btn th-radius ${btn.style || "style2"} th-icon`}
+                                                    >
+                                                        {btn.text}
+                                                        <i className="fa-light fa-arrow-right-long"></i>
+                                                    </Link>
+                                                ),
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    {/* Slide 2 */}
-                    <div className="swiper-slide">
-                        <div className="hero-inner">
-                            <div
-                                className="th-hero-bg"
-                                data-bg-src="/assets/img/hero/hero_bg_2_1.png"
-                            ></div>
-                            <div className="container">
-                                <div className="hero-style2 text-center text-md-start">
-                                    <h1
-                                        className="hero-title mb-20"
-                                        data-ani="slideinup"
-                                        data-ani-delay="0.4s"
-                                    >
-                                        Connect Your Teams, Wherever They Are
-                                    </h1>
-                                    <p
-                                        className="hero-desc"
-                                        data-ani="slideinup"
-                                        data-ani-delay="0.5s"
-                                    >
-                                        Experience professional video
-                                        conferencing for every space. Whether
-                                        it’s a small huddle room or a large
-                                        auditorium, we ensure crystal-clear
-                                        communication.
-                                    </p>
-                                    <div
-                                        className="btn-group text-center text-md-start"
-                                        data-ani="slideinup"
-                                        data-ani-delay="0.8s"
-                                    >
-                                        <Link
-                                            href="/contact"
-                                            className="th-btn th-radius style7 th-icon"
-                                        >
-                                            Meeting Room Solutions
-                                            <i className="fa-light fa-arrow-right-long"></i>
-                                        </Link>
-                                        <Link
-                                            href="/services"
-                                            className="th-btn th-radius style2 th-icon"
-                                        >
-                                            View Products
-                                            <i className="fa-light fa-arrow-right-long"></i>
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {/* Slide 3 */}
-                    <div className="swiper-slide">
-                        <div className="hero-inner">
-                            <div
-                                className="th-hero-bg"
-                                data-bg-src="/assets/img/hero/hero_bg_2_2.png"
-                            ></div>
-                            <div className="container">
-                                <div className="hero-style2 text-center text-md-start">
-                                    <h1
-                                        className="hero-title mb-20"
-                                        data-ani="slideinup"
-                                        data-ani-delay="0.4s"
-                                    >
-                                        A Strong Foundation for Your Data
-                                    </h1>
-                                    <p
-                                        className="hero-desc"
-                                        data-ani="slideinup"
-                                        data-ani-delay="0.5s"
-                                    >
-                                        Keep your operations running smoothly
-                                        with reliable servers and scalable
-                                        storage. We provide the performance and
-                                        capacity your business needs to stay
-                                        ahead.
-                                    </p>
-                                    <div
-                                        className="btn-group text-center text-md-start"
-                                        data-ani="slideinup"
-                                        data-ani-delay="0.8s"
-                                    >
-                                        <Link
-                                            href="/contact"
-                                            className="th-btn th-radius style7 th-icon"
-                                        >
-                                            Infrastructure Solutions
-                                            <i className="fa-light fa-arrow-right-long"></i>
-                                        </Link>
-                                        <Link
-                                            href="/services"
-                                            className="th-btn th-radius style2 th-icon"
-                                        >
-                                            Contact Us{" "}
-                                            <i className="fa-light fa-arrow-right-long"></i>
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {/* Slide 4 */}
-                    <div className="swiper-slide">
-                        <div className="hero-inner">
-                            <div
-                                className="th-hero-bg"
-                                data-bg-src="/assets/img/hero/hero_bg_4_1.png"
-                            ></div>
-                            <div className="container">
-                                <div className="hero-style2 text-center text-md-start">
-                                    <h1
-                                        className="hero-title mb-20"
-                                        data-ani="slideinup"
-                                        data-ani-delay="0.4s"
-                                    >
-                                        Smart Security for Peace of Mind
-                                    </h1>
-                                    <p
-                                        className="hero-desc"
-                                        data-ani="slideinup"
-                                        data-ani-delay="0.5s"
-                                    >
-                                        Protect what matters most with advanced
-                                        surveillance systems. Monitor your
-                                        environment in real-time and ensure
-                                        safety around the clock with our
-                                        integrated solutions.
-                                    </p>
-                                    <div
-                                        className="btn-group text-center text-md-start"
-                                        data-ani="slideinup"
-                                        data-ani-delay="0.8s"
-                                    >
-                                        <Link
-                                            href="/contact"
-                                            className="th-btn th-radius style7 th-icon"
-                                        >
-                                            See Security Systems
-                                            <i className="fa-light fa-arrow-right-long"></i>
-                                        </Link>
-                                        <Link
-                                            href="/services"
-                                            className="th-btn th-radius style2 th-icon"
-                                        >
-                                            Contact Sales
-                                            <i className="fa-light fa-arrow-right-long"></i>
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    ))}
                 </div>
                 <div className="th-swiper-custom">
                     <div className="swiper-pagination"></div>
                     <div className="hero-icon">
                         <button
-                            data-slider-prev="#heroSlide2"
+                            data-slider-prev={`#${elementId}`}
                             className="hero-arrow slider-prev"
                         >
                             <img
@@ -228,7 +173,7 @@ export default function SliderSection() {
                             />
                         </button>
                         <button
-                            data-slider-next="#heroSlide2"
+                            data-slider-next={`#${elementId}`}
                             className="hero-arrow slider-next"
                         >
                             <img
@@ -236,115 +181,6 @@ export default function SliderSection() {
                                 alt=""
                             />
                         </button>
-                    </div>
-                </div>
-                <div className="swiper heroThumbs style2" id="heroSlide3">
-                    <div className="swiper-wrapper">
-                        <div className="swiper-slide">
-                            <div className="hero-inner">
-                                <div className="hero-card">
-                                    <div className="hero-img">
-                                        <img
-                                            src="/assets/img/hero/hero_bg_3_1.png"
-                                            alt=""
-                                        />
-                                    </div>
-                                    <div className="hero-card_content">
-                                        <h3 className="box-title">
-                                            Integrated Tech
-                                        </h3>
-                                        <p className="sec-text text-white">
-                                            Your trusted partner for digital
-                                            transformation.
-                                        </p>
-                                        <Link
-                                            href="/services"
-                                            className="th-btn th-radius style2"
-                                        >
-                                            Read More
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="swiper-slide">
-                            <div className="hero-inner">
-                                <div className="hero-card">
-                                    <div className="hero-img">
-                                        <img
-                                            src="/assets/img/hero/hero_bg_2_1.png"
-                                            alt=""
-                                        />
-                                    </div>
-                                    <div className="hero-card_content">
-                                        <h3 className="box-title">
-                                            Video Conference
-                                        </h3>
-                                        <p className="sec-text text-white">
-                                            Seamless collaboration.
-                                        </p>
-                                        <Link
-                                            href="/services"
-                                            className="th-btn th-radius style2"
-                                        >
-                                            Read More
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="swiper-slide">
-                            <div className="hero-inner">
-                                <div className="hero-card">
-                                    <div className="hero-img">
-                                        <img
-                                            src="/assets/img/hero/hero_bg_2_2.png"
-                                            alt=""
-                                        />
-                                    </div>
-                                    <div className="hero-card_content">
-                                        <h3 className="box-title">
-                                            Server & Storage
-                                        </h3>
-                                        <p className="sec-text text-white">
-                                            Reliable infrastructure.
-                                        </p>
-                                        <Link
-                                            href="/services"
-                                            className="th-btn th-radius style2"
-                                        >
-                                            Read More
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="swiper-slide">
-                            <div className="hero-inner">
-                                <div className="hero-card">
-                                    <div className="hero-img">
-                                        <img
-                                            src="/assets/img/hero/hero_bg_4_1.png"
-                                            alt=""
-                                        />
-                                    </div>
-                                    <div className="hero-card_content">
-                                        <h3 className="box-title">
-                                            Surveillance
-                                        </h3>
-                                        <p className="sec-text text-white">
-                                            Smart security.
-                                        </p>
-                                        <Link
-                                            href="/services"
-                                            className="th-btn th-radius style2"
-                                        >
-                                            Read More
-                                        </Link>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
                 <div className="scroll-down">

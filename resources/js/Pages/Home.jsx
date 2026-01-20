@@ -9,7 +9,7 @@ import ProjectSection from "@/Components/Sections/Home/ProjectSection";
 import ClientSection from "@/Components/Sections/Common/ClientSection";
 import NewsSection from "@/Components/Sections/Home/NewsSection";
 
-export default function Home({ services }) {
+export default function Home({ services, projects }) {
     return (
         <MainLayout>
             <Head title="Home" />
@@ -24,7 +24,7 @@ export default function Home({ services }) {
 
             <WhyChooseUsSection />
 
-            <ProjectSection />
+            <ProjectSection projects={projects} />
 
             <ClientSection />
 

@@ -3,7 +3,7 @@ import { Head, Link } from "@inertiajs/react";
 import DashboardLayout from "./Layout";
 import DashboardTable, {
     DashboardTableRow,
-} from "../../../Components/Events/Dashboard/DashboardTable";
+} from "@/Components/Events/Dashboard/DashboardTable";
 import SimpleBreadcrumb from "@/Components/Common/SimpleBreadcrumb";
 import EmptyState from "@/Components/Common/EmptyState";
 import { route } from "ziggy-js";
@@ -178,7 +178,7 @@ export default function Index({ auth, stats, recent_events }) {
                                         <span className="text-muted small">
                                             <i className="fa-regular fa-calendar me-1"></i>
                                             {new Date(
-                                                event.start_date
+                                                event.start_date,
                                             ).toLocaleDateString()}
                                         </span>
                                     </div>
@@ -195,8 +195,8 @@ export default function Index({ auth, stats, recent_events }) {
                                                 event.status === "Certified"
                                                     ? "bg-theme text-white shadow-sm"
                                                     : event.status === "Pending"
-                                                    ? "bg-warning bg-opacity-25 text-white"
-                                                    : "bg-warning bg-opacity-10 text-white"
+                                                      ? "bg-warning bg-opacity-25 text-white"
+                                                      : "bg-warning bg-opacity-10 text-white"
                                             }`}
                                         >
                                             <i
@@ -224,7 +224,7 @@ export default function Index({ auth, stats, recent_events }) {
                                         <Link
                                             href={route(
                                                 "events.my-event-detail",
-                                                event.slug
+                                                event.slug,
                                             )}
                                             className="btn btn-sm btn-light rounded-pill px-3 fw-medium"
                                         >

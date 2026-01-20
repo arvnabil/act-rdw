@@ -13,82 +13,119 @@ use Filament\Forms\Components\KeyValue;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use App\Filament\Activioncms\Resources\SeoMetaResource\Schemas\SeoForm;
 use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Builder;
+use Filament\Forms\Components\CheckboxList;
+use Filament\Schemas\Components\Utilities\Get;
 
 class ProductForm
 {
     public static function schema(): array
     {
         return [
-            Group::make()
-                ->schema([
-                    Section::make('Basic Information')
+            Tabs::make('ProductTabs')
+                ->tabs([
+                    Tab::make('Product Details')
                         ->schema([
-                            TextInput::make('name')
-                                ->required()
-                                ->live(onBlur: true)
-                                ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
-                            TextInput::make('slug')
-                                ->required()
-                                ->unique(ignoreRecord: true),
-                            TextInput::make('sku')
-                                ->label('SKU'),
-                            Select::make('service_id')
-                                ->relationship('service', 'name')
-                                ->required()
-                                ->searchable()
-                                ->preload(),
-                            Select::make('brand_id')
-                                ->relationship('brand', 'name')
-                                ->required()
-                                ->searchable()
-                                ->preload(),
-                            TextInput::make('price')
-                                ->numeric()
-                                ->prefix('IDR'),
-                            TextInput::make('solution_type'),
-                            TextInput::make('datasheet_url')
-                                ->url(),
-                            RichEditor::make('description')
-                                ->columnSpanFull(),
-                        ])->columns(2),
+                            Group::make()
+                                ->schema([
+                                    Section::make('Basic Information')
+                                        ->schema([
+                                            TextInput::make('name')
+                                                ->required()
+                                                ->live(onBlur: true)
+                                                ->afterStateUpdated(fn (Set $set, ?string $state) => $set('slug', Str::slug($state))),
+                                            TextInput::make('slug')
+                                                ->required()
+                                                ->unique(ignoreRecord: true),
+                                            TextInput::make('sku')
+                                                ->label('SKU'),
+                                            Select::make('service_id')
+                                                ->relationship('service', 'name')
+                                                ->required()
+                                                ->searchable()
+                                                ->preload()
+                                                ->live(),
+                                            Select::make('brand_id')
+                                                ->relationship('brand', 'name')
+                                                ->required()
+                                                ->searchable()
+                                                ->preload(),
+                                            Select::make('product_category_id')
+                                                ->relationship('category', 'name')
+                                                ->label('Device Category')
+                                                ->searchable()
+                                                ->preload()
+                                                ->createOptionForm(\Modules\Core\Filament\Resources\ProductCategoryResource\Schemas\ProductCategoryForm::schema()),
+                                            TextInput::make('price')
+                                                ->numeric()
+                                                ->prefix('IDR'),
+                                            CheckboxList::make('solutions')
+                                                ->relationship('solutions', 'title', modifyQueryUsing: fn (Builder $query, Get $get) => $query->where('service_id', $get('service_id')))
+                                                ->label('Applicable Solutions')
+                                                ->columns(2)
+                                                ->gridDirection('row')
+                                                ->visible(fn (Get $get) => filled($get('service_id')))
+                                                ->columnSpanFull(),
+                                            TextInput::make('solution_type')
+                                                ->label('Legacy Type (Deprecated)')
+                                                ->visible(false),
+                                            TextInput::make('datasheet_url')
+                                                ->url(),
+                                            RichEditor::make('description')
+                                                ->columnSpanFull(),
+                                        ])->columns(2),
 
-                    Section::make('Specifications & Features')
-                        ->schema([
-                            TagsInput::make('tags'),
-                            KeyValue::make('specs')
-                                ->keyLabel('Spec Name')
-                                ->valueLabel('Value'),
-                            KeyValue::make('features')
-                                ->keyLabel('Feature')
-                                ->valueLabel('Description'),
-                            RichEditor::make('specification_text')
-                                ->columnSpanFull(),
-                            RichEditor::make('features_text')
-                                ->columnSpanFull(),
-                        ]),
+                                    Section::make('Specifications & Features')
+                                        ->schema([
+                                            TagsInput::make('tags'),
+                                            KeyValue::make('specs')
+                                                ->keyLabel('Spec Name')
+                                                ->valueLabel('Value'),
+                                            KeyValue::make('features')
+                                                ->keyLabel('Feature')
+                                                ->valueLabel('Description'),
+                                            RichEditor::make('specification_text')
+                                                ->columnSpanFull(),
+                                            RichEditor::make('features_text')
+                                                ->columnSpanFull(),
+                                        ]),
 
-                    Section::make('Marketplace Links')
-                        ->schema([
-                            TextInput::make('link_accommerce')->label('Accocommerce')->url(),
-                        ])->columns(1),
-                ])->columnSpan(['lg' => 2]),
+                                    Section::make('Marketplace Links')
+                                        ->schema([
+                                            TextInput::make('link_accommerce')->label('Accocommerce')->url(),
+                                        ])->columns(1),
+                                ])->columnSpan(['lg' => 2]),
 
-            Group::make()
-                ->schema([
-                    Section::make('Image')
+                            Group::make()
+                                ->schema([
+                                    Section::make('Image')
+                                        ->schema([
+                                            FileUpload::make('image_path')
+                                                ->image()
+                                                ->directory('products'),
+                                        ]),
+                                    Section::make('Status')
+                                        ->schema([
+                                            Toggle::make('is_active')
+                                                ->required()
+                                                ->default(true),
+                                        ]),
+                                ])->columnSpan(['lg' => 1]),
+                        ])
+                        ->columns(3),
+
+                    Tab::make('SEO')
                         ->schema([
-                            FileUpload::make('image_path')
-                                ->image()
-                                ->directory('products'),
+                             Group::make()
+                                ->relationship('seo')
+                                ->schema(SeoForm::schema())
                         ]),
-                    Section::make('Status')
-                        ->schema([
-                            Toggle::make('is_active')
-                                ->required()
-                                ->default(true),
-                        ]),
-                ])->columnSpan(['lg' => 1]),
-            ];
+                ])
+                ->columnSpanFull()
+        ];
     }
 }

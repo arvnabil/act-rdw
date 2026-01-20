@@ -48,4 +48,9 @@ class ServiceSolution extends Model
     {
         return $this->hasMany(ConfiguratorOption::class);
     }
+
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(\Modules\Core\Models\Product::class, 'product_service_solution');
+    }
 }

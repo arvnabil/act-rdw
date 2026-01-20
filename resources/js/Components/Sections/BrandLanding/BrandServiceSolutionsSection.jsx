@@ -8,8 +8,11 @@ import "swiper/css";
 export default function BrandServiceSolutionsSection({
     relatedServices,
     getImageUrl,
+    brand,
 }) {
     if (!relatedServices || relatedServices.length === 0) return null;
+
+    const getBrandSlug = (b) => b?.slug || b?.name?.toLowerCase();
 
     return (
         <>
@@ -92,7 +95,7 @@ export default function BrandServiceSolutionsSection({
                                                     src={
                                                         solution.image
                                                             ? getImageUrl(
-                                                                  solution.image
+                                                                  solution.image,
                                                               )
                                                             : "/assets/img/logo/activ-logo-white.png"
                                                     }
@@ -123,7 +126,7 @@ export default function BrandServiceSolutionsSection({
                                                         {solution.desc}
                                                     </p>
                                                     <Link
-                                                        href={`/services/${service.slug}/${solution.slug}`}
+                                                        href={`/${getBrandSlug(brand)}/products?service_item=${solution.slug}`}
                                                         className="th-btn style3 th-radius th-icon room-btn btn-ghost-green"
                                                     >
                                                         Show Products{" "}
