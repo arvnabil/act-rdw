@@ -192,7 +192,7 @@ export default function MainLayout({ children }) {
                         <h3 className="widget_title">Get In Touch</h3>
                         <div className="th-widget-contact">
                             <div className="info-box_text">
-                                <div className="icon">
+                                <div className="icon d-flex justify-content-center align-items-center">
                                     <img
                                         src="/assets/img/icon/phone.svg"
                                         alt="img"
@@ -218,7 +218,7 @@ export default function MainLayout({ children }) {
                                 </div>
                             </div>
                             <div className="info-box_text">
-                                <div className="icon">
+                                <div className="icon d-flex justify-content-center align-items-center">
                                     <img
                                         src="/assets/img/icon/envelope.svg"
                                         alt="img"
@@ -244,7 +244,7 @@ export default function MainLayout({ children }) {
                                 </div>
                             </div>
                             <div className="info-box_text">
-                                <div className="icon">
+                                <div className="icon d-flex justify-content-center align-items-center">
                                     <img
                                         src="/assets/img/icon/location-dot.svg"
                                         alt="img"
@@ -603,7 +603,7 @@ export default function MainLayout({ children }) {
                                     </h3>
                                     <div className="th-widget-contact">
                                         <div className="info-box_text">
-                                            <div className="icon">
+                                            <div className="icon d-flex justify-content-center align-items-center">
                                                 <img
                                                     src="/assets/img/icon/phone.svg"
                                                     alt="img"
@@ -635,7 +635,7 @@ export default function MainLayout({ children }) {
                                             </div>
                                         </div>
                                         <div className="info-box_text">
-                                            <div className="icon">
+                                            <div className="icon d-flex justify-content-center align-items-center">
                                                 <img
                                                     src="/assets/img/icon/envelope.svg"
                                                     alt="img"
@@ -667,7 +667,7 @@ export default function MainLayout({ children }) {
                                             </div>
                                         </div>
                                         <div className="info-box_text">
-                                            <div className="icon">
+                                            <div className="icon d-flex justify-content-center align-items-center">
                                                 <img
                                                     src="/assets/img/icon/location-dot.svg"
                                                     alt="img"

@@ -34,8 +34,11 @@ export function useTemplateInit() {
         requestAnimationFrame(raf);
 
         // --- 01. Preloader & Mobile Menu ---
+        // --- 01. Preloader & Smart Loading (Hero First) ---
         const handleLoad = () => {
             $(".preloader").fadeOut();
+
+            // Init WOW.js safely after preloader fades
             if (typeof window.WOW !== "undefined") {
                 const WOWClass = window.WOW.WOW || window.WOW;
                 try {
@@ -52,10 +55,27 @@ export function useTemplateInit() {
             }
         };
 
-        if (document.readyState === "complete") {
-            handleLoad();
+        // Strategy: "Hero First" - Unblock view as soon as Hero is ready
+        // Max wait time: 1.5 seconds (prevents getting stuck)
+        const maxWait = setTimeout(handleLoad, 1500);
+
+        // Check if Hero Section exists and has images
+        const $hero = $(".hero-slider-2, .hero-wrapper");
+        if ($hero.length > 0) {
+            // Wait ONLY for hero images
+            $hero.imagesLoaded(function () {
+                clearTimeout(maxWait); // Cancel timeout if hero loads fast
+                handleLoad();
+            });
         } else {
-            window.addEventListener("load", handleLoad);
+            // If no hero (internal page), utilize DOMContentLoaded (Fastest)
+            if (document.readyState === "complete") {
+                handleLoad();
+            } else {
+                window.addEventListener("load", handleLoad);
+                // Fallback if load event takes too long
+                setTimeout(handleLoad, 1000);
+            }
         }
 
         $(document).on("click", ".preloaderCls", function (e) {
