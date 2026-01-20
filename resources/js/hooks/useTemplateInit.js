@@ -3,7 +3,7 @@ import { usePage } from "@inertiajs/react";
 import $ from "jquery";
 import Swiper from "swiper/bundle";
 // import 'swiper/css/bundle';
-import "wowjs";
+// import "wowjs"; // Removed to fix Production Build WeakMap error (Replaced with CDN)
 import Isotope from "isotope-layout";
 import imagesLoaded from "imagesloaded";
 import jQueryBridget from "jquery-bridget";
