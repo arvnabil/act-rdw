@@ -10,6 +10,9 @@ export default defineConfig({
         }),
         react(),
     ],
+    build: {
+        target: "es2019", // ⬅️ PENTING
+    },
     resolve: {
         alias: {
             "@": "/resources/js",
