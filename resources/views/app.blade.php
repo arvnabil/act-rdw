@@ -5,9 +5,9 @@
     <meta charset="utf-8" />
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
     <title>PT Alfa Cipta Teknologi Virtual - ACTiV</title>
-    <meta name="author" content="Atek" />
-    <meta name="description" content="Atek - IT Solution & Technology Html Template" />
-    <meta name="keywords" content="Atek - IT Solution & Technology Html Template" />
+    <meta name="author" content="ACTIV" />
+    <meta name="description" content="ACTIV - IT Solution & Comprehensive Technology Partner" />
+    <meta name="keywords" content="ACTIV, IT Solution, Technology, Software Development, System Integrator" />
     <meta name="robots" content="INDEX,FOLLOW" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
