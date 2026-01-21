@@ -52,10 +52,28 @@ class PageBuilderController extends Controller
             // We want the Builder to see the resolved defaults in 'config'.
 
             $resolved = $sectionDataResolver->resolve($section);
+            $props = $resolved['props'];
+
+            // TRANSFORM FOR BUILDER: Adapter for Data Structure Mismatch
+            // Filament stores images as ['url1', 'url2'] (Flat Array) via Accessor
+            // PageBuilder Inspector expects [{image: 'url1'}, {image: 'url2'}] (Repeater Object)
+            if (in_array($section->section_key, ['about', 'about_content', 'why_choose_us'])) {
+                if (isset($props['images']) && is_array($props['images'])) {
+                    $transformedImages = [];
+                    foreach ($props['images'] as $img) {
+                        if (is_string($img)) {
+                            $transformedImages[] = ['image' => $img];
+                        } else {
+                            $transformedImages[] = $img;
+                        }
+                    }
+                    $props['images'] = $transformedImages;
+                }
+            }
 
             // Allow builder to see resolved defaults by merging them into config
             // Note: 'props' contains the resolved data.
-            $section->config = $resolved['props'];
+            $section->config = $props;
 
             return $section;
         });
@@ -102,16 +120,35 @@ class PageBuilderController extends Controller
 
             // 3. Update or Create sections
             foreach ($sections as $index => $sectionData) {
+                $config = $sectionData['config'] ?? [];
+
+                // TRANSFORM FOR DATABASE: Adapter for Data Structure Mismatch
+                // PageBuilder sends [{image: 'url1'}, {image: 'url2'}]
+                // DB/Filament expects ['url1', 'url2']
+                if (in_array($sectionData['section_key'], ['about', 'about_content', 'why_choose_us'])) {
+                    if (isset($config['images']) && is_array($config['images'])) {
+                        $flatImages = [];
+                        foreach ($config['images'] as $img) {
+                            if (is_array($img) && isset($img['image'])) {
+                                $flatImages[] = $img['image'];
+                            } elseif (is_string($img)) {
+                                $flatImages[] = $img;
+                            }
+                        }
+                        $config['images'] = $flatImages;
+                    }
+                }
+
                 // If it has an ID, update it
                 if (isset($sectionData['id']) && !str_starts_with((string)$sectionData['id'], 'new-')) {
                     $section = PageSection::find($sectionData['id']);
                     if ($section && $section->page_id === $page->id) {
                         // CLEANUP LOGIC: Check for replaced images
-                        $this->cleanupOldImages($section->config, $sectionData['config'] ?? []);
+                        $this->cleanupOldImages($section->config, $config);
 
                         $section->update([
                             'position' => $index,
-                            'config' => $sectionData['config'] ?? null,
+                            'config' => $config,
                             'is_active' => $sectionData['is_active'] ?? true,
                         ]);
                     }
@@ -120,7 +157,7 @@ class PageBuilderController extends Controller
                     $page->sections()->create([
                         'section_key' => $sectionData['section_key'],
                         'position' => $index,
-                        'config' => $sectionData['config'] ?? null,
+                        'config' => $config,
                         'is_active' => $sectionData['is_active'] ?? true,
                     ]);
                 }
