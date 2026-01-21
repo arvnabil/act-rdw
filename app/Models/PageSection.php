@@ -27,30 +27,37 @@ class PageSection extends Model
 
     protected static function booted(): void
     {
-        static::retrieved(function (PageSection $section) {
-            $config = $section->config;
+        // Removed retrieved hook to prevent interference with saving.
+        // Data sanitization is now handled by getConfigAttribute.
+    }
 
-            // Auto-fix legacy image structure (array of arrays -> array of strings)
-            if (isset($config['images']) && is_array($config['images'])) {
-                $hasLegacyStructure = false;
-                $newImages = [];
+    // Accessor to auto-fix legacy image structure on read
+    public function getConfigAttribute($value)
+    {
+        // If it's a JSON string (raw attribute), decode it first
+        if (is_string($value)) {
+            $decoded = json_decode($value, true);
+        } else {
+            $decoded = $value;
+        }
 
-                foreach ($config['images'] as $image) {
-                    if (is_array($image) && isset($image['image'])) {
-                        $hasLegacyStructure = true;
-                        $newImages[] = $image['image'];
-                    } else {
-                        $newImages[] = $image;
-                    }
-                }
+        if (!is_array($decoded)) {
+            return $decoded ?: [];
+        }
 
-                if ($hasLegacyStructure) {
-                    $config['images'] = $newImages;
-                    $section->config = $config;
-                    // We don't save here to avoid side effects on GET requests,
-                    // but the form will see clean data and save it correctly on update.
+        // Auto-fix legacy image structure (array of arrays -> array of strings)
+        if (isset($decoded['images']) && is_array($decoded['images'])) {
+            $newImages = [];
+            foreach ($decoded['images'] as $image) {
+                if (is_array($image) && isset($image['image'])) {
+                    $newImages[] = $image['image'];
+                } else {
+                    $newImages[] = $image;
                 }
             }
-        });
+            $decoded['images'] = $newImages;
+        }
+
+        return $decoded;
     }
 }

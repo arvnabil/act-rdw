@@ -70,6 +70,11 @@ class PageBuilderController extends Controller
 
     public function update(Request $request, Page $page)
     {
+        \Illuminate\Support\Facades\Log::info("PageBuilder Save Request for Page ID: {$page->id}", [
+            'sections_count' => count($request->input('sections') ?? []),
+            'payload_size' => strlen(json_encode($request->all()))
+        ]);
+
         $request->validate([
             'sections' => 'required|array',
             'sections.*.section_key' => 'required|string',
@@ -89,9 +94,11 @@ class PageBuilderController extends Controller
                 ->toArray();
 
             // 2. Delete sections NOT in the payload (that belong to this page)
-            PageSection::where('page_id', $page->id)
+            $deleted = PageSection::where('page_id', $page->id)
                 ->whereNotIn('id', $incomingIds)
                 ->delete();
+
+            \Illuminate\Support\Facades\Log::info("PageBuilder: Deleted {$deleted} old sections for Page {$page->id}");
 
             // 3. Update or Create sections
             foreach ($sections as $index => $sectionData) {
@@ -119,6 +126,8 @@ class PageBuilderController extends Controller
                 }
             }
         });
+
+        \Illuminate\Support\Facades\Log::info("PageBuilder: Successfully saved Page {$page->id}");
 
         return back()->with('success', 'Page saved successfully.');
     }
