@@ -42,7 +42,7 @@
     @endif
 
     <!-- Start of Qontak Webchat Script -->
-    <script>
+    {{-- <script>
         const qchatInit = document.createElement('script');
         qchatInit.src = "https://webchat.qontak.com/qchatInitialize.js";
         const qchatWidget = document.createElement('script');
@@ -55,7 +55,7 @@
                 code: 'bzuTnIhEXwWufy2oRg6YBw'
             })
         };
-    </script>
+    </script> --}}
     <!-- End of Qontak Webchat Script -->
 
     @routes
