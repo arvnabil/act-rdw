@@ -208,9 +208,9 @@ class PageSeeder extends Seeder
                     'title' => 'Bridging Technology and Education for a Better Future.',
                     'description' => 'ACTiV (PT Alfa Cipta Teknologi Virtual) is a premier provider of ICT and Educational solutions, specializing in hardware, software, and accessory rentals and sales. With over six years of industry experience and strategic partnerships with multinational brands, we deliver comprehensive, tailored technology solutions to empower our clients\' success.',
                     'images' => [
-                        ['image' => '/assets/img/normal/about_7_1.jpg'],
-                        ['image' => '/assets/img/normal/about_7_2.jpg'],
-                        ['image' => '/assets/img/normal/about_7_3.jpg'],
+                        '/assets/img/normal/about_7_1.jpg',
+                        '/assets/img/normal/about_7_2.jpg',
+                        '/assets/img/normal/about_7_3.jpg',
                     ],
                     'video_url' => 'https://www.youtube.com/watch?v=hIIQbkkKnno',
                     'features' => [

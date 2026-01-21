@@ -24,4 +24,33 @@ class PageSection extends Model
     {
         return $this->belongsTo(Page::class);
     }
+
+    protected static function booted(): void
+    {
+        static::retrieved(function (PageSection $section) {
+            $config = $section->config;
+
+            // Auto-fix legacy image structure (array of arrays -> array of strings)
+            if (isset($config['images']) && is_array($config['images'])) {
+                $hasLegacyStructure = false;
+                $newImages = [];
+
+                foreach ($config['images'] as $image) {
+                    if (is_array($image) && isset($image['image'])) {
+                        $hasLegacyStructure = true;
+                        $newImages[] = $image['image'];
+                    } else {
+                        $newImages[] = $image;
+                    }
+                }
+
+                if ($hasLegacyStructure) {
+                    $config['images'] = $newImages;
+                    $section->config = $config;
+                    // We don't save here to avoid side effects on GET requests,
+                    // but the form will see clean data and save it correctly on update.
+                }
+            }
+        });
+    }
 }

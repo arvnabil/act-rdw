@@ -32,10 +32,9 @@ export default function AboutContentSection({
     // Helper to get image URL safely
     const getImage = (index, fallback) => {
         if (images && images[index]) {
-            // Handle repeater structure usually { image: "url" } or just "url" if simple map
-            // Based on user schema: images -> repeater -> fields: [{ name: "image", type: "image", label: "Image URL" }]
-            // So structure is [{ image: "url" }, { image: "url" }]
-            return images[index]?.image || fallback;
+            const img = images[index];
+            if (typeof img === "string") return img;
+            return img?.image || fallback;
         }
         return fallback;
     };
