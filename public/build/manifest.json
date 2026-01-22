@@ -665,16 +665,16 @@
       "_SectionTitle-legacy-j626WB2I.js"
     ]
   },
-  "_sectionRegistry-Zttzc_4l.js": {
-    "file": "assets/sectionRegistry-Zttzc_4l.js",
+  "_sectionRegistry-5j0WezLl.js": {
+    "file": "assets/sectionRegistry-5j0WezLl.js",
     "name": "sectionRegistry",
     "imports": [
       "_NewsSection-4AUQ9kZ4.js",
       "_VisionMissionSection-CL5QhJ9A.js"
     ]
   },
-  "_sectionRegistry-legacy-DSbY38o6.js": {
-    "file": "assets/sectionRegistry-legacy-DSbY38o6.js",
+  "_sectionRegistry-legacy-BmFM3Hss.js": {
+    "file": "assets/sectionRegistry-legacy-BmFM3Hss.js",
     "name": "sectionRegistry",
     "imports": [
       "_NewsSection-legacy-BLYczMjp.js",
@@ -802,14 +802,14 @@
     ]
   },
   "resources/js/Pages/Admin/PageBuilder/BuilderCanvas-legacy.jsx": {
-    "file": "assets/BuilderCanvas-legacy-CVCCrZ7J.js",
+    "file": "assets/BuilderCanvas-legacy-DM_ZGabK.js",
     "name": "BuilderCanvas",
     "src": "resources/js/Pages/Admin/PageBuilder/BuilderCanvas-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-legacy-B38wspAF.js",
       "resources/js/Pages/Admin/PageBuilder/SectionPreview-legacy.jsx",
-      "_sectionRegistry-legacy-DSbY38o6.js",
+      "_sectionRegistry-legacy-BmFM3Hss.js",
       "_NewsSection-legacy-BLYczMjp.js",
       "_NewsSection-legacy-BxvX2Cz9.js",
       "_SectionTitle-legacy-j626WB2I.js",
@@ -819,14 +819,14 @@
     ]
   },
   "resources/js/Pages/Admin/PageBuilder/BuilderCanvas.jsx": {
-    "file": "assets/BuilderCanvas-cAl-mtkc.js",
+    "file": "assets/BuilderCanvas-D7652X0p.js",
     "name": "BuilderCanvas",
     "src": "resources/js/Pages/Admin/PageBuilder/BuilderCanvas.jsx",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-BBKuPPxj.js",
       "resources/js/Pages/Admin/PageBuilder/SectionPreview.jsx",
-      "_sectionRegistry-Zttzc_4l.js",
+      "_sectionRegistry-5j0WezLl.js",
       "_NewsSection-4AUQ9kZ4.js",
       "_NewsSection-qKqV2NhK.js",
       "_SectionTitle-DxOvmHsV.js",
@@ -854,14 +854,14 @@
     ]
   },
   "resources/js/Pages/Admin/PageBuilder/BuilderSidebar-legacy.jsx": {
-    "file": "assets/BuilderSidebar-legacy-Bu1GGx12.js",
+    "file": "assets/BuilderSidebar-legacy-IcPcdC6U.js",
     "name": "BuilderSidebar",
     "src": "resources/js/Pages/Admin/PageBuilder/BuilderSidebar-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-legacy-B38wspAF.js",
       "resources/js/Pages/Admin/PageBuilder/SortableSectionItem-legacy.jsx",
-      "_sectionRegistry-legacy-DSbY38o6.js",
+      "_sectionRegistry-legacy-BmFM3Hss.js",
       "_NewsSection-legacy-BLYczMjp.js",
       "_NewsSection-legacy-BxvX2Cz9.js",
       "_SectionTitle-legacy-j626WB2I.js",
@@ -870,14 +870,14 @@
     ]
   },
   "resources/js/Pages/Admin/PageBuilder/BuilderSidebar.jsx": {
-    "file": "assets/BuilderSidebar-0SDUe4Rc.js",
+    "file": "assets/BuilderSidebar-BHG_TE5c.js",
     "name": "BuilderSidebar",
     "src": "resources/js/Pages/Admin/PageBuilder/BuilderSidebar.jsx",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-BBKuPPxj.js",
       "resources/js/Pages/Admin/PageBuilder/SortableSectionItem.jsx",
-      "_sectionRegistry-Zttzc_4l.js",
+      "_sectionRegistry-5j0WezLl.js",
       "_NewsSection-4AUQ9kZ4.js",
       "_NewsSection-qKqV2NhK.js",
       "_SectionTitle-DxOvmHsV.js",
@@ -904,14 +904,14 @@
     ]
   },
   "resources/js/Pages/Admin/PageBuilder/InspectorPanel-legacy.jsx": {
-    "file": "assets/InspectorPanel-legacy-DPOTCSMp.js",
+    "file": "assets/InspectorPanel-legacy-Bj10aLr3.js",
     "name": "InspectorPanel",
     "src": "resources/js/Pages/Admin/PageBuilder/InspectorPanel-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-legacy-B38wspAF.js",
       "_RepeaterEditor-legacy-Ckzx2Ubj.js",
-      "_sectionRegistry-legacy-DSbY38o6.js",
+      "_sectionRegistry-legacy-BmFM3Hss.js",
       "_NewsSection-legacy-BLYczMjp.js",
       "_NewsSection-legacy-BxvX2Cz9.js",
       "_SectionTitle-legacy-j626WB2I.js",
@@ -920,14 +920,14 @@
     ]
   },
   "resources/js/Pages/Admin/PageBuilder/InspectorPanel.jsx": {
-    "file": "assets/InspectorPanel-DNNi69iE.js",
+    "file": "assets/InspectorPanel-BmeHuo1k.js",
     "name": "InspectorPanel",
     "src": "resources/js/Pages/Admin/PageBuilder/InspectorPanel.jsx",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-BBKuPPxj.js",
       "_RepeaterEditor-dbUBtxK0.js",
-      "_sectionRegistry-Zttzc_4l.js",
+      "_sectionRegistry-5j0WezLl.js",
       "_NewsSection-4AUQ9kZ4.js",
       "_NewsSection-qKqV2NhK.js",
       "_SectionTitle-DxOvmHsV.js",
@@ -936,7 +936,7 @@
     ]
   },
   "resources/js/Pages/Admin/PageBuilder/PageBuilder-legacy.jsx": {
-    "file": "assets/PageBuilder-legacy-CkSSoUDJ.js",
+    "file": "assets/PageBuilder-legacy-CatUBo2V.js",
     "name": "PageBuilder",
     "src": "resources/js/Pages/Admin/PageBuilder/PageBuilder-legacy.jsx",
     "isDynamicEntry": true,
@@ -946,7 +946,7 @@
       "resources/js/Pages/Admin/PageBuilder/BuilderSidebar-legacy.jsx",
       "resources/js/Pages/Admin/PageBuilder/BuilderCanvas-legacy.jsx",
       "resources/js/Pages/Admin/PageBuilder/InspectorPanel-legacy.jsx",
-      "_sectionRegistry-legacy-DSbY38o6.js",
+      "_sectionRegistry-legacy-BmFM3Hss.js",
       "resources/js/Pages/Admin/PageBuilder/SortableSectionItem-legacy.jsx",
       "resources/js/Pages/Admin/PageBuilder/SectionPreview-legacy.jsx",
       "resources/js/Pages/Admin/PageBuilder/Components/ErrorBoundary-legacy.jsx",
@@ -959,7 +959,7 @@
     ]
   },
   "resources/js/Pages/Admin/PageBuilder/PageBuilder.jsx": {
-    "file": "assets/PageBuilder-CTv18c6S.js",
+    "file": "assets/PageBuilder-DtyQSmnW.js",
     "name": "PageBuilder",
     "src": "resources/js/Pages/Admin/PageBuilder/PageBuilder.jsx",
     "isDynamicEntry": true,
@@ -969,7 +969,7 @@
       "resources/js/Pages/Admin/PageBuilder/BuilderSidebar.jsx",
       "resources/js/Pages/Admin/PageBuilder/BuilderCanvas.jsx",
       "resources/js/Pages/Admin/PageBuilder/InspectorPanel.jsx",
-      "_sectionRegistry-Zttzc_4l.js",
+      "_sectionRegistry-5j0WezLl.js",
       "resources/js/Pages/Admin/PageBuilder/SortableSectionItem.jsx",
       "resources/js/Pages/Admin/PageBuilder/SectionPreview.jsx",
       "resources/js/Pages/Admin/PageBuilder/Components/ErrorBoundary.jsx",
@@ -982,13 +982,13 @@
     ]
   },
   "resources/js/Pages/Admin/PageBuilder/SectionPreview-legacy.jsx": {
-    "file": "assets/SectionPreview-legacy-C4HFFf4X.js",
+    "file": "assets/SectionPreview-legacy-wi-34dUw.js",
     "name": "SectionPreview",
     "src": "resources/js/Pages/Admin/PageBuilder/SectionPreview-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-legacy-B38wspAF.js",
-      "_sectionRegistry-legacy-DSbY38o6.js",
+      "_sectionRegistry-legacy-BmFM3Hss.js",
       "resources/js/Pages/Admin/PageBuilder/Components/ErrorBoundary-legacy.jsx",
       "_NewsSection-legacy-BLYczMjp.js",
       "_NewsSection-legacy-BxvX2Cz9.js",
@@ -998,13 +998,13 @@
     ]
   },
   "resources/js/Pages/Admin/PageBuilder/SectionPreview.jsx": {
-    "file": "assets/SectionPreview-CwC2Ysn6.js",
+    "file": "assets/SectionPreview-boaYJC29.js",
     "name": "SectionPreview",
     "src": "resources/js/Pages/Admin/PageBuilder/SectionPreview.jsx",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-BBKuPPxj.js",
-      "_sectionRegistry-Zttzc_4l.js",
+      "_sectionRegistry-5j0WezLl.js",
       "resources/js/Pages/Admin/PageBuilder/Components/ErrorBoundary.jsx",
       "_NewsSection-4AUQ9kZ4.js",
       "_NewsSection-qKqV2NhK.js",
@@ -1014,13 +1014,13 @@
     ]
   },
   "resources/js/Pages/Admin/PageBuilder/SortableSectionItem-legacy.jsx": {
-    "file": "assets/SortableSectionItem-legacy-CTfTkH3T.js",
+    "file": "assets/SortableSectionItem-legacy-A1SvUi7t.js",
     "name": "SortableSectionItem",
     "src": "resources/js/Pages/Admin/PageBuilder/SortableSectionItem-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-legacy-B38wspAF.js",
-      "_sectionRegistry-legacy-DSbY38o6.js",
+      "_sectionRegistry-legacy-BmFM3Hss.js",
       "_NewsSection-legacy-BLYczMjp.js",
       "_NewsSection-legacy-BxvX2Cz9.js",
       "_SectionTitle-legacy-j626WB2I.js",
@@ -1029,13 +1029,13 @@
     ]
   },
   "resources/js/Pages/Admin/PageBuilder/SortableSectionItem.jsx": {
-    "file": "assets/SortableSectionItem-BgrQ10pB.js",
+    "file": "assets/SortableSectionItem-CRgSC2NG.js",
     "name": "SortableSectionItem",
     "src": "resources/js/Pages/Admin/PageBuilder/SortableSectionItem.jsx",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-BBKuPPxj.js",
-      "_sectionRegistry-Zttzc_4l.js",
+      "_sectionRegistry-5j0WezLl.js",
       "_NewsSection-4AUQ9kZ4.js",
       "_NewsSection-qKqV2NhK.js",
       "_SectionTitle-DxOvmHsV.js",
@@ -1946,7 +1946,7 @@
     ]
   },
   "resources/js/app-legacy.jsx": {
-    "file": "assets/app-legacy-CkD7BxVT.js",
+    "file": "assets/app-legacy-IoafZsKr.js",
     "name": "app",
     "src": "resources/js/app-legacy.jsx",
     "isEntry": true,
@@ -2020,7 +2020,7 @@
     ]
   },
   "resources/js/app.jsx": {
-    "file": "assets/app-Bwr1ZgAJ.js",
+    "file": "assets/app-B3xzJz-u.js",
     "name": "app",
     "src": "resources/js/app.jsx",
     "isEntry": true,

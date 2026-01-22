@@ -18,7 +18,7 @@ export const sectionRegistry = {
         label: "Slider / Carousel",
         icon: "fa-regular fa-presentation",
         component: SliderSection,
-        lock: true, // Prevent deletion
+        // lock: true, // Prevent deletion -> Unlocked by user request
         schema: [
             {
                 name: "variant",
