@@ -745,7 +745,7 @@
     "src": "public/assets/fonts/fontawesome/fa-thin-100.woff2"
   },
   "resources/css/app-legacy.css": {
-    "file": "assets/app-legacy-BDDdPmHK.js",
+    "file": "assets/app-legacy-Dd2arigY.js",
     "name": "app",
     "src": "resources/css/app-legacy.css",
     "isEntry": true,
@@ -765,7 +765,7 @@
     ]
   },
   "resources/css/app.css": {
-    "file": "assets/app-D4wonqVj.css",
+    "file": "assets/app-CDxfUwmV.css",
     "src": "resources/css/app.css",
     "isEntry": true,
     "name": "app",
@@ -1946,7 +1946,7 @@
     ]
   },
   "resources/js/app-legacy.jsx": {
-    "file": "assets/app-legacy-C2nTnRQH.js",
+    "file": "assets/app-legacy-BUOWPCxH.js",
     "name": "app",
     "src": "resources/js/app-legacy.jsx",
     "isEntry": true,
@@ -2020,7 +2020,7 @@
     ]
   },
   "resources/js/app.jsx": {
-    "file": "assets/app-BafgnITA.js",
+    "file": "assets/app-BvbWCrwr.js",
     "name": "app",
     "src": "resources/js/app.jsx",
     "isEntry": true,
@@ -2093,7 +2093,7 @@
     ],
     "css": [
       "assets/app-BHu7PVwu.css",
-      "assets/app-D4wonqVj.css"
+      "assets/app-CDxfUwmV.css"
     ],
     "assets": [
       "assets/fa-brands-400-bXOfNbY_.woff2",
