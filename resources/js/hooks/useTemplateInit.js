@@ -274,22 +274,49 @@ export function useTemplateInit() {
                 loop: true,
                 watchSlidesProgress: true,
                 on: {
-                    slideChangeTransitionStart: function () {
-                        // Remove animation classes
-                        $(this.slides)
+                    init: function () {
+                        // Pre-emptive Hiding: Hide all inactive slides immediately
+                        // This prevents them from being briefly visible during the swiper initialization or first move
+                        var swiper = this;
+                        $(swiper.slides)
+                            .not(swiper.slides[swiper.activeIndex])
                             .find("[data-ani]")
-                            .each(function () {
-                                var ani = $(this).data("ani");
-                                $(this).removeClass(ani);
-                            });
+                            .css("visibility", "hidden");
                     },
-                    slideChangeTransitionEnd: function () {
-                        // Add animation classes back to active slide
+                    slideChangeTransitionStart: function () {
+                        // Incoming slide is already hidden from Init or previous End
+                        // We just strip the classes to ensure a fresh start for the animation
                         $(this.slides[this.activeIndex])
                             .find("[data-ani]")
                             .each(function () {
                                 var ani = $(this).data("ani");
-                                $(this).addClass(ani);
+                                $(this)
+                                    .removeClass(ani)
+                                    .css("visibility", "hidden");
+                            });
+                    },
+                    slideChangeTransitionEnd: function () {
+                        // 1. Show and Animate Active Slide
+                        $(this.slides[this.activeIndex])
+                            .find("[data-ani]")
+                            .each(function () {
+                                var ani = $(this).data("ani");
+                                $(this)
+                                    .css("visibility", "visible")
+                                    .addClass(ani);
+                            });
+
+                        // 2. Hide and Reset All Inactive Slides
+                        // This prepares them for the next time they appear (preventing the flash)
+                        var $activeSlide = $(this.slides[this.activeIndex]);
+                        $(this.slides)
+                            .not($activeSlide)
+                            .find("[data-ani]")
+                            .each(function () {
+                                var ani = $(this).data("ani");
+                                $(this)
+                                    .removeClass(ani)
+                                    .css("visibility", "hidden");
                             });
                     },
                 },

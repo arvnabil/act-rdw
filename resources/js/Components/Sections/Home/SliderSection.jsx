@@ -67,35 +67,14 @@ export default function SliderSection({ slides, elementId = "heroSlide2" }) {
 
     const items = slides && slides.length > 0 ? slides : defaultSlides;
 
-    useEffect(() => {
-        const swiperInstance = new Swiper(`#${elementId}`, {
-            modules: [Navigation, Pagination, EffectFade, Autoplay],
-            effect: "fade", // Revert to fade to fix blank screen
-            fadeEffect: {
-                crossFade: true, // Restore crossFade for non-overlapping transitions
-            },
-            loop: true, // Keep loop enabled as requested
-            speed: 1000,
-            observer: true,
-            observeParents: true,
-            autoplay: {
-                delay: 5000,
-                disableOnInteraction: false,
-            },
-            pagination: {
-                el: ".swiper-pagination",
-                clickable: true,
-            },
-            navigation: {
-                nextEl: `[data-slider-next="#${elementId}"]`,
-                prevEl: `[data-slider-prev="#${elementId}"]`,
-            },
-        });
+    // Swiper initialization is now handled globally in useTemplateInit.js
+    // to ensure animation logic and navigation events are consolidated.
+    // Double initialization was causing conflict and animation glitches.
 
-        return () => {
-            if (swiperInstance) swiperInstance.destroy();
-        };
-    }, [elementId, items]);
+    // useEffect(() => {
+    //     const swiperInstance = new Swiper(`#${elementId}`, { ... });
+    //     return () => { if (swiperInstance) swiperInstance.destroy(); };
+    // }, [elementId, items]);
 
     return (
         <div className="hero-2" id="hero">
