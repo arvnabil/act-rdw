@@ -142,16 +142,54 @@ export default function SliderSection({ slides, elementId = "heroSlide2" }) {
                                             data-ani-delay="0.8s"
                                         >
                                             {slide.buttons?.map(
-                                                (btn, btnIndex) => (
-                                                    <Link
-                                                        key={btnIndex}
-                                                        href={btn.url}
-                                                        className={`th-btn th-radius ${btn.style || "style2"} th-icon`}
-                                                    >
-                                                        {btn.text}
-                                                        <i className="fa-light fa-arrow-right-long"></i>
-                                                    </Link>
-                                                ),
+                                                (btn, btnIndex) => {
+                                                    const isExternal =
+                                                        btn.url?.startsWith(
+                                                            "http",
+                                                        );
+                                                    const openNewTab =
+                                                        btn.open_new_tab ||
+                                                        btn.url?.startsWith(
+                                                            "http",
+                                                        ); // Auto new tab for external if not specified
+
+                                                    if (
+                                                        isExternal ||
+                                                        openNewTab
+                                                    ) {
+                                                        return (
+                                                            <a
+                                                                key={btnIndex}
+                                                                href={btn.url}
+                                                                target={
+                                                                    openNewTab
+                                                                        ? "_blank"
+                                                                        : "_self"
+                                                                }
+                                                                rel={
+                                                                    openNewTab
+                                                                        ? "noopener noreferrer"
+                                                                        : undefined
+                                                                }
+                                                                className={`th-btn th-radius ${btn.style || "style2"} th-icon`}
+                                                            >
+                                                                {btn.text}
+                                                                <i className="fa-light fa-arrow-right-long"></i>
+                                                            </a>
+                                                        );
+                                                    }
+
+                                                    return (
+                                                        <Link
+                                                            key={btnIndex}
+                                                            href={btn.url}
+                                                            className={`th-btn th-radius ${btn.style || "style2"} th-icon`}
+                                                        >
+                                                            {btn.text}
+                                                            <i className="fa-light fa-arrow-right-long"></i>
+                                                        </Link>
+                                                    );
+                                                },
                                             )}
                                         </div>
                                     </div>

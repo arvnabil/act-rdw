@@ -73,6 +73,15 @@ export const sectionRegistry = {
                                     },
                                 ],
                             },
+                            {
+                                name: "open_new_tab",
+                                type: "select",
+                                label: "Open in New Tab?",
+                                options: [
+                                    { label: "No", value: false },
+                                    { label: "Yes", value: true },
+                                ],
+                            },
                         ],
                     },
                 ],
@@ -95,11 +104,21 @@ export const sectionRegistry = {
             delay: 5000,
             slides: [
                 {
-                    title: "New Slide Title",
-                    description: "Description for the new slide.",
-                    bg_image: "/assets/img/hero/hero_bg_2_1.png",
+                    title: "Tumbuh Bersama Teknologi yang Terhubung",
+                    description:
+                        "Kami membantu bisnis Anda menyelaraskan infrastruktur ICT agar setiap sistem dapat berkomunikasi dengan sempurna, memberikan Anda ruang lebih untuk fokus pada hal yang paling utama: Kesuksesan Bisnis.",
+                    bg_image: "/assets/img/hero/hero_bg_3_1.png",
                     buttons: [
-                        { text: "Learn More", url: "#", style: "style2" },
+                        {
+                            text: "Download Company Profile",
+                            url: "#",
+                            style: "style2",
+                        },
+                        {
+                            text: "Hubungi via WhatsApp",
+                            url: "https://wa.me/6285162994602",
+                            style: "style7",
+                        },
                     ],
                 },
             ],

@@ -95,7 +95,7 @@ export default function InspectorPanel({
     };
 
     return (
-        <div className="w-80 bg-white border-l border-gray-200 h-full overflow-y-auto shrink-0 flex flex-col z-20 shadow-sm transition-all duration-300">
+        <div className="w-96 bg-white border-l border-gray-200 h-full overflow-y-auto shrink-0 flex flex-col z-20 shadow-sm transition-all duration-300">
             <div className="p-4 border-b border-gray-200">
                 <div className="flex items-start justify-between mb-2">
                     <div>

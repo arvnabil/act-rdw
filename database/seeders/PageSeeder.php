@@ -37,39 +37,38 @@ class PageSeeder extends Seeder
                     'delay' => 5000,
                     'slides' => [
                         [
-                            'title' => 'Seamless ICT Integration for Business',
-                            'description' => 'Your trusted partner for digital transformation. We specialize in delivering tailored technology across Video Conferencing, Data Infrastructure, and Security systems.',
+                            'title' => 'Tumbuh Bersama Teknologi yang Terhubung',
+                            'description' => 'Kami membantu bisnis Anda menyelaraskan infrastruktur ICT agar setiap sistem dapat berkomunikasi dengan sempurna, memberikan Anda ruang lebih untuk fokus pada hal yang paling utama: Kesuksesan Bisnis.',
                             'bg_image' => '/assets/img/hero/hero_bg_3_1.png',
                             'buttons' => [
-                                ['text' => 'Explore Our Services', 'url' => '/services', 'style' => 'style7'],
-                                ['text' => 'Get In Touch', 'url' => '/contact', 'style' => 'style2']
+                                ['text' => 'Download Company Profile', 'url' => '#', 'style' => 'style7'],
+                                ['text' => 'Hubungi via WhatsApp', 'url' => 'https://wa.me/6285162994602', 'style' => 'style2', 'open_new_tab' => true]
                             ]
                         ],
                         [
-                            'title' => 'Connect Your Teams, Wherever They Are',
-                            'description' => 'Experience professional video conferencing for every space. Whether it’s a small huddle room or a large auditorium, we ensure crystal-clear communication.',
+                            'title' => 'Kolaborasi Sempurna, Perangkat Terpercaya',
+                            'description' => 'Spesialis integrasi system audio video conference berpengalaman yang memastikan setiap pertemuan Anda berjalan tanpa kendala teknis untuk setiap komunikasi bisnis Anda.',
                             'bg_image' => '/assets/img/hero/hero_bg_2_1.png',
                             'buttons' => [
-                                ['text' => 'Meeting Room Solutions', 'url' => '/contact', 'style' => 'style7'],
-                                ['text' => 'View Products', 'url' => '/services', 'style' => 'style2']
+                                ['text' => 'Lihat Projects', 'url' => '/projects', 'style' => 'style7'],
+                                ['text' => 'Hubungi Kami', 'url' => '/contact', 'style' => 'style2']
                             ]
                         ],
                         [
-                            'title' => 'A Strong Foundation for Your Data',
-                            'description' => 'Keep your operations running smoothly with reliable servers and scalable storage. We provide the performance and capacity your business needs to stay ahead.',
+                            'title' => 'Integritas Infrastruktur, Kreativitas Software, Kesuksesan Bisnis.',
+                            'description' => 'Kami menghadirkan pengalaman solusi ICT profesional yang dipadukan dengan pengembangan perangkat lunak kustom untuk memastikan setiap sistem teknologi bekerja tepat sesuai kebutuhan bisnis Anda.',
                             'bg_image' => '/assets/img/hero/hero_bg_2_2.png',
                             'buttons' => [
-                                ['text' => 'Infrastructure Solutions', 'url' => '/contact', 'style' => 'style7'],
-                                ['text' => 'Contact Us', 'url' => '/services', 'style' => 'style2']
+                                ['text' => 'Konsultasi Software Custom', 'url' => '/contact', 'style' => 'style7'],
                             ]
                         ],
                         [
-                            'title' => 'Smart Security for Peace of Mind',
-                            'description' => 'Protect what matters most with advanced surveillance systems. Monitor your environment in real-time and ensure safety around the clock with our integrated solutions.',
+                            'title' => 'Keahlian dalam Pemasangan, Komitmen dalam Perawatan.',
+                            'description' => 'Kami hadir memastikan setiap infrastruktur IT dan ruang kolaborasi Anda tetap dalam performa puncak, memberikan Anda kebebasan untuk fokus sepenuhnya pada pertumbuhan bisnis tanpa khawatir hambatan teknis',
                             'bg_image' => '/assets/img/hero/hero_bg_4_1.png',
                             'buttons' => [
-                                ['text' => 'See Security Systems', 'url' => '/contact', 'style' => 'style7'],
-                                ['text' => 'Contact Sales', 'url' => '/services', 'style' => 'style2']
+                                ['text' => 'Paket Maintenance', 'url' => '/services', 'style' => 'style7'],
+                                ['text' => 'Konsultasi Instalasi', 'url' => '/contact', 'style' => 'style2']
                             ]
                         ]
                     ]

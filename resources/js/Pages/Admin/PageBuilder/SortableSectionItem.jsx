@@ -55,7 +55,10 @@ export default function SortableSectionItem({
 
             {/* Info */}
             <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-gray-800 truncate">
+                <p
+                    className="text-sm font-medium text-gray-800 truncate"
+                    title={registryItem.label || section.section_key}
+                >
                     {registryItem.label || section.section_key}
                 </p>
                 <div className="flex items-center gap-2">
