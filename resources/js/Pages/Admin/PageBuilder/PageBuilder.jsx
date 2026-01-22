@@ -99,7 +99,7 @@ export default function PageBuilder({
                 sections: sections.map((s, index) => ({
                     id: String(s.id).startsWith("new-") ? null : s.id,
                     section_key: s.section_key,
-                    config: s.config,
+                    config: JSON.stringify(s.config || {}), // Stringify to bypass PHP max_input_vars limit
                     position: index,
                     is_active: s.is_active,
                 })),

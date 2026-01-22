@@ -88,43 +88,54 @@ class PageBuilderController extends Controller
 
     public function update(Request $request, Page $page)
     {
-        \Illuminate\Support\Facades\Log::info("PageBuilder Save Request for Page ID: {$page->id}", [
-            'sections_count' => count($request->input('sections') ?? []),
-            'payload_size' => strlen(json_encode($request->all()))
-        ]);
+        \Illuminate\Support\Facades\Log::info("PageBuilder START Save for Page ID: {$page->id}");
 
         $request->validate([
             'sections' => 'required|array',
             'sections.*.section_key' => 'required|string',
-            'sections.*.config' => 'nullable|array',
+            // Config can be array (legacy/local) or string (JSON stringified to avoid max_input_vars)
+            'sections.*.config' => 'nullable',
             'sections.*.is_active' => 'boolean',
         ]);
 
         $sections = $request->input('sections');
 
+        \Illuminate\Support\Facades\Log::info("PageBuilder: Payload received", [
+            'sections_count' => count($sections),
+            'raw_ids' => collect($sections)->pluck('id')->toArray()
+        ]);
+
         DB::transaction(function () use ($page, $sections) {
             // 1. Identify IDs present in the payload (existing sections)
+            // Filter out nulls and 'new-' prefix
             $incomingIds = collect($sections)
                 ->pluck('id')
                 ->filter(function ($id) {
-                    return $id && !str_starts_with((string)$id, 'new-');
+                    return !empty($id) && !str_starts_with((string)$id, 'new-');
                 })
+                ->values() // RESET KEYS to ensure toArray() returns a pure list, not associative with gaps
                 ->toArray();
+
+            \Illuminate\Support\Facades\Log::info("PageBuilder: IDs to keep", ['ids' => $incomingIds]);
 
             // 2. Delete sections NOT in the payload (that belong to this page)
             $deleted = PageSection::where('page_id', $page->id)
                 ->whereNotIn('id', $incomingIds)
                 ->delete();
 
-            \Illuminate\Support\Facades\Log::info("PageBuilder: Deleted {$deleted} old sections for Page {$page->id}");
+            \Illuminate\Support\Facades\Log::info("PageBuilder: Deleted {$deleted} old sections");
 
             // 3. Update or Create sections
             foreach ($sections as $index => $sectionData) {
-                $config = $sectionData['config'] ?? [];
+                // Decode config if it's a string (which it should be now)
+                $configInput = $sectionData['config'] ?? [];
+                if (is_string($configInput)) {
+                    $config = json_decode($configInput, true) ?? [];
+                } else {
+                    $config = $configInput;
+                }
 
                 // TRANSFORM FOR DATABASE: Adapter for Data Structure Mismatch
-                // PageBuilder sends [{image: 'url1'}, {image: 'url2'}]
-                // DB/Filament expects ['url1', 'url2']
                 if (in_array($sectionData['section_key'], ['about', 'about_content', 'why_choose_us'])) {
                     if (isset($config['images']) && is_array($config['images'])) {
                         $flatImages = [];
@@ -139,32 +150,44 @@ class PageBuilderController extends Controller
                     }
                 }
 
-                // If it has an ID, update it
+                // If it has a valid existing ID
                 if (isset($sectionData['id']) && !str_starts_with((string)$sectionData['id'], 'new-')) {
                     $section = PageSection::find($sectionData['id']);
-                    if ($section && $section->page_id === $page->id) {
-                        // CLEANUP LOGIC: Check for replaced images
-                        $this->cleanupOldImages($section->config, $config);
 
-                        $section->update([
-                            'position' => $index,
-                            'config' => $config,
-                            'is_active' => $sectionData['is_active'] ?? true,
-                        ]);
+                    if ($section && $section->page_id === $page->id) {
+                        try {
+                            // CLEANUP LOGIC: Check for replaced images
+                            // We access $section->config (triggering accessor) to compare with new flattened config
+                            $this->cleanupOldImages($section->config, $config);
+
+                            $section->update([
+                                'position' => $index,
+                                'config' => $config,
+                                'is_active' => $sectionData['is_active'] ?? true,
+                            ]);
+                            // Log specific updates for debugging
+                            // \Illuminate\Support\Facades\Log::info("Updated section {$section->id}", ['pos' => $index]);
+                        } catch (\Exception $e) {
+                            \Illuminate\Support\Facades\Log::error("PageBuilder: Error updating section {$section->id}: " . $e->getMessage());
+                            throw $e; // Re-throw to rollback transaction
+                        }
+                    } else {
+                         \Illuminate\Support\Facades\Log::warning("PageBuilder: ID {$sectionData['id']} mismatch or not found.");
                     }
                 } else {
-                    // It's a new section
-                    $page->sections()->create([
+                    // Create new
+                    $newSection = $page->sections()->create([
                         'section_key' => $sectionData['section_key'],
                         'position' => $index,
                         'config' => $config,
                         'is_active' => $sectionData['is_active'] ?? true,
                     ]);
+                    \Illuminate\Support\Facades\Log::info("PageBuilder: Created new section {$newSection->id}");
                 }
             }
         });
 
-        \Illuminate\Support\Facades\Log::info("PageBuilder: Successfully saved Page {$page->id}");
+        \Illuminate\Support\Facades\Log::info("PageBuilder: Successfully completed transaction for Page {$page->id}");
 
         return back()->with('success', 'Page saved successfully.');
     }
