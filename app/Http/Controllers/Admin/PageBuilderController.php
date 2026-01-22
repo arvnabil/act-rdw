@@ -154,7 +154,8 @@ class PageBuilderController extends Controller
                 if (isset($sectionData['id']) && !str_starts_with((string)$sectionData['id'], 'new-')) {
                     $section = PageSection::find($sectionData['id']);
 
-                    if ($section && $section->page_id === $page->id) {
+                    // Relaxed comparison (==) to handle string/int differences in drivers
+                    if ($section && $section->page_id == $page->id) {
                         try {
                             // CLEANUP LOGIC: Check for replaced images
                             // We access $section->config (triggering accessor) to compare with new flattened config
@@ -172,7 +173,9 @@ class PageBuilderController extends Controller
                             throw $e; // Re-throw to rollback transaction
                         }
                     } else {
-                         \Illuminate\Support\Facades\Log::warning("PageBuilder: ID {$sectionData['id']} mismatch or not found.");
+                        // Detailed logging for debugging
+                         $foundProps = $section ? "Found (PageID: {$section->page_id})" : "Not Found";
+                         \Illuminate\Support\Facades\Log::warning("PageBuilder: Update Skipped for ID {$sectionData['id']}. Section: {$foundProps}. Expected PageID: {$page->id}");
                     }
                 } else {
                     // Create new
