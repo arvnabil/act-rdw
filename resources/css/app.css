@@ -32,3 +32,22 @@
    we might need a slight nudging.
    Usually flex centering + padding 0 fixes standard icon fonts/svgs.
 */
+
+/* Adjust Slider Title Size - User Request */
+.hero-style2 .hero-title {
+    font-size: 56px !important; /* Reduced for better aesthetics */
+    line-height: 1.25 !important;
+}
+
+@media (max-width: 1399px) {
+    .hero-style2 .hero-title {
+        font-size: 48px !important;
+    }
+}
+
+@media (max-width: 767px) {
+    .hero-style2 .hero-title {
+        font-size: 34px !important;
+        line-height: 1.3 !important;
+    }
+}
