@@ -60,30 +60,6 @@ export default function BuilderHeader({
                     </button>
                 </div>
 
-                <div className="bg-gray-100 p-1 rounded-lg flex gap-1">
-                    <button
-                        onClick={() => setPreviewDevice("desktop")}
-                        className={getDeviceBtnClass("desktop")}
-                        title="Desktop (100%)"
-                    >
-                        <i className="fa-regular fa-desktop"></i>
-                    </button>
-                    <button
-                        onClick={() => setPreviewDevice("tablet")}
-                        className={getDeviceBtnClass("tablet")}
-                        title="Tablet (768px)"
-                    >
-                        <i className="fa-regular fa-tablet"></i>
-                    </button>
-                    <button
-                        onClick={() => setPreviewDevice("mobile")}
-                        className={getDeviceBtnClass("mobile")}
-                        title="Mobile (375px)"
-                    >
-                        <i className="fa-regular fa-mobile"></i>
-                    </button>
-                </div>
-
                 <div className="h-6 w-px bg-gray-300 mx-2"></div>
 
                 <a
