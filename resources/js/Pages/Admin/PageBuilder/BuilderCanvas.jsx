@@ -59,6 +59,7 @@ export default function BuilderCanvas({
             section={section}
             isSelected={selectedSectionId === section.id}
             onSelect={onSelectSection}
+            previewDevice={previewDevice}
             allServices={allServices}
             allProjects={allProjects}
         />

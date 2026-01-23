@@ -15,6 +15,7 @@ const SectionPreview = memo(function SectionPreview({
     section,
     isSelected,
     onSelect,
+    previewDevice,
     allServices,
     allProjects,
 }) {
@@ -91,11 +92,10 @@ const SectionPreview = memo(function SectionPreview({
         >
             {/*
                 INTERACTION LOCK OVERLAY
-                This absolute div sits on top of the content.
-                - It captures clicks (selecting the section).
-                - It prevents hovering/clicking on links/buttons inside.
+                REMOVED: To allow hover interactions (accordion effects etc).
+                Safety is handled by onClickCapture on the wrapper.
             */}
-            <div className="absolute inset-0 z-10 bg-transparent cursor-default" />
+            {/* <div className="absolute inset-0 z-10 bg-transparent cursor-default" /> */}
 
             {/*
                 CONTENT RENDERER
@@ -116,6 +116,7 @@ const SectionPreview = memo(function SectionPreview({
                         {...extraProps}
                         preview={true}
                         isBuilder={true}
+                        previewDevice={previewDevice}
                         allServices={allServices}
                     />
                 </ErrorBoundary>

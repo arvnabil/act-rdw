@@ -7,6 +7,7 @@ export default function ServiceSection({
     subtitle,
     cta_text,
     cta_url,
+    isBuilder = false,
 }) {
     const [activeIndex, setActiveIndex] = React.useState(0);
 
@@ -36,12 +37,87 @@ export default function ServiceSection({
     // OR create a main button if `cta_url` is provided. The user contract says "Editable: cta_text, cta_url".
     // I'll add a main button at the bottom if cta_url is present.
 
+    // CSS Overrides to force desktop layout in Builder
+    const builderStyles = `
+        /* Force container to simulate desktop width */
+        .container {
+            min-width: 1200px !important;
+            padding-left: 15px !important;
+            padding-right: 15px !important;
+        }
+        /* Force horizontal layout for the list area */
+        .service-list-area {
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            gap: 24px !important;
+        }
+        /* Reset item width/flex properties to default desktop behavior (allow shrinking) */
+        .service-list-wrap {
+            width: auto !important;
+            min-width: 0 !important; /* Critical: allow items to shrink to fit container */
+            flex: 1 1 auto !important; /* Ensure they share space */
+        }
+        /* Active item expansion */
+        .service-list-wrap.active {
+            flex: 3 1 auto !important; /* Give more space to active item */
+        }
+
+        /* Force list height to matching desktop */
+        .service-list {
+            height: 636px !important;
+            max-height: none !important;
+        }
+
+        /* Force positioning of content for inactive items (vertical text mode) */
+        .service-list .service-content {
+            position: absolute !important;
+            bottom: 157px !important;
+            right: -50px !important;
+            left: auto !important;
+            top: auto !important;
+            transform: rotate(-90deg) !important;
+            width: auto !important;
+            opacity: 1 !important;
+            visibility: visible !important;
+        }
+
+        /* Active item content positioning (normal text mode) */
+        .service-list-wrap.active .service-content {
+            left: 40px !important;
+            bottom: 40px !important;
+            right: auto !important;
+            transform: none !important;
+        }
+
+        /* Force icons to be visible */
+        .service-list .service-icon {
+            opacity: 1 !important;
+            visibility: visible !important;
+            display: block !important;
+            top: 24px !important;
+            left: 35px !important;
+            width: 100px !important; /* Correct width per design */
+            height: 100px !important;
+        }
+        .service-list-wrap.active .service-icon {
+            top: 61% !important; /* Approximate desktop position for active */
+        }
+    `;
+
     return (
         <div className="service-area space-bottom" id="service-sec">
+            {isBuilder && <style>{builderStyles}</style>}
             <div className="container">
-                <div className="row justify-content-lg-between justify-content-center align-items-center">
-                    <div className="col-lg-6 mb-n2 mb-lg-0">
-                        <div className="title-area text-center text-lg-start">
+                <div
+                    className={`row align-items-center ${isBuilder ? "justify-content-between" : "justify-content-lg-between justify-content-center"}`}
+                >
+                    <div
+                        className={`${isBuilder ? "col-6" : "col-lg-6"} mb-n2 mb-lg-0`}
+                    >
+                        <div
+                            className={`title-area ${isBuilder ? "text-start" : "text-center text-lg-start"}`}
+                        >
                             <span className="sub-title">
                                 <span className="squre-shape left me-3"></span>
                                 {st}
@@ -75,6 +151,7 @@ export default function ServiceSection({
                 </div>
                 <div className="row">
                     <div className="service-list-area">
+                        {" "}
                         {services.map((service, index) => (
                             <div
                                 key={service.id}
