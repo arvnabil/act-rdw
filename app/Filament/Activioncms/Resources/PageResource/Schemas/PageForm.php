@@ -48,6 +48,7 @@ class PageForm
                                                 ->options([
                                                     'home' => 'Home',
                                                     'static' => 'Static',
+                                                    'dynamic' => 'Dynamic',
                                                     'brand' => 'Brand',
                                                     'service' => 'Service',
                                                     'project' => 'Project',
@@ -91,7 +92,14 @@ class PageForm
                                                     'slider' => 'Advanced Slider', // New Generic Slider
                                                     'brand_partners' => 'Brand Partners',
                                                     'about' => 'About Section',
-                                                    'services' => 'Services List',
+
+                                                    // Services Page Specific
+                                                    'service_list' => 'Services List (Grid)',
+                                                    'service_solution' => 'Services Solution',
+                                                    'service_cta' => 'Services CTA',
+                                                    'service_clients' => 'Services Clients',
+
+                                                    'services' => 'Services List (Legacy)',
                                                     'projects' => 'Projects Showcase',
                                                     'news' => 'Latest News',
                                                     'why_choose_us' => 'Why Choose Us',
@@ -280,7 +288,43 @@ class PageForm
                                                 ])
                                                 ->visible(fn (Get $get) => $get('section_key') === 'brand_partners'),
 
-                                            // --- CONTENT LISTS (Services, Projects, News) ---
+                                            // --- SERVICE SOLUTION ---
+                                            Group::make()
+                                                ->schema([
+                                                    TextInput::make('config.title')->label('Title')->default('Our Solution'),
+                                                    TextInput::make('config.subtitle')->label('Subtitle')->default('Projects'),
+                                                    Textarea::make('config.description')->label('Description'),
+                                                    TextInput::make('config.btn_text')->label('Button Text')->default('Explore Case Studies'),
+                                                    TextInput::make('config.btn_url')->label('Button URL')->default('/contact'),
+
+                                                    Repeater::make('config.images')
+                                                        ->label('Images (Top 3)')
+                                                        ->schema([
+                                                            FileUpload::make('image')->image()->disk('public')->directory('services')->visibility('public'),
+                                                        ])
+                                                        ->grid(3),
+
+                                                    Repeater::make('config.features')
+                                                        ->label('Features')
+                                                        ->schema([
+                                                            TextInput::make('text')->label('Feature Text')->required(),
+                                                        ]),
+                                                ])
+                                                ->visible(fn (Get $get) => $get('section_key') === 'service_solution'),
+
+                                            // --- SERVICE CTA ---
+                                            Group::make()
+                                                ->schema([
+                                                    TextInput::make('config.title')->label('Title')->default('Have any project to work with us'),
+                                                    TextInput::make('config.subtitle')->label('Subtitle')->default('Grab up to 35% off'),
+                                                    Textarea::make('config.description')->label('Description'),
+                                                    TextInput::make('config.btn_text')->label('Button Text')->default('Contact With Us'),
+                                                    TextInput::make('config.btn_url')->label('Button URL')->default('/contact'),
+                                                    FileUpload::make('config.bg_image')->label('Background Image')->image()->disk('public')->directory('services')->visibility('public'),
+                                                ])
+                                                ->visible(fn (Get $get) => $get('section_key') === 'service_cta'),
+
+                                            // --- CONTENT LISTS (Services, Projects, News, Client List) ---
                                             Group::make()
                                                 ->schema([
                                                     TextInput::make('config.title')->label('Section Title')->placeholder('Auto-generated if empty'),
@@ -295,7 +339,7 @@ class PageForm
                                                             ->default('asc'),
                                                     ])
                                                 ])
-                                                ->visible(fn (Get $get) => in_array($get('section_key'), ['services', 'projects', 'news'])),
+                                                ->visible(fn (Get $get) => in_array($get('section_key'), ['services', 'projects', 'news', 'service_list', 'service_clients'])),
 
                                             // --- CTA / CLIENTS ---
                                             Group::make()
