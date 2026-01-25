@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 
 export default function ProductInfo({ product }) {
     return (
@@ -10,11 +10,7 @@ export default function ProductInfo({ product }) {
                         <h3 className="box-title">
                             <Link href="#">{product.name}</Link>
                         </h3>
-                        <span className="team-desig">
-                            {product.specification.find(
-                                (s) => s.name === "Brand"
-                            )?.value || "Brand"}
-                        </span>
+                        <span className="team-desig">{product.category}</span>
                     </div>
                 </div>
                 <div className="team-infobox mb-40">
@@ -60,9 +56,7 @@ export default function ProductInfo({ product }) {
                                     </span>
                                     <h4 className="team-info-title">
                                         <a href="#">
-                                            {product.specification.find(
-                                                (s) => s.name === "Brand"
-                                            )?.value || "Brand"}
+                                            {product.brand?.name || "Brand"}
                                         </a>
                                     </h4>
                                 </div>
@@ -102,10 +96,57 @@ export default function ProductInfo({ product }) {
                         ))}
                     </span>
                 </div>
-                <div className="team-btn">
-                    <a href="/contact" className="th-btn th-icon">
-                        Get A Quote <i className="fa-solid fa-arrow-right"></i>
-                    </a>
+                <div className="team-btn d-flex align-items-center gap-3">
+                    {/* WhatsApp Button */}
+                    {(() => {
+                        const { settings } = usePage().props;
+                        const whatsappNumber = settings?.whatsapp_number;
+                        let link = "#";
+
+                        if (whatsappNumber) {
+                            let number = whatsappNumber.replace(/\D/g, "");
+                            if (number.startsWith("0")) {
+                                number = "62" + number.substring(1);
+                            }
+
+                            const message = (
+                                product.whatsapp_note ||
+                                `Halo, saya tertarik dengan produk ${product.name}. Mohon info harga terbaik.`
+                            ).replace("{Product Name}", product.name);
+
+                            link = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+                        }
+
+                        return (
+                            <a
+                                href={link}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="th-btn th-icon"
+                            >
+                                Permintaan Harga Terbaik{" "}
+                                <i className="fa-solid fa-arrow-right"></i>
+                            </a>
+                        );
+                    })()}
+
+                    {/* Online Purchase Button */}
+                    {product.link_accommerce && (
+                        <a
+                            href={product.link_accommerce}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="th-btn th-icon"
+                            style={{
+                                backgroundColor: "#0056b3",
+                                borderColor: "#0056b3",
+                                color: "#fff",
+                            }}
+                        >
+                            Pembelian Online{" "}
+                            <i className="fa-solid fa-cart-shopping"></i>
+                        </a>
+                    )}
                 </div>
             </div>
         </div>

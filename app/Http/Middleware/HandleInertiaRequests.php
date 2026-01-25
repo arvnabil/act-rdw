@@ -54,6 +54,7 @@ class HandleInertiaRequests extends Middleware
                 'primary' => $menuResolver->resolve('primary'),
                 'footer' => $menuResolver->resolve('footer'),
             ],
+            'settings' => \App\Models\Setting::pluck('value', 'key')->toArray(),
         ]);
     }
 }

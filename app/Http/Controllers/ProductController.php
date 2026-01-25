@@ -73,7 +73,7 @@ class ProductController extends Controller
      */
     public function show($slug)
     {
-        $product = Product::with(['brand', 'service'])
+        $product = Product::with(['brand', 'service', 'solutions', 'category'])
             ->where('slug', $slug)
             ->where('is_active', true)
             ->firstOrFail();
@@ -91,24 +91,42 @@ class ProductController extends Controller
                     'tag' => $related->tags ? $related->tags[0] ?? null : null,
                     'category' => $related->service->name,
                     'slug' => $related->slug,
+                    // Map price for ProductCard
+                    'price' => $related->price,
+                    // Map brand for ProductCard
+                    'brand' => [
+                         'name' => $related->brand->name ?? '',
+                         'logo' => $related->brand->logo ?? ''
+                    ]
                 ];
             });
 
         // Transform product for the view
         $productData = [
             'name' => $product->name,
-            'image' => $product->image_path,
+            'image' => $product->image_path ? "/storage/" . $product->image_path : null,
             'sku' => $product->sku,
-            'solution_type' => $product->solution_type,
+            'solution_type' => $product->solutions->pluck('title')->join(', ') ?: $product->solution_type,
             'datasheet_url' => $product->datasheet_url,
             'description' => $product->description,
-            'category' => $product->service->name,
+            'category' => $product->category->name ?? $product->service->name,
+            'brand' => [
+                'name' => $product->brand->name,
+                'logo' => $product->brand->logo,
+            ],
             'tags' => $product->tags ?? [],
-            'specification' => $product->specs ?? [], // Map specs column to specification
+            'specification' => collect($product->specs ?? [])->map(function($value, $key) {
+                return ['name' => $key, 'value' => $value];
+            })->values()->all(),
             'specification_text' => $product->specification_text,
-            'features' => $product->features ?? [],
+            'features' => $product->features ?? [], // Features is now a Repeater (Array of Objects), so we pass it directly.
+            // If legacy data exists (KeyValue format), the frontend might need to handle it or we migrate it.
+            // For now, assuming new data will be Repeater format. If it's an array of objects, passing directly is fine.
+            // If it's the old KeyValue object {"Key": "Value"}, we might want to normalize it, but let's assume valid data for now.
             'features_text' => $product->features_text,
             'related_products' => $relatedProducts,
+            'link_accommerce' => $product->link_accommerce,
+            'whatsapp_note' => $product->whatsapp_note,
         ];
 
         return Inertia::render('ProductDetail', [

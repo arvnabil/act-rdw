@@ -6,6 +6,8 @@ import ProductToolbar from "@/Components/Sections/Products/ProductToolbar";
 import ProductList from "@/Components/Sections/Products/ProductList";
 import ProductPagination from "@/Components/Sections/Products/ProductPagination";
 
+import ProductFilterSidebar from "@/Components/Sections/Products/ProductFilterSidebar";
+
 export default function Products({
     products,
     filters,
@@ -24,6 +26,39 @@ export default function Products({
     const [selectedCategory, setSelectedCategory] = useState(
         filters?.category || "",
     );
+    const [showFilters, setShowFilters] = useState(false);
+
+    // Unified Filter Change Handler
+    const handleFilterChange = (key, value) => {
+        let newBrand = selectedBrand;
+        let newSolution = selectedSolution;
+        let newCategory = selectedCategory;
+
+        if (key === "brand") {
+            setSelectedBrand(value);
+            newBrand = value;
+        }
+        if (key === "solution") {
+            setSelectedSolution(value);
+            newSolution = value;
+        }
+        if (key === "category") {
+            setSelectedCategory(value);
+            newCategory = value;
+        }
+
+        router.get(
+            "/products",
+            {
+                search,
+                orderby,
+                brand: newBrand,
+                solution: newSolution,
+                category: newCategory,
+            },
+            { preserveState: true },
+        );
+    };
 
     // Handle Search Submit
     const handleSearch = (e) => {
@@ -58,87 +93,32 @@ export default function Products({
         );
     };
 
-    // Handle Filter Changes
-    const handleBrandChange = (e) => {
-        const value = e.target.value;
-        setSelectedBrand(value);
-        router.get(
-            "/products",
-            {
-                search,
-                orderby,
-                brand: value,
-                solution: selectedSolution,
-                category: selectedCategory,
-            },
-            { preserveState: true },
-        );
-    };
-
-    const handleSolutionChange = (e) => {
-        const value = e.target.value;
-        setSelectedSolution(value);
-        router.get(
-            "/products",
-            {
-                search,
-                orderby,
-                brand: selectedBrand,
-                solution: value,
-                category: selectedCategory,
-            },
-            { preserveState: true },
-        );
-    };
-
-    const handleCategoryChange = (e) => {
-        const value = e.target.value;
-        setSelectedCategory(value);
-        router.get(
-            "/products",
-            {
-                search,
-                orderby,
-                brand: selectedBrand,
-                solution: selectedSolution,
-                category: value,
-            },
-            { preserveState: true },
-        );
-    };
+    // Keep legacy handlers for backward compatibility if needed, map to unified
+    const handleBrandChange = (e) =>
+        handleFilterChange("brand", e.target.value);
+    const handleSolutionChange = (e) =>
+        handleFilterChange("solution", e.target.value);
+    const handleCategoryChange = (e) =>
+        handleFilterChange("category", e.target.value);
 
     // Handle Remove Single Filter
     const handleRemoveFilter = (key) => {
-        let newSearch = search;
-        let newBrand = selectedBrand;
-        let newSolution = selectedSolution;
-        let newCategory = selectedCategory;
-
         if (key === "search") {
             setSearch("");
-            newSearch = "";
-        } else if (key === "brand") {
-            setSelectedBrand("");
-            newBrand = "";
-        } else if (key === "solution") {
-            setSelectedSolution("");
-            newSolution = "";
-        } else if (key === "category") {
-            setSelectedCategory("");
-            newCategory = "";
+            router.get(
+                "/products",
+                {
+                    search: "",
+                    orderby,
+                    brand: selectedBrand,
+                    solution: selectedSolution,
+                    category: selectedCategory,
+                },
+                { preserveState: true },
+            );
+        } else {
+            handleFilterChange(key, "");
         }
-
-        router.get(
-            "/products",
-            {
-                search: newSearch,
-                orderby,
-                brand: newBrand,
-                solution: newSolution,
-                category: newCategory,
-            },
-            { preserveState: true },
-        );
     };
 
     // Handle Reset All Filters
@@ -173,6 +153,8 @@ export default function Products({
                         setViewMode={setViewMode}
                         orderby={orderby}
                         handleSortChange={handleSortChange}
+                        showFilters={showFilters}
+                        setShowFilters={setShowFilters}
                         // Filters
                         brands={brands}
                         solutions={solutions}
@@ -180,17 +162,36 @@ export default function Products({
                         selectedBrand={selectedBrand}
                         selectedSolution={selectedSolution}
                         selectedCategory={selectedCategory}
+                        // Handlers
                         handleBrandChange={handleBrandChange}
                         handleSolutionChange={handleSolutionChange}
                         handleCategoryChange={handleCategoryChange}
-                        // Active Filters
                         handleRemoveFilter={handleRemoveFilter}
                         handleResetFilters={handleResetFilters}
                     />
 
-                    <ProductList products={products} viewMode={viewMode} />
+                    <div className="row">
+                        <ProductFilterSidebar
+                            showFilters={showFilters}
+                            filters={{
+                                brand: selectedBrand,
+                                category: selectedCategory,
+                                solution: selectedSolution,
+                            }}
+                            handleFilterChange={handleFilterChange}
+                            categories={categories}
+                            brands={brands}
+                            solutions={solutions}
+                        />
 
-                    <ProductPagination links={products.links} />
+                        <div className={showFilters ? "col-lg-9" : "col-lg-12"}>
+                            <ProductList
+                                products={products}
+                                viewMode={viewMode}
+                            />
+                            <ProductPagination links={products.links} />
+                        </div>
+                    </div>
                 </div>
             </section>
         </MainLayout>

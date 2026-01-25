@@ -18,5 +18,7 @@ class Project extends Model
 
     protected $casts = [
         'published_at' => 'datetime',
+        'project_date' => 'date',
+        'download_brochures' => 'array',
     ];
 }

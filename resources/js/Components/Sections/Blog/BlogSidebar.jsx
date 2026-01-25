@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
 
 export default function BlogSidebar({
     categories = [],
@@ -180,14 +180,46 @@ export default function BlogSidebar({
                     <span className="icon">
                         <i className="fa-solid fa-phone"></i>
                     </span>
-                    <span className="text">Need Help? Call Here</span>
-                    <a className="phone" href="tel:+25669872564">
-                        +256 6987 2564
-                    </a>
-                    <Link href="/contact" className="th-btn style6">
-                        Get A Quote{" "}
-                        <i className="fa-light fa-arrow-right-long"></i>
-                    </Link>
+                    <span className="text">Butuh bantuan? Hubungi kami</span>
+
+                    {(() => {
+                        const { settings } = usePage().props;
+                        const whatsappNumber = settings?.whatsapp_number;
+
+                        let link = "/contact";
+                        let target = "_self";
+
+                        if (whatsappNumber) {
+                            // Clean non-digits
+                            let number = whatsappNumber.replace(/\D/g, "");
+                            // Replace leading 0 with 62 (Indonesian specific convenience)
+                            if (number.startsWith("0")) {
+                                number = "62" + number.substring(1);
+                            }
+
+                            const message =
+                                "Halo, saya butuh bantuan terkait layanan Anda.";
+
+                            link = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+                            target = "_blank";
+                        }
+
+                        return (
+                            <a
+                                href={link}
+                                className="th-btn style6"
+                                target={target}
+                                rel={
+                                    target === "_blank"
+                                        ? "noopener noreferrer"
+                                        : ""
+                                }
+                            >
+                                Hubungi kami{" "}
+                                <i className="fa-light fa-arrow-right-long"></i>
+                            </a>
+                        );
+                    })()}
                 </div>
             </div>
         </aside>

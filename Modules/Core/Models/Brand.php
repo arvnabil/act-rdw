@@ -9,7 +9,11 @@ class Brand extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'slug', 'logo_path', 'website_url', 'image', 'desc'];
+    protected $fillable = ['name', 'slug', 'logo_path', 'website_url', 'image', 'desc', 'landing_config'];
+
+    protected $casts = [
+        'landing_config' => 'array',
+    ];
 
     public function products()
     {

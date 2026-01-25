@@ -1,4 +1,4 @@
-import React from "react";
+import ProductCard from "@/Components/Common/ProductCard";
 import { Link } from "@inertiajs/react";
 
 export default function ProductList({ products, viewMode }) {
@@ -29,53 +29,7 @@ export default function ProductList({ products, viewMode }) {
                     <div className="row gy-40">
                         {products.data.map((product) => (
                             <div className="col-xl-4 col-sm-6" key={product.id}>
-                                <div className="th-product product-grid">
-                                    <div className="product-img">
-                                        <img
-                                            src={
-                                                product.image_path ||
-                                                "/assets/img/product/product_1_1.png"
-                                            }
-                                            alt={product.name}
-                                        />
-                                        {product.is_active && (
-                                            <span className="product-tag">
-                                                Active
-                                            </span>
-                                        )}
-                                        <div className="actions">
-                                            <Link
-                                                href={`/products/${product.slug}`}
-                                                className="icon-btn"
-                                            >
-                                                <i className="far fa-eye"></i>
-                                            </Link>
-                                            <a
-                                                href="#"
-                                                className="icon-btn"
-                                                onClick={(e) =>
-                                                    e.preventDefault()
-                                                }
-                                            >
-                                                <i className="far fa-phone"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div className="product-content">
-                                        <h3 className="product-title">
-                                            <Link
-                                                href={`/products/${product.slug}`}
-                                            >
-                                                {product.name}
-                                            </Link>
-                                        </h3>
-                                        <span className="category">
-                                            {product.category?.name ||
-                                                product.service?.name ||
-                                                "General"}
-                                        </span>
-                                    </div>
-                                </div>
+                                <ProductCard product={product} />
                             </div>
                         ))}
                     </div>

@@ -74,7 +74,12 @@ export default function ProductTabs({ product }) {
                     role="tabpanel"
                     aria-labelledby="description-tab"
                 >
-                    <p className="mt-4">{product.description}</p>
+                    <div
+                        className="mt-4"
+                        dangerouslySetInnerHTML={{
+                            __html: product.description,
+                        }}
+                    />
                 </div>
                 <div
                     className={`tab-pane fade ${
@@ -84,7 +89,12 @@ export default function ProductTabs({ product }) {
                     role="tabpanel"
                     aria-labelledby="additional-tab"
                 >
-                    <p className="mt-4 mb-4">{product.specification_text}</p>
+                    <div
+                        className="mt-4 mb-4"
+                        dangerouslySetInnerHTML={{
+                            __html: product.specification_text,
+                        }}
+                    />
                     <div className="woocommerce-Reviews">
                         <div className="th-comments-wrap">
                             <table className="cart_table">
@@ -116,7 +126,7 @@ export default function ProductTabs({ product }) {
                                                     </span>
                                                 </td>
                                             </tr>
-                                        )
+                                        ),
                                     )}
                                 </tbody>
                             </table>
@@ -131,14 +141,21 @@ export default function ProductTabs({ product }) {
                     role="tabpanel"
                     aria-labelledby="features-tab"
                 >
-                    <p className="mt-4 mb-4">{product.features_text}</p>
+                    {product.features_text && (
+                        <div
+                            className="mt-4 mb-4"
+                            dangerouslySetInnerHTML={{
+                                __html: product.features_text,
+                            }}
+                        />
+                    )}
                     <div className="woocommerce-Reviews">
                         <div className="th-comments-wrap">
                             <table className="cart_table">
                                 <thead>
                                     <tr>
                                         <th className="cart-col-image">
-                                            Features
+                                            Feature
                                         </th>
                                         <th className="cart-col-productname">
                                             Description
@@ -151,21 +168,15 @@ export default function ProductTabs({ product }) {
                                 <tbody>
                                     {product.features.map((feature, index) => (
                                         <tr className="cart_item" key={index}>
-                                            <td data-title="Features">
-                                                <a
-                                                    className="cart-productname"
-                                                    href="#"
-                                                >
+                                            <td data-title="Feature">
+                                                <span className="cart-productname">
                                                     {feature.name}
-                                                </a>
+                                                </span>
                                             </td>
                                             <td data-title="Description">
-                                                <a
-                                                    className="cart-productname"
-                                                    href="#"
-                                                >
-                                                    {feature.description}
-                                                </a>
+                                                <span className="cart-productname">
+                                                    {feature.value}
+                                                </span>
                                             </td>
                                             <td data-title="Additional">
                                                 <span className="amount">

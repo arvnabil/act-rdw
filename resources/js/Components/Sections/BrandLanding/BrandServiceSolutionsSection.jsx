@@ -9,6 +9,7 @@ export default function BrandServiceSolutionsSection({
     relatedServices,
     getImageUrl,
     brand,
+    config,
 }) {
     if (!relatedServices || relatedServices.length === 0) return null;
 
@@ -48,7 +49,7 @@ export default function BrandServiceSolutionsSection({
                                 <div className="title-area text-center mb-55">
                                     <SectionTitleLight
                                         subTitle={service.sub_title}
-                                        title={service.title}
+                                        title={config?.title || service.title}
                                         align="title-area service-title-box text-center"
                                         subTitleStyle={{
                                             backgroundColor: "transparent",

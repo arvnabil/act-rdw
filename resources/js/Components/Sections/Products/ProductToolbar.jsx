@@ -8,15 +8,17 @@ export default function ProductToolbar({
     setViewMode,
     orderby,
     handleSortChange,
+    showFilters,
+    setShowFilters,
+    // Data for lookups
     brands,
     solutions,
     categories,
+    // Selected values
     selectedBrand,
     selectedSolution,
     selectedCategory,
-    handleBrandChange,
-    handleSolutionChange,
-    handleCategoryChange,
+    // Handlers
     handleRemoveFilter,
     handleResetFilters,
 }) {
@@ -28,14 +30,19 @@ export default function ProductToolbar({
         categories?.find((c) => c.id == id)?.name || id;
 
     const hasActiveFilters =
-        search || selectedBrand || selectedSolution || selectedCategory;
+        selectedBrand || selectedSolution || selectedCategory;
 
     return (
-        <>
+        <div className="product-toolbar-wrapper mb-5">
+            {/* Top Bar Area */}
             <div className="th-sort-bar">
-                <div className="row justify-content-between align-items-center">
-                    <div className="col-md-4">
-                        <div className="search-form-area">
+                <div className="row justify-content-between align-items-center gy-3">
+                    {/* Left: Search */}
+                    <div className="col-md-auto">
+                        <div
+                            className="search-form-area"
+                            style={{ width: "300px", maxWidth: "100%" }}
+                        >
                             <form
                                 className="search-form"
                                 onSubmit={handleSearch}
@@ -52,8 +59,26 @@ export default function ProductToolbar({
                             </form>
                         </div>
                     </div>
-                    <div className="col-md-auto mt-3 mt-md-0">
+
+                    {/* Right: Actions */}
+                    <div className="col-md-auto">
                         <div className="sorting-filter-wrap d-flex align-items-center justify-content-center justify-content-md-end flex-wrap gap-3">
+                            {/* All Filters Button */}
+                            <button
+                                onClick={() => setShowFilters(!showFilters)}
+                                className={`th-btn style1 th-radius th-icon text-capitalize ${showFilters ? "active" : ""}`}
+                                style={{
+                                    padding: "10px 25px",
+                                    height: "50px",
+                                    display: "flex",
+                                    alignItems: "center",
+                                }}
+                            >
+                                <i className="fa-regular fa-filter me-2"></i>{" "}
+                                All Filters
+                            </button>
+
+                            {/* View Mode */}
                             <div className="nav me-2" role="tablist">
                                 <a
                                     className={`nav-link d-flex align-items-center justify-content-center ${
@@ -82,6 +107,8 @@ export default function ProductToolbar({
                                     <i className="fa-solid fa-list"></i>
                                 </a>
                             </div>
+
+                            {/* Sort Dropdown */}
                             <form
                                 className="woocommerce-ordering"
                                 method="get"
@@ -104,149 +131,84 @@ export default function ProductToolbar({
                                     <option value="date">Sort by Latest</option>
                                 </select>
                             </form>
-
-                            {/* Filter by Category */}
-                            <form
-                                className="woocommerce-ordering"
-                                onSubmit={(e) => e.preventDefault()}
-                            >
-                                <select
-                                    name="category"
-                                    className="orderby nice-select"
-                                    aria-label="Filter by Category"
-                                    value={selectedCategory}
-                                    onChange={handleCategoryChange}
-                                    style={{ display: "block" }}
-                                >
-                                    <option value="">All Categories</option>
-                                    {categories &&
-                                        categories.map((cat) => (
-                                            <option key={cat.id} value={cat.id}>
-                                                {cat.name}
-                                            </option>
-                                        ))}
-                                </select>
-                            </form>
-
-                            {/* Filter by Brand */}
-                            <form
-                                className="woocommerce-ordering"
-                                onSubmit={(e) => e.preventDefault()}
-                            >
-                                <select
-                                    name="brand"
-                                    className="orderby nice-select"
-                                    aria-label="Filter by Brand"
-                                    value={selectedBrand}
-                                    onChange={handleBrandChange}
-                                    style={{ display: "block" }}
-                                >
-                                    <option value="">All Brands</option>
-                                    {brands &&
-                                        brands.map((brand) => (
-                                            <option
-                                                key={brand.id}
-                                                value={brand.id}
-                                            >
-                                                {brand.name}
-                                            </option>
-                                        ))}
-                                </select>
-                            </form>
-
-                            {/* Filter by Solution */}
-                            <form
-                                className="woocommerce-ordering"
-                                onSubmit={(e) => e.preventDefault()}
-                            >
-                                <select
-                                    name="solution"
-                                    className="orderby nice-select"
-                                    aria-label="Filter by Solution"
-                                    value={selectedSolution}
-                                    onChange={handleSolutionChange}
-                                    style={{ display: "block" }}
-                                >
-                                    <option value="">All Solutions</option>
-                                    {solutions &&
-                                        solutions.map((solution) => (
-                                            <option
-                                                key={solution.id}
-                                                value={solution.id}
-                                            >
-                                                {solution.title}
-                                            </option>
-                                        ))}
-                                </select>
-                            </form>
                         </div>
                     </div>
                 </div>
             </div>
 
-            {/* Active Filters Tags */}
-            {hasActiveFilters && (
-                <div className="active-filters mb-4">
-                    <div className="d-flex flex-wrap align-items-center">
-                        <span className="fw-bold me-2">Active Filters:</span>
+            {/* Active Filters Tags (Below) */}
+            {(hasActiveFilters || search) && (
+                <div className="active-filters mt-3 d-flex align-items-center flex-wrap gap-2">
+                    <span className="fw-bold me-2 text-dark">
+                        Active Filters:
+                    </span>
 
-                        {search && (
-                            <span className="d-inline-flex align-items-center border rounded px-3 py-1 bg-white text-dark gap-2 me-2">
+                    {search && (
+                        <span className="filter-chip bg-white border rounded-pill px-3 py-2 d-inline-flex align-items-center shadow-sm">
+                            <span className="fw-bold text-muted fs-xs me-2">
                                 Search: {search}
-                                <i
-                                    className="fa-regular fa-times cursor-pointer"
-                                    onClick={() => handleRemoveFilter("search")}
-                                    style={{ cursor: "pointer" }}
-                                ></i>
                             </span>
-                        )}
+                            <button
+                                onClick={() => handleRemoveFilter("search")}
+                                className="bg-transparent border-0 p-0 text-muted hover-red"
+                            >
+                                <i className="fa-regular fa-times"></i>
+                            </button>
+                        </span>
+                    )}
 
-                        {selectedCategory && (
-                            <span className="d-inline-flex align-items-center border rounded px-3 py-1 bg-white text-dark gap-2 me-2">
-                                Category: {getCategoryName(selectedCategory)}
-                                <i
-                                    className="fa-regular fa-times cursor-pointer"
-                                    onClick={() =>
-                                        handleRemoveFilter("category")
-                                    }
-                                    style={{ cursor: "pointer" }}
-                                ></i>
+                    {selectedCategory && (
+                        <span className="filter-chip bg-white border rounded-pill px-3 py-2 d-inline-flex align-items-center shadow-sm">
+                            <span className="fw-bold text-uppercase fs-xs me-2">
+                                {getCategoryName(selectedCategory)}
                             </span>
-                        )}
+                            <button
+                                onClick={() => handleRemoveFilter("category")}
+                                className="bg-transparent border-0 p-0 text-muted hover-red"
+                            >
+                                <i className="fa-regular fa-times"></i>
+                            </button>
+                        </span>
+                    )}
 
-                        {selectedBrand && (
-                            <span className="d-inline-flex align-items-center border rounded px-3 py-1 bg-white text-dark gap-2 me-2">
-                                Brand: {getBrandName(selectedBrand)}
-                                <i
-                                    className="fa-regular fa-times cursor-pointer"
-                                    onClick={() => handleRemoveFilter("brand")}
-                                    style={{ cursor: "pointer" }}
-                                ></i>
+                    {selectedBrand && (
+                        <span className="filter-chip bg-white border rounded-pill px-3 py-2 d-inline-flex align-items-center shadow-sm">
+                            <span className="fw-bold text-uppercase fs-xs me-2">
+                                {getBrandName(selectedBrand)}
                             </span>
-                        )}
+                            <button
+                                onClick={() => handleRemoveFilter("brand")}
+                                className="bg-transparent border-0 p-0 text-muted hover-red"
+                            >
+                                <i className="fa-regular fa-times"></i>
+                            </button>
+                        </span>
+                    )}
 
-                        {selectedSolution && (
-                            <span className="d-inline-flex align-items-center border rounded px-3 py-1 bg-white text-dark gap-2 me-2">
-                                Solution: {getSolutionName(selectedSolution)}
-                                <i
-                                    className="fa-regular fa-times cursor-pointer"
-                                    onClick={() =>
-                                        handleRemoveFilter("solution")
-                                    }
-                                    style={{ cursor: "pointer" }}
-                                ></i>
+                    {selectedSolution && (
+                        <span className="filter-chip bg-white border rounded-pill px-3 py-2 d-inline-flex align-items-center shadow-sm">
+                            <span className="fw-bold text-uppercase fs-xs me-2">
+                                {getSolutionName(selectedSolution)}
                             </span>
-                        )}
+                            <button
+                                onClick={() => handleRemoveFilter("solution")}
+                                className="bg-transparent border-0 p-0 text-muted hover-red"
+                            >
+                                <i className="fa-regular fa-times"></i>
+                            </button>
+                        </span>
+                    )}
 
+                    {hasActiveFilters && (
                         <button
-                            className="btn btn-sm btn-outline-danger ms-2"
                             onClick={handleResetFilters}
+                            className="btn-clear bg-light border-0 rounded-pill px-3 py-2 fw-bold text-uppercase fs-xs text-muted hover-dark ms-2"
                         >
-                            Reset Filter
+                            Reset All
                         </button>
-                    </div>
+                    )}
                 </div>
             )}
-        </>
+        </div>
     );
 }

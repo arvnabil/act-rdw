@@ -50,7 +50,7 @@ const BrandLanding = ({
     // Dummy Data for PageSite (until module is ready)
     const pageData = pageSite || {
         hero_styles: {
-            background_color: "#444A572C", // Dark Slate Blue (Darkened "Use background not pink")
+            background_color: "#444A572C", // Dark Slate Blue
             background_image:
                 "https://activ.co.id/wp-content/uploads/2023/11/Group-97-1.png?id=5807",
         },
@@ -89,51 +89,154 @@ const BrandLanding = ({
         },
     ];
 
-    const heroSlides = [
-        {
-            subtitle: "Business Solution",
-            title: "VIDEO CONFERENCING",
-            desc: "Explore video conferencing products, including conference cameras, room solutions, webcams, headsets, collaboration tools, and accessories.",
-            image: "https://activ.co.id/wp-content/uploads/2023/11/Banner-Utama-2.png",
+    // --- Default Configuration (Fallback) ---
+    const defaults = {
+        hero: {
+            enabled: true,
+            title: pageData?.title ?? brand.name,
+            subtitle: "Authorized Partner",
+            desc:
+                pageData?.meta_desc ??
+                `Discover premium ${brand.name} solutions.`,
+            background_image: null, // Component handles fallback
         },
-    ];
+        solutions: {
+            enabled: true,
+            title: "Our Solutions",
+        },
+        categories: {
+            enabled: true,
+            title: "Semua Kategori",
+        },
+        showcase: {
+            enabled: true,
+            title: "Work Showcase",
+            items: [],
+        },
+        products: {
+            enabled: true,
+            title: "Latest Products",
+            count: 8,
+        },
+    };
+
+    // --- Config Resolver ---
+    // Merges defaults with brand config and validates section readiness
+    const resolveBrandSection = (
+        sectionKey,
+        defaultConfig,
+        brandConfig,
+        validatorFn = () => true,
+    ) => {
+        // 1. Determine enabled state (Config takes precedence > default > true)
+        const isExplicitlyDisabled = brandConfig?.enabled === false;
+        const isExplicitlyEnabled = brandConfig?.enabled === true;
+        const defaultEnabled = defaultConfig.enabled ?? true;
+
+        const enabled = isExplicitlyDisabled
+            ? false
+            : isExplicitlyEnabled
+              ? true
+              : defaultEnabled;
+
+        // 2. Deep merge config (Brand config overrides defaults)
+        const config = { ...defaultConfig, ...(brandConfig || {}) };
+
+        // 3. Safety Check
+        const safe = validatorFn(config);
+
+        return { enabled, config, safe };
+    };
+
+    // --- Resolve Sections ---
+    const hero = resolveBrandSection(
+        "hero",
+        defaults.hero,
+        brand.landing_config?.hero,
+    );
+
+    const solutions = resolveBrandSection(
+        "solutions",
+        defaults.solutions,
+        brand.landing_config?.solutions,
+        () => relatedServices?.length > 0,
+    );
+
+    const categoriesSection = resolveBrandSection(
+        "categories",
+        defaults.categories,
+        brand.landing_config?.categories,
+        () => categories?.length > 0,
+    );
+
+    // Showcase safety: Safe if (config items exist) OR (static fallback exists)
+    const showcase = resolveBrandSection(
+        "showcase",
+        defaults.showcase,
+        brand.landing_config?.showcase,
+        (cfg) => cfg.items?.length > 0 || staticShowcase?.length > 0,
+    );
+
+    const productsSection = resolveBrandSection(
+        "products",
+        defaults.products,
+        brand.landing_config?.products,
+        () => products?.length > 0,
+    );
 
     return (
         <MainLayout>
             <Head title={brand.name} />
 
             {/* Hero Section */}
-            <BrandHeroSection
-                brand={brand}
-                pageData={pageData}
-                relatedServices={relatedServices}
-                getImageUrl={getImageUrl}
-                setLightboxImage={setLightboxImage}
-            />
+            {hero.enabled && hero.safe && (
+                <BrandHeroSection
+                    brand={brand}
+                    pageData={pageData}
+                    relatedServices={relatedServices}
+                    getImageUrl={getImageUrl}
+                    setLightboxImage={setLightboxImage}
+                    config={hero.config}
+                />
+            )}
 
             {/* Dynamic Service Solutions Sections */}
-            <BrandServiceSolutionsSection
-                relatedServices={relatedServices}
-                getImageUrl={getImageUrl}
-                brand={brand}
-            />
+            {solutions.enabled && solutions.safe && (
+                <BrandServiceSolutionsSection
+                    relatedServices={relatedServices}
+                    getImageUrl={getImageUrl}
+                    brand={brand}
+                    config={solutions.config}
+                />
+            )}
 
             {/* All Categories Section */}
-            <BrandCategoryListSection
-                categories={categories}
-                brand={brand}
-                getBrandSlug={getBrandSlug}
-                getImageUrl={getImageUrl}
-            />
+            {categoriesSection.enabled && categoriesSection.safe && (
+                <BrandCategoryListSection
+                    categories={categories}
+                    brand={brand}
+                    getBrandSlug={getBrandSlug}
+                    getImageUrl={getImageUrl}
+                    config={categoriesSection.config}
+                />
+            )}
 
             {/* Latest Products Section */}
-            <LatestProductsSection
-                products={products}
-                getImageUrl={getImageUrl}
-            />
+            {productsSection.enabled && productsSection.safe && (
+                <LatestProductsSection
+                    products={products}
+                    getImageUrl={getImageUrl}
+                    config={productsSection.config}
+                />
+            )}
 
             {/* Work Showcase Section */}
-            <WorkShowcaseSection staticShowcase={staticShowcase} />
+            {showcase.enabled && showcase.safe && (
+                <WorkShowcaseSection
+                    staticShowcase={showcase.config.items || staticShowcase}
+                    config={showcase.config}
+                />
+            )}
             <style>{`
                 .hover-opacity:hover {
                     opacity: 0.7;
@@ -142,6 +245,7 @@ const BrandLanding = ({
                     background-color: rgba(255, 255, 255, 0.1) !important;
                     border-color: #ffffff !important;
                     color: #ffffff !important;
+                    transition: all 0.3s ease;
                 }
                 .hover-dark:hover {
                     background-color: rgba(0, 0, 0, 0.1) !important;
@@ -161,6 +265,7 @@ const BrandLanding = ({
                 }
                 .product-card-simple:hover img {
                     transform: scale(1.05) !important;
+                    transition: transform 0.3s ease !important;
                 }
                 .room-img-height {
                     height: 500px;
@@ -202,7 +307,6 @@ const BrandLanding = ({
                 .btn-ghost-green:hover {
                     background-color: #28a745 !important;
                     border-color: #28a745 !important;
-                    color: #ffffff !important;
                 }
                 .btn-ghost-green::before,
                 .btn-ghost-green::after {

@@ -19,7 +19,7 @@ class ProjectController extends Controller
                     'title' => $project->title,
                     'slug' => $project->slug,
                     'link' => route('dynamic.resolve', $project->slug),
-                    'image' => $project->thumbnail,
+                    'image' => $project->thumbnail ? "/storage/" . $project->thumbnail : null,
                     'subtitle' => 'Project',
                     'category' => 'Technology',
                 ];

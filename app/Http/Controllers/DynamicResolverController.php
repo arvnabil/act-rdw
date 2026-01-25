@@ -103,6 +103,9 @@ class DynamicResolverController extends Controller
         // 4. Check Projects
         $project = Project::where('slug', $slug)->where('status', 'published')->first();
         if ($project) {
+            // Fix image path for Detail page
+            $project->thumbnail = $project->thumbnail ? "/storage/" . $project->thumbnail : null;
+
             return Inertia::render('Projects/Detail', [
                 'project' => $project,
                 'seo' => SeoResolver::for($project),

@@ -9,6 +9,7 @@ export default function BrandHeroSection({
     relatedServices,
     getImageUrl,
     setLightboxImage,
+    config,
 }) {
     const handleScroll = (e, id) => {
         e.preventDefault();
@@ -36,7 +37,7 @@ export default function BrandHeroSection({
                         pageData.hero_styles?.background_color || "#E8B4B4",
                     backgroundImage: pageData.hero_styles?.background_image
                         ? `url(${getImageUrl(
-                              pageData.hero_styles.background_image
+                              pageData.hero_styles.background_image,
                           )})`
                         : "none",
                     backgroundSize: "cover",
@@ -67,7 +68,9 @@ export default function BrandHeroSection({
                                     className="sub-title text-uppercase mb-20"
                                     style={{ letterSpacing: "2px" }}
                                 >
-                                    Business Solution
+                                    {config?.eyebrow ||
+                                        config?.subtitle ||
+                                        "AUTHORIZED PARTNER"}
                                 </span>
                                 <h1
                                     className="hero-title text-anime-style-3 mb-4"
@@ -78,7 +81,9 @@ export default function BrandHeroSection({
                                         lineHeight: "1.2",
                                     }}
                                 >
-                                    {brand.name.toUpperCase()}
+                                    {(
+                                        config?.title || brand.name
+                                    ).toUpperCase()}
                                 </h1>
                                 <p
                                     className="hero-text mb-30"
@@ -88,16 +93,15 @@ export default function BrandHeroSection({
                                         color: "rgba(255,255,255,0.8)",
                                     }}
                                 >
-                                    Explore video conferencing products,
-                                    including conference cameras, room
-                                    solutions, webcams, headsets, collaboration
-                                    tools, and accessories.
+                                    {config?.desc ||
+                                        config?.subtitle ||
+                                        "Explore video conferencing products, including conference cameras, room solutions, webcams, headsets, collaboration tools, and accessories."}
                                 </p>
                                 <a
-                                    href="#products"
+                                    href={config?.cta_url || "#products"}
                                     className="th-btn style3 th-radius th-icon"
                                 >
-                                    Contact Sales{" "}
+                                    {config?.cta_label || "Contact Sales"}{" "}
                                     <i className="fa-regular fa-arrow-right ms-2"></i>
                                 </a>
                             </div>
@@ -132,8 +136,28 @@ export default function BrandHeroSection({
                                     }}
                                     className="hero-badge-slider"
                                 >
-                                    {[1, 2, 3, 4].map((item) => (
-                                        <SwiperSlide key={item}>
+                                    {(config?.awards?.length > 0
+                                        ? config.awards
+                                        : [
+                                              {
+                                                  image: "https://activ.co.id/wp-content/uploads/2024/11/elite-dk-360x360-1.png",
+                                                  alt: "Elite Partner",
+                                              },
+                                              {
+                                                  image: "https://activ.co.id/wp-content/uploads/2024/11/elite-dk-360x360-1.png",
+                                                  alt: "Elite Partner",
+                                              },
+                                              {
+                                                  image: "https://activ.co.id/wp-content/uploads/2024/11/elite-dk-360x360-1.png",
+                                                  alt: "Elite Partner",
+                                              },
+                                              {
+                                                  image: "https://activ.co.id/wp-content/uploads/2024/11/elite-dk-360x360-1.png",
+                                                  alt: "Elite Partner",
+                                              },
+                                          ]
+                                    ).map((item, index) => (
+                                        <SwiperSlide key={index}>
                                             <div
                                                 className="bg-white d-flex align-items-center justify-content-center shadow-lg"
                                                 style={{
@@ -146,13 +170,18 @@ export default function BrandHeroSection({
                                                 }}
                                                 onClick={() =>
                                                     setLightboxImage(
-                                                        "https://activ.co.id/wp-content/uploads/2024/11/elite-dk-360x360-1.png"
+                                                        getImageUrl(item.image),
                                                     )
                                                 }
                                             >
                                                 <img
-                                                    src="https://activ.co.id/wp-content/uploads/2024/11/elite-dk-360x360-1.png"
-                                                    alt="Elite Partner"
+                                                    src={getImageUrl(
+                                                        item.image,
+                                                    )}
+                                                    alt={
+                                                        item.alt ||
+                                                        "Award Badge"
+                                                    }
                                                     className="img-fluid"
                                                     style={{
                                                         maxHeight: "100%",
@@ -198,7 +227,7 @@ export default function BrandHeroSection({
                                     name: "New Product",
                                     link: "#latest-products",
                                 },
-                                { name: "Project", link: "#project-showcase" }
+                                { name: "Project", link: "#project-showcase" },
                             );
 
                             return navItems.map((item, i) => (

@@ -4,7 +4,14 @@ import { Navigation, Autoplay } from "swiper/modules";
 import SectionTitle from "@/Components/Common/SectionTitle";
 import "swiper/css";
 
-export default function LatestProductsSection({ products, getImageUrl }) {
+export default function LatestProductsSection({
+    products,
+    getImageUrl,
+    config,
+}) {
+    if (products && config?.count) {
+        products = products.slice(0, config.count);
+    }
     return (
         <section
             className="space-top space-extra-bottom bg-white"
@@ -13,7 +20,7 @@ export default function LatestProductsSection({ products, getImageUrl }) {
             <div className="container th-container">
                 <SectionTitle
                     subTitle="New"
-                    title="Products"
+                    title={config?.title || "Products"}
                     align="text-center"
                 />
 
@@ -37,40 +44,75 @@ export default function LatestProductsSection({ products, getImageUrl }) {
                         products.map((product, i) => (
                             <SwiperSlide key={i}>
                                 <div
-                                    className="product-card-simple latest-product-height position-relative overflow-hidden w-100"
+                                    className="product-card-gradient position-relative overflow-hidden w-100"
                                     style={{
                                         borderRadius: "30px",
-                                        boxShadow:
-                                            "0 10px 30px rgba(0,0,0,0.3)",
+                                        aspectRatio: "4/5",
                                         cursor: "pointer",
+                                        background:
+                                            "linear-gradient(180deg, #F3F4F6 0%, #D1D5DB 40%, #4B5563 100%)",
+                                        boxShadow:
+                                            "0 10px 30px rgba(0,0,0,0.1)",
                                     }}
                                 >
-                                    <img
-                                        src={getImageUrl(product.image_path)}
-                                        alt={product.name}
-                                        className="w-100 h-100 object-fit-cover"
-                                        style={{
-                                            transition: "transform 0.5s ease",
-                                        }}
-                                    />
                                     <div
-                                        className="product-content position-absolute bottom-0 start-0 w-100 p-4 d-flex flex-column justify-content-end"
+                                        className="img-wrapper w-100 h-100 d-flex align-items-center justify-content-center p-4"
                                         style={{
-                                            height: "100%",
-                                            background:
-                                                "linear-gradient(to top, #111 0%, rgba(17,17,17,0.8) 30%, transparent 100%)",
+                                            position: "absolute",
+                                            top: 0,
+                                            left: 0,
+                                            zIndex: 1,
                                         }}
                                     >
-                                        <h5 className="text-white mb-1 fw-bold">
+                                        <img
+                                            src={getImageUrl(
+                                                product.image_path,
+                                            )}
+                                            alt={product.name}
+                                            className="w-100 h-100"
+                                            style={{
+                                                objectFit: "contain",
+                                                transition:
+                                                    "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                                                filter: "drop-shadow(0 10px 20px rgba(0,0,0,0.2))",
+                                            }}
+                                        />
+                                    </div>
+
+                                    {/* Content */}
+                                    <div
+                                        className="product-content position-absolute bottom-0 start-0 w-100 p-4"
+                                        style={{ zIndex: 2 }}
+                                    >
+                                        {product.category && (
+                                            <span
+                                                className="d-block text-white-50 text-uppercase fw-bold mb-2"
+                                                style={{
+                                                    fontSize: "0.7rem",
+                                                    letterSpacing: "2px",
+                                                }}
+                                            >
+                                                {product.category}
+                                            </span>
+                                        )}
+                                        <h5
+                                            className="text-white fw-bold mb-0"
+                                            style={{
+                                                fontSize: "1.5rem",
+                                                lineHeight: "1.2",
+                                                textShadow:
+                                                    "0 2px 4px rgba(0,0,0,0.3)",
+                                            }}
+                                        >
                                             {product.name}
                                         </h5>
-                                        {product.category && (
-                                            <p className="text-white-50 fs-xs mb-0 fw-medium">
-                                                {product.category}
-                                            </p>
-                                        )}
                                     </div>
                                 </div>
+                                <style jsx="true">{`
+                                    .product-card-gradient:hover img {
+                                        transform: scale(1.1) translateY(-10px);
+                                    }
+                                `}</style>
                             </SwiperSlide>
                         ))
                     ) : (

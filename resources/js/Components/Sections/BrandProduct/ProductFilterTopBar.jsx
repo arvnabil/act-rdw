@@ -54,7 +54,7 @@ export default function ProductFilterTopBar({
                             <span className="filter-chip bg-white border rounded-pill px-3 py-2 d-inline-flex align-items-center shadow-sm">
                                 <span className="fw-bold text-uppercase fs-xs me-2">
                                     {categories.find(
-                                        (c) => c.slug === filters.category
+                                        (c) => c.slug === filters.category,
                                     )?.name || filters.category}
                                 </span>
                                 <button
@@ -73,7 +73,7 @@ export default function ProductFilterTopBar({
                             <span className="filter-chip bg-white border rounded-pill px-3 py-2 d-inline-flex align-items-center shadow-sm">
                                 <span className="fw-bold text-uppercase fs-xs me-2">
                                     {serviceSolutions.find(
-                                        (s) => s.slug === filters.service_item
+                                        (s) => s.slug === filters.service_item,
                                     )?.name || filters.service_item}
                                 </span>
                                 <button
@@ -95,7 +95,7 @@ export default function ProductFilterTopBar({
                                         brandSlug: brand.slug,
                                     }),
                                     {},
-                                    { preserveScroll: true }
+                                    { preserveScroll: true },
                                 );
                             }}
                             className="btn-clear bg-light border-0 rounded-pill px-3 py-2 fw-bold text-uppercase fs-xs text-muted hover-dark"

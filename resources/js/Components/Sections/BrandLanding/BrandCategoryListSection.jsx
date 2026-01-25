@@ -7,6 +7,7 @@ export default function BrandCategoryListSection({
     brand,
     getBrandSlug,
     getImageUrl,
+    config,
 }) {
     return (
         <section className="space" id="all-categories">
@@ -14,7 +15,7 @@ export default function BrandCategoryListSection({
                 <div className="title-area text-start mb-40">
                     <SectionTitle
                         subTitle="Kategori"
-                        title="Semua Kategori"
+                        title={config?.title || "Semua Kategori"}
                         align="title-area service-title-box text-center"
                     />
                 </div>
@@ -25,7 +26,7 @@ export default function BrandCategoryListSection({
                             <div key={index} className="col">
                                 <Link
                                     href={`/${getBrandSlug(
-                                        brand
+                                        brand,
                                     )}/products?category=${cat.slug || cat.id}`}
                                 >
                                     <div

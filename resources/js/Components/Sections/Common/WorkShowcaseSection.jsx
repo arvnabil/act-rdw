@@ -5,7 +5,7 @@ import SectionTitle from "@/Components/Common/SectionTitle";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 
-export default function WorkShowcaseSection({ staticShowcase }) {
+export default function WorkShowcaseSection({ staticShowcase, config }) {
     return (
         <div
             className="case-area3 position-relative overflow-hidden space-bottom"
@@ -14,7 +14,7 @@ export default function WorkShowcaseSection({ staticShowcase }) {
             <div className="container th-container">
                 <SectionTitle
                     subTitle="Project"
-                    title="Our Work Showcase"
+                    title={config?.title || "Our Work Showcase"}
                     align="text-center"
                 />
                 <div className="slider-area">

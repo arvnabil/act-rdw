@@ -85,9 +85,13 @@ class ProductForm
                                             KeyValue::make('specs')
                                                 ->keyLabel('Spec Name')
                                                 ->valueLabel('Value'),
-                                            KeyValue::make('features')
-                                                ->keyLabel('Feature')
-                                                ->valueLabel('Description'),
+                                            \Filament\Forms\Components\Repeater::make('features')
+                                                ->schema([
+                                                    TextInput::make('name')->required(),
+                                                    TextInput::make('value')->label('Description')->required(),
+                                                    TextInput::make('additional')->label('Additional Info'),
+                                                ])
+                                                ->columns(3),
                                             RichEditor::make('specification_text')
                                                 ->columnSpanFull(),
                                             RichEditor::make('features_text')
@@ -96,7 +100,11 @@ class ProductForm
 
                                     Section::make('Marketplace Links')
                                         ->schema([
-                                            TextInput::make('link_accommerce')->label('Accocommerce')->url(),
+                                            TextInput::make('link_accommerce')->label('Online Purchase Link (Acommerce)')->url(),
+                                            TextInput::make('whatsapp_note')
+                                                ->label('WhatsApp Message Note')
+                                                ->placeholder('e.g. Halo, saya tertarik dengan produk ini...')
+                                                ->helperText('Custom message pre-filled when user clicks "Best Price Request".'),
                                         ])->columns(1),
                                 ])->columnSpan(['lg' => 2]),
 
@@ -106,6 +114,8 @@ class ProductForm
                                         ->schema([
                                             FileUpload::make('image_path')
                                                 ->image()
+                                                ->disk('public')
+                                                ->visibility('public')
                                                 ->directory('products'),
                                         ]),
                                     Section::make('Status')
