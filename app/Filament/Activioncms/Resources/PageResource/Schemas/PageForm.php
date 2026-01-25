@@ -297,18 +297,14 @@ class PageForm
                                                     TextInput::make('config.btn_text')->label('Button Text')->default('Explore Case Studies'),
                                                     TextInput::make('config.btn_url')->label('Button URL')->default('/contact'),
 
-                                                    Repeater::make('config.images')
+                                                    FileUpload::make('config.images')
                                                         ->label('Images (Top 3)')
-                                                        ->schema([
-                                                            FileUpload::make('image')
-                                                                ->image()
-                                                                ->disk('public')
-                                                                ->directory('services')
-                                                                ->visibility('public')
-                                                                ->columnSpanFull(),
-                                                        ])
-                                                        ->grid(3)
-                                                        ->columnSpanFull(),
+                                                        ->image()
+                                                        ->multiple()
+                                                        ->maxFiles(3)
+                                                        ->disk('public')
+                                                        ->directory('services')
+                                                        ->visibility('public'),
 
                                                     Repeater::make('config.features')
                                                         ->label('Features')
