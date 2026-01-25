@@ -7,6 +7,7 @@ use App\Models\Page;
 use App\Models\Project;
 use App\Models\Client;
 use Modules\Core\Models\Brand;
+use Modules\ServiceSolutions\Models\Service;
 use App\Services\Seo\JsonLdOptimizer;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -43,6 +44,7 @@ class JsonLdGenerator
             $model instanceof Project => $this->generateCreativeWork($model, $baseUrl),
             $model instanceof Brand => $this->generateBrand($model, $baseUrl),
             $model instanceof Client => $this->generateClientOrganization($model, $baseUrl),
+            $model instanceof Service => $this->generateService($model, $baseUrl),
             default => $this->generateWebPage($model, $baseUrl),
         };
 
@@ -50,7 +52,12 @@ class JsonLdGenerator
             $schemas[] = $mainSchema;
         }
 
-        // 4. Validation & Optimization Pipeline
+        // 4. BreadcrumbList (For Services and structured pages)
+        if ($model instanceof Service) {
+            $schemas[] = $this->generateBreadcrumbs($model, $baseUrl);
+        }
+
+        // 5. Validation & Optimization Pipeline
         return $this->optimizer->optimize($schemas);
     }
 
@@ -224,6 +231,60 @@ class JsonLdGenerator
     }
 
     /**
+     * TEMPLATE: Service
+     */
+    protected function generateService(Service $model, string $baseUrl): array
+    {
+        $url = $this->generateCanonicalUrl($model, $baseUrl);
+        $images = $this->getImages($model);
+        $solutions = $model->solutions;
+
+        $schema = [
+            '@context' => 'https://schema.org',
+            '@type' => 'Service',
+            '@id' => $url . '#service',
+            'name' => $this->getMetaTitle($model),
+            'description' => $this->getMetaDescription($model),
+            'image' => !empty($images) ? [
+                '@type' => 'ImageObject',
+                'url' => $images[0],
+                'width' => 1200,
+                'height' => 630
+            ] : null,
+            'provider' => [
+                '@type' => 'Organization',
+                '@id' => $baseUrl . self::ORGANIZATION_ID
+            ],
+            'areaServed' => [
+                '@type' => 'Country',
+                'name' => 'Indonesia'
+            ],
+            'serviceType' => $model->name,
+            'hasOfferCatalog' => $solutions->isNotEmpty() ? [
+                '@type' => 'OfferCatalog',
+                'name' => "{$model->name} Solutions",
+                'itemListElement' => $solutions->map(fn($sol) => [
+                    '@type' => 'Offer',
+                    'name' => $sol->title,
+                    'url' => "{$url}#{$sol->slug}",
+                    'availability' => 'https://schema.org/InStock',
+                    'itemOffered' => [
+                        '@type' => 'Service',
+                        'name' => $sol->title,
+                        'description' => Str::limit(strip_tags($sol->description ?? ''), 160)
+                    ]
+                ])->toArray()
+            ] : null,
+            'mainEntityOfPage' => [
+                '@type' => 'WebPage',
+                '@id' => $url
+            ]
+        ];
+
+        return $this->clean($schema);
+    }
+
+    /**
      * HELPER: Generate Safe Canonical URL
      */
     protected function generateCanonicalUrl(Model $model, string $baseUrl): string
@@ -251,6 +312,7 @@ class JsonLdGenerator
 
         $path = match(true) {
              $model instanceof News => 'news/' . ltrim($slug, '/'),
+             $model instanceof Service => 'services/' . ltrim($slug, '/'),
              // Add other prefixes here if models are not root-level
              default => ltrim($slug, '/')
         };
@@ -290,5 +352,57 @@ class JsonLdGenerator
     protected function isHomepage(Model $model): bool
     {
         return $model instanceof Page && $model->is_homepage;
+    }
+
+    /**
+     * HELPER: Recursively remove empty values
+     */
+    protected function clean(array $data): array
+    {
+        return array_filter($data, function ($v) {
+            if (is_array($v)) {
+                $v = $this->clean($v);
+                return !empty($v);
+            }
+            return !empty($v) || $v === 0 || $v === '0';
+        });
+    }
+
+    /**
+     * HELPER: Generate BreadcrumbList
+     */
+    protected function generateBreadcrumbs(Model $model, string $baseUrl): array
+    {
+        $items = [
+            [
+                '@type' => 'ListItem',
+                'position' => 1,
+                'name' => 'Home',
+                'item' => $baseUrl
+            ]
+        ];
+
+        if ($model instanceof Service) {
+            $items[] = [
+                '@type' => 'ListItem',
+                'position' => 2,
+                'name' => 'Services',
+                'item' => $baseUrl . '/services'
+            ];
+            $items[] = [
+                '@type' => 'ListItem',
+                'position' => 3,
+                'name' => $model->name,
+                'item' => $this->generateCanonicalUrl($model, $baseUrl)
+            ];
+        }
+
+        // Add other models here if needed in future
+
+        return [
+            '@context' => 'https://schema.org',
+            '@type' => 'BreadcrumbList',
+            'itemListElement' => $items
+        ];
     }
 }

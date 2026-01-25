@@ -18,10 +18,17 @@ class SeoResolver
         $metaTitle = $seo?->title ?? $model->title ?? $siteName;
         $metaDesc = $seo?->description ?? $model->excerpt ?? $model->description ?? '';
 
-        // JSON-LD Generation (Delegated to Enterprise Generator)
-        /** @var JsonLdGenerator $generator */
-        $generator = app(JsonLdGenerator::class);
-        $jsonLd = $generator->generate($model);
+        // JSON-LD Generation
+        $jsonLd = [];
+        if (!empty($seo?->schema_override)) {
+             $jsonLd = json_decode($seo->schema_override, true);
+        }
+
+        if (empty($jsonLd)) {
+            /** @var JsonLdGenerator $generator */
+            $generator = app(JsonLdGenerator::class);
+            $jsonLd = $generator->generate($model);
+        }
 
         return [
             'title' => $metaTitle,

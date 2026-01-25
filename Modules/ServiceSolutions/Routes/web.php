@@ -29,31 +29,8 @@ Route::middleware(['web'])->group(function () {
     })->name('services.index');
 
     // Service Detail Page (e.g., /services/video-conference)
-    Route::get('/services/{service:slug}', function (Service $service) {
-        $service->load(['categories', 'solutions.categories']);
-
-        return Inertia::render('ServiceDetail', [
-            'service' => [
-                'id' => $service->slug,
-                'title' => $service->name,
-                'hero_subtitle' => $service->hero_subtitle,
-                'grid_title' => $service->grid_title,
-                'filters' => $service->categories->map(fn ($cat) => [
-                    'label' => $cat->label,
-                    'value' => $cat->value
-                ]),
-                'rooms' => $service->solutions->map(fn ($sol) => [
-                    'id' => $sol->slug,
-                    'title' => $sol->title,
-                    'description' => $sol->description,
-                    'capacity' => $sol->capacity, // Added if needed later
-                    'size' => $sol->size,         // Added if needed later
-                    'image' => $sol->thumbnail,
-                    'category' => $sol->categories->pluck('value')->join(' ')
-                ])
-            ]
-        ]);
-    })->name('services.detail');
+    Route::get('/services/{service:slug}', [\Modules\ServiceSolutions\Http\Controllers\ServiceController::class, 'show'])
+        ->name('services.detail');
 
     // Service Item Detail Page (e.g., /services/video-conference/huddle-room)
     Route::get('/services/{service:slug}/{solution:slug}', function (Service $service, ServiceSolution $solution) {

@@ -6,10 +6,15 @@ import ServiceSectionHeader from "@/Components/Sections/ServiceDetail/ServiceSec
 import ServiceFilterBar from "@/Components/Sections/ServiceDetail/ServiceFilterBar";
 import ServiceRoomGrid from "@/Components/Sections/ServiceDetail/ServiceRoomGrid";
 
-const ServiceDetail = ({ service }) => {
+const ServiceDetail = ({ service, seo }) => {
     return (
         <MainLayout>
-            <Head title={service.title} />
+            <Head title={seo?.title || service.title}>
+                {seo?.description && (
+                    <meta name="description" content={seo.description} />
+                )}
+                {seo?.image && <meta property="og:image" content={seo.image} />}
+            </Head>
 
             <Breadcrumb
                 title={service.title}
@@ -17,6 +22,7 @@ const ServiceDetail = ({ service }) => {
                     service.hero_subtitle ||
                     "Professional Solutions for Your Business"
                 }
+                bgImage={service.featured_image} // Pass dynamic hero image if supported
                 items={[
                     { label: "Home", link: "/" },
                     { label: "Services", link: "/services" },
@@ -30,6 +36,16 @@ const ServiceDetail = ({ service }) => {
                         title={service.grid_title}
                         subtitle={service.hero_subtitle}
                     />
+
+                    {/* Dynamic Service Content */}
+                    {service.content && (
+                        <div
+                            className="service-content mb-50 rich-text-content"
+                            dangerouslySetInnerHTML={{
+                                __html: service.content,
+                            }}
+                        />
+                    )}
 
                     <ServiceFilterBar filters={service.filters} />
 

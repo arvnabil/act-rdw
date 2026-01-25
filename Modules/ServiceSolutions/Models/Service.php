@@ -5,16 +5,20 @@ namespace Modules\ServiceSolutions\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Core\Models\Product;
+use App\Traits\HasSeoMeta;
 
 
 class Service extends Model
 {
-    use HasFactory;
+    use HasFactory, HasSeoMeta;
 
     protected $fillable = [
         'name',
         'slug',
         'description',
+        'content',
+        'excerpt',
+        'featured_image',
         'thumbnail',
         'icon',
         'hero_subtitle',
