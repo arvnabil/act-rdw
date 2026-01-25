@@ -92,7 +92,10 @@ export default function SolutionSection({
                                                     className="wow fadeInUp"
                                                     data-wow-delay=".2s"
                                                 >
-                                                    {f.text || f}
+                                                    {f.text ||
+                                                        (typeof f === "string"
+                                                            ? f
+                                                            : "")}
                                                 </li>
                                             ))}
                                         </ul>
@@ -105,7 +108,10 @@ export default function SolutionSection({
                                                     className="wow fadeInUp"
                                                     data-wow-delay=".2s"
                                                 >
-                                                    {f.text || f}
+                                                    {f.text ||
+                                                        (typeof f === "string"
+                                                            ? f
+                                                            : "")}
                                                 </li>
                                             ))}
                                         </ul>
