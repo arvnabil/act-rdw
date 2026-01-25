@@ -2,6 +2,20 @@ import React from "react";
 import { Link } from "@inertiajs/react";
 
 export default function ProjectGrid({ projects }) {
+    if (!projects || !projects.data || projects.data.length === 0) {
+        return (
+            <div className="text-center py-5">
+                <div className="mb-4">
+                    <i className="fa-regular fa-briefcase fa-3x text-muted"></i>
+                </div>
+                <h3>No Projects Found</h3>
+                <p className="text-muted">
+                    We haven't published any projects yet. Check back soon!
+                </p>
+            </div>
+        );
+    }
+
     return (
         <div className="row gy-4">
             {projects.data.map((project) => (

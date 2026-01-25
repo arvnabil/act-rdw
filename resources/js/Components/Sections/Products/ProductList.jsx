@@ -2,6 +2,21 @@ import React from "react";
 import { Link } from "@inertiajs/react";
 
 export default function ProductList({ products, viewMode }) {
+    if (!products || !products.data || products.data.length === 0) {
+        return (
+            <div className="text-center py-5">
+                <div className="mb-4">
+                    <i className="fa-regular fa-box-open fa-3x text-muted"></i>
+                </div>
+                <h3>No Products Found</h3>
+                <p className="text-muted">
+                    Try adjusting your search or filter to find what you're
+                    looking for.
+                </p>
+            </div>
+        );
+    }
+
     return (
         <div className="row gy-40">
             <div className="tab-content" id="nav-tabContent">
@@ -55,7 +70,9 @@ export default function ProductList({ products, viewMode }) {
                                             </Link>
                                         </h3>
                                         <span className="category">
-                                            {product.service?.name || "General"}
+                                            {product.category?.name ||
+                                                product.service?.name ||
+                                                "General"}
                                         </span>
                                     </div>
                                 </div>
@@ -92,7 +109,9 @@ export default function ProductList({ products, viewMode }) {
                                     </div>
                                     <div className="product-content">
                                         <span className="category">
-                                            {product.service?.name || "General"}
+                                            {product.category?.name ||
+                                                product.service?.name ||
+                                                "General"}
                                         </span>
                                         <h3 className="product-title">
                                             <Link

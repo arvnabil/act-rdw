@@ -13,15 +13,33 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Product::with(['brand', 'service'])
+        $query = Product::with(['brand', 'service', 'category'])
             ->where('is_active', true);
 
-        if ($request->has('search')) {
+        // Filter by Search
+        if ($request->filled('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', "%{$search}%")
                   ->orWhere('description', 'like', "%{$search}%");
             });
+        }
+
+        // Filter by Brand
+        if ($request->filled('brand')) {
+            $query->where('brand_id', $request->input('brand'));
+        }
+
+        // Filter by Solution
+        if ($request->filled('solution')) {
+            $query->whereHas('solutions', function($q) use ($request) {
+                $q->where('service_solutions.id', $request->input('solution'));
+            });
+        }
+
+        // Filter by Category
+        if ($request->filled('category')) {
+            $query->where('product_category_id', $request->input('category'));
         }
 
         // Sorting
@@ -36,9 +54,17 @@ class ProductController extends Controller
 
         $products = $query->paginate(9)->withQueryString();
 
+        // Fetch Filter Options
+        $brands = \Modules\Core\Models\Brand::orderBy('name')->get(['id', 'name']);
+        $solutions = \Modules\ServiceSolutions\Models\ServiceSolution::orderBy('title')->get(['id', 'title']);
+        $categories = \Modules\Core\Models\ProductCategory::where('is_active', true)->orderBy('name')->get(['id', 'name']);
+
         return Inertia::render('Products', [
             'products' => $products,
-            'filters' => $request->only(['search', 'orderby']),
+            'brands' => $brands,
+            'solutions' => $solutions,
+            'categories' => $categories,
+            'filters' => $request->only(['search', 'orderby', 'brand', 'solution', 'category']),
         ]);
     }
 
