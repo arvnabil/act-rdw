@@ -48,6 +48,7 @@ class PageForm
                                                 ->options([
                                                     'home' => 'Home',
                                                     'static' => 'Static',
+                                                    'dynamic' => 'Dynamic',
                                                     'brand' => 'Brand',
                                                     'service' => 'Service',
                                                     'project' => 'Project',
