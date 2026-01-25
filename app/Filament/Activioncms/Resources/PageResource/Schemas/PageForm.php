@@ -300,15 +300,22 @@ class PageForm
                                                     Repeater::make('config.images')
                                                         ->label('Images (Top 3)')
                                                         ->schema([
-                                                            FileUpload::make('image')->image()->disk('public')->directory('services')->visibility('public'),
+                                                            FileUpload::make('image')
+                                                                ->image()
+                                                                ->disk('public')
+                                                                ->directory('services')
+                                                                ->visibility('public')
+                                                                ->columnSpanFull(),
                                                         ])
-                                                        ->grid(3),
+                                                        ->grid(3)
+                                                        ->columnSpanFull(),
 
                                                     Repeater::make('config.features')
                                                         ->label('Features')
                                                         ->schema([
                                                             TextInput::make('text')->label('Feature Text')->required(),
-                                                        ]),
+                                                        ])
+                                                        ->columnSpanFull(),
                                                 ])
                                                 ->visible(fn (Get $get) => $get('section_key') === 'service_solution'),
 
@@ -320,7 +327,14 @@ class PageForm
                                                     Textarea::make('config.description')->label('Description'),
                                                     TextInput::make('config.btn_text')->label('Button Text')->default('Contact With Us'),
                                                     TextInput::make('config.btn_url')->label('Button URL')->default('/contact'),
-                                                    FileUpload::make('config.bg_image')->label('Background Image')->image()->disk('public')->directory('services')->visibility('public'),
+
+                                                    // FIX: Ensure this is treated correctly, forcing string validation if needed, or just cleaner definition
+                                                    FileUpload::make('config.bg_image')
+                                                        ->label('Background Image')
+                                                        ->image()
+                                                        ->disk('public')
+                                                        ->directory('services')
+                                                        ->visibility('public'),
                                                 ])
                                                 ->visible(fn (Get $get) => $get('section_key') === 'service_cta'),
 
