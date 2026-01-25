@@ -47,6 +47,12 @@ class SectionDataResolver
             'brands' => $this->resolveBrandPartners($config),
             'cta' => $this->resolveClients($config),
 
+            // Services Page Specific
+            'service_list' => $this->resolveServices($config),
+            'service_clients' => $this->resolveClients($config),
+            'service_solution' => $config,
+            'service_cta' => $config,
+
             default => $config,
         };
 

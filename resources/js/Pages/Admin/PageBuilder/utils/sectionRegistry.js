@@ -11,6 +11,10 @@ import VisionMissionSection from "@/Components/Sections/About/VisionMissionSecti
 import TestimonialSection from "@/Components/Sections/Common/TestimonialSection";
 import ContactSection from "@/Components/Sections/Common/ContactSection";
 
+import BuilderServiceListSection from "@/Components/Sections/Builder/ServiceListSection";
+import ServiceSolutionSection from "@/Components/Sections/Builder/ServiceSolutionSection";
+import BuilderServiceCtaSection from "@/Components/Sections/Builder/ServiceCtaSection";
+
 export const sectionRegistry = {
     // 1. Slider (Hero & Brand variants)
     slider: {
@@ -674,6 +678,101 @@ export const sectionRegistry = {
                     icon: "/assets/img/icon/chat.svg",
                 },
             ],
+        },
+    },
+
+    // --- Services Page Sections ---
+    service_list: {
+        id: "service_list",
+        label: "Services List (Grid)",
+        icon: "fa-regular fa-grid",
+        component: BuilderServiceListSection,
+        schema: [
+            { name: "title", type: "text", label: "Title" },
+            { name: "subtitle", type: "text", label: "Subtitle" },
+            { name: "limit", type: "text", label: "Limit" },
+            {
+                name: "order",
+                type: "select",
+                label: "Order",
+                options: [
+                    { label: "Newest", value: "desc" },
+                    { label: "Oldest", value: "asc" },
+                ],
+            },
+        ],
+        defaultConfig: {
+            title: "Dealing in all professional IT services",
+            subtitle: "What We’re Offering",
+            limit: 12,
+            order: "asc",
+        },
+    },
+    service_clients: {
+        id: "service_clients",
+        label: "Services Clients",
+        icon: "fa-regular fa-users",
+        component: ClientSection, // Reusing standard ClientSection wrapper
+        schema: [
+            { name: "title", type: "text", label: "Title" },
+            { name: "subtitle", type: "text", label: "Subtitle" },
+            { name: "limit", type: "text", label: "Limit" },
+        ],
+        defaultConfig: {
+            title: "Our Clients",
+            subtitle: "Clients",
+            limit: 20,
+        },
+    },
+    service_solution: {
+        id: "service_solution",
+        label: "Services Solution",
+        icon: "fa-regular fa-puzzle-piece",
+        component: ServiceSolutionSection,
+        schema: [
+            { name: "title", type: "text", label: "Title" },
+            { name: "subtitle", type: "text", label: "Subtitle" },
+            { name: "description", type: "textarea", label: "Description" },
+            { name: "btn_text", type: "text", label: "Button Text" },
+            { name: "btn_url", type: "text", label: "Button URL" },
+            {
+                name: "images",
+                type: "repeater",
+                label: "Images (Top 3)",
+                schema: [{ name: "image", type: "image", label: "Image" }],
+            },
+            {
+                name: "features",
+                type: "repeater",
+                label: "Features",
+                schema: [{ name: "text", type: "text", label: "Feature Text" }],
+            },
+        ],
+        defaultConfig: {
+            title: "Our Solution",
+            subtitle: "Projects",
+            btn_text: "Explore Case Studies",
+            btn_url: "/contact",
+        },
+    },
+    service_cta: {
+        id: "service_cta",
+        label: "Services CTA",
+        icon: "fa-regular fa-bullhorn",
+        component: BuilderServiceCtaSection,
+        schema: [
+            { name: "title", type: "text", label: "Title" },
+            { name: "subtitle", type: "text", label: "Subtitle" },
+            { name: "description", type: "textarea", label: "Description" },
+            { name: "btn_text", type: "text", label: "Button Text" },
+            { name: "btn_url", type: "text", label: "Button URL" },
+            { name: "bg_image", type: "image", label: "Background Image" },
+        ],
+        defaultConfig: {
+            title: "Have any project to work with us",
+            subtitle: "Grab up to 35% off",
+            btn_text: "Contact With Us",
+            btn_url: "/contact",
         },
     },
 };

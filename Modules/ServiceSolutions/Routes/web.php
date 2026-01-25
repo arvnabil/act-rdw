@@ -7,9 +7,24 @@ use Modules\ServiceSolutions\Models\ServiceSolution;
 
 Route::middleware(['web'])->group(function () {
     // Service Index Page
+    // Service Index Page
     Route::get('/services', function () {
+        $slug = 'services';
+        $page = \App\Models\Page::where('slug', $slug)->where('status', 'published')->firstOrFail();
+
+        $page->load(['sections' => function ($query) {
+            $query->where('is_active', true)->orderBy('position');
+        }]);
+
+        $sectionDataResolver = app(\App\Services\SectionDataResolver::class);
+        $sections = $page->sections->map(function ($section) use ($sectionDataResolver) {
+            return $sectionDataResolver->resolve($section);
+        });
+
         return Inertia::render('Services', [
-            'services' => Service::orderBy('sort_order', 'asc')->get()
+            'page' => $page,
+            'sections' => $sections,
+            'seo' => \App\Services\SeoResolver::for($page),
         ]);
     })->name('services.index');
 
