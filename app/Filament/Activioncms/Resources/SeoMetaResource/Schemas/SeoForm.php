@@ -14,6 +14,8 @@ use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 
+use Filament\Schemas\Components\View;
+
 class SeoForm
 {
     public static function schema(): array
@@ -22,17 +24,23 @@ class SeoForm
             Section::make('Search Engine Optimization (SEO)')
                 ->description('Manage meta tags, social sharing preview, and indexing settings.')
                 ->schema([
+                    // React SERP Preview
+                    View::make('filament.activioncms.components.react-serp-wrapper')
+                        ->columnSpanFull(),
+
                     Grid::make(1)->schema([
                         TextInput::make('title')
                             ->label('Meta Title')
                             ->helperText('Recommended: 50-60 characters.')
-                            ->maxLength(60),
+                            ->maxLength(60)
+                            ->live(debounce: 500),
 
                         Textarea::make('description')
                             ->label('Meta Description')
                             ->helperText('Recommended: 150-160 characters.')
                             ->maxLength(250)
-                            ->rows(2),
+                            ->rows(2)
+                            ->live(debounce: 500),
 
                         TextInput::make('keywords')
                             ->label('Keywords')
@@ -42,7 +50,8 @@ class SeoForm
                         TextInput::make('canonical_url')
                             ->label('Canonical URL')
                             ->url()
-                            ->helperText('Leave empty to use the default page URL. Use this to prevent duplicate content issues.'),
+                            ->helperText('Leave empty to use the default page URL. Use this to prevent duplicate content issues.')
+                            ->live(debounce: 500),
                     ]),
 
                     Section::make('Social Media (Open Graph)')

@@ -47,15 +47,12 @@ class SeoMetaTable
 
                 TextColumn::make('seo_score')
                     ->label('Score')
-                    ->state(function (SeoMeta $record) {
-                        if (!$record->seoable) return 0;
-                        $audit = app(SeoAuditService::class)->audit($record->seoable);
-                        return $audit['score'];
-                    })
+                    ->state(fn (SeoMeta $record) => $record->seo_score ?? 'N/A')
                     ->badge()
-                    ->color(fn (int $state): string => match (true) {
-                        $state >= 90 => 'success',
-                        $state >= 70 => 'warning',
+                    ->color(fn ($state): string => match (true) {
+                        $state === 'N/A' => 'gray',
+                        $state >= 80 => 'success',
+                        $state >= 50 => 'warning',
                         default => 'danger',
                     }),
             ])

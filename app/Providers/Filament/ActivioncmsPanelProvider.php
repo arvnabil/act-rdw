@@ -62,6 +62,10 @@ class ActivioncmsPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
-            ]);
+            ])
+            ->renderHook(
+                'panels::body.end',
+                fn () => \Illuminate\Support\Facades\Blade::render("@viteReactRefresh\n@vite(['resources/js/filament-serp.jsx'])")
+            );
     }
 }

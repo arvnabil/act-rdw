@@ -20,11 +20,23 @@ class SeoMeta extends Model
         'twitter_card',
         'schema_markup',
         'schema_override',
+        'seo_score',
     ];
 
     protected $casts = [
         'schema_markup' => 'array',
+        'keywords' => 'array',
+        'seo_score' => 'integer',
+        'noindex' => 'boolean',
     ];
+
+    protected static function booted()
+    {
+        static::saving(function ($seoMeta) {
+            $result = \App\Services\Seo\SeoScoreCalculator::calculate($seoMeta);
+            $seoMeta->seo_score = $result['score'];
+        });
+    }
 
     public function seoable()
     {

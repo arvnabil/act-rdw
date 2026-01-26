@@ -7,7 +7,11 @@ import legacy from "@vitejs/plugin-legacy";
 export default defineConfig({
     plugins: [
         laravel({
-            input: ["resources/css/app.css", "resources/js/app.jsx"],
+            input: [
+                "resources/css/app.css",
+                "resources/js/app.jsx",
+                "resources/js/filament-serp.jsx",
+            ],
             refresh: true,
         }),
         react(),
