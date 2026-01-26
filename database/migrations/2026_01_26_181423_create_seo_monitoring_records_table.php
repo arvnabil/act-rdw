@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('seo_monitoring_records', function (Blueprint $table) {
             $table->id();
-            $table->string('url')->unique();
-            $table->string('path');
-            $table->string('model')->nullable();
-            $table->string('model_id')->nullable();
+            $table->string('url', 191)->unique();
+            $table->string('path', 191);
+            $table->string('model', 100)->nullable();
+            $table->string('model_id', 100)->nullable();
             $table->boolean('is_noindex')->default(false);
             $table->boolean('in_sitemap')->default(false);
             $table->boolean('canonical_valid')->default(false);
