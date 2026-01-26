@@ -56,6 +56,8 @@ Route::get('/projects', [\App\Http\Controllers\ProjectController::class, 'index'
 
 // News Page
 Route::get('/news', [\App\Http\Controllers\NewsController::class, 'index'])->name('news.index');
+Route::get('/news/category/{slug}', [\App\Http\Controllers\NewsController::class, 'category'])->name('news.category');
+Route::get('/news/tag/{slug}', [\App\Http\Controllers\NewsController::class, 'tag'])->name('news.tag');
 
 // Room Configurator Page
 Route::get('/room-configurator', function () {

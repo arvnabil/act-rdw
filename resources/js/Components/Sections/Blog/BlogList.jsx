@@ -24,15 +24,34 @@ export default function BlogList({ posts }) {
                                 <i className="fa-regular fa-calendar"></i>
                                 {post.date}
                             </Link>
-                            <Link href={post.link}>
-                                <img src="/assets/img/icon/map.svg" alt="" />
-                                Sea Beach
-                            </Link>
+
+                            {/* Primary Category */}
+                            {post.category && (
+                                <Link href={post.link}>
+                                    <i className="fa-light fa-folder"></i>
+                                    {post.category}
+                                </Link>
+                            )}
                         </div>
                         <h2 className="blog-title">
                             <Link href={post.link}>{post.title}</Link>
                         </h2>
                         <p className="blog-text">{post.excerpt}</p>
+
+                        {/* Tags Chip List (if tags exist) */}
+                        {post.tags && post.tags.length > 0 && (
+                            <div className="blog-tags mt-2 mb-3">
+                                {post.tags.map((tag, index) => (
+                                    <span
+                                        key={index}
+                                        className="badge bg-light text-secondary me-1"
+                                    >
+                                        #{tag.name}
+                                    </span>
+                                ))}
+                            </div>
+                        )}
+
                         <Link
                             href={post.link}
                             className="th-btn style4 th-icon"

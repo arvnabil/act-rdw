@@ -4,14 +4,31 @@ import MainLayout from "@/Layouts/MainLayout";
 import Breadcrumb from "@/Components/Common/Breadcrumb";
 import BlogList from "@/Components/Sections/Blog/BlogList";
 import BlogSidebar from "@/Components/Sections/Blog/BlogSidebar";
-export default function Blog({ posts }) {
+export default function Blog({
+    posts,
+    categories,
+    tags,
+    activeCategory,
+    activeTag,
+}) {
+    const pageTitle = activeCategory
+        ? `Category: ${activeCategory.name}`
+        : activeTag
+          ? `Tag: ${activeTag.name}`
+          : "News";
+
     return (
         <MainLayout>
-            <Head title="News" />
+            <Head title={pageTitle} />
 
             <Breadcrumb
-                title="News"
-                items={[{ label: "Home", link: "/" }, { label: "News" }]}
+                title={pageTitle}
+                items={[
+                    { label: "Home", link: "/" },
+                    { label: "News", link: "/news" },
+                    ...(activeCategory ? [{ label: activeCategory.name }] : []),
+                    ...(activeTag ? [{ label: activeTag.name }] : []),
+                ]}
             />
 
             <section className="th-blog-wrapper space-top space-extra-bottom">
@@ -23,7 +40,7 @@ export default function Blog({ posts }) {
 
                         {/* Sidebar */}
                         <div className="col-xxl-4 col-lg-5">
-                            <BlogSidebar />
+                            <BlogSidebar categories={categories} tags={tags} />
                         </div>
                     </div>
                 </div>

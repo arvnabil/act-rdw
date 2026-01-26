@@ -14,6 +14,7 @@ use App\Filament\Activioncms\Resources\SeoMetaResource\Schemas\SeoForm;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
+use Filament\Forms;
 use Illuminate\Support\Str;
 
 class NewsForm
@@ -64,6 +65,30 @@ class NewsForm
                                                         ->required(),
 
                                                     DateTimePicker::make('published_at'),
+
+                                                    Forms\Components\CheckboxList::make('categories')
+                                                        ->relationship('categories', 'name')
+                                                        ->searchable()
+                                                        ->bulkToggleable()
+                                                        ->columns(1),
+
+                                                    Forms\Components\Select::make('tags')
+                                                        ->relationship('tags', 'name')
+                                                        ->multiple()
+                                                        ->searchable()
+                                                        ->preload()
+                                                        ->createOptionForm([
+                                                            Forms\Components\TextInput::make('name')
+                                                                ->required()
+                                                                ->live(onBlur: true)
+                                                                ->afterStateUpdated(fn (string $operation, $state, $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
+                                                            Forms\Components\TextInput::make('slug')
+                                                                ->disabled()
+                                                                ->dehydrated()
+                                                                ->required()
+                                                                ->unique(\App\Models\NewsTag::class, 'slug'),
+                                                        ])
+                                                        ->columnSpanFull(),
                                                 ]),
 
                                             Section::make('Media')

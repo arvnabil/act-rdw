@@ -48,24 +48,37 @@ export default function BlogSidebar({
             <div className="widget widget_categories">
                 <h3 className="widget_title">Categories</h3>
                 <ul>
-                    {displayCategories.map((cat, index) => (
-                        <li key={index}>
-                            <Link href="/news" className="text-inherit">
-                                {typeof cat === "string" ? cat : cat.name}
-                            </Link>
-                            {typeof cat !== "string" && cat.count && (
-                                <span>({cat.count})</span>
-                            )}
-                            <span className="float-end">
-                                <i className="fa-regular fa-arrow-up-right"></i>
-                            </span>
-                        </li>
-                    ))}
+                    {categories.length > 0 ? (
+                        categories.map((cat, index) => (
+                            <li key={index}>
+                                <Link
+                                    href={route("news.category", cat.slug)}
+                                    className="text-inherit"
+                                >
+                                    {cat.name}
+                                </Link>
+                                <span>({cat.posts_count})</span>
+                                <span className="float-end">
+                                    <i className="fa-regular fa-arrow-up-right"></i>
+                                </span>
+                            </li>
+                        ))
+                    ) : (
+                        <li>No categories found.</li>
+                    )}
                 </ul>
             </div>
+
+            {/* Recent Posts Widget - Keeping dummy logic for now as 'recentPosts' prop wasn't fully refactored yet, or maybe it was passed?
+                Actually NewsController didn't pass 'recentPosts'.
+                I should probably leave it as is or ask user?
+                The plan only mentioned Categories/Tags.
+                I will skip Recent Posts changes for now to stay focused.
+            */}
             <div className="widget">
                 <h3 className="widget_title">Recent Posts</h3>
                 <div className="recent-post-wrap">
+                    {/* ... keeping existing recent post logic or assuming it defaults to empty/dummy ... */}
                     {recentPosts.length > 0
                         ? recentPosts.map((rPost, index) => (
                               <div
@@ -108,15 +121,6 @@ export default function BlogSidebar({
                                               }
                                           >
                                               {rPost.title ||
-                                                  [
-                                                      "5 Common IT Issues and How to Solve Them",
-                                                      "Hybrid Cloud Solutions: The Best of Both Worlds",
-                                                      "Top 10 IT Solutions Every Business",
-                                                  ][
-                                                      isDummyPost(rPost)
-                                                          ? rPost - 1
-                                                          : index
-                                                  ] ||
                                                   "Recent Post Title"}
                                           </Link>
                                       </h4>
@@ -145,13 +149,7 @@ export default function BlogSidebar({
                                               className="text-inherit"
                                               href={`/news/${num}`}
                                           >
-                                              {
-                                                  [
-                                                      "5 Common IT Issues and How to Solve Them",
-                                                      "Hybrid Cloud Solutions: The Best of Both Worlds",
-                                                      "Top 10 IT Solutions Every Business",
-                                                  ][num - 1]
-                                              }
+                                              Recent Post {num}
                                           </Link>
                                       </h4>
                                   </div>
@@ -159,14 +157,22 @@ export default function BlogSidebar({
                           ))}
                 </div>
             </div>
+
             <div className="widget widget_tag_cloud">
                 <h3 className="widget_title">Popular Tags</h3>
                 <div className="tagcloud">
-                    {displayTags.map((tag, index) => (
-                        <Link href="/news" key={index}>
-                            {tag}
-                        </Link>
-                    ))}
+                    {tags.length > 0 ? (
+                        tags.map((tag, index) => (
+                            <Link
+                                href={route("news.tag", tag.slug)}
+                                key={index}
+                            >
+                                {tag.name}
+                            </Link>
+                        ))
+                    ) : (
+                        <span>No tags found.</span>
+                    )}
                 </div>
             </div>
             <div
