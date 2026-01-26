@@ -19,9 +19,10 @@ class ActivePublicRouteDetector
     /**
      * Detect all public, indexable, and active routes.
      *
+     * @param bool $includeNoindex Whether to include routes marked as noindex.
      * @return Collection
      */
-    public function detect(): Collection
+    public function detect(bool $includeNoindex = false): Collection
     {
         $detectedPaths = collect();
         $results = collect();
@@ -37,10 +38,10 @@ class ActivePublicRouteDetector
 
         // 2. Model-Driven Dynamic Routes (Catch-all /{slug})
         // Priority: Page > Brand > News > Project
-        $this->detectCatchAllRoutes($detectedPaths, $results);
+        $this->detectCatchAllRoutes($detectedPaths, $results, $includeNoindex);
 
         // 3. Structured Dynamic Routes
-        $this->detectStructuredRoutes($detectedPaths, $results);
+        $this->detectStructuredRoutes($detectedPaths, $results, $includeNoindex);
 
         return $results->values();
     }
@@ -76,7 +77,7 @@ class ActivePublicRouteDetector
     /**
      * Handle catch-all priority: Page > Brand > News > Project.
      */
-    protected function detectCatchAllRoutes(Collection &$detectedPaths, Collection &$results): void
+    protected function detectCatchAllRoutes(Collection &$detectedPaths, Collection &$results, bool $includeNoindex): void
     {
         $models = [
             ['class' => Page::class, 'priority' => 0.8, 'freq' => 'weekly'],
@@ -94,22 +95,25 @@ class ActivePublicRouteDetector
                 })
                 ->with('seo')
                 ->get()
-                ->each(function ($model) use ($config, &$detectedPaths, &$results) {
+                ->each(function ($model) use ($config, &$detectedPaths, &$results, $includeNoindex) {
                     $slug = $model->slug;
                     if (!$slug || $detectedPaths->contains($slug)) return;
 
                     // Check NOINDEX
-                    if ($model->seo && $model->seo->noindex) return;
+                    if (!$includeNoindex && ($model->seo && $model->seo->noindex)) return;
 
                     try {
                         if (Route::has('dynamic.resolve')) {
                             $url = route('dynamic.resolve', ['slug' => $slug]);
 
                             $results->push([
+                                'id' => $model->id,
                                 'url' => $url,
                                 'model' => class_basename($model),
                                 'priority' => $config['priority'],
                                 'changefreq' => $config['freq'],
+                                'updated_at' => $model->updated_at,
+                                'is_noindex' => (bool) ($model->seo->noindex ?? false),
                             ]);
                             $detectedPaths->push($slug);
                         }
@@ -122,18 +126,21 @@ class ActivePublicRouteDetector
     /**
      * Handle nested or structured routes (Products, Services, etc.).
      */
-    protected function detectStructuredRoutes(Collection &$detectedPaths, Collection &$results): void
+    protected function detectStructuredRoutes(Collection &$detectedPaths, Collection &$results, bool $includeNoindex): void
     {
         // Products
-        Product::where('is_active', true)->with('seo')->get()->each(function ($product) use (&$results) {
-            if ($product->seo && $product->seo->noindex) return;
+        Product::where('is_active', true)->with('seo')->get()->each(function ($product) use (&$results, $includeNoindex) {
+            if (!$includeNoindex && ($product->seo && $product->seo->noindex)) return;
             try {
                 if (Route::has('products.show')) {
                     $results->push([
+                        'id' => $product->id,
                         'url' => route('products.show', $product->slug),
                         'model' => 'Product',
                         'priority' => 0.8,
                         'changefreq' => 'weekly',
+                        'updated_at' => $product->updated_at,
+                        'is_noindex' => (bool) ($product->seo->noindex ?? false),
                     ]);
                 }
             } catch (\Exception $e) {
@@ -141,15 +148,18 @@ class ActivePublicRouteDetector
         });
 
         // Services (Main)
-        Service::with('seo')->get()->each(function ($service) use (&$results) {
-            if ($service->seo && $service->seo->noindex) return;
+        Service::with('seo')->get()->each(function ($service) use (&$results, $includeNoindex) {
+            if (!$includeNoindex && ($service->seo && $service->seo->noindex)) return;
             try {
                 if (Route::has('services.detail')) {
                     $results->push([
+                        'id' => $service->id,
                         'url' => route('services.detail', $service->slug),
                         'model' => 'Service',
                         'priority' => 0.8,
                         'changefreq' => 'weekly',
+                        'updated_at' => $service->updated_at,
+                        'is_noindex' => (bool) ($service->seo->noindex ?? false),
                     ]);
                 }
             } catch (\Exception $e) {
@@ -157,15 +167,18 @@ class ActivePublicRouteDetector
         });
 
         // Service Solutions (Sub-services)
-        ServiceSolution::with(['seo', 'service'])->get()->each(function ($solution) use (&$results) {
-            if ($solution->seo && $solution->seo->noindex) return;
+        ServiceSolution::with(['seo', 'service'])->get()->each(function ($solution) use (&$results, $includeNoindex) {
+            if (!$includeNoindex && ($solution->seo && $solution->seo->noindex)) return;
             try {
                 if ($solution->service && Route::has('services.item.detail')) {
                     $results->push([
+                        'id' => $solution->id,
                         'url' => route('services.item.detail', [$solution->service->slug, $solution->slug]),
                         'model' => 'ServiceSolution',
                         'priority' => 0.7,
                         'changefreq' => 'weekly',
+                        'updated_at' => $solution->updated_at,
+                        'is_noindex' => (bool) ($solution->seo->noindex ?? false),
                     ]);
                 }
             } catch (\Exception $e) {
@@ -173,15 +186,18 @@ class ActivePublicRouteDetector
         });
 
         // News Categories
-        NewsCategory::with('seo')->get()->each(function ($cat) use (&$results) {
-            if ($cat->seo && $cat->seo->noindex) return;
+        NewsCategory::with('seo')->get()->each(function ($cat) use (&$results, $includeNoindex) {
+            if (!$includeNoindex && ($cat->seo && $cat->seo->noindex)) return;
             try {
                 if (Route::has('news.category')) {
                     $results->push([
+                        'id' => $cat->id,
                         'url' => route('news.category', $cat->slug),
                         'model' => 'NewsCategory',
                         'priority' => 0.5,
                         'changefreq' => 'monthly',
+                        'updated_at' => $cat->updated_at,
+                        'is_noindex' => (bool) ($cat->seo->noindex ?? false),
                     ]);
                 }
             } catch (\Exception $e) {

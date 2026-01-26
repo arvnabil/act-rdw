@@ -54,6 +54,9 @@ class GenerateSitemap extends Command
         $path = public_path('sitemap.xml');
         $sitemap->writeToFile($path);
 
+        // Rebuild SEO monitoring data
+        app(\App\Services\SeoMonitoringService::class)->sync();
+
         $duration = round(microtime(true) - $startTime, 2);
         $this->info("Sitemap generated successfully at {$path} in {$duration}s.");
     }
