@@ -7,7 +7,7 @@ import BlogDetailContent from "@/Components/Sections/BlogDetail/BlogDetailConten
 import BlogComments from "@/Components/Sections/BlogDetail/BlogComments";
 import BlogSidebar from "@/Components/Sections/Blog/BlogSidebar";
 
-export default function BlogDetail({ post, recentPosts, categories }) {
+export default function BlogDetail({ post, recentPosts, categories, tags }) {
     return (
         <MainLayout>
             <Head title={post.title} />
@@ -36,6 +36,7 @@ export default function BlogDetail({ post, recentPosts, categories }) {
                             <BlogSidebar
                                 categories={categories}
                                 recentPosts={recentPosts}
+                                tags={tags}
                             />
                         </div>
                     </div>

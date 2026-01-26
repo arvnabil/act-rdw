@@ -1,45 +1,36 @@
-import React from "react";
-import { Link, usePage } from "@inertiajs/react";
+import React, { useState } from "react";
+import { Link, usePage, router } from "@inertiajs/react";
 
 export default function BlogSidebar({
     categories = [],
     recentPosts = [],
     tags = [],
+    filters = {},
 }) {
-    // Default data if not provided (handling the hardcoded ones from Blog.jsx)
-    const defaultCategories = [
-        "IT Strategy & Planning",
-        "Web Developments",
-        "Cloud Consulting",
-        "Machine Learning",
-        "Database Security",
-        "IT Management",
-    ];
+    const [searchTerm, setSearchTerm] = useState(filters.search || "");
 
-    const displayCategories =
-        categories.length > 0 ? categories : defaultCategories;
-
-    const defaultTags = [
-        "Advice",
-        "Technology",
-        "Atek",
-        "Ux/Ui",
-        "Consulting",
-        "Solution",
-        "Health",
-        "IT Solution",
-        "Cloud",
-    ];
-    const displayTags = tags.length > 0 ? tags : defaultTags;
-
-    // Helper for recent posts if they are numbers (dummies) or objects
-    const isDummyPost = (post) => typeof post === "number";
+    const handleSearch = (e) => {
+        e.preventDefault();
+        router.get(
+            route("news.index"),
+            { search: searchTerm },
+            {
+                preserveState: true,
+                replace: true,
+            },
+        );
+    };
 
     return (
         <aside className="sidebar-area">
             <div className="widget widget_search">
-                <form className="search-form">
-                    <input type="text" placeholder="Search" />
+                <form className="search-form" onSubmit={handleSearch}>
+                    <input
+                        type="text"
+                        placeholder="Search"
+                        value={searchTerm}
+                        onChange={(e) => setSearchTerm(e.target.value)}
+                    />
                     <button type="submit">
                         <i className="far fa-search"></i>
                     </button>
@@ -69,92 +60,44 @@ export default function BlogSidebar({
                 </ul>
             </div>
 
-            {/* Recent Posts Widget - Keeping dummy logic for now as 'recentPosts' prop wasn't fully refactored yet, or maybe it was passed?
-                Actually NewsController didn't pass 'recentPosts'.
-                I should probably leave it as is or ask user?
-                The plan only mentioned Categories/Tags.
-                I will skip Recent Posts changes for now to stay focused.
-            */}
             <div className="widget">
                 <h3 className="widget_title">Recent Posts</h3>
                 <div className="recent-post-wrap">
-                    {/* ... keeping existing recent post logic or assuming it defaults to empty/dummy ... */}
-                    {recentPosts.length > 0
-                        ? recentPosts.map((rPost, index) => (
-                              <div
-                                  className="recent-post"
-                                  key={rPost.id || index}
-                              >
-                                  <div className="media-img">
-                                      <Link
-                                          href={rPost.link || `/news/${rPost}`}
-                                      >
-                                          <img
-                                              src={
-                                                  rPost.image ||
-                                                  `/assets/img/blog/recent-post-1-${
-                                                      isDummyPost(rPost)
-                                                          ? rPost
-                                                          : index + 1
-                                                  }.jpg`
-                                              }
-                                              alt="Blog Image"
-                                          />
-                                      </Link>
-                                  </div>
-                                  <div className="media-body">
-                                      <div className="recent-post-meta">
-                                          <Link
-                                              href={
-                                                  rPost.link || `/news/${rPost}`
-                                              }
-                                          >
-                                              <i className="fa-solid fa-calendar-days"></i>
-                                              {rPost.date || "22 Sep, 2025"}
-                                          </Link>
-                                      </div>
-                                      <h4 className="post-title">
-                                          <Link
-                                              className="text-inherit"
-                                              href={
-                                                  rPost.link || `/news/${rPost}`
-                                              }
-                                          >
-                                              {rPost.title ||
-                                                  "Recent Post Title"}
-                                          </Link>
-                                      </h4>
-                                  </div>
-                              </div>
-                          ))
-                        : [1, 2, 3].map((num) => (
-                              <div className="recent-post" key={num}>
-                                  <div className="media-img">
-                                      <Link href={`/news/${num}`}>
-                                          <img
-                                              src={`/assets/img/blog/recent-post-1-${num}.jpg`}
-                                              alt="Blog Image"
-                                          />
-                                      </Link>
-                                  </div>
-                                  <div className="media-body">
-                                      <div className="recent-post-meta">
-                                          <Link href={`/news/${num}`}>
-                                              <i className="fa-solid fa-calendar-days"></i>
-                                              22 Sep, 2025
-                                          </Link>
-                                      </div>
-                                      <h4 className="post-title">
-                                          <Link
-                                              className="text-inherit"
-                                              href={`/news/${num}`}
-                                          >
-                                              Recent Post {num}
-                                          </Link>
-                                      </h4>
-                                  </div>
-                              </div>
-                          ))}
+                    {recentPosts.length > 0 ? (
+                        recentPosts.map((rPost, index) => (
+                            <div
+                                className="recent-post"
+                                key={rPost.id || index}
+                            >
+                                <div className="media-img">
+                                    <Link href={rPost.link}>
+                                        <img
+                                            src={rPost.image}
+                                            alt="Blog Image"
+                                        />
+                                    </Link>
+                                </div>
+                                <div className="media-body">
+                                    <div className="recent-post-meta">
+                                        <Link href={rPost.link}>
+                                            <i className="fa-solid fa-calendar-days"></i>
+                                            {rPost.date}
+                                        </Link>
+                                    </div>
+                                    <h4 className="post-title">
+                                        <Link
+                                            className="text-inherit"
+                                            href={rPost.link}
+                                        >
+                                            {rPost.title}
+                                        </Link>
+                                    </h4>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <div>No recent posts.</div>
+                    )}
                 </div>
             </div>
 

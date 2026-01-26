@@ -17,15 +17,22 @@ class NewsController extends Controller
         $pageTitle = 'News';
 
         if ($request = request()) {
-            // Check if we are in a named route context that implies specific filter
-            // Or handle parameters passed directly if changing route definition
+            if ($request->filled('search')) {
+                $search = $request->input('search');
+                $query->where(function($q) use ($search) {
+                    $q->where('title', 'like', "%{$search}%")
+                      ->orWhere('excerpt', 'like', "%{$search}%")
+                      ->orWhere('content', 'like', "%{$search}%");
+                });
+                $pageTitle = "Search: $search";
+            }
         }
 
         // Handle Category Filter
         if ($categorySlug) {
              $activeCategory = \App\Models\NewsCategory::where('slug', $categorySlug)->firstOrFail();
              $query->whereHas('categories', function ($q) use ($activeCategory) {
-                 $q->where('id', $activeCategory->id);
+                 $q->where('news_categories.id', $activeCategory->id);
              });
              $pageTitle = "News - Category: {$activeCategory->name}";
         }
@@ -34,7 +41,7 @@ class NewsController extends Controller
         if ($tagSlug) {
              $activeTag = \App\Models\NewsTag::where('slug', $tagSlug)->firstOrFail();
              $query->whereHas('tags', function ($q) use ($activeTag) {
-                 $q->where('id', $activeTag->id);
+                 $q->where('news_tags.id', $activeTag->id);
              });
              $pageTitle = "News - Tag: {$activeTag->name}";
         }
@@ -46,7 +53,7 @@ class NewsController extends Controller
                     'title' => $post->title,
                     'slug' => $post->slug,
                     'link' => route('dynamic.resolve', $post->slug),
-                    'image' => $post->thumbnail,
+                    'image' => $post->featured_image,
                     'date' => $post->published_at ? $post->published_at->format('d M, Y') : '',
                     'author' => 'ACTiV Team',
                     'category' => $post->categories->first()?->name ?? 'Uncategorized', // Display primary category
@@ -58,12 +65,30 @@ class NewsController extends Controller
 
         // Sidebar Data
         $categories = \App\Models\NewsCategory::withCount('posts')->orderBy('name')->get();
-        $tags = \App\Models\NewsTag::orderBy('name')->take(20)->get(); // Limit mostly used tags if many
+        $tags = \App\Models\NewsTag::orderBy('name')->take(20)->get();
+
+        // Recent Posts (limit 3)
+        $recentPosts = News::where('status', 'published')
+            ->latest('published_at')
+            ->take(3)
+            ->get()
+            ->map(function ($post) {
+                return [
+                    'id' => $post->id,
+                    'title' => $post->title,
+                    'slug' => $post->slug,
+                    'link' => route('dynamic.resolve', $post->slug),
+                    'image' => $post->featured_image,
+                    'date' => $post->published_at ? $post->published_at->format('d M, Y') : '',
+                ];
+            });
 
         return Inertia::render('News/Index', [
             'posts' => $posts,
             'categories' => $categories,
             'tags' => $tags,
+            'recentPosts' => $recentPosts,
+            'filters' => request()->only(['search']),
             'activeCategory' => $activeCategory,
             'activeTag' => $activeTag,
             'seo' => SeoResolver::staticPage($pageTitle, 'Latest news and updates from ACTiV'),

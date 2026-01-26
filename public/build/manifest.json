@@ -397,15 +397,15 @@
       "_Toast-BLy83P4I.js"
     ]
   },
-  "_BlogSidebar-DHK9oirq.js": {
-    "file": "assets/BlogSidebar-DHK9oirq.js",
+  "_BlogSidebar-CNE3258r.js": {
+    "file": "assets/BlogSidebar-CNE3258r.js",
     "name": "BlogSidebar",
     "imports": [
       "_vendor-CGYxHter.js"
     ]
   },
-  "_BlogSidebar-legacy-BsUbnns7.js": {
-    "file": "assets/BlogSidebar-legacy-BsUbnns7.js",
+  "_BlogSidebar-legacy-O-QdoW2X.js": {
+    "file": "assets/BlogSidebar-legacy-O-QdoW2X.js",
     "name": "BlogSidebar",
     "imports": [
       "_vendor-legacy-EOzjTHYR.js"
@@ -1590,7 +1590,7 @@
     ]
   },
   "resources/js/Pages/News/Detail-legacy.jsx": {
-    "file": "assets/Detail-legacy-Ca74vj2m.js",
+    "file": "assets/Detail-legacy-BtZithCb.js",
     "name": "Detail",
     "src": "resources/js/Pages/News/Detail-legacy.jsx",
     "isDynamicEntry": true,
@@ -1598,12 +1598,12 @@
       "_vendor-legacy-EOzjTHYR.js",
       "_MainLayout-legacy-M68p5RUc.js",
       "_Breadcrumb-legacy-BFR1w_ya.js",
-      "_BlogSidebar-legacy-BsUbnns7.js",
+      "_BlogSidebar-legacy-O-QdoW2X.js",
       "_Toast-legacy-WFY3htGV.js"
     ]
   },
   "resources/js/Pages/News/Detail.jsx": {
-    "file": "assets/Detail-DZsz1RBN.js",
+    "file": "assets/Detail-mtTUW38w.js",
     "name": "Detail",
     "src": "resources/js/Pages/News/Detail.jsx",
     "isDynamicEntry": true,
@@ -1611,12 +1611,12 @@
       "_vendor-CGYxHter.js",
       "_MainLayout-BJcqMDBK.js",
       "_Breadcrumb-B5bSeO0u.js",
-      "_BlogSidebar-DHK9oirq.js",
+      "_BlogSidebar-CNE3258r.js",
       "_Toast-BLy83P4I.js"
     ]
   },
   "resources/js/Pages/News/Index-legacy.jsx": {
-    "file": "assets/Index-legacy-BeZj1xMP.js",
+    "file": "assets/Index-legacy-DK9y-ohA.js",
     "name": "Index",
     "src": "resources/js/Pages/News/Index-legacy.jsx",
     "isDynamicEntry": true,
@@ -1624,12 +1624,12 @@
       "_vendor-legacy-EOzjTHYR.js",
       "_MainLayout-legacy-M68p5RUc.js",
       "_Breadcrumb-legacy-BFR1w_ya.js",
-      "_BlogSidebar-legacy-BsUbnns7.js",
+      "_BlogSidebar-legacy-O-QdoW2X.js",
       "_Toast-legacy-WFY3htGV.js"
     ]
   },
   "resources/js/Pages/News/Index.jsx": {
-    "file": "assets/Index-bUsIpXPP.js",
+    "file": "assets/Index-Curje2el.js",
     "name": "Index",
     "src": "resources/js/Pages/News/Index.jsx",
     "isDynamicEntry": true,
@@ -1637,7 +1637,7 @@
       "_vendor-CGYxHter.js",
       "_MainLayout-BJcqMDBK.js",
       "_Breadcrumb-B5bSeO0u.js",
-      "_BlogSidebar-DHK9oirq.js",
+      "_BlogSidebar-CNE3258r.js",
       "_Toast-BLy83P4I.js"
     ]
   },
@@ -1942,7 +1942,7 @@
     ]
   },
   "resources/js/app-legacy.jsx": {
-    "file": "assets/app-legacy-xa9HVyLk.js",
+    "file": "assets/app-legacy-ChrZWNPv.js",
     "name": "app",
     "src": "resources/js/app-legacy.jsx",
     "isEntry": true,
@@ -2016,7 +2016,7 @@
     ]
   },
   "resources/js/app.jsx": {
-    "file": "assets/app-C3YlFgh-.js",
+    "file": "assets/app-ClXfLH6n.js",
     "name": "app",
     "src": "resources/js/app.jsx",
     "isEntry": true,

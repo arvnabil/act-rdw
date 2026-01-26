@@ -81,21 +81,16 @@ class DynamicResolverController extends Controller
                 });
 
             // Fetch all categories for sidebar
-            $categories = \App\Models\NewsCategory::has('posts')->get()->map(function($cat) {
-                 return $cat->name;
-            });
+            $categories = \App\Models\NewsCategory::withCount('posts')->orderBy('name')->get();
 
-            // Fetch popular tags (or just strictly associated tags for now, but request said sidebar has tags)
-            // For now let's pass all tags used in sidebar
-            $popularTags = \App\Models\NewsTag::has('posts')->limit(10)->get()->map(function($t) {
-                return $t->name;
-            });
+            // Fetch popular tags
+            $tags = \App\Models\NewsTag::orderBy('name')->take(20)->get();
 
             return Inertia::render('News/Detail', [
                 'post' => $news,
                 'recentPosts' => $recentPosts,
                 'categories' => $categories,
-                'tags' => $popularTags, // Sidebar tags
+                'tags' => $tags,
                 'seo' => SeoResolver::for($news),
             ]);
         }

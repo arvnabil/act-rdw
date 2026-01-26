@@ -8,6 +8,8 @@ export default function Blog({
     posts,
     categories,
     tags,
+    recentPosts,
+    filters,
     activeCategory,
     activeTag,
 }) {
@@ -15,7 +17,9 @@ export default function Blog({
         ? `Category: ${activeCategory.name}`
         : activeTag
           ? `Tag: ${activeTag.name}`
-          : "News";
+          : filters?.search
+            ? `Search: ${filters.search}`
+            : "News";
 
     return (
         <MainLayout>
@@ -40,7 +44,12 @@ export default function Blog({
 
                         {/* Sidebar */}
                         <div className="col-xxl-4 col-lg-5">
-                            <BlogSidebar categories={categories} tags={tags} />
+                            <BlogSidebar
+                                categories={categories}
+                                tags={tags}
+                                recentPosts={recentPosts}
+                                filters={filters}
+                            />
                         </div>
                     </div>
                 </div>
