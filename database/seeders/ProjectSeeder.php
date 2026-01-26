@@ -10,27 +10,49 @@ class ProjectSeeder extends Seeder
 {
     public function run(): void
     {
-        $titles = [
-            'Cloud Infrastructure Migration',
-            'Enterprise ERP Implementation',
-            'Cybersecurity Audit & Hardening',
-            'Mobile App Development for Retail',
-            'AI-Powered Analytics Dashboard',
-            'IoT Smart Building Solution',
-            'Blockchain Supply Chain Platform',
-            'DevOps Pipeline Automation',
-            'Data Center Virtualization'
+        $projects = [
+            [
+                'title' => 'E-Commerce Platform',
+                'category' => 'Web Development',
+                'thumbnail' => '/assets/img/project/project_1_1.jpg',
+                'description' => 'A scalable e-commerce solution designed for a leading retail brand, featuring advanced inventory management and AI-powered recommendations.',
+            ],
+            [
+                'title' => 'Corporate Branding',
+                'category' => 'Design',
+                'thumbnail' => '/assets/img/project/project_2_1.jpg',
+                'description' => 'A complete corporate identity overhaul including logo design, brand guidelines, and marketing collateral for a fintech startup.',
+            ],
+            [
+                'title' => 'Mobile App Redesign',
+                'category' => 'UI/UX',
+                'thumbnail' => '/assets/img/project/project_3_1.jpg',
+                'description' => 'User-centric redesign of a mobile banking app, focusing on accessibility, streamlined navigation, and modern aesthetic.',
+            ],
+            [
+                'title' => 'Marketing Campaign',
+                'category' => 'Digital Marketing',
+                'thumbnail' => '/assets/img/project/project_4_1.jpg',
+                'description' => 'A comprehensive multi-channel marketing campaign that increased user engagement by 40% through targeted social media and email strategies.',
+            ],
+            [
+                'title' => 'Cloud Infrastructure',
+                'category' => 'DevOps',
+                'thumbnail' => '/assets/img/project/project_3_9.jpg',
+                'description' => 'Migration of legacy systems to a cloud-native infrastructure, optimizing performance, scalability, and security for a global enterprise.',
+            ],
         ];
 
-        foreach ($titles as $index => $title) {
+        foreach ($projects as $project) {
             Project::create([
-                'title' => $title,
-                'slug' => Str::slug($title),
-                'excerpt' => 'Implementing a robust and scalable solution to meet the complex digital demands of modern enterprise.',
-                'content' => '<p>The client faced significant challenges with legacy systems that were hindering scalability and performance. Key issues included data silos, slow processing times, and security vulnerabilities that needed immediate attention to prevent potential data breaches and operational downtime.</p><p>Our solution involved a complete overhaul of the infrastructure, leveraging cloud-native technologies and microservices architecture.</p>',
-                'thumbnail' => '/assets/img/project/project-inner' . ($index % 8 + 1) . '.jpg',
+                'title' => $project['title'],
+                'slug' => Str::slug($project['title']),
+                'category' => $project['category'],
+                'excerpt' => $project['description'],
+                'content' => '<p>' . $project['description'] . '</p><p>This project involved extensive research and collaboration to deliver a high-quality solution that meets the client\'s specific needs. Our team utilized the latest technologies and best practices to ensure success.</p>',
+                'thumbnail' => $project['thumbnail'],
                 'status' => 'published',
-                'published_at' => now()->subDays($index * 5),
+                'published_at' => now(),
             ]);
         }
     }
