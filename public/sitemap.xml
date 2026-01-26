@@ -2,158 +2,242 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1" xmlns:video="http://www.google.com/schemas/sitemap-video/1.1" xmlns:news="http://www.google.com/schemas/sitemap-news/0.9">
     <url>
     <loc>http://127.0.0.1:8000</loc>
-    <lastmod>2026-01-26T15:20:03+00:00</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8000/about-us</loc>
-    <lastmod>2026-01-22T05:02:17+00:00</lastmod>
+    <loc>http://127.0.0.1:8000/about</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
     <loc>http://127.0.0.1:8000/services</loc>
-    <lastmod>2026-01-25T07:10:15+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8000/news/activ-raih-penghargaan-terbaik-logitech-di-asia-tenggara</loc>
-    <lastmod>2026-01-26T03:20:55+00:00</lastmod>
+    <loc>http://127.0.0.1:8000/projects</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8000/news/cara-kerja-dan-manfaat-screen-sharing-dongle-maxhub</loc>
-    <lastmod>2026-01-26T03:20:56+00:00</lastmod>
+    <loc>http://127.0.0.1:8000/news</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8000/news/solusi-meeting-modern-konferensi-maxhub</loc>
-    <lastmod>2026-01-26T03:20:56+00:00</lastmod>
+    <loc>http://127.0.0.1:8000/partners</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8000/news/permasalahan-dalam-video-conference-dan-solusinya</loc>
-    <lastmod>2026-01-26T03:20:56+00:00</lastmod>
+    <loc>http://127.0.0.1:8000/home</loc>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8000/news/solusi-pemantauan-dan-diagnostik-perangkat-dengan-logitech-essential</loc>
-    <lastmod>2026-01-26T03:20:56+00:00</lastmod>
+    <loc>http://127.0.0.1:8000/about-us</loc>
     <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
+    <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8000/news/solusi-tepat-untuk-komunikasi-tim-anda</loc>
-    <lastmod>2026-01-26T03:20:56+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-            </url>
-    <url>
-    <loc>http://127.0.0.1:8000/news/solusi-video-conference-terdepan</loc>
-    <lastmod>2026-01-26T03:20:56+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-            </url>
-    <url>
-    <loc>http://127.0.0.1:8000/news/solusi-video-konferensi-inovatif</loc>
-    <lastmod>2026-01-26T03:20:56+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-            </url>
-    <url>
-    <loc>http://127.0.0.1:8000/news/zone-305-solusi-wireless-terbaik-untuk-beban-kerja-bisnis-anda</loc>
-    <lastmod>2026-01-26T03:20:56+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-            </url>
-    <url>
-    <loc>http://127.0.0.1:8000/news/cara-menghapus-akun-zoom-di-web</loc>
-    <lastmod>2026-01-26T03:20:56+00:00</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-            </url>
-    <url>
-    <loc>http://127.0.0.1:8000/project/menuju-pembelajaran-era-baru-hybrid-class-dengan-adaptasi-teknologi</loc>
-    <lastmod>2026-01-25T16:30:25+00:00</lastmod>
+    <loc>http://127.0.0.1:8000/logitech</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8000/project/future-of-e-commerce-talk-show</loc>
-    <lastmod>2026-01-26T08:31:22+00:00</lastmod>
+    <loc>http://127.0.0.1:8000/yealink</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8000/project/e-commerce-platform</loc>
-    <lastmod>2026-01-26T14:21:50+00:00</lastmod>
+    <loc>http://127.0.0.1:8000/jabra</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8000/project/corporate-branding</loc>
-    <lastmod>2026-01-26T14:21:50+00:00</lastmod>
+    <loc>http://127.0.0.1:8000/activ-raih-penghargaan-terbaik-logitech-di-asia-tenggara</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/cara-kerja-dan-manfaat-screen-sharing-dongle-maxhub</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/solusi-meeting-modern-konferensi-maxhub</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/permasalahan-dalam-video-conference-dan-solusinya</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/solusi-pemantauan-dan-diagnostik-perangkat-dengan-logitech-essential</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/solusi-tepat-untuk-komunikasi-tim-anda</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/solusi-video-conference-terdepan</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/solusi-video-konferensi-inovatif</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/zone-305-solusi-wireless-terbaik-untuk-beban-kerja-bisnis-anda</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/cara-menghapus-akun-zoom-di-web</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/menuju-pembelajaran-era-baru-hybrid-class-dengan-adaptasi-teknologi</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8000/project/mobile-app-redesign</loc>
-    <lastmod>2026-01-26T14:21:50+00:00</lastmod>
+    <loc>http://127.0.0.1:8000/future-of-e-commerce-talk-show</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8000/project/marketing-campaign</loc>
-    <lastmod>2026-01-26T14:21:50+00:00</lastmod>
+    <loc>http://127.0.0.1:8000/e-commerce-platform</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8000/project/cloud-infrastructure</loc>
-    <lastmod>2026-01-26T14:21:50+00:00</lastmod>
+    <loc>http://127.0.0.1:8000/corporate-branding</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/mobile-app-redesign</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/marketing-campaign</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/cloud-infrastructure</loc>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
             </url>
     <url>
     <loc>http://127.0.0.1:8000/services/video-conference</loc>
-    <lastmod>2026-01-25T09:17:33+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
     <loc>http://127.0.0.1:8000/services/server-storage</loc>
-    <lastmod>2026-01-22T05:02:17+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
     <loc>http://127.0.0.1:8000/services/smart-surveillance</loc>
-    <lastmod>2026-01-22T05:02:17+00:00</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8000/brand/logitech</loc>
-    <lastmod>2026-01-25T11:43:56+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <loc>http://127.0.0.1:8000/services/video-conference/huddle-room-solution</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8000/brand/yealink</loc>
-    <lastmod>2026-01-22T05:02:17+00:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <loc>http://127.0.0.1:8000/services/video-conference/small-room-solution</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8000/brand/jabra</loc>
-    <lastmod>2026-01-25T14:09:22+00:00</lastmod>
+    <loc>http://127.0.0.1:8000/services/video-conference/medium-room-solution</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/news/category/technology</loc>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.5</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/news/category/business</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/news/category/design</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/news/category/marketing</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/news/category/health</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/news/category/education</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/news/category/berita-terkini</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/news/category/tips-trik</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/news/category/maxhub</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/news/category/logitech</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/news/category/video-conference</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/news/category/yeastar</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/news/category/zoom</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/news/category/event</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
             </url>
 </urlset>
