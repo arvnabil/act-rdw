@@ -27,21 +27,23 @@ class ActivePublicRouteDetector
         $detectedPaths = collect();
         $results = collect();
 
-        // 1. Static Principal Routes
-        $this->getStaticRoutes()->each(function ($route) use (&$detectedPaths, &$results) {
-            // Check if route exists or is a valid URL
-            if (str_starts_with($route['url'], 'http') && $this->isIndexable($route['url'])) {
-                $results->push($route);
-                $detectedPaths->push($this->normalizePath($route['url']));
-            }
-        });
-
-        // 2. Model-Driven Dynamic Routes (Catch-all /{slug})
+        // 1. Model-Driven Dynamic Routes (Catch-all /{slug})
         // Priority: Page > Brand > News > Project
         $this->detectCatchAllRoutes($detectedPaths, $results, $includeNoindex);
 
-        // 3. Structured Dynamic Routes
+        // 2. Structured Dynamic Routes
         $this->detectStructuredRoutes($detectedPaths, $results, $includeNoindex);
+
+        // 3. Static Principal Routes (Fallback/Placeholders)
+        $this->getStaticRoutes()->each(function ($route) use (&$detectedPaths, &$results) {
+            $path = $this->normalizePath($route['url']);
+
+            // Only add if not already captured by a model
+            if (str_starts_with($route['url'], 'http') && $this->isIndexable($route['url']) && !$detectedPaths->contains($path)) {
+                $results->push($route);
+                $detectedPaths->push($path);
+            }
+        });
 
         return $results->values();
     }
@@ -52,7 +54,6 @@ class ActivePublicRouteDetector
     protected function getStaticRoutes(): Collection
     {
         $namedRoutes = [
-            ['name' => 'home', 'model' => 'Static:Home', 'priority' => 1.0, 'changefreq' => 'daily'],
             ['name' => 'about', 'model' => 'Static:About', 'priority' => 0.8, 'changefreq' => 'weekly'],
             ['name' => 'services.index', 'model' => 'Static:Services', 'priority' => 0.8, 'changefreq' => 'weekly'],
             ['name' => 'projects.index', 'model' => 'Static:Projects', 'priority' => 0.7, 'changefreq' => 'weekly'],
@@ -97,28 +98,39 @@ class ActivePublicRouteDetector
                 ->get()
                 ->each(function ($model) use ($config, &$detectedPaths, &$results, $includeNoindex) {
                     $slug = $model->slug;
-                    if (!$slug || $detectedPaths->contains($slug)) return;
+                    $isHomepage = isset($model->is_homepage) && $model->is_homepage;
+
+                    if (!$slug && !$isHomepage) return;
+
+                    // Normalize slug for homepage
+                    $checkKey = $isHomepage ? '/' : $slug;
+
+                    if ($detectedPaths->contains($checkKey)) return;
 
                     // Check NOINDEX
                     if (!$includeNoindex && ($model->seo && $model->seo->noindex)) return;
 
                     try {
-                        if (Route::has('dynamic.resolve')) {
+                        if ($isHomepage) {
+                            $url = url('/');
+                        } elseif (Route::has('dynamic.resolve')) {
                             $url = route('dynamic.resolve', ['slug' => $slug]);
-
-                            $results->push([
-                                'id' => $model->id,
-                                'url' => $url,
-                                'model' => class_basename($model),
-                                'priority' => $config['priority'],
-                                'changefreq' => $config['freq'],
-                                'updated_at' => $model->updated_at,
-                                'is_noindex' => (bool) ($model->seo->noindex ?? false),
-                                'seo_score' => (int) ($model->seo->seo_score ?? 0),
-                                'canonical_url' => $model->seo->canonical_url ?? null,
-                            ]);
-                            $detectedPaths->push($slug);
+                        } else {
+                            return;
                         }
+
+                        $results->push([
+                            'id' => $model->id,
+                            'url' => $url,
+                            'model' => class_basename($model),
+                            'priority' => $isHomepage ? 1.0 : $config['priority'],
+                            'changefreq' => $isHomepage ? 'daily' : $config['freq'],
+                            'updated_at' => $model->updated_at,
+                            'is_noindex' => (bool) ($model->seo->noindex ?? false),
+                            'seo_score' => (int) ($model->seo->seo_score ?? 0),
+                            'canonical_url' => $model->seo->canonical_url ?? null,
+                        ]);
+                        $detectedPaths->push($checkKey);
                     } catch (\Exception $e) {
                     }
                 });

@@ -6,37 +6,12 @@
     <priority>1.0</priority>
             </url>
     <url>
-    <loc>http://127.0.0.1:8000/about</loc>
+    <loc>http://127.0.0.1:8000/about-us</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
     <loc>http://127.0.0.1:8000/services</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-            </url>
-    <url>
-    <loc>http://127.0.0.1:8000/projects</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-            </url>
-    <url>
-    <loc>http://127.0.0.1:8000/news</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-            </url>
-    <url>
-    <loc>http://127.0.0.1:8000/partners</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-            </url>
-    <url>
-    <loc>http://127.0.0.1:8000/home</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-            </url>
-    <url>
-    <loc>http://127.0.0.1:8000/about-us</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
@@ -239,5 +214,25 @@
     <loc>http://127.0.0.1:8000/news/category/event</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/about</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/projects</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/news</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>http://127.0.0.1:8000/partners</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
             </url>
 </urlset>
