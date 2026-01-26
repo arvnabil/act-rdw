@@ -165,6 +165,13 @@ class BrandForm
                                         ->default(8),
                                 ])->statePath('landing_config.products'),
                         ])->columnSpanFull(),
+
+                    Tabs\Tab::make('SEO')
+                        ->schema([
+                            \Filament\Schemas\Components\Group::make()
+                                ->relationship('seo')
+                                ->schema(\App\Filament\Activioncms\Resources\SeoMetaResource\Schemas\SeoForm::schema())
+                        ]),
                 ])->columnSpanFull(),
         ];
     }

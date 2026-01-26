@@ -10,6 +10,8 @@ use Modules\Core\Models\Brand;
 
 class ServiceSolution extends Model
 {
+    use \App\Traits\HasSeoMeta;
+
     protected $fillable = [
         'service_id',
         'title',
