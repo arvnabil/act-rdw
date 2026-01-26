@@ -10,7 +10,8 @@ export default function SliderSection(props) {
         return (
             <HomeBrandSection
                 {...props}
-                elementId={`brand-slider-${props.id}`}
+                slides={props.slides || []}
+                builderMode={props.isBuilder || false}
             />
         );
     }

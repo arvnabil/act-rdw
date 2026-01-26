@@ -6,7 +6,7 @@ export default function ServiceSection(props) {
         <HomeServiceSection
             {...props}
             services={props.services || props.allServices}
-            isBuilder={true}
+            isBuilder={props.isBuilder || false}
         />
     );
 }
