@@ -36,10 +36,9 @@ class PageForm
                                             TextInput::make('title')
                                                 ->required()
                                                 ->live(onBlur: true)
-                                                ->afterStateUpdated(fn (string $operation, $state, $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
+                                                ->afterStateUpdated(fn ($state, $set) => $set('slug', Str::slug($state))),
 
                                             TextInput::make('slug')
-                                                ->disabled()
                                                 ->dehydrated()
                                                 ->required()
                                                 ->unique(Page::class, 'slug', ignoreRecord: true),

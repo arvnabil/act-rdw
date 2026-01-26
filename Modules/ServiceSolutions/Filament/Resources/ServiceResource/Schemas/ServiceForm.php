@@ -27,9 +27,8 @@ class ServiceForm
                                     TextInput::make('name')
                                         ->required()
                                         ->live(onBlur: true)
-                                        ->afterStateUpdated(fn(string $operation, $state, $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
+                                        ->afterStateUpdated(fn($state, $set) => $set('slug', Str::slug($state))),
                                     TextInput::make('slug')
-                                        ->disabled()
                                         ->dehydrated()
                                         ->required()
                                         ->unique('services', 'slug', ignoreRecord: true),

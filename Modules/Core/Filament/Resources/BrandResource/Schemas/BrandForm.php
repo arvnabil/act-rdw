@@ -24,7 +24,7 @@ class BrandForm
                             TextInput::make('name')
                                 ->required()
                                 ->live(onBlur: true)
-                                ->afterStateUpdated(fn (string $operation, $state, Set $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
+                                ->afterStateUpdated(fn ($state, Set $set) => $set('slug', Str::slug($state))),
                             TextInput::make('slug')
                                 ->required()
                                 ->unique(ignoreRecord: true),
