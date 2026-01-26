@@ -56,7 +56,7 @@ class SeoScoreCalculator
         }
 
         // 5. Keywords (5 pts)
-        if (!empty($seoMeta->keywords) && count($seoMeta->keywords) > 0) {
+        if (!empty($seoMeta->keywords)) {
             $score += 5;
             $checks['keywords'] = ['pass' => true, 'message' => 'Focus keywords are set.'];
         } else {

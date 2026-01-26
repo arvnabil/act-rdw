@@ -114,6 +114,8 @@ class ActivePublicRouteDetector
                                 'changefreq' => $config['freq'],
                                 'updated_at' => $model->updated_at,
                                 'is_noindex' => (bool) ($model->seo->noindex ?? false),
+                                'seo_score' => (int) ($model->seo->seo_score ?? 0),
+                                'canonical_url' => $model->seo->canonical_url ?? null,
                             ]);
                             $detectedPaths->push($slug);
                         }
@@ -141,6 +143,8 @@ class ActivePublicRouteDetector
                         'changefreq' => 'weekly',
                         'updated_at' => $product->updated_at,
                         'is_noindex' => (bool) ($product->seo->noindex ?? false),
+                        'seo_score' => (int) ($product->seo->seo_score ?? 0),
+                        'canonical_url' => $product->seo->canonical_url ?? null,
                     ]);
                 }
             } catch (\Exception $e) {
@@ -160,6 +164,8 @@ class ActivePublicRouteDetector
                         'changefreq' => 'weekly',
                         'updated_at' => $service->updated_at,
                         'is_noindex' => (bool) ($service->seo->noindex ?? false),
+                        'seo_score' => (int) ($service->seo->seo_score ?? 0),
+                        'canonical_url' => $service->seo->canonical_url ?? null,
                     ]);
                 }
             } catch (\Exception $e) {
@@ -179,6 +185,8 @@ class ActivePublicRouteDetector
                         'changefreq' => 'weekly',
                         'updated_at' => $solution->updated_at,
                         'is_noindex' => (bool) ($solution->seo->noindex ?? false),
+                        'seo_score' => (int) ($solution->seo->seo_score ?? 0),
+                        'canonical_url' => $solution->seo->canonical_url ?? null,
                     ]);
                 }
             } catch (\Exception $e) {
@@ -198,6 +206,8 @@ class ActivePublicRouteDetector
                         'changefreq' => 'monthly',
                         'updated_at' => $cat->updated_at,
                         'is_noindex' => (bool) ($cat->seo->noindex ?? false),
+                        'seo_score' => (int) ($cat->seo->seo_score ?? 0),
+                        'canonical_url' => $cat->seo->canonical_url ?? null,
                     ]);
                 }
             } catch (\Exception $e) {
