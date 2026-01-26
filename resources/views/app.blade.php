@@ -16,46 +16,55 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png" />
     <link rel="manifest" href="/assets/img/favicons/manifest.json" />
+    @php
+        $settings = \App\Models\Setting::whereIn('key', ['seo_gtm_id', 'seo_ga4_id', 'seo_gsc_verification'])->pluck(
+            'value',
+            'key',
+        );
+        $gtmId = $settings['seo_gtm_id'] ?? null;
+        $ga4Id = $settings['seo_ga4_id'] ?? null;
+        $gscCode = $settings['seo_gsc_verification'] ?? null;
+    @endphp
 
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap"
-        rel="stylesheet" />
-
-    <!-- jQuery (Required for Magnific Popup & Plugins) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
-    <!-- WOW.js (Fix for Vite Production Build) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/wow/1.1.2/wow.min.js"></script>
-
-    <!-- Magnific Popup JS (Fix for Vite Production Build) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
-
-    <!-- Magnific Popup CSS -->
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css" />
-
-    @if (config('services.recaptcha.key'))
-        <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.key') }}"></script>
+    @if ($gscCode)
+        <meta name="google-site-verification" content="{{ $gscCode }}" />
     @endif
 
-    <!-- Start of Qontak Webchat Script -->
-    {{-- <script>
-        const qchatInit = document.createElement('script');
-        qchatInit.src = "https://webchat.qontak.com/qchatInitialize.js";
-        const qchatWidget = document.createElement('script');
-        qchatWidget.src = "https://webchat.qontak.com/js/app.js";
-        document.head.prepend(qchatInit);
-        document.head.prepend(qchatWidget);
-        qchatInit.onload = function() {
-            qchatInitialize({
-                id: '0f0c18dc-53e5-4efa-bb2f-d0fca4f40cc8',
-                code: 'bzuTnIhEXwWufy2oRg6YBw'
-            })
-        };
-    </script> --}}
+    @if ($gtmId)
+        <!-- Google Tag Manager -->
+        <script>
+            (function(w, d, s, l, i) {
+                w[l] = w[l] || [];
+                w[l].push({
+                    'gtm.start': new Date().getTime(),
+                    event: 'gtm.js'
+                });
+                var f = d.getElementsByTagName(s)[0],
+                    j = d.createElement(s),
+                    dl = l != 'dataLayer' ? '&l=' + l : '';
+                j.async = true;
+                j.src =
+                    'https://www.googletagmanager.com/gtm.js?id=' + i + dl;
+                f.parentNode.insertBefore(j, f);
+            })(window, document, 'script', 'dataLayer', '{{ $gtmId }}');
+        </script>
+        <!-- End Google Tag Manager -->
+    @endif
+
+    @if ($ga4Id)
+        <!-- Google Analytics 4 -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ $ga4Id }}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+            gtag('js', new Date());
+            gtag('config', '{{ $ga4Id }}');
+        </script>
+    @endif
+
     <!-- End of Qontak Webchat Script -->
 
     @routes
@@ -66,6 +75,17 @@
 </head>
 
 <body>
+    @php
+        $gtmIdBody = \App\Models\Setting::where('key', 'seo_gtm_id')->value('value');
+    @endphp
+
+    @if ($gtmIdBody)
+        <!-- Google Tag Manager (noscript) -->
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ $gtmIdBody }}" height="0"
+                width="0" style="display:none;visibility:hidden"></iframe></noscript>
+        <!-- End Google Tag Manager (noscript) -->
+    @endif
+
     @inertia
 
 
