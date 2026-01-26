@@ -13,4 +13,13 @@ class ListSeoMetas extends ListRecords
     {
         return [];
     }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            \App\Filament\Activioncms\Widgets\SeoOverviewStats::class,
+            \App\Filament\Activioncms\Widgets\SeoHealthChart::class,
+            \App\Filament\Activioncms\Widgets\TopSeoIssues::class,
+        ];
+    }
 }
