@@ -46,14 +46,23 @@ class NewsController extends Controller
              $pageTitle = "News - Tag: {$activeTag->name}";
         }
 
+        $resolvePath = function($path) {
+            if (!$path) return null;
+            if (str_starts_with($path, 'http')) return $path;
+            if (str_starts_with($path, 'assets') || str_starts_with($path, '/assets')) {
+                return str_starts_with($path, '/') ? $path : "/{$path}";
+            }
+            return "/storage/{$path}";
+        };
+
         $posts = $query->with(['categories', 'tags'])->paginate(10)
-            ->through(function ($post) {
+            ->through(function ($post) use ($resolvePath) {
                 return [
                     'id' => $post->id,
                     'title' => $post->title,
                     'slug' => $post->slug,
                     'link' => route('dynamic.resolve', $post->slug),
-                    'image' => $post->featured_image,
+                    'image' => $resolvePath($post->featured_image),
                     'date' => $post->published_at ? $post->published_at->format('d M, Y') : '',
                     'author' => 'ACTiV Team',
                     'category' => $post->categories->first()?->name ?? 'Uncategorized', // Display primary category
@@ -72,13 +81,13 @@ class NewsController extends Controller
             ->latest('published_at')
             ->take(3)
             ->get()
-            ->map(function ($post) {
+            ->map(function ($post) use ($resolvePath) {
                 return [
                     'id' => $post->id,
                     'title' => $post->title,
                     'slug' => $post->slug,
                     'link' => route('dynamic.resolve', $post->slug),
-                    'image' => $post->featured_image,
+                    'image' => $resolvePath($post->featured_image),
                     'date' => $post->published_at ? $post->published_at->format('d M, Y') : '',
                 ];
             });

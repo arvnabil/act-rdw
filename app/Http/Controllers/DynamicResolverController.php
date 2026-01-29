@@ -64,18 +64,27 @@ class DynamicResolverController extends Controller
         // 3. Check News
         $news = News::with(['categories', 'tags'])->where('slug', $slug)->where('status', 'published')->first();
         if ($news) {
+            $resolvePath = function($path) {
+                if (!$path) return null;
+                if (str_starts_with($path, 'http')) return $path;
+                if (str_starts_with($path, 'assets') || str_starts_with($path, '/assets')) {
+                    return str_starts_with($path, '/') ? $path : "/{$path}";
+                }
+                return "/storage/{$path}";
+            };
+
             // Fetch recent posts
             $recentPosts = News::where('status', 'published')
                 ->where('id', '!=', $news->id)
                 ->latest('published_at')
                 ->take(3)
                 ->get()
-                ->map(function ($post) {
+                ->map(function ($post) use ($resolvePath) {
                     return [
                         'id' => $post->id,
                         'title' => $post->title,
                         'date' => $post->published_at ? $post->published_at->format('d M, Y') : '',
-                        'image' => $post->featured_image,
+                        'image' => $resolvePath($post->featured_image),
                         'link' => route('dynamic.resolve', $post->slug)
                     ];
                 });
@@ -86,8 +95,13 @@ class DynamicResolverController extends Controller
             // Fetch popular tags
             $tags = \App\Models\NewsTag::orderBy('name')->take(20)->get();
 
+            // Prepare post data with resolved image paths
+            $postData = $news->toArray();
+            $postData['image'] = $resolvePath($news->featured_image);
+            $postData['thumbnail'] = $postData['image']; // For BlogDetailContent compatibility
+
             return Inertia::render('News/Detail', [
-                'post' => $news,
+                'post' => $postData,
                 'recentPosts' => $recentPosts,
                 'categories' => $categories,
                 'tags' => $tags,
