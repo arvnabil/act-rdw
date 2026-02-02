@@ -24,7 +24,7 @@ class CoreServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerConfig();
-        $this->loadMigrationsFrom(module_path($this->moduleName, 'Database/Migrations'));
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
     }
 
     /**
@@ -45,10 +45,10 @@ class CoreServiceProvider extends ServiceProvider
     protected function registerConfig()
     {
         $this->publishes([
-            module_path($this->moduleName, 'Config/config.php') => config_path($this->moduleNameLower . '.php'),
+            __DIR__ . '/../Config/config.php' => config_path($this->moduleNameLower . '.php'),
         ], 'config');
         $this->mergeConfigFrom(
-            module_path($this->moduleName, 'Config/config.php'), $this->moduleNameLower
+            __DIR__ . '/../Config/config.php', $this->moduleNameLower
         );
     }
 }
