@@ -33,9 +33,9 @@ export default function MainLayout({ children }) {
     }, [flash]);
 
     const [selectedLang, setSelectedLang] = useState({
-        code: 'en',
-        label: 'English',
-        flag: 'https://cdn.gtranslate.net/flags/svg/en.svg'
+        code: 'id',
+        label: 'Indonesian',
+        flag: 'https://cdn.gtranslate.net/flags/svg/id.svg'
     });
 
     useEffect(() => {
