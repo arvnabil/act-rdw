@@ -14,6 +14,8 @@ class ListProjects extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+            Actions\ImportAction::make()
+                ->importer(\App\Filament\Imports\ProjectImporter::class),
         ];
     }
 }

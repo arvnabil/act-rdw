@@ -6,9 +6,20 @@ import Toast from "@/Components/Common/Toast";
 export default function MainLayout({ children }) {
     useTemplateInit();
     const { auth, flash, menus } = usePage().props;
+    console.log("MainLayout menus:", menus);
     const [toast, setToast] = useState(null);
+    const [isScrolled, setIsScrolled] = useState(false);
 
     useEffect(() => {
+        const handleScroll = () => {
+            setIsScrolled(window.scrollY > 50);
+        };
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
+    useEffect(() => {
+        // 1. Flash messages handling
         if (flash?.success) {
             setToast({ message: flash.success, type: "success" });
             const timer = setTimeout(() => setToast(null), 3000);
@@ -20,6 +31,60 @@ export default function MainLayout({ children }) {
             return () => clearTimeout(timer);
         }
     }, [flash]);
+
+    const [selectedLang, setSelectedLang] = useState({
+        code: 'en',
+        label: 'English',
+        flag: 'https://cdn.gtranslate.net/flags/svg/en.svg'
+    });
+
+    useEffect(() => {
+        // 2. GTranslate Initialization logic
+        const script = document.createElement("script");
+        script.src = "https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit2";
+        script.async = true;
+        document.body.appendChild(script);
+
+        window.googleTranslateElementInit2 = () => {
+            new window.google.translate.TranslateElement({
+                pageLanguage: 'id',
+                autoDisplay: false
+            }, 'google_translate_element2');
+        };
+
+        window.doGTranslate = (lang_pair) => {
+            if (lang_pair.value) lang_pair = lang_pair.value;
+            if (lang_pair == '') return;
+            var lang = lang_pair.split('|')[1];
+            var teCombo = document.querySelector('.goog-te-combo');
+            if (teCombo) {
+                teCombo.value = lang;
+                teCombo.dispatchEvent(new Event('change'));
+
+                // Update UI state
+                const langMap = {
+                    'en': { label: 'English', flag: 'https://cdn.gtranslate.net/flags/svg/en.svg' },
+                    'id': { label: 'Indonesian', flag: 'https://cdn.gtranslate.net/flags/svg/id.svg' },
+                    'ar': { label: 'Arabic', flag: 'https://cdn.gtranslate.net/flags/svg/countries/sa.svg' },
+                    'zh-CN': { label: 'Chinese', flag: 'https://cdn.gtranslate.net/flags/svg/zh-CN.svg' },
+                    'nl': { label: 'Dutch', flag: 'https://cdn.gtranslate.net/flags/svg/nl.svg' },
+                    'fr': { label: 'French', flag: 'https://cdn.gtranslate.net/flags/svg/fr.svg' },
+                    'de': { label: 'German', flag: 'https://cdn.gtranslate.net/flags/svg/de.svg' },
+                    'hi': { label: 'Hindi', flag: 'https://cdn.gtranslate.net/flags/svg/hi.svg' },
+                    'it': { label: 'Italian', flag: 'https://cdn.gtranslate.net/flags/svg/it.svg' },
+                    'ja': { label: 'Japanese', flag: 'https://cdn.gtranslate.net/flags/svg/ja.svg' },
+                    'ko': { label: 'Korean', flag: 'https://cdn.gtranslate.net/flags/svg/ko.svg' },
+                    'pt': { label: 'Portuguese', flag: 'https://cdn.gtranslate.net/flags/svg/pt.svg' },
+                    'ru': { label: 'Russian', flag: 'https://cdn.gtranslate.net/flags/svg/ru.svg' },
+                    'es': { label: 'Spanish', flag: 'https://cdn.gtranslate.net/flags/svg/es.svg' },
+                    'th': { label: 'Thai', flag: 'https://cdn.gtranslate.net/flags/svg/th.svg' }
+                };
+                if (langMap[lang]) {
+                    setSelectedLang({ code: lang, ...langMap[lang] });
+                }
+            }
+        };
+    }, []);
 
     // Helper to render menu items recursively
     const renderMenuItems = (items) => {
@@ -70,6 +135,96 @@ export default function MainLayout({ children }) {
 
     return (
         <>
+            <style>
+                {`
+                /* GTranslate Switcher Styling */
+                #google_translate_element2 { display: none !important; }
+                .skiptranslate { display: none !important; }
+                body { top: 0px !important; }
+
+                .gt_switcher_wrapper {
+                    display: inline-block;
+                    font-family: Arial, sans-serif;
+                    z-index: 999;
+                    vertical-align: middle;
+                }
+
+                /* When page is scrolled, make it float at the top */
+                .gt_switcher_wrapper.gt_sticky {
+                    position: fixed;
+                    top: 0;
+                    right: 8%;
+                    z-index: 999999;
+                }
+
+                .gt_switcher {
+                    background: #fff;
+                    border: 1px solid #ccc;
+                    border-radius: 4px;
+                    padding: 4px 8px;
+                    cursor: pointer;
+                    display: inline-block;
+                    position: relative;
+                    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+                    line-height: 1.2;
+                }
+
+                .gt_switcher .gt_selected {
+                    display: flex;
+                    align-items: center;
+                    gap: 6px;
+                    font-size: 13px;
+                    color: #333;
+                    white-space: nowrap;
+                }
+
+                .gt_switcher .gt_option {
+                    display: none;
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    width: 140px;
+                    background: #fff;
+                    border: 1px solid #ccc;
+                    border-radius: 0 0 4px 4px;
+                    overflow-y: auto;
+                    max-height: 200px;
+                    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+                }
+
+                .gt_switcher:hover .gt_option {
+                    display: block;
+                }
+
+                .gt_switcher .gt_option a {
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    padding: 8px 12px;
+                    text-decoration: none;
+                    color: #444;
+                    font-size: 13px;
+                    transition: background 0.2s;
+                    text-align: left;
+                }
+
+                .gt_switcher .gt_option a:hover {
+                    background: #f5f5f5;
+                }
+
+                .gt_switcher img {
+                    width: 18px;
+                    height: 12px;
+                    object-fit: cover;
+                }
+
+                /* Hide Google Translate top bar & tooltips */
+                #goog-gt-tt, .goog-te-balloon-frame { display: none !important; }
+                .goog-text-highlight { background-color: transparent !important; box-shadow: none !important; }
+            `}
+            </style>
+
+            <div id="google_translate_element2"></div>
             <div className="slider-drag-cursor d-flex align-items-center justify-content-between">
                 <span className="drag-icon-left">
                     <img src="/assets/img/icon/drag-arrow-left.svg" alt="" />
@@ -82,7 +237,7 @@ export default function MainLayout({ children }) {
 
             <div className="preloader">
                 <button className="th-btn preloaderCls">
-                    Cancel Preloader
+                    Batalkan Preloader
                 </button>
                 <div className="preloader-inner">
                     <img src="/assets/img/logo-icon3.svg" alt="img" />
@@ -105,11 +260,10 @@ export default function MainLayout({ children }) {
                                 </Link>
                             </div>
                             <p className="about-text">
-                                Quick access to essential system features,
-                                including the dashboard for an overview of
-                                operations, network settings for managing
-                                connectivity, system logs for tracking
-                                activities.
+                                Akses cepat ke fitur-fitur penting sistem,
+                                termasuk dasbor untuk gambaran umum operasional,
+                                pengaturan jaringan untuk mengelola konektivitas,
+                                dan log sistem untuk melacak aktivitas.
                             </p>
                             <div className="th-social">
                                 <a href="https://www.facebook.com/">
@@ -131,7 +285,7 @@ export default function MainLayout({ children }) {
                         </div>
                     </div>
                     <div className="widget">
-                        <h3 className="widget_title">Recent Posts</h3>
+                        <h3 className="widget_title">Postingan Terbaru</h3>
 
                         <div className="recent-post-wrap">
                             <div className="recent-post d-flex align-items-center">
@@ -189,7 +343,7 @@ export default function MainLayout({ children }) {
                         </div>
                     </div>
                     <div className="widget">
-                        <h3 className="widget_title">Get In Touch</h3>
+                        <h3 className="widget_title">Hubungi Kami</h3>
                         <div className="th-widget-contact">
                             <div className="info-box_text">
                                 <div className="icon d-flex justify-content-center align-items-center">
@@ -269,7 +423,7 @@ export default function MainLayout({ children }) {
                 <form action="#">
                     <input
                         type="text"
-                        placeholder="What are you looking for?"
+                        placeholder="Apa yang Anda cari?"
                     />
                     <button type="submit">
                         <i className="fal fa-search"></i>
@@ -295,7 +449,7 @@ export default function MainLayout({ children }) {
                             <form action="#">
                                 <input
                                     type="text"
-                                    placeholder="Search..."
+                                    placeholder="Cari..."
                                     className="form-control"
                                     style={{
                                         height: "50px",
@@ -326,41 +480,13 @@ export default function MainLayout({ children }) {
                                 // Fallback static menu if dynamic fails (or empty)
                                 <>
                                     <li>
-                                        <Link href="/">Home</Link>
+                                        <Link href="/">Beranda</Link>
                                     </li>
                                 </>
                             )}
                         </ul>
                         {/* Mobile Header Info */}
                         <div className="mobile-header-info mt-30 text-center">
-                            <div
-                                className="currency-menu mb-3 d-inline-flex align-items-center"
-                                style={{
-                                    border: "1px solid var(--light-color)",
-                                    borderRadius: "100px",
-                                    padding: "8px 20px",
-                                    margin: "0 auto",
-                                    gap: "8px",
-                                }}
-                            >
-                                <i className="fa-light fa-earth-africa"></i>
-                                <select
-                                    className="form-select nice-select"
-                                    defaultValue="English"
-                                    style={{
-                                        border: "none",
-                                        background: "transparent",
-                                        padding: 0,
-                                        margin: 0,
-                                        height: "auto",
-                                        lineHeight: "inherit",
-                                        width: "auto",
-                                    }}
-                                >
-                                    <option>English</option>
-                                    <option>Indonesian</option>
-                                </select>
-                            </div>
                             <div className="header-links justify-content-center">
                                 <ul>
                                     <li>
@@ -369,13 +495,13 @@ export default function MainLayout({ children }) {
                                     {auth?.user ? (
                                         <li>
                                             <Link href="/events/dashboard">
-                                                Dashboard Event
+                                                Dasbor Event
                                             </Link>
                                         </li>
                                     ) : (
                                         <li>
                                             <Link href="/events/auth/login">
-                                                Login Event
+                                                Masuk Event
                                             </Link>
                                         </li>
                                     )}
@@ -386,7 +512,7 @@ export default function MainLayout({ children }) {
                                     href="/contact"
                                     className="th-btn th-radius th-icon"
                                 >
-                                    Get In Touch{" "}
+                                    Hubungi Kami{" "}
                                     <i className="fa-light fa-arrow-right-long"></i>
                                 </Link>
                             </div>
@@ -416,7 +542,7 @@ export default function MainLayout({ children }) {
                                         <li className="d-none d-xl-inline-block">
                                             <i className="fa-regular fa-clock"></i>
                                             <span>
-                                                Sun to Friday: 8.30 am - 05.30
+                                                Senin - Jumat: 8.30 am - 05.30
                                                 pm
                                             </span>
                                         </li>
@@ -425,34 +551,81 @@ export default function MainLayout({ children }) {
                             </div>
                             <div className="col-auto d-none d-xl-block">
                                 <div className="header-right">
-                                    <div className="currency-menu">
-                                        <i className="fa-light fa-earth-africa"></i>
-                                        <select
-                                            className="form-select nice-select"
-                                            defaultValue="English"
-                                        >
-                                            <option>English</option>
-                                            <option>Indonesian</option>
-                                        </select>
-                                    </div>
                                     <div className="header-links">
-                                        <ul>
+                                        <ul className="d-flex align-items-center">
                                             <li>
                                                 <Link href="/faq">FAQ</Link>
                                             </li>
-                                            {auth?.user ? (
-                                                <li>
+                                            <li className="mx-2">|</li>
+                                            <li>
+                                                {auth?.user ? (
                                                     <Link href="/events/dashboard">
-                                                        Dashboard Event
+                                                        Dasbor Event
                                                     </Link>
-                                                </li>
-                                            ) : (
-                                                <li>
+                                                ) : (
                                                     <Link href="/events/auth/login">
-                                                        Login Event
+                                                        Masuk Event
                                                     </Link>
-                                                </li>
-                                            )}
+                                                )}
+                                            </li>
+                                            <li className="ms-3 d-none d-xl-inline-block">
+                                                <div className={`gt_switcher_wrapper notranslate ${isScrolled ? 'gt_sticky' : ''}`}>
+                                                    <div className="gt_switcher">
+                                                        <div className="gt_selected">
+                                                            <img src={selectedLang.flag} alt={selectedLang.code} />
+                                                            {selectedLang.label}
+                                                            <i className="fa-light fa-angle-down ms-1"></i>
+                                                        </div>
+                                                        <div className="gt_option">
+                                                            <a href="#" onClick={(e) => { e.preventDefault(); window.doGTranslate('id|en'); }} title="English">
+                                                                <img src="https://cdn.gtranslate.net/flags/svg/en.svg" alt="en" /> English
+                                                            </a>
+                                                            <a href="#" onClick={(e) => { e.preventDefault(); window.doGTranslate('id|id'); }} title="Indonesian">
+                                                                <img src="https://cdn.gtranslate.net/flags/svg/id.svg" alt="id" /> Indonesian
+                                                            </a>
+                                                            <a href="#" onClick={(e) => { e.preventDefault(); window.doGTranslate('id|ar'); }} title="Arabic">
+                                                                <img src="https://cdn.gtranslate.net/flags/svg/countries/sa.svg" alt="ar" /> Arabic
+                                                            </a>
+                                                            <a href="#" onClick={(e) => { e.preventDefault(); window.doGTranslate('id|zh-CN'); }} title="Chinese">
+                                                                <img src="https://cdn.gtranslate.net/flags/svg/zh-CN.svg" alt="zh-CN" /> Chinese
+                                                            </a>
+                                                            <a href="#" onClick={(e) => { e.preventDefault(); window.doGTranslate('id|nl'); }} title="Dutch">
+                                                                <img src="https://cdn.gtranslate.net/flags/svg/nl.svg" alt="nl" /> Dutch
+                                                            </a>
+                                                            <a href="#" onClick={(e) => { e.preventDefault(); window.doGTranslate('id|fr'); }} title="French">
+                                                                <img src="https://cdn.gtranslate.net/flags/svg/fr.svg" alt="fr" /> French
+                                                            </a>
+                                                            <a href="#" onClick={(e) => { e.preventDefault(); window.doGTranslate('id|de'); }} title="German">
+                                                                <img src="https://cdn.gtranslate.net/flags/svg/de.svg" alt="de" /> German
+                                                            </a>
+                                                            <a href="#" onClick={(e) => { e.preventDefault(); window.doGTranslate('id|hi'); }} title="Hindi">
+                                                                <img src="https://cdn.gtranslate.net/flags/svg/hi.svg" alt="hi" /> Hindi
+                                                            </a>
+                                                            <a href="#" onClick={(e) => { e.preventDefault(); window.doGTranslate('id|it'); }} title="Italian">
+                                                                <img src="https://cdn.gtranslate.net/flags/svg/it.svg" alt="it" /> Italian
+                                                            </a>
+                                                            <a href="#" onClick={(e) => { e.preventDefault(); window.doGTranslate('id|ja'); }} title="Japanese">
+                                                                <img src="https://cdn.gtranslate.net/flags/svg/ja.svg" alt="ja" /> Japanese
+                                                            </a>
+                                                            <a href="#" onClick={(e) => { e.preventDefault(); window.doGTranslate('id|ko'); }} title="Korean">
+                                                                <img src="https://cdn.gtranslate.net/flags/svg/ko.svg" alt="ko" /> Korean
+                                                            </a>
+                                                            <a href="#" onClick={(e) => { e.preventDefault(); window.doGTranslate('id|pt'); }} title="Portuguese">
+                                                                <img src="https://cdn.gtranslate.net/flags/svg/pt.svg" alt="pt" /> Portuguese
+                                                            </a>
+                                                            <a href="#" onClick={(e) => { e.preventDefault(); window.doGTranslate('id|ru'); }} title="Russian">
+                                                                <img src="https://cdn.gtranslate.net/flags/svg/ru.svg" alt="ru" /> Russian
+                                                            </a>
+                                                            <a href="#" onClick={(e) => { e.preventDefault(); window.doGTranslate('id|es'); }} title="Spanish">
+                                                                <img src="https://cdn.gtranslate.net/flags/svg/es.svg" alt="es" /> Spanish
+                                                            </a>
+                                                            <a href="#" onClick={(e) => { e.preventDefault(); window.doGTranslate('id|th'); }} title="Thai">
+                                                                <img src="https://cdn.gtranslate.net/flags/svg/th.svg" alt="th" /> Thai
+                                                            </a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>
@@ -484,7 +657,7 @@ export default function MainLayout({ children }) {
                                                 renderMenuItems(menus.primary)
                                             ) : (
                                                 <li>
-                                                    <Link href="/">Home</Link>
+                                                    <Link href="/">Beranda</Link>
                                                 </li>
                                             )}
                                         </ul>
@@ -511,7 +684,7 @@ export default function MainLayout({ children }) {
                                             href="/contact"
                                             className="th-btn th-radius th-icon d-none d-xxl-block"
                                         >
-                                            Get In Touch{" "}
+                                            Hubungi Kami{" "}
                                             <i className="fa-light fa-arrow-right-long"></i>
                                         </Link>
                                     </div>
@@ -547,9 +720,9 @@ export default function MainLayout({ children }) {
                                             </Link>
                                         </div>
                                         <p className="about-text">
-                                            we are dedicated to delivering the
-                                            best comprehensive technology
-                                            solutions to our clients.
+                                            kami berdedikasi untuk memberikan solusi
+                                            teknologi komprehensif terbaik kepada
+                                            klien kami.
                                         </p>
                                         <div className="th-social">
                                             <a href="https://www.facebook.com/">
@@ -574,7 +747,7 @@ export default function MainLayout({ children }) {
                             <div className="col-md-6 col-xl-auto">
                                 <div className="widget widget_nav_menu footer-widget">
                                     <h3 className="widget_title">
-                                        Useful Link
+                                        Tautan Penting
                                     </h3>
                                     <div className="menu-all-pages-container">
                                         <ul className="menu">
@@ -588,7 +761,7 @@ export default function MainLayout({ children }) {
                                                             color: "#fff",
                                                         }}
                                                     >
-                                                        Home
+                                                        Beranda
                                                     </Link>
                                                 </li>
                                             )}
@@ -599,7 +772,7 @@ export default function MainLayout({ children }) {
                             <div className="col-md-6 col-xl-auto">
                                 <div className="widget footer-widget">
                                     <h3 className="widget_title">
-                                        Get In Touch
+                                        Hubungi Kami
                                     </h3>
                                     <div className="th-widget-contact">
                                         <div className="info-box_text">
@@ -697,18 +870,18 @@ export default function MainLayout({ children }) {
                             <div className="col-md-6 col-xl-auto">
                                 <div className="widget footer-widget footer-newsletter-style3">
                                     <h4 className="widget_title">
-                                        Get updated the latest newsletter
+                                        Dapatkan buletin terbaru kami
                                     </h4>
                                     <div className="newsletter-widget">
                                         <div className="footer-search-contact">
                                             <h4 className="newsletter-title">
-                                                Email Address
+                                                Alamat Email
                                             </h4>
                                             <form action="#">
                                                 <input
                                                     className="form-control"
                                                     type="email"
-                                                    placeholder="Enter your email address...."
+                                                    placeholder="Masukkan alamat email Anda...."
                                                 />
                                                 <button
                                                     type="submit"
@@ -730,7 +903,7 @@ export default function MainLayout({ children }) {
                             <div className="col-lg-6">
                                 <p className="copyright-text">
                                     Copyright © 2025 <Link href="/">ACTiV</Link>
-                                    . All rights reserved.
+                                    . Seluruh hak cipta dilindungi undang-undang.
                                 </p>
                             </div>
                             <div className="col-lg-6 text-lg-end text-center">
@@ -738,17 +911,17 @@ export default function MainLayout({ children }) {
                                     <ul>
                                         <li>
                                             <Link href="/contact">
-                                                Terms &amp; Conditions
+                                                Syarat & Ketentuan
                                             </Link>
                                         </li>
                                         <li>
                                             <Link href="/contact">
-                                                Partner Us
+                                                Kemitraan
                                             </Link>
                                         </li>
                                         <li>
                                             <Link href="/contact">
-                                                Privacy Policy
+                                                Kebijakan Privasi
                                             </Link>
                                         </li>
                                     </ul>

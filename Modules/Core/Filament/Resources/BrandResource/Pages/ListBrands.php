@@ -14,6 +14,8 @@ class ListBrands extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+            Actions\ImportAction::make()
+                ->importer(\App\Filament\Imports\BrandImporter::class),
         ];
     }
 }

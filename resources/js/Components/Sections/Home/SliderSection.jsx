@@ -9,58 +9,58 @@ export default function SliderSection({ slides, elementId = "heroSlide2" }) {
     const defaultSlides = [
         {
             bg_image: "/assets/img/hero/hero_bg_3_1.png",
-            title: "Seamless ICT Integration for Business",
+            title: "Integrasi TIK yang Mulus untuk Bisnis",
             description:
-                "Your trusted partner for digital transformation. We specialize in delivering tailored technology across Video Conferencing, Data Infrastructure, and Security systems.",
+                "Mitra tepercaya Anda untuk transformasi digital. Kami berspesialisasi dalam menghadirkan teknologi yang disesuaikan untuk Konferensi Video, Infrastruktur Data, dan sistem Keamanan.",
             buttons: [
                 {
-                    text: "Explore Our Services",
+                    text: "Jelajahi Layanan Kami",
                     url: "/services",
                     style: "style7",
                 },
-                { text: "Get In Touch", url: "/contact", style: "style2" },
+                { text: "Hubungi Kami", url: "/contact", style: "style2" },
             ],
         },
         {
             bg_image: "/assets/img/hero/hero_bg_2_1.png",
-            title: "Connect Your Teams, Wherever They Are",
+            title: "Hubungkan Tim Anda, di Mana Saja Mereka Berada",
             description:
-                "Experience professional video conferencing for every space. Whether it’s a small huddle room or a large auditorium, we ensure crystal-clear communication.",
+                "Rasakan konferensi video profesional untuk setiap ruang. Baik itu ruang berkumpul kecil atau auditorium besar, kami memastikan komunikasi yang jernih.",
             buttons: [
                 {
-                    text: "Meeting Room Solutions",
+                    text: "Solusi Ruang Rapat",
                     url: "/contact",
                     style: "style7",
                 },
-                { text: "View Products", url: "/services", style: "style2" },
+                { text: "Lihat Produk", url: "/services", style: "style2" },
             ],
         },
         {
             bg_image: "/assets/img/hero/hero_bg_2_2.png",
-            title: "A Strong Foundation for Your Data",
+            title: "Fondasi Kuat untuk Data Anda",
             description:
-                "Keep your operations running smoothly with reliable servers and scalable storage. We provide the performance and capacity your business needs to stay ahead.",
+                "Jaga kelancaran operasional Anda dengan server yang andal dan penyimpanan yang skalabel. Kami memberikan kinerja dan kapasitas yang dibutuhkan bisnis Anda untuk tetap unggul.",
             buttons: [
                 {
-                    text: "Infrastructure Solutions",
+                    text: "Solusi Infrastruktur",
                     url: "/contact",
                     style: "style7",
                 },
-                { text: "Contact Us", url: "/services", style: "style2" },
+                { text: "Hubungi Kami", url: "/services", style: "style2" },
             ],
         },
         {
             bg_image: "/assets/img/hero/hero_bg_4_1.png",
-            title: "Smart Security for Peace of Mind",
+            title: "Keamanan Cerdas untuk Ketenangan Pikiran",
             description:
-                "Protect what matters most with advanced surveillance systems. Monitor your environment in real-time and ensure safety around the clock with our integrated solutions.",
+                "Lindungi hal yang paling berarti dengan sistem pengawasan canggih. Pantau lingkungan Anda secara real-time dan pastikan keamanan sepanjang waktu dengan solusi terintegrasi kami.",
             buttons: [
                 {
-                    text: "See Security Systems",
+                    text: "Lihat Sistem Keamanan",
                     url: "/contact",
                     style: "style7",
                 },
-                { text: "Contact Sales", url: "/services", style: "style2" },
+                { text: "Hubungi Sales", url: "/services", style: "style2" },
             ],
         },
     ];
@@ -205,7 +205,7 @@ export default function SliderSection({ slides, elementId = "heroSlide2" }) {
                         <span>
                             <img src="/assets/img/icon/down-arrow.svg" alt="" />
                         </span>
-                        Scroll Down
+                        Gulir ke Bawah
                     </a>
                 </div>
             </div>

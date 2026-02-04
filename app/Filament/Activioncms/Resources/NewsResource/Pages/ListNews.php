@@ -14,6 +14,8 @@ class ListNews extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+            Actions\ImportAction::make()
+                ->importer(\App\Filament\Imports\NewsImporter::class),
         ];
     }
 }

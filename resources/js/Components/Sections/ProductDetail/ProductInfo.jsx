@@ -3,8 +3,8 @@ import { Link, usePage } from "@inertiajs/react";
 
 export default function ProductInfo({ product }) {
     return (
-        <div className="col-xxl-7">
-            <div className="team-right ms-xxl-5 ps-xxl-3">
+        <div className="col-12 col-lg-7 col-xxl-7">
+            <div className="team-right ms-lg-4 ps-lg-2 ms-xxl-5 ps-xxl-3">
                 <div className="team-content mb-25 d-md-flex justify-content-between">
                     <div className="media-body">
                         <h3 className="box-title">

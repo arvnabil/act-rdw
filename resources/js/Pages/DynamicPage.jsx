@@ -67,7 +67,7 @@ export default function DynamicPage({ page, sections, seo }) {
                 <Breadcrumb
                     title={page.title}
                     items={[
-                        { label: "Home", link: "/" },
+                        { label: "Beranda", link: "/" },
                         { label: page.title }, // Current page label
                     ]}
                 />
@@ -88,7 +88,7 @@ export default function DynamicPage({ page, sections, seo }) {
                 {(!sections || sections.length === 0) && (
                     <div className="container py-5 text-center">
                         <h2 className="text-2xl font-bold text-gray-300">
-                            Empty Page
+                            Halaman Kosong
                         </h2>
                     </div>
                 )}

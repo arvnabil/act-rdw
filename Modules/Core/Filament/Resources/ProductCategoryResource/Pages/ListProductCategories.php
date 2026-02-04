@@ -13,6 +13,8 @@ class ListProductCategories extends ListRecords
     {
         return [
             \Filament\Actions\CreateAction::make(),
+            \Filament\Actions\ImportAction::make()
+                ->importer(\App\Filament\Imports\ProductCategoryImporter::class),
         ];
     }
 }

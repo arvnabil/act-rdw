@@ -8,9 +8,9 @@ export default function NewsSection({
     cta_text,
     cta_url,
 }) {
-    const t = title || "ACTiV News Articles";
-    const st = subtitle || "News";
-    const btnText = cta_text || "Read More";
+    const t = title || "Artikel Berita ACTiV";
+    const st = subtitle || "Berita";
+    const btnText = cta_text || "Baca Selengkapnya";
 
     // Fallback static posts if no data provided
     const defaultPosts = [
@@ -84,7 +84,7 @@ export default function NewsSection({
                                                 `/news/${list[0].slug}`
                                             }
                                         >
-                                            {list[0].read_time || "5 min read"}
+                                            {list[0].read_time || "5 menit baca"}
                                         </Link>
                                     </div>
                                     <h3 className="box-title">
@@ -104,7 +104,7 @@ export default function NewsSection({
                                         }
                                         className="th-btn style4 th-radius th-icon"
                                     >
-                                        {cta_text || "Read More"}{" "}
+                                        {cta_text || "Baca Selengkapnya"}{" "}
                                         <i className="fa-light fa-arrow-right-long"></i>
                                     </Link>
                                 </div>
@@ -136,7 +136,7 @@ export default function NewsSection({
                                                 `/news/${list[1].slug}`
                                             }
                                         >
-                                            {list[1].read_time || "5 min read"}
+                                            {list[1].read_time || "5 menit baca"}
                                         </Link>
                                     </div>
                                     <h3 className="box-title">
@@ -156,7 +156,7 @@ export default function NewsSection({
                                         }
                                         className="th-btn style4 th-radius th-icon"
                                     >
-                                        {cta_text || "Read More"}{" "}
+                                        {cta_text || "Baca Selengkapnya"}{" "}
                                         <i className="fa-light fa-arrow-right-long"></i>
                                     </Link>
                                 </div>
@@ -190,7 +190,7 @@ export default function NewsSection({
                                                 `/news/${list[2].slug}`
                                             }
                                         >
-                                            {list[2].read_time || "5 min read"}
+                                            {list[2].read_time || "5 menit baca"}
                                         </Link>
                                     </div>
                                     <h3 className="box-title">
@@ -210,7 +210,7 @@ export default function NewsSection({
                                         }
                                         className="th-btn style4 th-radius th-icon"
                                     >
-                                        {cta_text || "Read More"}{" "}
+                                        {cta_text || "Baca Selengkapnya"}{" "}
                                         <i className="fa-light fa-arrow-right-long"></i>
                                     </Link>
                                 </div>

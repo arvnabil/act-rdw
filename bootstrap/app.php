@@ -32,5 +32,19 @@ return Application::configure(basePath: dirname(__DIR__))
         });
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        //
+        $exceptions->render(function (Throwable $e, Request $request) {
+            if ($request->is('admin/*')) {
+                return null;
+            }
+
+            if ($e instanceof \Symfony\Component\HttpKernel\Exception\HttpExceptionInterface) {
+                $status = $e->getStatusCode();
+                if (in_array($status, [403, 404, 500, 503])) {
+                    return \Inertia\Inertia::render('Error', ['status' => $status])
+                        ->toResponse($request)
+                        ->setStatusCode($status);
+                }
+            }
+            return null;
+        });
     })->create();

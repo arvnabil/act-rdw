@@ -6,7 +6,7 @@ import BuilderSidebar from "./BuilderSidebar";
 import BuilderCanvas from "./BuilderCanvas";
 import InspectorPanel from "./InspectorPanel";
 import { sectionRegistry } from "./utils/sectionRegistry";
-import useHistory from "@/Hooks/useHistory";
+import useHistory from "@/hooks/useHistory";
 
 export default function PageBuilder({
     page,

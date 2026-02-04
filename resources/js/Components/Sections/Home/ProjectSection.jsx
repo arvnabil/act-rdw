@@ -12,19 +12,19 @@ export default function ProjectSection({
         projects && projects.length > 0
             ? projects
             : [
-                  "3_9_",
-                  "3_9_",
-                  "3_9_",
-                  "3_9_",
-                  "3_9_",
-                  "3_9_",
-                  "3_9_",
-                  "3_9_",
-                  "3_9",
-              ];
-    const heading = title || "Work Showcase";
-    const subHeading = subtitle || "Recent Projects";
-    const btnText = cta_text || "View Details";
+                "3_9_",
+                "3_9_",
+                "3_9_",
+                "3_9_",
+                "3_9_",
+                "3_9_",
+                "3_9_",
+                "3_9_",
+                "3_9",
+            ];
+    const heading = title || "Showcase Hasil Kerja";
+    const subHeading = subtitle || "Proyek Terbaru";
+    const btnText = cta_text || "Lihat Detail";
 
     return (
         <section className="space overflow-hidden">
@@ -65,7 +65,7 @@ export default function ProjectSection({
                                     href={cta_url}
                                     className="th-btn th-radius style4 ms-4"
                                 >
-                                    {cta_text || "View All Projects"}
+                                    {cta_text || "Lihat Semua Proyek"}
                                 </Link>
                             )}
                         </div>
@@ -86,10 +86,10 @@ export default function ProjectSection({
                                     : `/assets/img/project/project_${item}.jpg`;
                                 const itemTitle = isObj
                                     ? item.title
-                                    : "Project for Marketing";
+                                    : "Proyek untuk Pemasaran";
                                 const sub = isObj
                                     ? item.category || item.subtitle
-                                    : "IT TECHNOLOGY";
+                                    : "TEKNOLOGI TI";
                                 const link = isObj
                                     ? item.link || `/projects/${item.slug}`
                                     : "/projects";

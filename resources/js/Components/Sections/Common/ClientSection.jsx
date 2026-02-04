@@ -20,8 +20,8 @@ export default function ClientSection({ clients, title, subtitle }) {
     ];
 
     const list = clients && clients.length > 0 ? clients : defaultClients;
-    const t = title || "Our Clients";
-    const st = subtitle || "Clients";
+    const t = title || "Klien Kami";
+    const st = subtitle || "Klien";
 
     return (
         <section className="overflow-hidden space-top">
@@ -65,10 +65,10 @@ export default function ClientSection({ clients, title, subtitle }) {
                                                     className="original"
                                                     src={
                                                         typeof brand ===
-                                                        "string"
+                                                            "string"
                                                             ? `/assets/img/brand/brand_${brand}.svg`
                                                             : brand.image ||
-                                                              brand
+                                                            brand
                                                     }
                                                     alt="Brand Logo"
                                                     style={{
@@ -83,10 +83,10 @@ export default function ClientSection({ clients, title, subtitle }) {
                                                     className="gray"
                                                     src={
                                                         typeof brand ===
-                                                        "string"
+                                                            "string"
                                                             ? `/assets/img/brand/brand_${brand}.svg`
                                                             : brand.image ||
-                                                              brand
+                                                            brand
                                                     }
                                                     alt="Brand Logo"
                                                     style={{

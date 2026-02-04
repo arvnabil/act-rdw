@@ -12,38 +12,38 @@ export default function AboutSection({
     button_url,
 }) {
     // Defaults
-    const t = title || "Bridging Technology and Education for a Better Future.";
-    const st = subtitle || "Who We Are";
+    const t = title || "Menjembatani Teknologi dan Pendidikan untuk Masa Depan yang Lebih Baik.";
+    const st = subtitle || "Siapa Kami";
     const desc =
         description ||
-        "ACTiV (PT Alfa Cipta Teknologi Virtual) is a dynamic company specializing in the sales and rental of software, hardware, and supporting accessories, with a primary focus on Information Communication Technology (ICT) and Education solutions. Backed by a team with over 6 years of experience and official partnerships with multinational ICT brands, we are dedicated to delivering the best comprehensive technology solutions to our clients.";
-    const btnText = button_text || "Learn More";
+        "ACTiV (PT Alfa Cipta Teknologi Virtual) adalah perusahaan dinamis yang berspesialisasi dalam penjualan dan penyewaan perangkat lunak, perangkat keras, dan aksesori pendukung, dengan fokus utama pada solusi Teknologi Informasi Komunikasi (TIK) dan Pendidikan. Didukung oleh tim dengan pengalaman lebih dari 6 tahun dan kemitraan resmi dengan merek TIK multinasional, kami berdedikasi untuk memberikan solusi teknologi komprehensif terbaik kepada klien kami.";
+    const btnText = button_text || "Pelajari Selengkapnya";
     const btnUrl = button_url || "/about";
 
     const imgs =
         images && images.length > 0
             ? images.map((i) => i.url || i)
             : [
-                  "/assets/img/normal/about_7_1.jpg",
-                  "/assets/img/normal/about_7_2.jpg",
-                  "/assets/img/normal/about_7_3.jpg",
-              ];
+                "/assets/img/normal/about_7_1.jpg",
+                "/assets/img/normal/about_7_2.jpg",
+                "/assets/img/normal/about_7_3.jpg",
+            ];
 
     const feats =
         features && features.length > 0
             ? features
             : [
-                  {
-                      title: "ICT & Education Product Supply",
-                      text: "Official provider of hardware and software tailored for education and ICT infrastructure.",
-                      icon: "/assets/img/icon/shield.svg",
-                  },
-                  {
-                      title: "Solution Services & Custom Development",
-                      text: "Expert technical solutions and custom software development tailored to your specific needs.",
-                      icon: "/assets/img/icon/shield.svg",
-                  },
-              ];
+                {
+                    title: "Penyediaan Produk TIK & Pendidikan",
+                    text: "Penyedia resmi perangkat keras dan lunak yang disesuaikan untuk pendidikan dan infrastruktur TIK.",
+                    icon: "/assets/img/icon/shield.svg",
+                },
+                {
+                    title: "Layanan Solusi & Pengembangan Kustom",
+                    text: "Solusi teknis ahli dan pengembangan perangkat lunak kustom yang disesuaikan dengan kebutuhan spesifik Anda.",
+                    icon: "/assets/img/icon/shield.svg",
+                },
+            ];
 
     return (
         <div

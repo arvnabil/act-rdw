@@ -21,9 +21,9 @@ export default function ServiceSection({
 
     if (!services || services.length === 0) return null;
 
-    const t = title || "Explore Our Services";
-    const st = subtitle || "What we Offer";
-    const btnText = cta_text || "View Details";
+    const t = title || "Jelajahi Layanan Kami";
+    const st = subtitle || "Apa yang Kami Tawarkan";
+    const btnText = cta_text || "Lihat Detail";
     // cta_url is not used for the *main* button in the current design,
     // but individual service items have their own links.
     // However, the request asked for "cta_text" and "cta_url" as editable meta.
@@ -143,7 +143,7 @@ export default function ServiceSection({
                                     href={cta_url}
                                     className="th-btn th-radius style4"
                                 >
-                                    {cta_text || "View All Services"}
+                                    {cta_text || "Lihat Semua Layanan"}
                                 </Link>
                             </div>
                         </div>
@@ -155,9 +155,8 @@ export default function ServiceSection({
                         {services.map((service, index) => (
                             <div
                                 key={service.id}
-                                className={`service-list-wrap sv-list2 service7-list ${
-                                    index === activeIndex ? "active" : ""
-                                }`}
+                                className={`service-list-wrap sv-list2 service7-list ${index === activeIndex ? "active" : ""
+                                    }`}
                                 onMouseEnter={() => setActiveIndex(index)}
                             >
                                 <div

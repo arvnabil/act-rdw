@@ -12,38 +12,38 @@ export default function WhyChooseUsSection({
     builderMode,
 }) {
     // Defaults
-    const t = title || "Empowering Your Future with Proven Technology.";
+    const t = title || "Memberdayakan Masa Depan Anda dengan Teknologi Terbukti.";
     // Disable wow animations in builder mode to ensure visibility
     const wow = (cls) => (builderMode ? "" : cls);
-    const st = subtitle || "Why Choose ACTiV";
+    const st = subtitle || "Mengapa Memilih ACTiV";
     const desc =
         description ||
-        "We are dedicated to providing comprehensive ICT and Education solutions that are not only advanced but also reliable. By combining technical expertise with global support, we ensure every technology investment you make delivers real, sustainable value.";
+        "Kami berdedikasi untuk menyediakan solusi TIK dan Pendidikan komprehensif yang tidak hanya canggih tetapi juga andal. Dengan menggabungkan keahlian teknis dengan dukungan global, kami memastikan setiap investasi teknologi yang Anda buat memberikan nilai nyata yang berkelanjutan.";
     const vidUrl = video_url || "https://www.youtube.com/watch?v=hIIQbkkKnno";
 
     const imgs =
         images && images.length > 0
             ? images.map((i) => i.url || i)
             : [
-                  "/assets/img/normal/about_4_1.jpg",
-                  "/assets/img/normal/about_4_2.jpg",
-              ];
+                "/assets/img/normal/about_4_1.jpg",
+                "/assets/img/normal/about_4_2.jpg",
+            ];
 
     const feats =
         features && features.length > 0
             ? features
             : [
-                  {
-                      title: "Expert Team",
-                      text: "Backed by professionals with over 6 years of experience in ICT infrastructure",
-                      icon: "/assets/img/icon/shield.svg",
-                  },
-                  {
-                      title: "Certified Brand Partners",
-                      text: "Official partnerships ensuring product authenticity and certified technical support.",
-                      icon: "/assets/img/icon/shield.svg",
-                  },
-              ];
+                {
+                    title: "Tim Ahli",
+                    text: "Didukung oleh para profesional dengan pengalaman lebih dari 6 tahun di infrastruktur TIK.",
+                    icon: "/assets/img/icon/shield.svg",
+                },
+                {
+                    title: "Mitra Merek Bersertifikat",
+                    text: "Kemitraan resmi yang memastikan keaslian produk dan dukungan teknis bersertifikat.",
+                    icon: "/assets/img/icon/shield.svg",
+                },
+            ];
 
     return (
         <div
@@ -95,7 +95,7 @@ export default function WhyChooseUsSection({
                                     href="/about"
                                     className="th-btn th-radius th-icon"
                                 >
-                                    Learn More{" "}
+                                    Pelajari Selengkapnya{" "}
                                     <i className="fa-light fa-arrow-right-long"></i>
                                 </Link>
                             </div>

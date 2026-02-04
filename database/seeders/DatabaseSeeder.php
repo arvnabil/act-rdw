@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             PageSeeder::class,
+            ServicesPageSeeder::class,
             MenuSeeder::class,
         ]);
 
