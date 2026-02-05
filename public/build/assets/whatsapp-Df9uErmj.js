@@ -1,1 +1,0 @@
-const n=(n,a="Halo ACTiV, saya ingin bertanya mengenai layanan Anda.")=>{if(!n)return null;let t=n.replace(/\D/g,"");t.startsWith("0")&&(t="62"+t.substring(1));const e=a||"Halo ACTiV, saya ingin bertanya mengenai layanan Anda.";return"https://wa.me/".concat(t,"?text=").concat(encodeURIComponent(e))};export{n as g};

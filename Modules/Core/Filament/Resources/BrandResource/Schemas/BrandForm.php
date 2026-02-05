@@ -41,6 +41,14 @@ class BrandForm
                                 ->label('Website URL')
                                 ->url()
                                 ->prefix('https://'),
+                            \Filament\Forms\Components\TagsInput::make('category')
+                                ->label('Categories / Industry')
+                                ->placeholder('Add categories...')
+                                ->helperText('A brand can have multiple categories.'),
+                            Toggle::make('is_featured')
+                                ->label('Featured Brand')
+                                ->helperText('Featured brands can be highlighted or filtered separately.')
+                                ->default(false),
                         ]),
                     Tabs\Tab::make('Landing Page')
                         ->schema([

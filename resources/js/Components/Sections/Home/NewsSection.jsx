@@ -40,7 +40,7 @@ export default function NewsSection({
     const list = posts && posts.length > 0 ? posts : defaultPosts;
 
     return (
-        <section className="overflow-hidden mb-4">
+        <section className="overflow-hidden mb-4 space-top">
             <div className="container">
                 <div className="row justify-content-lg-between justify-content-center align-items-center">
                     <div className="col-lg-6 mb-n2 mb-lg-0">

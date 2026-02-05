@@ -125,7 +125,7 @@ export default function ClientSection({
 
                 {shouldShowButton && (
                     <div className="text-center mt-3">
-                        <Link href={btnUrl} className="th-btn">
+                        <Link href={btnUrl} className="th-btn th-radius">
                             {btnText}
                         </Link>
                     </div>

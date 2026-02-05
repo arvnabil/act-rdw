@@ -6,7 +6,10 @@ export default function Breadcrumb({ title, items, bgImage }) {
         <div className="breadcumb-area">
             <div
                 className="breadcumb-wrapper"
-                data-bg-src={bgImage || "/assets/img/bg/breadcumb-bg.jpg"}
+                data-bg-src={bgImage || "/assets/img/foto-dok-logitech-1.png"}
+                style={{
+                    backgroundImage: `url(${bgImage || "/assets/img/foto-dok-logitech-1.png"})`,
+                }}
             >
                 <div className="container">
                     <div className="breadcumb-content">

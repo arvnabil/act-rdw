@@ -32,17 +32,47 @@ Route::get('/partners', function () {
             }
             return "/storage/{$path}";
         };
+        // Normalize categories to array
+        $cats = $b->category;
+        if (is_string($cats)) {
+            $cats = json_decode($cats, true) ?: [$cats];
+        }
+        if (empty($cats)) {
+            $cats = ['General'];
+        }
+
         return [
             'id' => $b->id,
             'name' => $b->name,
             'slug' => $b->slug,
             'image' => $resolvePath($b->image ?? $b->logo_path),
             'website_url' => $b->website_url,
-            'category' => 'General' // Default category
+            'categories' => $cats, // Changed from 'category' to 'categories'
+            'is_featured' => (bool)$b->is_featured
         ];
     });
+
+    // Flatten all categories from all brands to get unique ones with counts
+    $allMappedCats = [];
+    foreach ($brands as $brand) {
+        foreach ($brand['categories'] as $catName) {
+            if (!isset($allMappedCats[$catName])) {
+                $allMappedCats[$catName] = 0;
+            }
+            $allMappedCats[$catName]++;
+        }
+    }
+
+    $categories = collect($allMappedCats)->map(function ($count, $name) {
+        return [
+            'name' => $name,
+            'count' => $count,
+        ];
+    })->values();
+
     return Inertia::render('Partners', [
-        'brands' => $brands
+        'brands' => $brands,
+        'categories' => $categories
     ]);
 })->name('partners');
 

@@ -2,6 +2,13 @@ import ProductCard from "@/Components/Common/ProductCard";
 import { Link } from "@inertiajs/react";
 
 export default function ProductList({ products, viewMode }) {
+    // Helper to resolve image URL
+    const getImageUrl = (path) => {
+        if (!path) return "/assets/img/product/product_1_1.png";
+        if (path.startsWith("http") || path.startsWith("/assets")) return path;
+        return `/storage/${path}`;
+    };
+
     if (!products || !products.data || products.data.length === 0) {
         return (
             <div className="text-center py-5">
@@ -21,23 +28,23 @@ export default function ProductList({ products, viewMode }) {
         <div className="row gy-40">
             <div className="tab-content" id="nav-tabContent">
                 <div
-                    className={`tab-pane fade ${
-                        viewMode === "grid" ? "active show" : ""
-                    }`}
+                    className={`tab-pane fade ${viewMode === "grid" ? "active show" : ""
+                        }`}
                     id="tab-grid"
                 >
                     <div className="row gy-40">
                         {products.data.map((product) => (
                             <div className="col-xl-4 col-sm-6" key={product.id}>
-                                <ProductCard product={product} />
+                                <div className="h-100">
+                                    <ProductCard product={product} />
+                                </div>
                             </div>
                         ))}
                     </div>
                 </div>
                 <div
-                    className={`tab-pane fade ${
-                        viewMode === "list" ? "active show" : ""
-                    }`}
+                    className={`tab-pane fade ${viewMode === "list" ? "active show" : ""
+                        }`}
                     id="tab-list"
                 >
                     <div className="row gy-30">
@@ -46,10 +53,7 @@ export default function ProductList({ products, viewMode }) {
                                 <div className="th-product list-view">
                                     <div className="product-img">
                                         <img
-                                            src={
-                                                product.image_path ||
-                                                "/assets/img/product/product_1_1.png"
-                                            }
+                                            src={getImageUrl(product.image_path)}
                                             alt={product.name}
                                         />
                                         <div className="actions">
