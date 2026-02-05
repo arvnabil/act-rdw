@@ -332,11 +332,25 @@ export const sectionRegistry = {
             { name: "title", type: "text", label: "Title" },
             { name: "subtitle", type: "text", label: "Subtitle" },
             { name: "limit", type: "text", label: "Limit" },
+            {
+                name: "show_button",
+                type: "select",
+                label: "Show Button?",
+                options: [
+                    { label: "Yes", value: true },
+                    { label: "No", value: false },
+                ],
+            },
+            { name: "button_text", type: "text", label: "Button Text" },
+            { name: "button_url", type: "text", label: "Button URL" },
         ],
         defaultConfig: {
             title: "Our Clients",
             subtitle: "Success Stories",
             limit: 20,
+            show_button: false,
+            button_text: "Lihat Semua Klien",
+            button_url: "/clients",
         },
     },
 
@@ -358,11 +372,25 @@ export const sectionRegistry = {
             // I'll add manual repeater just in case, or stick to User's example which had NO repeater.
             // "Example registry entry: cta_clients: title, subtitle, limit, source: clients"
             // I'll omit repeater to force dynamic to reduce confusion.
+            {
+                name: "show_button",
+                type: "select",
+                label: "Show Button?",
+                options: [
+                    { label: "Yes", value: true },
+                    { label: "No", value: false },
+                ],
+            },
+            { name: "button_text", type: "text", label: "Button Text" },
+            { name: "button_url", type: "text", label: "Button URL" },
         ],
         defaultConfig: {
             title: "Our Clients",
             subtitle: "We Work With",
             limit: 10,
+            show_button: false,
+            button_text: "Lihat Semua Klien",
+            button_url: "/clients",
         },
     },
 
@@ -376,13 +404,27 @@ export const sectionRegistry = {
             { name: "title", type: "text", label: "Title" },
             { name: "subtitle", type: "text", label: "Subtitle" },
             { name: "limit", type: "text", label: "Limit" },
-            { name: "cta_text", type: "text", label: "CTA Text" },
-            { name: "cta_url", type: "text", label: "CTA URL" },
+            { name: "cta_text", type: "text", label: "CTA Text (Legacy)" },
+            { name: "cta_url", type: "text", label: "CTA URL (Legacy)" },
+            {
+                name: "show_button",
+                type: "select",
+                label: "Show Button?",
+                options: [
+                    { label: "Yes", value: true },
+                    { label: "No", value: false },
+                ],
+            },
+            { name: "button_text", type: "text", label: "Button Text" },
+            { name: "button_url", type: "text", label: "Button URL" },
         ],
         defaultConfig: {
             title: "Our Clients",
             subtitle: "We Work With",
             limit: 10,
+            show_button: false,
+            button_text: "Lihat Semua Klien",
+            button_url: "/clients",
         },
     },
 
@@ -755,11 +797,25 @@ export const sectionRegistry = {
             { name: "title", type: "text", label: "Title" },
             { name: "subtitle", type: "text", label: "Subtitle" },
             { name: "limit", type: "text", label: "Limit" },
+            {
+                name: "show_button",
+                type: "select",
+                label: "Show Button?",
+                options: [
+                    { label: "Yes", value: true },
+                    { label: "No", value: false },
+                ],
+            },
+            { name: "button_text", type: "text", label: "Button Text" },
+            { name: "button_url", type: "text", label: "Button URL" },
         ],
         defaultConfig: {
             title: "Our Clients",
             subtitle: "Clients",
             limit: 20,
+            show_button: false,
+            button_text: "Lihat Semua Klien",
+            button_url: "/clients",
         },
     },
     service_solution: {

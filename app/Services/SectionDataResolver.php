@@ -277,6 +277,10 @@ class SectionDataResolver
         return [
             'title' => $config['title'] ?? null,
             'subtitle' => $config['subtitle'] ?? null,
+            'show_button' => $config['show_button'] ?? false,
+            // Fallback to cta_text/url for legacy sections
+            'button_text' => $config['button_text'] ?? $config['cta_text'] ?? 'Lihat Semua Klien',
+            'button_url' => $config['button_url'] ?? $config['cta_url'] ?? '/clients',
             'clients' => $clients,
         ];
     }

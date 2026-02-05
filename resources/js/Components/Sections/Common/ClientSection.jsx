@@ -1,7 +1,14 @@
 import React from "react";
 import { Link } from "@inertiajs/react";
 
-export default function ClientSection({ clients, title, subtitle }) {
+export default function ClientSection({
+    clients,
+    title,
+    subtitle,
+    show_button,
+    button_text,
+    button_url,
+}) {
     const defaultClients = [
         "1_1",
         "1_2",
@@ -23,6 +30,16 @@ export default function ClientSection({ clients, title, subtitle }) {
     const t = title || "Klien Kami";
     const st = subtitle || "Klien";
 
+    // Normalize show_button
+    const shouldShowButton =
+        show_button === true ||
+        show_button === "true" ||
+        show_button === 1 ||
+        show_button === "1";
+
+    const btnText = button_text || "Lihat Semua Klien";
+    const btnUrl = button_url || "/clients";
+
     return (
         <section className="overflow-hidden space-top">
             <div className="container">
@@ -40,7 +57,7 @@ export default function ClientSection({ clients, title, subtitle }) {
                         </div>
                     </div>
                 </div>
-                <div className="brand-area overflow-hidden space-bottom">
+                <div className="brand-area overflow-hidden">
                     <div className="container th-container">
                         <div
                             className="swiper th-slider brandSlider1"
@@ -105,6 +122,14 @@ export default function ClientSection({ clients, title, subtitle }) {
                         </div>
                     </div>
                 </div>
+
+                {shouldShowButton && (
+                    <div className="text-center mt-3">
+                        <Link href={btnUrl} className="th-btn">
+                            {btnText}
+                        </Link>
+                    </div>
+                )}
             </div>
         </section>
     );
