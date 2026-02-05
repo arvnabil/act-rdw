@@ -23,18 +23,18 @@ class SeoMetaTable
                     ->badge(),
                 TextColumn::make('seoable.title')
                     ->label('Page Title')
-                    ->state(fn (SeoMeta $record) => $record->seoable->title ?? $record->seoable->name ?? 'Untitled')
+                    ->state(fn (?SeoMeta $record) => $record?->seoable?->title ?? $record?->seoable?->name ?? 'Untitled')
                     ->searchable()
                     ->sortable(),
 
                 TextColumn::make('title')
                     ->label('Meta Title')
                     ->limit(30)
-                    ->description(fn (SeoMeta $record) => $record->title ? 'Set' : 'Missing layer'),
+                    ->description(fn (?SeoMeta $record) => $record?->title ? 'Set' : 'Missing layer'),
 
                 IconColumn::make('status_check')
                     ->label('Status')
-                    ->state(fn (SeoMeta $record) => $record->title && $record->description)
+                    ->state(fn (?SeoMeta $record) => $record?->title && $record?->description)
                     ->boolean()
                     ->trueIcon('heroicon-o-check-circle')
                     ->falseIcon('heroicon-o-exclamation-triangle')
@@ -47,7 +47,7 @@ class SeoMetaTable
 
                 TextColumn::make('seo_score')
                     ->label('Score')
-                    ->state(fn (SeoMeta $record) => $record->seo_score ?? 'N/A')
+                    ->state(fn (?SeoMeta $record) => $record?->seo_score ?? 'N/A')
                     ->badge()
                     ->color(fn ($state): string => match (true) {
                         $state === 'N/A' => 'gray',
@@ -57,8 +57,8 @@ class SeoMetaTable
                     }),
                 TextColumn::make('path')
                     ->label('Route / Path')
-                    ->state(fn (SeoMeta $record) => match (true) {
-                        !$record->seoable => 'Missing Page (Orphaned)',
+                    ->state(fn (?SeoMeta $record) => match (true) {
+                        !$record || !$record->seoable => 'Missing Page (Orphaned)',
                         $record->seoable instanceof \App\Models\Page && $record->seoable->is_homepage => '/',
                         $record->seoable instanceof \App\Models\News => '/news/' . $record->seoable->slug,
                         $record->seoable instanceof \Modules\ServiceSolutions\Models\Service => '/services/' . $record->seoable->slug,
@@ -83,13 +83,13 @@ class SeoMetaTable
                 Action::make('audit')
                     ->label('Audit')
                     ->icon('heroicon-o-clipboard-document-check')
-                    ->modalContent(function (SeoMeta $record) {
-                        if (!$record->seoable) return null;
+                    ->modalContent(function (?SeoMeta $record) {
+                        if (!$record || !$record->seoable) return null;
                         $audit = app(SeoAuditService::class)->audit($record->seoable);
 
                         return view('filament.components.seo-audit-result', ['audit' => $audit]);
                     })
-                    ->visible(fn (SeoMeta $record) => (bool) $record->seoable)
+                    ->visible(fn (?SeoMeta $record) => (bool) $record?->seoable)
                     ->modalSubmitAction(false)
                     ->modalCancelActionLabel('Close'),
             ])

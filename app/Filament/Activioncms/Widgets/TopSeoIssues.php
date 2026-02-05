@@ -47,15 +47,16 @@ class TopSeoIssues extends BaseWidget
                 TextColumn::make('seoable_title')
                     ->label('Page Title')
                     ->limit(30)
-                    ->state(function (SeoMeta $record) {
-                        return $record->seoable?->title ?? $record->seoable?->name ?? 'Unknown Page';
+                    ->state(function (?SeoMeta $record) {
+                        return $record?->seoable?->title ?? $record?->seoable?->name ?? 'Unknown Page';
                     }),
 
                 TextColumn::make('issues')
                     ->label('Issues')
                     ->badge()
                     ->separator(',')
-                    ->state(function (SeoMeta $record) {
+                    ->state(function (?SeoMeta $record) {
+                        if (!$record) return [];
                         $issues = [];
                         if (!$record->title || !$record->description) {
                             $issues[] = 'Meta Missing';
@@ -88,13 +89,13 @@ class TopSeoIssues extends BaseWidget
             ->actions([
                 Action::make('edit')
                     ->icon('heroicon-m-pencil-square')
-                    ->url(fn (SeoMeta $record): string => SeoMetaResource::getUrl('edit', ['record' => $record])),
+                    ->url(fn (?SeoMeta $record): ?string => $record ? SeoMetaResource::getUrl('edit', ['record' => $record]) : null),
 
                 Action::make('audit')
                     ->label('Audit')
                     ->icon('heroicon-m-clipboard-document-check')
-                    ->modalContent(function (SeoMeta $record) {
-                        if (!$record->seoable) return null;
+                    ->modalContent(function (?SeoMeta $record) {
+                        if (!$record || !$record->seoable) return null;
                         $audit = app(SeoAuditService::class)->audit($record->seoable);
 
                         return view('filament.components.seo-audit-result', ['audit' => $audit]);
