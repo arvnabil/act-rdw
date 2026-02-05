@@ -99,7 +99,7 @@ class SeoAuditService
             if ($type === 'WebPage') {
                 $hasWebPage = true;
                 if (!isset($schema['isPartOf'])) {
-                    $issues[] = ['severity' => 'error', 'message' => 'WebPage missing isPartOf', 'recommendation' => 'Link WebPage to Organization.'];
+                    $issues[] = ['severity' => 'error', 'message' => 'WebPage missing isPartOf', 'recommendation' => 'Link WebPage to WebSite (isPartOf).'];
                 }
             }
         }

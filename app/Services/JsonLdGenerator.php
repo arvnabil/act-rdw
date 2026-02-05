@@ -15,6 +15,7 @@ use Illuminate\Support\Str;
 class JsonLdGenerator
 {
     const ORGANIZATION_ID = '#organization';
+    const WEBSITE_ID = '#website';
 
     public function __construct(
         protected JsonLdOptimizer $optimizer
@@ -36,10 +37,13 @@ class JsonLdGenerator
         // 2. Organization Schema
         $schemas[] = $this->generateOrganization($baseUrl);
 
-        // 3. WebPage Schema (REQUIRED FOR 100 SCORE)
+        // 3. WebSite Schema
+        $schemas[] = $this->generateWebSite($baseUrl);
+
+        // 4. WebPage Schema (REQUIRED FOR 100 SCORE)
         $webPage = $this->generateWebPage($model, $baseUrl);
 
-        // 4. Main Entity Mapping
+        // 5. Main Entity Mapping
         $mainEntity = match (true) {
             $model instanceof News => $this->generateArticle($model, $baseUrl),
             $model instanceof Project => $this->generateCreativeWork($model, $baseUrl),
@@ -125,6 +129,22 @@ class JsonLdGenerator
     }
 
     /**
+     * GLOBAL WEBSITE ENTITY
+     * Standard linkage for WebPages.
+     */
+    protected function generateWebSite(string $baseUrl): array
+    {
+        return [
+            '@type' => 'WebSite',
+            '@id' => $baseUrl . self::WEBSITE_ID,
+            'url' => $baseUrl,
+            'name' => config('app.name', 'ACTiV'),
+            'publisher' => ['@id' => $baseUrl . self::ORGANIZATION_ID],
+            'inLanguage' => 'id-ID',
+        ];
+    }
+
+    /**
      * TEMPLATE: WebPage (Default / Static Pages)
      */
     protected function generateWebPage(Model $model, string $baseUrl): array
@@ -138,7 +158,7 @@ class JsonLdGenerator
             'url' => $url,
             'name' => $title,
             'description' => $this->getMetaDescription($model),
-            'isPartOf' => ['@id' => $baseUrl . self::ORGANIZATION_ID],
+            'isPartOf' => ['@id' => $baseUrl . self::WEBSITE_ID],
             'inLanguage' => 'id-ID',
         ];
     }
@@ -185,7 +205,8 @@ class JsonLdGenerator
             'image' => $this->getImages($model),
             'datePublished' => $model->created_at?->toIso8601String(),
             'dateModified' => $model->updated_at?->toIso8601String(),
-            'isPartOf' => ['@id' => $baseUrl . self::ORGANIZATION_ID],
+            'isPartOf' => ['@id' => $baseUrl . self::WEBSITE_ID],
+            'publisher' => ['@id' => $baseUrl . self::ORGANIZATION_ID],
             'mainEntityOfPage' => ['@id' => $url . '#webpage']
         ];
     }
@@ -443,14 +464,17 @@ class JsonLdGenerator
         // 1. Organization
         $schemas[] = $this->generateOrganization($baseUrl);
 
-        // 2. WebPage
+        // 2. WebSite
+        $schemas[] = $this->generateWebSite($baseUrl);
+
+        // 3. WebPage
         $schemas[] = [
             '@type' => 'WebPage',
             '@id' => $url . '#webpage',
             'url' => $url,
             'name' => $title,
             'description' => $description,
-            'isPartOf' => ['@id' => $baseUrl . self::ORGANIZATION_ID],
+            'isPartOf' => ['@id' => $baseUrl . self::WEBSITE_ID],
             'inLanguage' => 'id-ID',
         ];
 
