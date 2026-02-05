@@ -10,7 +10,9 @@ Route::get('/login', function () {
 })->name('login');
 
 Route::get('/about', function () {
-    return Inertia::render('About');
+    return Inertia::render('About', [
+        'seo' => \App\Services\SeoResolver::staticPage('About Us', 'Akses cepat ke fitur-fitur penting sistem, termasuk dasbor untuk gambaran umum operasional.')
+    ]);
 })->name('about');
 
 Route::post('/form/submit', [\App\Http\Controllers\FormSubmissionController::class, 'store'])->name('form.submit')->middleware('throttle:10,1');
@@ -72,7 +74,8 @@ Route::get('/partners', function () {
 
     return Inertia::render('Partners', [
         'brands' => $brands,
-        'categories' => $categories
+        'categories' => $categories,
+        'seo' => \App\Services\SeoResolver::staticPage('Our Partners', 'Discover our authorized partners and brands.')
     ]);
 })->name('partners');
 
@@ -315,7 +318,8 @@ Route::get('/{brandSlug}/products', function ($brandSlug) {
         'categories' => $categories,
         'serviceSolutions' => $serviceSolutions,
         'serviceItemLabel' => $serviceItemLabel, // "Solutions"
-        'filters' => request()->all()
+        'filters' => request()->all(),
+        'seo' => \App\Services\SeoResolver::for($brand)
     ]);
 })->name('brand.products');
 

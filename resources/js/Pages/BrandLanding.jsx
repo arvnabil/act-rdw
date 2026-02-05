@@ -1,4 +1,3 @@
-import { Head } from "@inertiajs/react";
 import React from "react";
 import MainLayout from "@/Layouts/MainLayout";
 import gsap from "gsap";
@@ -8,6 +7,7 @@ import BrandServiceSolutionsSection from "@/Components/Sections/BrandLanding/Bra
 import BrandCategoryListSection from "@/Components/Sections/BrandLanding/BrandCategoryListSection";
 import LatestProductsSection from "@/Components/Sections/BrandLanding/LatestProductsSection";
 import WorkShowcaseSection from "@/Components/Sections/Common/WorkShowcaseSection";
+import Seo from "@/Components/Common/Seo";
 
 const BrandLanding = ({
     brand,
@@ -15,6 +15,7 @@ const BrandLanding = ({
     categories,
     pageSite,
     relatedServices,
+    seo,
 }) => {
     const [thumbsSwiper, setThumbsSwiper] = React.useState(null);
     const [lightboxImage, setLightboxImage] = React.useState(null);
@@ -136,8 +137,8 @@ const BrandLanding = ({
         const enabled = isExplicitlyDisabled
             ? false
             : isExplicitlyEnabled
-              ? true
-              : defaultEnabled;
+                ? true
+                : defaultEnabled;
 
         // 2. Deep merge config (Brand config overrides defaults)
         const config = { ...defaultConfig, ...(brandConfig || {}) };
@@ -186,7 +187,7 @@ const BrandLanding = ({
 
     return (
         <MainLayout>
-            <Head title={brand.name} />
+            <Seo seo={seo} />
 
             {/* Hero Section */}
             {hero.enabled && hero.safe && (

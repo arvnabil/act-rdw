@@ -1,16 +1,16 @@
 import React from "react";
-import { Head } from "@inertiajs/react";
 import MainLayout from "@/Layouts/MainLayout";
 import Breadcrumb from "@/Components/Common/Breadcrumb";
 import ProductGallery from "@/Components/Sections/ProductDetail/ProductGallery";
 import ProductInfo from "@/Components/Sections/ProductDetail/ProductInfo";
 import ProductTabs from "@/Components/Sections/ProductDetail/ProductTabs";
 import RelatedProducts from "@/Components/Sections/ProductDetail/RelatedProducts";
+import Seo from "@/Components/Common/Seo";
 
-export default function ProductDetail({ product }) {
+export default function ProductDetail({ product, seo }) {
     return (
         <MainLayout>
-            <Head title={product.name} />
+            <Seo seo={seo} />
 
             <Breadcrumb
                 title={product.name}

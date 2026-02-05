@@ -1,4 +1,4 @@
-import { Head, Link, router } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import React, { useState } from "react";
 import MainLayout from "@/Layouts/MainLayout";
 import Breadcrumb from "@/Components/Common/Breadcrumb";
@@ -6,6 +6,8 @@ import ProductFilterTopBar from "@/Components/Sections/BrandProduct/ProductFilte
 import ProductFilterSidebar from "@/Components/Sections/BrandProduct/ProductFilterSidebar";
 import CategoryHero from "@/Components/Sections/BrandProduct/CategoryHero";
 import ProductList from "@/Components/Sections/BrandProduct/ProductList";
+import Seo from "@/Components/Common/Seo";
+
 const BrandProductList = ({
     brand,
     products,
@@ -13,6 +15,7 @@ const BrandProductList = ({
     serviceSolutions = [],
     serviceItemLabel = "Solutions",
     filters = {},
+    seo,
 }) => {
     const [showFilters, setShowFilters] = useState(false);
 
@@ -47,19 +50,19 @@ const BrandProductList = ({
     // Default Hero Content (if no category selected, show Brand general info)
     const heroContent = currentCategory
         ? {
-              title: currentCategory.name,
-              desc: `Explore ${currentCategory.name} solutions from ${brand.name}.`,
-              image: getImageUrl(currentCategory.image || brand.logo_path), // Use Category Icon if available
-          }
+            title: currentCategory.name,
+            desc: `Explore ${currentCategory.name} solutions from ${brand.name}.`,
+            image: getImageUrl(currentCategory.image || brand.logo_path), // Use Category Icon if available
+        }
         : {
-              title: `${brand.name} Products`,
-              desc: `Browse our extensive collection of ${brand.name} technology solutions.`,
-              image: getImageUrl(brand.logo_path),
-          };
+            title: `${brand.name} Products`,
+            desc: `Browse our extensive collection of ${brand.name} technology solutions.`,
+            image: getImageUrl(brand.logo_path),
+        };
 
     return (
         <MainLayout>
-            <Head title={`${brand.name} Products`} />
+            <Seo seo={seo} />
 
             <Breadcrumb
                 title={heroContent.title}

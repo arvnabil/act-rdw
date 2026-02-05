@@ -6,11 +6,12 @@ import TestimonialSection from "@/Components/Sections/Common/TestimonialSection"
 import ContactSection from "@/Components/Sections/Common/ContactSection";
 import AboutContentSection from "@/Components/Sections/About/AboutContentSection";
 import VisionMissionSection from "@/Components/Sections/About/VisionMissionSection";
+import Seo from "@/Components/Common/Seo";
 
-export default function About() {
+export default function About({ seo }) {
     return (
         <MainLayout>
-            <Head title="About Us" />
+            <Seo seo={seo} />
 
             <Breadcrumb
                 title="About Us"

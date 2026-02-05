@@ -31,34 +31,44 @@ class JsonLdGenerator
         }
 
         $schemas = [];
-        $baseUrl = config('app.url'); // Must use APP_URL, never request()->url()
+        $baseUrl = config('app.url');
 
-        // 2. Organization Schema (Rendered ONLY on Homepage)
-        if ($this->isHomepage($model)) {
-            $schemas[] = $this->generateOrganization($baseUrl);
-        }
+        // 2. Organization Schema
+        $schemas[] = $this->generateOrganization($baseUrl);
 
-        // 3. Entity Auto-Mapping
-        $mainSchema = match (true) {
+        // 3. WebPage Schema (REQUIRED FOR 100 SCORE)
+        $webPage = $this->generateWebPage($model, $baseUrl);
+
+        // 4. Main Entity Mapping
+        $mainEntity = match (true) {
             $model instanceof News => $this->generateArticle($model, $baseUrl),
             $model instanceof Project => $this->generateCreativeWork($model, $baseUrl),
             $model instanceof Brand => $this->generateBrand($model, $baseUrl),
             $model instanceof Client => $this->generateClientOrganization($model, $baseUrl),
             $model instanceof Service => $this->generateService($model, $baseUrl),
-            default => $this->generateWebPage($model, $baseUrl),
+            default => null,
         };
 
-        if ($mainSchema) {
-            $schemas[] = $mainSchema;
+        if ($mainEntity) {
+            // Link main entity to WebPage
+            $webPage['mainEntity'] = ['@id' => $mainEntity['@id']];
+            $schemas[] = $mainEntity;
         }
 
-        // 4. BreadcrumbList (For Services and structured pages)
-        if ($model instanceof Service) {
+        $schemas[] = $webPage;
+
+        // 5. BreadcrumbList
+        if ($model instanceof Service || $model instanceof News || $model instanceof Project || $model instanceof Page || $model instanceof Brand) {
             $schemas[] = $this->generateBreadcrumbs($model, $baseUrl);
         }
 
-        // 5. Validation & Optimization Pipeline
-        return $this->optimizer->optimize($schemas);
+        // 6. Validation & Wrap in @graph
+        $optimized = $this->optimizer->optimize($schemas);
+
+        return [
+            '@context' => 'https://schema.org',
+            '@graph' => $optimized
+        ];
     }
 
     /**
@@ -100,7 +110,6 @@ class JsonLdGenerator
     protected function generateOrganization(string $baseUrl): array
     {
         return [
-            '@context' => 'https://schema.org',
             '@type' => 'Organization',
             '@id' => $baseUrl . self::ORGANIZATION_ID,
             'name' => config('app.name', 'ACTiV'),
@@ -124,7 +133,6 @@ class JsonLdGenerator
         $title = $this->getMetaTitle($model);
 
         return [
-            '@context' => 'https://schema.org',
             '@type' => 'WebPage',
             '@id' => $url . '#webpage',
             'url' => $url,
@@ -132,10 +140,6 @@ class JsonLdGenerator
             'description' => $this->getMetaDescription($model),
             'isPartOf' => ['@id' => $baseUrl . self::ORGANIZATION_ID],
             'inLanguage' => 'id-ID',
-            'mainEntityOfPage' => [
-                '@type' => 'WebPage',
-                '@id' => $url
-            ]
         ];
     }
 
@@ -147,7 +151,6 @@ class JsonLdGenerator
         $url = $this->generateCanonicalUrl($model, $baseUrl);
 
         return [
-            '@context' => 'https://schema.org',
             '@type' => 'Article',
             '@id' => $url . '#article',
             'headline' => $this->getMetaTitle($model),
@@ -163,10 +166,7 @@ class JsonLdGenerator
                 '@type' => 'Organization',
                 '@id' => $baseUrl . self::ORGANIZATION_ID
             ],
-            'mainEntityOfPage' => [
-                '@type' => 'WebPage',
-                '@id' => $url
-            ]
+            'mainEntityOfPage' => ['@id' => $url . '#webpage']
         ];
     }
 
@@ -178,7 +178,6 @@ class JsonLdGenerator
         $url = $this->generateCanonicalUrl($model, $baseUrl);
 
         return [
-            '@context' => 'https://schema.org',
             '@type' => 'CreativeWork',
             '@id' => $url . '#project',
             'name' => $this->getMetaTitle($model),
@@ -187,10 +186,7 @@ class JsonLdGenerator
             'datePublished' => $model->created_at?->toIso8601String(),
             'dateModified' => $model->updated_at?->toIso8601String(),
             'isPartOf' => ['@id' => $baseUrl . self::ORGANIZATION_ID],
-            'mainEntityOfPage' => [
-                '@type' => 'WebPage',
-                '@id' => $url
-            ]
+            'mainEntityOfPage' => ['@id' => $url . '#webpage']
         ];
     }
 
@@ -202,17 +198,13 @@ class JsonLdGenerator
         $url = $this->generateCanonicalUrl($model, $baseUrl);
 
         return [
-            '@context' => 'https://schema.org',
             '@type' => 'Brand',
             '@id' => $url . '#brand',
             'name' => $model->name,
             'description' => $model->description,
             'logo' => $model->logo_path ? asset('storage/' . $model->logo_path) : null,
             'url' => $model->website_url ?? $url,
-            'mainEntityOfPage' => [
-                '@type' => 'WebPage',
-                '@id' => $url
-            ]
+            'mainEntityOfPage' => ['@id' => $url . '#webpage']
         ];
     }
 
@@ -222,7 +214,6 @@ class JsonLdGenerator
     protected function generateClientOrganization(Client $model, string $baseUrl): array
     {
         return [
-            '@context' => 'https://schema.org',
             '@type' => 'Organization',
             'name' => $model->name,
             'url' => $model->website_url,
@@ -240,7 +231,6 @@ class JsonLdGenerator
         $solutions = $model->solutions;
 
         $schema = [
-            '@context' => 'https://schema.org',
             '@type' => 'Service',
             '@id' => $url . '#service',
             'name' => $this->getMetaTitle($model),
@@ -275,10 +265,7 @@ class JsonLdGenerator
                     ]
                 ])->toArray()
             ] : null,
-            'mainEntityOfPage' => [
-                '@type' => 'WebPage',
-                '@id' => $url
-            ]
+            'mainEntityOfPage' => ['@id' => $url . '#webpage']
         ];
 
         return $this->clean($schema);
@@ -395,14 +382,102 @@ class JsonLdGenerator
                 'name' => $model->name,
                 'item' => $this->generateCanonicalUrl($model, $baseUrl)
             ];
+        } elseif ($model instanceof News) {
+            $items[] = [
+                '@type' => 'ListItem',
+                'position' => 2,
+                'name' => 'News',
+                'item' => $baseUrl . '/news'
+            ];
+            $items[] = [
+                '@type' => 'ListItem',
+                'position' => 3,
+                'name' => $model->title,
+                'item' => $this->generateCanonicalUrl($model, $baseUrl)
+            ];
+        } elseif ($model instanceof Project) {
+            $items[] = [
+                '@type' => 'ListItem',
+                'position' => 2,
+                'name' => 'Projects',
+                'item' => $baseUrl . '/projects'
+            ];
+            $items[] = [
+                '@type' => 'ListItem',
+                'position' => 3,
+                'name' => $model->title,
+                'item' => $this->generateCanonicalUrl($model, $baseUrl)
+            ];
+        } elseif ($model instanceof Brand) {
+            $items[] = [
+                '@type' => 'ListItem',
+                'position' => 2,
+                'name' => $model->name,
+                'item' => $this->generateCanonicalUrl($model, $baseUrl)
+            ];
+        } elseif ($model instanceof Page && !$model->is_homepage) {
+            $items[] = [
+                '@type' => 'ListItem',
+                'position' => 2,
+                'name' => $model->title,
+                'item' => $this->generateCanonicalUrl($model, $baseUrl)
+            ];
         }
 
         // Add other models here if needed in future
 
         return [
-            '@context' => 'https://schema.org',
             '@type' => 'BreadcrumbList',
             'itemListElement' => $items
+        ];
+    }
+
+    /**
+     * Generate JSON-LD for static pages (no model).
+     */
+    public function generateStatic(string $title, string $description, string $url): array
+    {
+        $baseUrl = config('app.url');
+        $schemas = [];
+
+        // 1. Organization
+        $schemas[] = $this->generateOrganization($baseUrl);
+
+        // 2. WebPage
+        $schemas[] = [
+            '@type' => 'WebPage',
+            '@id' => $url . '#webpage',
+            'url' => $url,
+            'name' => $title,
+            'description' => $description,
+            'isPartOf' => ['@id' => $baseUrl . self::ORGANIZATION_ID],
+            'inLanguage' => 'id-ID',
+        ];
+
+        // 3. Breadcrumbs
+        $schemas[] = [
+            '@type' => 'BreadcrumbList',
+            'itemListElement' => [
+                [
+                    '@type' => 'ListItem',
+                    'position' => 1,
+                    'name' => 'Home',
+                    'item' => $baseUrl
+                ],
+                [
+                    '@type' => 'ListItem',
+                    'position' => 2,
+                    'name' => $title,
+                    'item' => $url
+                ]
+            ]
+        ];
+
+        $optimized = $this->optimizer->optimize($schemas);
+
+        return [
+            '@context' => 'https://schema.org',
+            '@graph' => $optimized
         ];
     }
 }

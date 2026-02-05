@@ -1,20 +1,15 @@
-import { Head, Link } from "@inertiajs/react";
 import React, { useState } from "react";
 import MainLayout from "@/Layouts/MainLayout";
 import Breadcrumb from "@/Components/Common/Breadcrumb";
 import ServiceSectionHeader from "@/Components/Sections/ServiceDetail/ServiceSectionHeader";
 import ServiceFilterBar from "@/Components/Sections/ServiceDetail/ServiceFilterBar";
 import ServiceRoomGrid from "@/Components/Sections/ServiceDetail/ServiceRoomGrid";
+import Seo from "@/Components/Common/Seo";
 
 const ServiceDetail = ({ service, seo }) => {
     return (
         <MainLayout>
-            <Head title={seo?.title || service.title}>
-                {seo?.description && (
-                    <meta name="description" content={seo.description} />
-                )}
-                {seo?.image && <meta property="og:image" content={seo.image} />}
-            </Head>
+            <Seo seo={seo} />
 
             <Breadcrumb
                 title={service.title}

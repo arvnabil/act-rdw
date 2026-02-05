@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Head, Link, router } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import MainLayout from "@/Layouts/MainLayout";
 import Breadcrumb from "@/Components/Common/Breadcrumb";
 import ProductToolbar from "@/Components/Sections/Products/ProductToolbar";
 import ProductList from "@/Components/Sections/Products/ProductList";
 import ProductPagination from "@/Components/Sections/Products/ProductPagination";
-
 import ProductFilterSidebar from "@/Components/Sections/Products/ProductFilterSidebar";
+import Seo from "@/Components/Common/Seo";
 
 export default function Products({
     products,
@@ -14,6 +14,7 @@ export default function Products({
     brands,
     solutions,
     categories,
+    seo,
 }) {
     // State for View Mode (Grid vs List)
     const [viewMode, setViewMode] = useState("grid"); // 'grid' or 'list'
@@ -132,7 +133,7 @@ export default function Products({
 
     return (
         <MainLayout>
-            <Head title="Our Products" />
+            <Seo seo={seo} />
 
             <Breadcrumb
                 title="All Products"

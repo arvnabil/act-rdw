@@ -51,7 +51,8 @@ class PageController extends Controller
 
             return Inertia::render('Home', [
                 'services' => $services,
-                'projects' => $projects
+                'projects' => $projects,
+                'seo' => \App\Services\SeoResolver::staticPage('Home')
             ]);
         }
 

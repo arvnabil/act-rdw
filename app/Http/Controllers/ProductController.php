@@ -65,6 +65,7 @@ class ProductController extends Controller
             'solutions' => $solutions,
             'categories' => $categories,
             'filters' => $request->only(['search', 'orderby', 'brand', 'solution', 'category']),
+            'seo' => \App\Services\SeoResolver::staticPage('Products', 'Browse our wide range of technology solutions from top brands.')
         ]);
     }
 
@@ -131,6 +132,7 @@ class ProductController extends Controller
 
         return Inertia::render('ProductDetail', [
             'product' => $productData,
+            'seo' => \App\Services\SeoResolver::for($product),
         ]);
     }
 }

@@ -22,8 +22,23 @@ class SeoMetaTable
                     ->formatStateUsing(fn (string $state): string => class_basename($state))
                     ->badge(),
 
+                TextColumn::make('path')
+                    ->label('Route / Path')
+                    ->state(fn (SeoMeta $record) => match (true) {
+                        !$record->seoable => 'Missing Page (Orphaned)',
+                        $record->seoable instanceof \App\Models\Page && $record->seoable->is_homepage => '/',
+                        $record->seoable instanceof \App\Models\News => '/news/' . $record->seoable->slug,
+                        $record->seoable instanceof \Modules\ServiceSolutions\Models\Service => '/services/' . $record->seoable->slug,
+                        $record->seoable instanceof \App\Models\Project => '/projects/' . $record->seoable->slug,
+                        $record->seoable instanceof \Modules\Core\Models\Product => '/products/' . $record->seoable->slug,
+                        default => '/' . ($record->seoable->slug ?? '')
+                    })
+                    ->color('gray')
+                    ->fontFamily('mono'),
+
                 TextColumn::make('seoable.title')
                     ->label('Page Title')
+                    ->state(fn (SeoMeta $record) => $record->seoable->title ?? $record->seoable->name ?? 'Untitled')
                     ->searchable()
                     ->sortable(),
 

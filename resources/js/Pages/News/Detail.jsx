@@ -1,16 +1,16 @@
 import React from "react";
-import { Head, Link } from "@inertiajs/react";
 import MainLayout from "@/Layouts/MainLayout";
 import Breadcrumb from "@/Components/Common/Breadcrumb";
+import Seo from "@/Components/Common/Seo";
 
 import BlogDetailContent from "@/Components/Sections/BlogDetail/BlogDetailContent";
 import BlogComments from "@/Components/Sections/BlogDetail/BlogComments";
 import BlogSidebar from "@/Components/Sections/Blog/BlogSidebar";
 
-export default function BlogDetail({ post, recentPosts, categories, tags }) {
+export default function BlogDetail({ post, recentPosts, categories, tags, seo }) {
     return (
         <MainLayout>
-            <Head title={post.title} />
+            <Seo seo={seo} />
 
             <Breadcrumb
                 title={post.title}

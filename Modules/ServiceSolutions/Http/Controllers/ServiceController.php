@@ -25,21 +25,15 @@ class ServiceController extends Controller
         // Let's inspect SeoResolver later. For now, we will construct SEO array manually
         // using the model's seo relation or defaults.
 
-        $seo = [
-            'title' => $service->seo_title ?? $service->name,
-            'description' => $service->seo_description ?? $service->excerpt ?? $service->description,
-            'image' => $service->seo_image ?? $service->featured_image ?? $service->thumbnail,
-        ];
-
         return Inertia::render('ServiceDetail', [
             'service' => [
                 'id' => $service->slug, // Frontend historically uses slug as id in some places
                 'title' => $service->name,
                 'hero_subtitle' => $service->hero_subtitle,
                 'grid_title' => $service->grid_title,
-                'content' => $service->content, // New field
-                'excerpt' => $service->excerpt, // New field
-                'featured_image' => $service->featured_image, // New field
+                'content' => $service->content, 
+                'excerpt' => $service->excerpt, 
+                'featured_image' => $service->featured_image, 
                 'thumbnail' => $service->thumbnail,
                 'filters' => $service->categories->map(fn ($cat) => [
                     'label' => $cat->label,
@@ -53,7 +47,7 @@ class ServiceController extends Controller
                     'category' => $sol->categories->pluck('value')->join(' ')
                 ])
             ],
-            'seo' => $seo
+            'seo' => SeoResolver::for($service)
         ]);
     }
 }

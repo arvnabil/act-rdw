@@ -1,13 +1,13 @@
 import React from "react";
-import { Head } from "@inertiajs/react";
 import MainLayout from "@/Layouts/MainLayout";
 import Breadcrumb from "@/Components/Common/Breadcrumb";
 import PartnerListSection from "@/Components/Sections/Partners/PartnerListSection";
+import Seo from "@/Components/Common/Seo";
 
-export default function Partners({ brands, categories }) {
+export default function Partners({ brands, categories, seo }) {
     return (
         <MainLayout>
-            <Head title="Partners" />
+            <Seo seo={seo} />
             <Breadcrumb
                 title="Partners"
                 items={[{ label: "Home", link: "/" }, { label: "Partners" }]}

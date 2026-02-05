@@ -12,8 +12,15 @@ class SeoScoreCalculator
         $score = 0;
         $checks = [];
 
+        // Fetch parent model context if available
+        $parent = $seoMeta->seoable;
+        
+        $title = $seoMeta->title ?: ($parent->title ?? $parent->name ?? '');
+        $description = $seoMeta->description ?: ($parent->excerpt ?? $parent->description ?? '');
+        $ogImage = $seoMeta->og_image ?: ($parent->featured_image ?? $parent->thumbnail ?? $parent->image_path ?? '');
+
         // 1. Title Length (10-60 chars) - 20 pts
-        $titleLen = Str::length($seoMeta->title);
+        $titleLen = Str::length($title);
         if ($titleLen >= 10 && $titleLen <= 60) {
             $score += 20;
             $checks['title_length'] = ['pass' => true, 'message' => 'Title length is optimal (' . $titleLen . ' chars).'];
@@ -22,7 +29,7 @@ class SeoScoreCalculator
         }
 
         // 2. Description Length (50-160 chars) - 25 pts
-        $descLen = Str::length($seoMeta->description);
+        $descLen = Str::length($description);
         if ($descLen >= 50 && $descLen <= 160) {
             $score += 25;
             $checks['description_length'] = ['pass' => true, 'message' => 'Description length is optimal (' . $descLen . ' chars).'];
@@ -31,23 +38,14 @@ class SeoScoreCalculator
         }
 
         // 3. OG Image (10 pts)
-        if (!empty($seoMeta->og_image)) {
+        if (!empty($ogImage)) {
             $score += 10;
-            $checks['og_image'] = ['pass' => true, 'message' => 'Social share image is set.'];
+            $checks['og_image'] = ['pass' => true, 'message' => 'Social share image is set (via manual or fallback).'];
         } else {
             $checks['og_image'] = ['pass' => false, 'message' => 'Missing social share image (OG Image).'];
         }
 
-        // 4. Canonical URL (10 pts)
-        // If not set, it defaults to current URL in logic, but here we check if an explicit override is set OR if the system handles it.
-        // For strict scoring, we give points if a canonical policy is active (here we assume if indexable it's good).
-        // Let's check if the field itself is filled or if it's fine.
-        // Actually, many users leave it blank to default. Let's give points if it's NOT explicitly invalid or if it is filled.
-        // Better: Check if `canonical_url` is non-empty for custom override OR give pass if just standard.
-        // Let's stick to: Points if specific canonical is set? No, that punishes defaults.
-        // Let's give points for "Indexability" instead as a major factor.
-
-        // Revised 4. Indexibility (Not Noindex) - 15 pts
+        // 4. Indexibility (Not Noindex) - 15 pts
         if (!$seoMeta->noindex) {
             $score += 15;
             $checks['indexable'] = ['pass' => true, 'message' => 'Page is indexable by search engines.'];
@@ -63,14 +61,10 @@ class SeoScoreCalculator
             $checks['keywords'] = ['pass' => false, 'message' => 'No focus keywords set.'];
         }
 
-        // 6. Schema Markup (20 pts)
-        // Check if manual schema override exists OR if the attached model has automatic schema.
-        // Since we can't easily check the MorphTo model's automatic schema here without easier access, we'll check if `schema_markup` column has data (override)
-        // OR simply assume standard schema is active.
-        // For now, let's give points if the resource is valid.
-        // Simplification: Check if generic schema is enabled globally?
-        // Let's check `og_title` and `og_description` as proxies for "Social Meta Completeness" - 15 pts
-        if (!empty($seoMeta->og_title) && !empty($seoMeta->og_description)) {
+        // 6. Social Meta (15 pts)
+        $ogTitle = $seoMeta->og_title ?: $title;
+        $ogDesc = $seoMeta->og_description ?: $description;
+        if (!empty($ogTitle) && !empty($ogDesc)) {
              $score += 15;
              $checks['social_meta'] = ['pass' => true, 'message' => 'Social meta tags (OG Title/Desc) are complete.'];
         } else {

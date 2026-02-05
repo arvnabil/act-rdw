@@ -31,7 +31,18 @@ class SeoResolver
         }
 
         return [
-            'title' => $metaTitle,
+            'tags' => [
+                'title' => $metaTitle,
+                'description' => $metaDesc,
+                'keywords' => $seo?->keywords ?? '',
+                'canonical_url' => $seo?->canonical_url ?? url()->current(),
+                'og_title' => $seo?->og_title ?? $metaTitle,
+                'og_description' => $seo?->og_description ?? $metaDesc,
+                'og_image' => $seo?->og_image ? asset('storage/' . $seo->og_image) : ($model->thumbnail ?? $model->featured_image ?? $model->image ?? null),
+                'og_type' => $seo?->og_type ?? 'website',
+                'twitter_card' => $seo?->twitter_card ?? 'summary_large_image',
+                'noindex' => (bool)$seo?->noindex,
+            ],
             'meta' => [
                 ['name' => 'description', 'content' => $metaDesc],
                 ['property' => 'og:title', 'content' => $seo?->og_title ?? $metaTitle],
@@ -39,19 +50,37 @@ class SeoResolver
                 ['property' => 'og:image', 'content' => $seo?->og_image ? asset('storage/' . $seo->og_image) : ($model->thumbnail ?? $model->featured_image ?? $model->image ?? null)],
                 ['name' => 'twitter:card', 'content' => $seo?->twitter_card ?? 'summary_large_image'],
                 ['name' => 'robots', 'content' => $seo?->noindex ? 'noindex, nofollow' : 'index, follow'],
-                ['rel' => 'canonical', 'href' => $seo?->canonical_url ?? url()->current()], // Fallback to current if not custom, but JsonLdGen uses stricter canonicals
+                ['rel' => 'canonical', 'href' => $seo?->canonical_url ?? url()->current()],
             ],
-            'jsonLd' => $jsonLd,
+            'json_ld' => $jsonLd,
         ];
     }
 
     public static function staticPage(string $title, string $description = ''): array
     {
+        $siteName = config('app.name', 'ACTiV');
+        $fullTitle = $title ? "{$title} | {$siteName}" : $siteName;
+        $currentUrl = url()->current();
+
+        /** @var JsonLdGenerator $generator */
+        $generator = app(JsonLdGenerator::class);
+        $json_ld = $generator->generateStatic($fullTitle, $description, $currentUrl);
+
         return [
-            'title' => $title,
+            'tags' => [
+                'title' => $fullTitle,
+                'description' => $description,
+                'canonical_url' => $currentUrl,
+                'og_title' => $fullTitle,
+                'og_description' => $description,
+                'og_type' => 'website',
+                'twitter_card' => 'summary_large_image',
+                'noindex' => false,
+            ],
             'meta' => [
                 ['name' => 'description', 'content' => $description],
-            ]
+            ],
+            'json_ld' => $json_ld,
         ];
     }
 }

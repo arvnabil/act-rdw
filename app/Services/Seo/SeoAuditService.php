@@ -79,7 +79,8 @@ class SeoAuditService
             return;
         }
 
-        $schemas = $this->jsonLdGenerator->generate($model);
+        $result = $this->jsonLdGenerator->generate($model, true);
+        $schemas = $result['@graph'] ?? [];
 
         $hasOrganization = false;
         $hasWebPage = false;

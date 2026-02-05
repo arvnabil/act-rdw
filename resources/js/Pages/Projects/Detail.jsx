@@ -1,15 +1,15 @@
 import React from "react";
-import { Head, Link } from "@inertiajs/react";
 import MainLayout from "@/Layouts/MainLayout";
 import Breadcrumb from "@/Components/Common/Breadcrumb";
+import Seo from "@/Components/Common/Seo";
 import ProjectMainContent from "@/Components/Sections/ProjectDetail/ProjectMainContent";
 import ProjectSidebar from "@/Components/Sections/ProjectDetail/ProjectSidebar";
 import ProjectPagination from "@/Components/Sections/ProjectDetail/ProjectPagination";
 
-export default function ProjectDetail({ project }) {
+export default function ProjectDetail({ project, seo }) {
     return (
         <MainLayout>
-            <Head title={project.title} />
+            <Seo seo={seo} />
 
             <Breadcrumb
                 title="Project Details"
