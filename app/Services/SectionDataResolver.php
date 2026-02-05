@@ -158,6 +158,9 @@ class SectionDataResolver
             'features' => $config['features'] ?? [],
             'images' => $config['images'] ?? [],
             'video_url' => $config['video_url'] ?? null,
+            'show_button' => $config['show_button'] ?? true,
+            'button_text' => $config['button_text'] ?? 'Pelajari Selengkapnya',
+            'button_url' => $config['button_url'] ?? '/about',
         ];
     }
 
@@ -230,21 +233,14 @@ class SectionDataResolver
              $brands = array_merge($brands, $dbBrands);
         }
 
-        // Static Fallback/Merge
-        if (isset($config['brands']) && is_array($config['brands'])) {
-            foreach ($config['brands'] as $staticBrand) {
-                // Ensure image path is correct (handle storage vs assets)
-                if (isset($staticBrand['image']) && !str_starts_with($staticBrand['image'], '/assets') && !str_starts_with($staticBrand['image'], '/storage')) {
-                     $staticBrand['image'] = "/storage/" . $staticBrand['image'];
-                }
-                $brands[] = $staticBrand;
-            }
-        }
 
         return [
             'id' => 'section-brand-partners', // Specific ID for scrolling if needed
             'title' => $config['title'] ?? null,
             'subtitle' => $config['subtitle'] ?? null,
+            'show_button' => $config['show_button'] ?? true, // Default to true if not set
+            'button_text' => $config['button_text'] ?? 'Lihat Semua Partner',
+            'button_url' => $config['button_url'] ?? '/partners',
             'brands' => $brands,
         ];
     }

@@ -9,6 +9,9 @@ export default function WhyChooseUsSection({
     features,
     images,
     video_url,
+    show_button,
+    button_text,
+    button_url,
     builderMode,
 }) {
     // Defaults
@@ -20,6 +23,16 @@ export default function WhyChooseUsSection({
         description ||
         "Kami berdedikasi untuk menyediakan solusi TIK dan Pendidikan komprehensif yang tidak hanya canggih tetapi juga andal. Dengan menggabungkan keahlian teknis dengan dukungan global, kami memastikan setiap investasi teknologi yang Anda buat memberikan nilai nyata yang berkelanjutan.";
     const vidUrl = video_url || "https://www.youtube.com/watch?v=hIIQbkkKnno";
+
+    // Normalize show_button
+    const shouldShowButton =
+        show_button === true ||
+        show_button === "true" ||
+        show_button === 1 ||
+        show_button === "1";
+
+    const btnText = button_text || "Pelajari Selengkapnya";
+    const btnUrl = button_url || "/about";
 
     const imgs =
         images && images.length > 0
@@ -87,18 +100,20 @@ export default function WhyChooseUsSection({
                                     </div>
                                 ))}
                             </div>
-                            <div
-                                className={`mt-35 mb-2 ${wow("wow fadeInUp")}`}
-                                data-wow-delay=".5s"
-                            >
-                                <Link
-                                    href="/about"
-                                    className="th-btn th-radius th-icon"
+                            {shouldShowButton && (
+                                <div
+                                    className={`mt-35 mb-2 ${wow("wow fadeInUp")}`}
+                                    data-wow-delay=".5s"
                                 >
-                                    Pelajari Selengkapnya{" "}
-                                    <i className="fa-light fa-arrow-right-long"></i>
-                                </Link>
-                            </div>
+                                    <Link
+                                        href={btnUrl}
+                                        className="th-btn th-radius th-icon"
+                                    >
+                                        {btnText}{" "}
+                                        <i className="fa-light fa-arrow-right-long"></i>
+                                    </Link>
+                                </div>
+                            )}
                         </div>
                     </div>
                     <div className="col-xl-6">

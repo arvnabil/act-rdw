@@ -5,7 +5,17 @@ export default function BrandSection({
     title,
     subtitle,
     elementId = "brandSlider1",
+    show_button = true,
+    button_text = "Lihat Semua Partner",
+    button_url = "/partners",
 }) {
+    // Normalize show_button to boolean
+    const shouldShowButton =
+        show_button === true ||
+        show_button === "true" ||
+        show_button === 1 ||
+        show_button === "1";
+
     const list = brands || [];
 
     // Only render title area if title or subtitle is provided
@@ -67,6 +77,19 @@ export default function BrandSection({
                     </div>
                 </div>
             </div>
+            {shouldShowButton && (
+                <div className="text-center mt-5">
+                    <div className="d-inline-block">
+                        <a
+                            href={button_url}
+                            className="th-btn th-radius th-icon"
+                        >
+                            {button_text}{" "}
+                            <i className="fa-light fa-arrow-right-long"></i>
+                        </a>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }

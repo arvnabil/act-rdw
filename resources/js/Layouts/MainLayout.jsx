@@ -706,8 +706,8 @@ export default function MainLayout({ children }) {
                                             </a>
                                         ) : (
                                             <Link
-                                                href="/contact"
-                                                className="th-btn th-radius th-icon"
+                                                href="/abouts"
+                                                className="th-btn th-radius th-icon d-none d-xxl-block"
                                             >
                                                 Hubungi Kami{" "}
                                                 <i className="fa-light fa-arrow-right-long"></i>
