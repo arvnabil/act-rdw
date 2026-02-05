@@ -1,5 +1,6 @@
 import React from "react";
 import { usePage } from "@inertiajs/react";
+import { getWhatsAppLink } from "@/Utils/whatsapp";
 
 export default function ProjectSidebar({ project }) {
     return (
@@ -39,7 +40,7 @@ export default function ProjectSidebar({ project }) {
                                 <a href="#">
                                     {new Date(
                                         project.project_date ||
-                                            project.published_at,
+                                        project.published_at,
                                     ).toLocaleDateString("id-ID", {
                                         day: "2-digit",
                                         month: "long",
@@ -117,26 +118,11 @@ export default function ProjectSidebar({ project }) {
                     <span className="text">Butuh bantuan? Hubungi kami</span>
                     {(() => {
                         const { settings } = usePage().props;
-                        const whatsappNumber = settings?.whatsapp_number;
+                        const defaultMessage = `Halo, saya tertarik dengan project: ${project.title}`;
+                        const message = project.whatsapp_note || defaultMessage;
 
-                        let link = "/contact";
-                        let target = "_self";
-
-                        if (whatsappNumber) {
-                            // Clean non-digits
-                            let number = whatsappNumber.replace(/\D/g, "");
-                            // Replace leading 0 with 62 (Indonesian specific convenience)
-                            if (number.startsWith("0")) {
-                                number = "62" + number.substring(1);
-                            }
-
-                            const defaultMessage = `Halo, saya tertarik dengan project: ${project.title}`;
-                            const message =
-                                project.whatsapp_note || defaultMessage;
-
-                            link = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
-                            target = "_blank";
-                        }
+                        const link = getWhatsAppLink(settings?.whatsapp_number, message) || "/contact";
+                        const target = link.startsWith("http") ? "_blank" : "_self";
 
                         return (
                             <a

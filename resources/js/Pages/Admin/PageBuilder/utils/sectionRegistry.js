@@ -142,6 +142,15 @@ export const sectionRegistry = {
             { name: "description", type: "textarea", label: "Description" },
             { name: "button_text", type: "text", label: "Button Text" },
             { name: "button_url", type: "text", label: "Button URL" },
+            {
+                name: "show_button",
+                type: "select",
+                label: "Show Button?",
+                options: [
+                    { label: "Yes", value: true },
+                    { label: "No", value: false },
+                ],
+            },
 
             // Features Repeater
             {
@@ -163,6 +172,7 @@ export const sectionRegistry = {
             },
         ],
         defaultConfig: {
+            show_button: true,
             title: "Bridging Technology and Education for a Better Future.",
             subtitle: "Who We Are",
             description:

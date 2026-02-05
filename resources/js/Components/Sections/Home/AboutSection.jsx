@@ -10,6 +10,7 @@ export default function AboutSection({
     images,
     button_text,
     button_url,
+    show_button = true, // Default to true if not provided
 }) {
     // Defaults
     const t = title || "Menjembatani Teknologi dan Pendidikan untuk Masa Depan yang Lebih Baik.";
@@ -19,6 +20,13 @@ export default function AboutSection({
         "ACTiV (PT Alfa Cipta Teknologi Virtual) adalah perusahaan dinamis yang berspesialisasi dalam penjualan dan penyewaan perangkat lunak, perangkat keras, dan aksesori pendukung, dengan fokus utama pada solusi Teknologi Informasi Komunikasi (TIK) dan Pendidikan. Didukung oleh tim dengan pengalaman lebih dari 6 tahun dan kemitraan resmi dengan merek TIK multinasional, kami berdedikasi untuk memberikan solusi teknologi komprehensif terbaik kepada klien kami.";
     const btnText = button_text || "Pelajari Selengkapnya";
     const btnUrl = button_url || "/about";
+
+    // Normalize show_button to boolean (handle "false" string from some inputs)
+    const shouldShowButton =
+        show_button === true ||
+        show_button === "true" ||
+        show_button === 1 ||
+        show_button === "1";
 
     const imgs =
         images && images.length > 0
@@ -106,22 +114,24 @@ export default function AboutSection({
                                     </div>
                                 ))}
                             </div>
-                            <div
-                                className="mt-35 wow fadeInUp"
-                                data-wow-delay=".5s"
-                            >
-                                <Link
-                                    href={btnUrl}
-                                    className="th-btn th-radius th-icon"
+                            {shouldShowButton && (
+                                <div
+                                    className="mt-35 wow fadeInUp"
+                                    data-wow-delay=".5s"
                                 >
-                                    {btnText}{" "}
-                                    <i className="fa-light fa-arrow-right-long"></i>
-                                </Link>
-                            </div>
+                                    <Link
+                                        href={btnUrl}
+                                        className="th-btn th-radius th-icon"
+                                    >
+                                        {btnText}{" "}
+                                        <i className="fa-light fa-arrow-right-long"></i>
+                                    </Link>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }

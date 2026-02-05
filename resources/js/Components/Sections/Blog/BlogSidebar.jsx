@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link, usePage, router } from "@inertiajs/react";
+import { getWhatsAppLink } from "@/Utils/whatsapp";
 
 export default function BlogSidebar({
     categories = [],
@@ -133,25 +134,9 @@ export default function BlogSidebar({
 
                     {(() => {
                         const { settings } = usePage().props;
-                        const whatsappNumber = settings?.whatsapp_number;
-
-                        let link = "/contact";
-                        let target = "_self";
-
-                        if (whatsappNumber) {
-                            // Clean non-digits
-                            let number = whatsappNumber.replace(/\D/g, "");
-                            // Replace leading 0 with 62 (Indonesian specific convenience)
-                            if (number.startsWith("0")) {
-                                number = "62" + number.substring(1);
-                            }
-
-                            const message =
-                                "Halo, saya butuh bantuan terkait layanan Anda.";
-
-                            link = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
-                            target = "_blank";
-                        }
+                        const message = "Halo, saya butuh bantuan terkait layanan Anda.";
+                        const link = getWhatsAppLink(settings?.whatsapp_number, message) || "/contact";
+                        const target = link.startsWith("http") ? "_blank" : "_self";
 
                         return (
                             <a

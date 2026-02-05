@@ -1,5 +1,6 @@
 import React from "react";
 import { Link, usePage } from "@inertiajs/react";
+import { getWhatsAppLink } from "@/Utils/whatsapp";
 
 export default function ProductInfo({ product }) {
     return (
@@ -100,22 +101,12 @@ export default function ProductInfo({ product }) {
                     {/* WhatsApp Button */}
                     {(() => {
                         const { settings } = usePage().props;
-                        const whatsappNumber = settings?.whatsapp_number;
-                        let link = "#";
+                        const message = (
+                            product.whatsapp_note ||
+                            `Halo, saya tertarik dengan produk ${product.name}. Mohon info harga terbaik.`
+                        ).replace("{Product Name}", product.name);
 
-                        if (whatsappNumber) {
-                            let number = whatsappNumber.replace(/\D/g, "");
-                            if (number.startsWith("0")) {
-                                number = "62" + number.substring(1);
-                            }
-
-                            const message = (
-                                product.whatsapp_note ||
-                                `Halo, saya tertarik dengan produk ${product.name}. Mohon info harga terbaik.`
-                            ).replace("{Product Name}", product.name);
-
-                            link = `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
-                        }
+                        const link = getWhatsAppLink(settings?.whatsapp_number, message) || "#";
 
                         return (
                             <a

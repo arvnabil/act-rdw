@@ -87,6 +87,7 @@ class SectionDataResolver
             'features' => $config['features'] ?? [],
             'button_text' => $config['button_text'] ?? null,
             'button_url' => $config['button_url'] ?? null,
+            'show_button' => $config['show_button'] ?? true,
             'variant' => $config['variant'] ?? 'default',
         ];
     }

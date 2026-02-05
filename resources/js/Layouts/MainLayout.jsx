@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Link, usePage } from "@inertiajs/react";
 import { useTemplateInit } from "@/hooks/useTemplateInit";
 import Toast from "@/Components/Common/Toast";
+import { getWhatsAppLink } from "@/Utils/whatsapp";
 
 export default function MainLayout({ children }) {
     useTemplateInit();
-    const { auth, flash, menus } = usePage().props;
+    const { auth, flash, menus, settings } = usePage().props;
+    const whatsappLink = getWhatsAppLink(settings?.whatsapp_number);
     console.log("MainLayout menus:", menus);
     const [toast, setToast] = useState(null);
     const [isScrolled, setIsScrolled] = useState(false);
@@ -508,13 +510,25 @@ export default function MainLayout({ children }) {
                                 </ul>
                             </div>
                             <div className="text-center mt-3">
-                                <Link
-                                    href="/contact"
-                                    className="th-btn th-radius th-icon"
-                                >
-                                    Hubungi Kami{" "}
-                                    <i className="fa-light fa-arrow-right-long"></i>
-                                </Link>
+                                {whatsappLink ? (
+                                    <a
+                                        href={whatsappLink}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="th-btn th-radius th-icon"
+                                    >
+                                        Hubungi Kami{" "}
+                                        <i className="fa-light fa-arrow-right-long"></i>
+                                    </a>
+                                ) : (
+                                    <Link
+                                        href="#"
+                                        className="th-btn th-radius th-icon"
+                                    >
+                                        Hubungi Kami{" "}
+                                        <i className="fa-light fa-arrow-right-long"></i>
+                                    </Link>
+                                )}
                             </div>
                         </div>
                     </div>
@@ -680,13 +694,25 @@ export default function MainLayout({ children }) {
                                                 alt="icon"
                                             />
                                         </button>
-                                        <Link
-                                            href="/contact"
-                                            className="th-btn th-radius th-icon d-none d-xxl-block"
-                                        >
-                                            Hubungi Kami{" "}
-                                            <i className="fa-light fa-arrow-right-long"></i>
-                                        </Link>
+                                        {whatsappLink ? (
+                                            <a
+                                                href={whatsappLink}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="th-btn th-radius th-icon"
+                                            >
+                                                Hubungi Kami{" "}
+                                                <i className="fa-light fa-arrow-right-long"></i>
+                                            </a>
+                                        ) : (
+                                            <Link
+                                                href="/contact"
+                                                className="th-btn th-radius th-icon"
+                                            >
+                                                Hubungi Kami{" "}
+                                                <i className="fa-light fa-arrow-right-long"></i>
+                                            </Link>
+                                        )}
                                     </div>
                                 </div>
                             </div>

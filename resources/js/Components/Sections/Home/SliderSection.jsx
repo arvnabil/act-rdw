@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
+import { getWhatsAppLink } from "@/Utils/whatsapp";
 import Swiper from "swiper";
 import { Navigation, Pagination, EffectFade, Autoplay } from "swiper/modules";
 // Import Swiper styles if not globally imported, but app.css has them.
 // We rely on app.css for custom template styles but ensuring modules load is key.
 
 export default function SliderSection({ slides, elementId = "heroSlide2" }) {
+    const { settings } = usePage().props;
     const defaultSlides = [
         {
             bg_image: "/assets/img/hero/hero_bg_3_1.png",
@@ -122,15 +124,28 @@ export default function SliderSection({ slides, elementId = "heroSlide2" }) {
                                         >
                                             {slide.buttons?.map(
                                                 (btn, btnIndex) => {
+                                                    let finalUrl = btn.url;
+                                                    let openNewTab = btn.open_new_tab;
+
+                                                    const lowerText = btn.text?.toLowerCase() || "";
+                                                    const isContactBtn = lowerText.includes("hubungi") || lowerText.includes("contact");
+
+                                                    if (isContactBtn) {
+                                                        const waLink = getWhatsAppLink(settings?.whatsapp_number);
+                                                        if (waLink) {
+                                                            finalUrl = waLink;
+                                                            openNewTab = true;
+                                                        }
+                                                    }
+
                                                     const isExternal =
-                                                        btn.url?.startsWith(
+                                                        finalUrl?.startsWith(
                                                             "http",
                                                         );
-                                                    const openNewTab =
-                                                        btn.open_new_tab ||
-                                                        btn.url?.startsWith(
-                                                            "http",
-                                                        ); // Auto new tab for external if not specified
+
+                                                    if (!openNewTab && isExternal) {
+                                                        openNewTab = true;
+                                                    }
 
                                                     if (
                                                         isExternal ||
@@ -139,7 +154,7 @@ export default function SliderSection({ slides, elementId = "heroSlide2" }) {
                                                         return (
                                                             <a
                                                                 key={btnIndex}
-                                                                href={btn.url}
+                                                                href={finalUrl}
                                                                 target={
                                                                     openNewTab
                                                                         ? "_blank"
@@ -161,7 +176,7 @@ export default function SliderSection({ slides, elementId = "heroSlide2" }) {
                                                     return (
                                                         <Link
                                                             key={btnIndex}
-                                                            href={btn.url}
+                                                            href={finalUrl}
                                                             className={`th-btn th-radius ${btn.style || "style2"} th-icon`}
                                                         >
                                                             {btn.text}
