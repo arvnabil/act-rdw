@@ -9,6 +9,7 @@ use Filament\Widgets\StatsOverviewWidget\Stat;
 class SeoScoreStats extends BaseWidget
 {
     protected ?string $pollingInterval = null;
+    protected static bool $shouldDisplayOnDashboard = false;
 
     protected function getStats(): array
     {

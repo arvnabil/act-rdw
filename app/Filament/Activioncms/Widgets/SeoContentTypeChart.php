@@ -9,6 +9,7 @@ class SeoContentTypeChart extends ChartWidget
 {
     protected ?string $heading = 'URLs per Content Type';
     protected ?string $maxHeight = '250px';
+    protected static bool $shouldDisplayOnDashboard = false;
 
     protected function getData(): array
     {

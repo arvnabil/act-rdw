@@ -10,6 +10,7 @@ class SeoHealthChart extends ChartWidget
 {
     protected ?string $heading = 'SEO Health Breakdown';
     protected static ?int $sort = 2;
+    protected static bool $shouldDisplayOnDashboard = false;
     protected ?string $maxHeight = '300px';
 
     protected function getData(): array
