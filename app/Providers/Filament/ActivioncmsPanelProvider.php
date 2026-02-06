@@ -6,7 +6,7 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\Pages\Dashboard;
+use App\Filament\Activioncms\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -43,8 +43,8 @@ class ActivioncmsPanelProvider extends PanelProvider
                 Dashboard::class,
                 EventDashboard::class,
             ])
-//            ->discoverWidgets(in: app_path('Filament/Activioncms/Widgets'), for: 'App\Filament\Activioncms\Widgets')
-//            ->discoverWidgets(in: base_path('Modules/Events/Filament/Widgets'), for: 'Modules\\Events\\Filament\\Widgets')
+            ->discoverWidgets(in: app_path('Filament/Activioncms/Widgets'), for: 'App\Filament\Activioncms\Widgets')
+            ->discoverWidgets(in: base_path('Modules/Events/Filament/Widgets'), for: 'Modules\\Events\\Filament\\Widgets')
             ->widgets([
                 AccountWidget::class,
                 FilamentInfoWidget::class,
