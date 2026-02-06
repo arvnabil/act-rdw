@@ -5,20 +5,14 @@ return [
     /*
      * The property id of which you want to display data.
      */
-    'property_id' => \App\Models\Setting::where('key', 'seo_ga4_property_id')->value('value') ?? env('ANALYTICS_PROPERTY_ID'),
+    'property_id' => env('ANALYTICS_PROPERTY_ID'),
 
     /*
      * Path to the client secret json file. Take a look at the README of this package
      * to learn how to get this file. You can also pass the credentials as an array
      * instead of a file path.
      */
-    'service_account_credentials_json' => (function() {
-        $json = \App\Models\Setting::where('key', 'seo_ga4_service_account_json')->value('value');
-        if ($json) {
-            return json_decode($json, true);
-        }
-        return storage_path('app/analytics/service-account-credentials.json');
-    })(),
+    'service_account_credentials_json' => storage_path('app/analytics/service-account-credentials.json'),
 
     /*
      * The amount of minutes the Google API responses will be cached.

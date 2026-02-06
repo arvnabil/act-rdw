@@ -68,4 +68,29 @@ class ActivioncmsPanelProvider extends PanelProvider
                 fn () => \Illuminate\Support\Facades\Blade::render("@viteReactRefresh\n@vite(['resources/js/filament-serp.jsx'])")
             );
     }
+
+    public function boot(): void
+    {
+        try {
+            // Only try to fetch settings if the application is not running in CLI (unless it's a specific command we want)
+            // Or better, just catch the exception if the table doesn't exist yet.
+            $settings = \App\Models\Setting::whereIn('key', [
+                'seo_ga4_property_id',
+                'seo_ga4_service_account_json'
+            ])->pluck('value', 'key');
+
+            if (isset($settings['seo_ga4_property_id'])) {
+                config(['analytics.property_id' => $settings['seo_ga4_property_id']]);
+            }
+
+            if (isset($settings['seo_ga4_service_account_json'])) {
+                $json = json_decode($settings['seo_ga4_service_account_json'], true);
+                if ($json) {
+                    config(['analytics.service_account_credentials_json' => $json]);
+                }
+            }
+        } catch (\Exception $e) {
+            // Silently fail if database is not ready or table doesn't exist
+        }
+    }
 }
