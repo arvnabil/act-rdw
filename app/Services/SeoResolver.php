@@ -10,13 +10,17 @@ class SeoResolver
     public static function for($model): array
     {
         // Default to app name if no title
-        $siteName = config('app.name', 'ACTiV');
+        $settings = \App\Models\Setting::whereIn('key', ['seo_default_title', 'seo_default_description', 'seo_default_og_image'])
+            ->pluck('value', 'key');
 
-        // Eager load if possible/needed, but usually called on a loaded model
+        $siteName = $settings['seo_default_title'] ?? config('app.name', 'ACTiV');
+        $defaultDesc = $settings['seo_default_description'] ?? '';
+        $defaultOgImage = $settings['seo_default_og_image'] ? asset('storage/' . $settings['seo_default_og_image']) : null;
+
         $seo = $model->seo;
 
         $metaTitle = $seo?->title ?? $model->title ?? $siteName;
-        $metaDesc = $seo?->description ?? $model->excerpt ?? $model->description ?? '';
+        $metaDesc = $seo?->description ?? $model->excerpt ?? $model->description ?? $defaultDesc;
 
         // JSON-LD Generation
         $jsonLd = [];
@@ -38,7 +42,7 @@ class SeoResolver
                 'canonical_url' => $seo?->canonical_url ?? url()->current(),
                 'og_title' => $seo?->og_title ?? $metaTitle,
                 'og_description' => $seo?->og_description ?? $metaDesc,
-                'og_image' => $seo?->og_image ? asset('storage/' . $seo->og_image) : ($model->thumbnail ?? $model->featured_image ?? $model->image ?? null),
+                'og_image' => $seo?->og_image ? asset('storage/' . $seo->og_image) : ($model->thumbnail ?? $model->featured_image ?? $model->image ?? $defaultOgImage),
                 'og_type' => $seo?->og_type ?? 'website',
                 'twitter_card' => $seo?->twitter_card ?? 'summary_large_image',
                 'noindex' => (bool)$seo?->noindex,
@@ -47,7 +51,7 @@ class SeoResolver
                 ['name' => 'description', 'content' => $metaDesc],
                 ['property' => 'og:title', 'content' => $seo?->og_title ?? $metaTitle],
                 ['property' => 'og:description', 'content' => $seo?->og_description ?? $metaDesc],
-                ['property' => 'og:image', 'content' => $seo?->og_image ? asset('storage/' . $seo->og_image) : ($model->thumbnail ?? $model->featured_image ?? $model->image ?? null)],
+                ['property' => 'og:image', 'content' => $seo?->og_image ? asset('storage/' . $seo->og_image) : ($model->thumbnail ?? $model->featured_image ?? $model->image ?? $defaultOgImage)],
                 ['name' => 'twitter:card', 'content' => $seo?->twitter_card ?? 'summary_large_image'],
                 ['name' => 'robots', 'content' => $seo?->noindex ? 'noindex, nofollow' : 'index, follow'],
                 ['rel' => 'canonical', 'href' => $seo?->canonical_url ?? url()->current()],
@@ -58,8 +62,15 @@ class SeoResolver
 
     public static function staticPage(string $title, string $description = ''): array
     {
-        $siteName = config('app.name', 'ACTiV');
+        $settings = \App\Models\Setting::whereIn('key', ['seo_default_title', 'seo_default_description', 'seo_default_og_image'])
+            ->pluck('value', 'key');
+
+        $siteName = $settings['seo_default_title'] ?? config('app.name', 'ACTiV');
+        $defaultDesc = $settings['seo_default_description'] ?? '';
+        $defaultOgImage = $settings['seo_default_og_image'] ? asset('storage/' . $settings['seo_default_og_image']) : null;
+
         $fullTitle = $title ? "{$title} | {$siteName}" : $siteName;
+        $metaDesc = $description ?: $defaultDesc;
         $currentUrl = url()->current();
 
         /** @var JsonLdGenerator $generator */
@@ -69,16 +80,20 @@ class SeoResolver
         return [
             'tags' => [
                 'title' => $fullTitle,
-                'description' => $description,
+                'description' => $metaDesc,
                 'canonical_url' => $currentUrl,
                 'og_title' => $fullTitle,
-                'og_description' => $description,
+                'og_description' => $metaDesc,
+                'og_image' => $defaultOgImage,
                 'og_type' => 'website',
                 'twitter_card' => 'summary_large_image',
                 'noindex' => false,
             ],
             'meta' => [
-                ['name' => 'description', 'content' => $description],
+                ['name' => 'description', 'content' => $metaDesc],
+                ['property' => 'og:title', 'content' => $fullTitle],
+                ['property' => 'og:description', 'content' => $metaDesc],
+                ['property' => 'og:image', 'content' => $defaultOgImage],
             ],
             'json_ld' => $json_ld,
         ];

@@ -34,6 +34,8 @@ class ManageSeoSettings extends Page implements HasForms
             'seo_gsc_verification',
             'seo_default_title',
             'seo_default_description',
+            'seo_favicon',
+            'seo_default_og_image',
         ])->pluck('value', 'key')->toArray();
 
         // Check if we use form->fill or something else.
@@ -74,6 +76,20 @@ class ManageSeoSettings extends Page implements HasForms
                         Textarea::make('seo_default_description')
                             ->label('Default Meta Description')
                             ->rows(3),
+
+                        \Filament\Forms\Components\FileUpload::make('seo_favicon')
+                            ->label('Site Favicon')
+                            ->image()
+                            ->disk('public')
+                            ->directory('seo')
+                            ->helperText('Upload a square image (32x32 or 64x64 recommended).'),
+
+                        \Filament\Forms\Components\FileUpload::make('seo_default_og_image')
+                            ->label('Default OG Image (Social Share)')
+                            ->image()
+                            ->disk('public')
+                            ->directory('seo')
+                            ->helperText('Fallback image for social sharing (1200x630px recommended).'),
                     ]),
             ])
             ->statePath('data');
@@ -113,6 +129,8 @@ class ManageSeoSettings extends Page implements HasForms
             'seo_gsc_verification' => 'GSC Verification Code',
             'seo_default_title' => 'Default Meta Title',
             'seo_default_description' => 'Default Meta Description',
+            'seo_favicon' => 'Site Favicon',
+            'seo_default_og_image' => 'Default OG Image',
             default => ucwords(str_replace(['seo_', '_'], ['', ' '], $key)),
         };
     }

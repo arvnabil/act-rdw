@@ -7,19 +7,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <link rel="shortcut icon" href="/assets/img/favicons/favicon.ico" type="image/x-icon" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png" />
-    <link rel="manifest" href="/assets/img/favicons/manifest.json" />
     @php
-        $settings = \App\Models\Setting::whereIn('key', ['seo_gtm_id', 'seo_ga4_id', 'seo_gsc_verification'])->pluck(
+        $settings = \App\Models\Setting::whereIn('key', ['seo_gtm_id', 'seo_ga4_id', 'seo_gsc_verification', 'seo_favicon'])->pluck(
             'value',
             'key',
         );
         $gtmId = $settings['seo_gtm_id'] ?? null;
         $ga4Id = $settings['seo_ga4_id'] ?? null;
         $gscCode = $settings['seo_gsc_verification'] ?? null;
+        $favicon = $settings['seo_favicon'] ?? null;
     @endphp
+
+    @if ($favicon)
+        <link rel="shortcut icon" href="{{ asset('storage/' . $favicon) }}" type="image/x-icon" />
+        <link rel="icon" type="image/png" href="{{ asset('storage/' . $favicon) }}" />
+    @else
+        <link rel="shortcut icon" href="/assets/img/favicons/favicon.ico" type="image/x-icon" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/assets/img/favicons/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/assets/img/favicons/favicon-16x16.png" />
+    @endif
+    <link rel="manifest" href="/assets/img/favicons/manifest.json" />
 
     @if ($gscCode)
         <meta name="google-site-verification" content="{{ $gscCode }}" />
