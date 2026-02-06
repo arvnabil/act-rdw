@@ -17,6 +17,10 @@ export default function ProductDetail({ product, seo }) {
                 items={[
                     { label: "Home", link: "/" },
                     { label: "Products", link: "/products" },
+                    {
+                        label: product.brand.name,
+                        link: `/${product.brand.slug}/products`,
+                    },
                     { label: product.name },
                 ]}
             />

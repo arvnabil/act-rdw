@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\DB;
 class SeoOverviewStats extends BaseWidget
 {
     protected static ?int $sort = 1;
-    protected static bool $shouldDisplayOnDashboard = false;
 
     protected function getStats(): array
     {

@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\DB;
 class FormSecurityOverview extends BaseWidget
 {
     protected ?string $pollingInterval = '30s';
-    protected static bool $shouldDisplayOnDashboard = false;
 
     protected function getStats(): array
     {

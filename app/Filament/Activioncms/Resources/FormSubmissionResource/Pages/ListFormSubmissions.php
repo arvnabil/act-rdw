@@ -16,4 +16,11 @@ class ListFormSubmissions extends ListRecords
             // No create action
         ];
     }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            \App\Filament\Activioncms\Widgets\FormSecurityOverview::class,
+        ];
+    }
 }

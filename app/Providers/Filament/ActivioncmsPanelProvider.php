@@ -43,8 +43,8 @@ class ActivioncmsPanelProvider extends PanelProvider
                 Dashboard::class,
                 EventDashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Activioncms/Widgets'), for: 'App\Filament\Activioncms\Widgets')
-            ->discoverWidgets(in: base_path('Modules/Events/Filament/Widgets'), for: 'Modules\\Events\\Filament\\Widgets')
+//            ->discoverWidgets(in: app_path('Filament/Activioncms/Widgets'), for: 'App\Filament\Activioncms\Widgets')
+//            ->discoverWidgets(in: base_path('Modules/Events/Filament/Widgets'), for: 'Modules\\Events\\Filament\\Widgets')
             ->widgets([
                 AccountWidget::class,
                 FilamentInfoWidget::class,

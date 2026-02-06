@@ -114,6 +114,7 @@ class ProductController extends Controller
             'brand' => [
                 'name' => $product->brand->name,
                 'logo' => $product->brand->logo,
+                'slug' => $product->brand->slug,
             ],
             'tags' => $product->tags ?? [],
             'specification' => collect($product->specs ?? [])->map(function($value, $key) {

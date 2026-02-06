@@ -9,7 +9,6 @@ class SeoIndexStatusChart extends ChartWidget
 {
     protected ?string $heading = 'Index Coverage Status';
     protected ?string $maxHeight = '250px';
-    protected static bool $shouldDisplayOnDashboard = false;
 
     protected function getData(): array
     {

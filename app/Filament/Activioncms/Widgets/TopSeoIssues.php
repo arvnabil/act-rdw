@@ -15,7 +15,6 @@ use Filament\Tables\Columns\TextColumn;
 class TopSeoIssues extends BaseWidget
 {
     protected static ?int $sort = 3;
-    protected static bool $shouldDisplayOnDashboard = false;
     protected int | string | array $columnSpan = 'full';
     protected static ?string $heading = 'Top SEO Issues';
 
