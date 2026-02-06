@@ -5,10 +5,10 @@ namespace App\Filament\Activioncms\Pages;
 use Filament\Pages\Dashboard as BaseDashboard;
 use Filament\Widgets\AccountWidget;
 use Filament\Widgets\FilamentInfoWidget;
-use BezhanSalleh\FilamentGoogleAnalytics\Widgets\SessionsWidget;
-use BezhanSalleh\FilamentGoogleAnalytics\Widgets\ActiveUsersOneDayWidget;
-use BezhanSalleh\FilamentGoogleAnalytics\Widgets\MostVisitedPagesWidget;
-use BezhanSalleh\FilamentGoogleAnalytics\Widgets\TopReferrersListWidget;
+use BezhanSalleh\GoogleAnalytics\Widgets\SessionsWidget;
+use BezhanSalleh\GoogleAnalytics\Widgets\ActiveUsersOneDayWidget;
+use BezhanSalleh\GoogleAnalytics\Widgets\MostVisitedPagesWidget;
+use BezhanSalleh\GoogleAnalytics\Widgets\TopReferrersListWidget;
 
 class Dashboard extends BaseDashboard
 {
