@@ -36,6 +36,8 @@ class ManageSeoSettings extends Page implements HasForms
             'seo_default_description',
             'seo_favicon',
             'seo_default_og_image',
+            'seo_ga4_property_id',
+            'seo_ga4_service_account_json',
         ])->pluck('value', 'key')->toArray();
 
         // Check if we use form->fill or something else.
@@ -91,6 +93,21 @@ class ManageSeoSettings extends Page implements HasForms
                             ->directory('seo')
                             ->helperText('Fallback image for social sharing (1200x630px recommended).'),
                     ]),
+
+                Section::make('Google Analytics Dashboard API')
+                    ->description('Configuration for the Filament dashboard visual charts. This is separate from the Tracking ID above.')
+                    ->schema([
+                        TextInput::make('seo_ga4_property_id')
+                            ->label('GA4 Property ID')
+                            ->placeholder('123456789')
+                            ->helperText('Get this from Admin > Property Settings > Property Details in GA4 Console.'),
+
+                        Textarea::make('seo_ga4_service_account_json')
+                            ->label('Service Account JSON Content')
+                            ->rows(10)
+                            ->placeholder('{"type": "service_account", ...}')
+                            ->helperText('Paste the entire content of your Google Service Account JSON key file.'),
+                    ]),
             ])
             ->statePath('data');
     }
@@ -131,6 +148,8 @@ class ManageSeoSettings extends Page implements HasForms
             'seo_default_description' => 'Default Meta Description',
             'seo_favicon' => 'Site Favicon',
             'seo_default_og_image' => 'Default OG Image',
+            'seo_ga4_property_id' => 'GA4 Property ID',
+            'seo_ga4_service_account_json' => 'Service Account JSON',
             default => ucwords(str_replace(['seo_', '_'], ['', ' '], $key)),
         };
     }
