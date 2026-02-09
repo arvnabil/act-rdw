@@ -132,8 +132,18 @@ export function useTemplateInit() {
                         .children("a")
                         .off("click")
                         .on("click", function (e) {
-                            e.preventDefault();
-                            toggleDropDown($(this).parent());
+                            const href = $(this).attr("href");
+                            if (href && href !== "#" && !href.startsWith("javascript")) {
+                                // If it's a real link, only toggle if clicking the expander
+                                if ($(e.target).hasClass(opt.meanExpandClass)) {
+                                    e.preventDefault();
+                                    toggleDropDown($(this).parent());
+                                }
+                            } else {
+                                // If it's # or similar, toggle anyway
+                                e.preventDefault();
+                                toggleDropDown($(this).parent());
+                            }
                         });
                 });
                 function toggleDropDown($element) {
@@ -150,19 +160,13 @@ export function useTemplateInit() {
                     .on("click", opt.menuToggleBtn, function () {
                         menuToggle();
                     });
+
+                // Toggle menu on click of the background/wrapper
                 menu.off("click").on("click", function (e) {
-                    e.stopPropagation();
-                    menuToggle();
+                    if ($(e.target).hasClass("th-menu-wrapper")) {
+                        menuToggle();
+                    }
                 });
-                menu.find("div")
-                    .off("click")
-                    .on("click", function (e) {
-                        if (
-                            $(e.target).closest(".th-menu-toggle").length === 0
-                        ) {
-                            e.stopPropagation();
-                        }
-                    });
             });
         };
         $(".th-menu-wrapper").thmobilemenu();
@@ -198,7 +202,7 @@ export function useTemplateInit() {
             progressPath.getBoundingClientRect();
             progressPath.style.transition =
                 progressPath.style.WebkitTransition =
-                    "stroke-dashoffset 10ms linear";
+                "stroke-dashoffset 10ms linear";
 
             var updateProgress = function () {
                 var scroll = $(window).scrollTop();

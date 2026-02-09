@@ -88,20 +88,45 @@ export default function MainLayout({ children }) {
         };
     }, []);
 
+    const closeMobileMenu = () => {
+        const menuWrapper = document.querySelector(".th-menu-wrapper");
+        if (menuWrapper) {
+            menuWrapper.classList.remove("th-body-visible");
+        }
+    };
+
+    const isExternalUrl = (url) => {
+        if (!url) return false;
+        return url.startsWith("http://") || url.startsWith("https://");
+    };
+
     // Helper to render menu items recursively
     const renderMenuItems = (items) => {
         return items.map((item, index) => {
             const hasChildren = item.children && item.children.length > 0;
             const liClass = hasChildren ? "menu-item-has-children" : "";
 
+            const isExternal = isExternalUrl(item.url) || item.target === "_blank";
+
             return (
                 <li key={index} className={liClass}>
-                    {item.type === "custom" ? (
-                        <a href={item.url} target={item.target}>
+                    {isExternal ? (
+                        <a
+                            href={item.url || "#"}
+                            target={item.target || "_self"}
+                            onClick={closeMobileMenu}
+                            rel={item.target === "_blank" ? "noopener noreferrer" : ""}
+                        >
                             {item.title}
                         </a>
                     ) : (
-                        <Link href={item.url}>{item.title}</Link>
+                        <Link
+                            href={item.url || "#"}
+                            target={item.target || "_self"}
+                            onClick={closeMobileMenu}
+                        >
+                            {item.title}
+                        </Link>
                     )}
 
                     {hasChildren && (
@@ -116,23 +141,31 @@ export default function MainLayout({ children }) {
 
     // Helper for footer links (simple list)
     const renderFooterLinks = (items) => {
-        return items.map((item, index) => (
-            <li key={index}>
-                {item.type === "custom" ? (
-                    <a
-                        href={item.url}
-                        style={{ color: "#fff" }}
-                        target={item.target}
-                    >
-                        {item.title}
-                    </a>
-                ) : (
-                    <Link href={item.url} style={{ color: "#fff" }}>
-                        {item.title}
-                    </Link>
-                )}
-            </li>
-        ));
+        return items.map((item, index) => {
+            const isExternal = isExternalUrl(item.url) || item.target === "_blank";
+            return (
+                <li key={index}>
+                    {isExternal ? (
+                        <a
+                            href={item.url || "#"}
+                            style={{ color: "#fff" }}
+                            target={item.target || "_self"}
+                            rel={item.target === "_blank" ? "noopener noreferrer" : ""}
+                        >
+                            {item.title}
+                        </a>
+                    ) : (
+                        <Link
+                            href={item.url || "#"}
+                            style={{ color: "#fff" }}
+                            target={item.target || "_self"}
+                        >
+                            {item.title}
+                        </Link>
+                    )}
+                </li>
+            );
+        });
     };
 
     return (
