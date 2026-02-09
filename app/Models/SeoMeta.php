@@ -33,10 +33,14 @@ class SeoMeta extends Model
     protected static function booted()
     {
         static::saving(function ($seoMeta) {
-            $result = \App\Services\Seo\SeoScoreCalculator::calculate($seoMeta);
-            $seoMeta->seo_score = $result['score'];
+            // Only calculate score if the parent model exists
+            if ($seoMeta->seoable) {
+                $auditService = app(\App\Services\Seo\SeoAuditService::class);
+                $seoMeta->seo_score = $auditService->calculateScore($seoMeta->seoable);
+            }
         });
     }
+
 
     public function seoable()
     {
