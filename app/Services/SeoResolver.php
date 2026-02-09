@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Models\SeoMeta;
-use App\Services\JsonLdGenerator;
+use App\Services\Seo\SeoService;
 
 class SeoResolver
 {

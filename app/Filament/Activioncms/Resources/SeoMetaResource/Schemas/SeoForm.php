@@ -2,7 +2,6 @@
 
 namespace App\Filament\Activioncms\Resources\SeoMetaResource\Schemas;
 
-use App\Services\JsonLdGenerator;
 use Filament\Actions\Action;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Textarea;
