@@ -74,7 +74,12 @@
     @viteReactRefresh
     @vite(['resources/css/app.css', 'resources/js/app.jsx'])
     @inertiaHead
+
+    @if (isset($seoManager))
+        {!! $seoManager->render() !!}
+    @endif
 </head>
+
 
 <body>
     @php

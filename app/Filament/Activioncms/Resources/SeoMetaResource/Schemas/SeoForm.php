@@ -101,12 +101,29 @@ class SeoForm
                                                 return;
                                             }
 
-                                            $generator = app(JsonLdGenerator::class);
+                                            $seoService = app(\App\Services\Seo\SeoService::class);
                                             try {
-                                                // Pass 'true' to force generation even in Admin context
-                                                $schema = $generator->generate($record->seoable, true);
-                                                // Convert array to Pretty Print JSON String
-                                                $jsonString = json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT);
+                                                // Create a fresh manager for snapshot generation
+                                                $seoManager = new \App\Services\Seo\SeoManager();
+                                                $data = $seoService->extract($record->seoable);
+
+                                                // Build the graph using the same logic as the ViewComposer
+                                                $seoManager->addSchema(new \App\Services\Seo\Schemas\WebPageSchema(
+                                                    $data['title'], $data['description'], $data['url'], $seoManager->getWebsiteId()
+                                                ));
+
+                                                if ($data['type'] === 'Article' && isset($data['article'])) {
+                                                    $seoManager->addSchema(new \App\Services\Seo\Schemas\ArticleSchema(
+                                                        $data['title'], $data['description'], $data['url'], $data['og_image'],
+                                                        ['@type' => 'Organization', 'name' => config('app.name')],
+                                                        ['@id' => $seoManager->getOrganizationId()],
+                                                        $data['article']['datePublished'], $data['article']['dateModified'],
+                                                        $data['keywords'], $data['article']['section']
+                                                    ));
+                                                }
+
+                                                $graph = $seoManager->getGraph();
+                                                $jsonString = json_encode(['@context' => 'https://schema.org', '@graph' => $graph], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT);
 
                                                 $set('schema_override', $jsonString);
 
@@ -121,6 +138,7 @@ class SeoForm
                                                     ->danger()
                                                     ->send();
                                             }
+
                                         })
                                 )
                                 ->hintAction(

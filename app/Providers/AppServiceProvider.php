@@ -12,8 +12,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(\App\Services\Seo\SeoManager::class);
     }
+
 
     /**
      * Bootstrap any application services.
@@ -21,5 +22,8 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Schema::DefaultStringLength(191);
+
+        view()->composer('app', \App\View\Composers\SeoViewComposer::class);
     }
+
 }
