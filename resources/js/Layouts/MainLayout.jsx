@@ -88,7 +88,12 @@ export default function MainLayout({ children }) {
         };
     }, []);
 
-    const closeMobileMenu = () => {
+    const closeMobileMenu = (e) => {
+        // If the click is on the expander icon (+) or a '#' link, don't close the menu
+        if (e && (e.target.classList.contains("th-mean-expand") || e.currentTarget.getAttribute("href") === "#")) {
+            return;
+        }
+
         const menuWrapper = document.querySelector(".th-menu-wrapper");
         if (menuWrapper) {
             menuWrapper.classList.remove("th-body-visible");
