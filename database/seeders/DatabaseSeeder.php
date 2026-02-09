@@ -30,6 +30,7 @@ class DatabaseSeeder extends Seeder
             PageSeeder::class,
             ServicesPageSeeder::class,
             MenuSeeder::class,
+            SettingSeeder::class,
         ]);
 
         // $this->call(\Modules\ServiceSolutions\Database\Seeders\ProductConfiguratorSeeder::class);

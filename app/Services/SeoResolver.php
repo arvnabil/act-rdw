@@ -15,7 +15,8 @@ class SeoResolver
 
         $siteName = $settings['seo_default_title'] ?? config('app.name', 'ACTiV');
         $defaultDesc = $settings['seo_default_description'] ?? '';
-        $defaultOgImage = $settings['seo_default_og_image'] ? asset('storage/' . $settings['seo_default_og_image']) : null;
+        $defaultOgImageVal = $settings['seo_default_og_image'] ?? null;
+        $defaultOgImage = $defaultOgImageVal ? asset('storage/' . $defaultOgImageVal) : null;
 
         $seo = $model->seo;
 
@@ -67,7 +68,8 @@ class SeoResolver
 
         $siteName = $settings['seo_default_title'] ?? config('app.name', 'ACTiV');
         $defaultDesc = $settings['seo_default_description'] ?? '';
-        $defaultOgImage = $settings['seo_default_og_image'] ? asset('storage/' . $settings['seo_default_og_image']) : null;
+        $defaultOgImageVal = $settings['seo_default_og_image'] ?? null;
+        $defaultOgImage = $defaultOgImageVal ? asset('storage/' . $defaultOgImageVal) : null;
 
         $fullTitle = $title ? "{$title} | {$siteName}" : $siteName;
         $metaDesc = $description ?: $defaultDesc;
