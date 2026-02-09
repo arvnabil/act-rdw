@@ -14,13 +14,20 @@ class Dashboard extends BaseDashboard
 {
     public function getWidgets(): array
     {
-        return [
+        $widgets = [
             AccountWidget::class,
             FilamentInfoWidget::class,
-            SessionsWidget::class,
-            ActiveUsersOneDayWidget::class,
-            MostVisitedPagesWidget::class,
-            TopReferrersListWidget::class,
         ];
+
+        if (config('analytics.property_id') && class_exists(SessionsWidget::class)) {
+            $widgets = array_merge($widgets, [
+                SessionsWidget::class,
+                ActiveUsersOneDayWidget::class,
+                MostVisitedPagesWidget::class,
+                TopReferrersListWidget::class,
+            ]);
+        }
+
+        return $widgets;
     }
 }
