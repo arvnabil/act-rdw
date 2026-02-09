@@ -21,7 +21,7 @@ class SeoService
             'description' => $this->cleanDesc($seo?->description ?? $model->excerpt ?? $model->description ?? ''),
             'url' => $this->resolveUrl($model, $baseUrl),
             'og_image' => $this->resolveImage($model),
-            'keywords' => $seo?->keywords ?? [],
+            'keywords' => $this->resolveKeywords($seo?->keywords),
             'type' => $this->resolveType($model),
         ];
 
@@ -81,5 +81,24 @@ class SeoService
             $model instanceof Service => 'Service',
             default => 'WebPage'
         };
+    }
+    protected function resolveKeywords(mixed $keywords): array
+    {
+        if (is_array($keywords)) {
+            return $keywords;
+        }
+
+        if (is_string($keywords)) {
+            // Check if it's a JSON string
+            $decoded = json_decode($keywords, true);
+            if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+                return $decoded;
+            }
+
+            // Otherwise treat as comma-separated string
+            return array_map('trim', explode(',', $keywords));
+        }
+
+        return [];
     }
 }
