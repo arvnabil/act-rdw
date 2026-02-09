@@ -12,6 +12,11 @@ class Project extends Model
 {
     use HasFactory, HasSeoMeta, HasImageCleanup;
 
+    public function author()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'user_id');
+    }
+
     protected $cleanupFields = ['thumbnail'];
 
     protected $guarded = ['id'];

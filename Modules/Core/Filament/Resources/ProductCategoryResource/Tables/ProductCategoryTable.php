@@ -16,7 +16,11 @@ class ProductCategoryTable
     {
         return $table
             ->columns([
-                ImageColumn::make('icon'),
+                ImageColumn::make('icon')
+                    ->disk('public')
+                    ->width(80)
+                    ->height(80)
+                    ->extraImgAttributes(['style' => 'object-fit: contain; background: #222;']),
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable(),

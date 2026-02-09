@@ -27,22 +27,20 @@ class SeoViewComposer
         $page = $view->page ?? [];
         $props = $page['props'] ?? [];
 
-        // Try to find the primary model in Inertia props
-        $model = $props['model'] ?? $props['page'] ?? $props['post'] ?? $props['service'] ?? $props['project'] ?? $props['brand'] ?? null;
-
-        if ($model instanceof Model) {
-            $this->processModel($model);
-        } else {
-            $this->processStatic($view, $props);
-        }
-
-        // Add global LocalBusiness schema (from settings)
+        // 1. Process Global Auto-detected Schemas (from Section Builder)
+        $this->addFaqSchema($props);
+        $this->addReviewSchema($props);
         $this->addLocalBusinessSchema();
+
+        // 2. Add Static Fallback if no specific schemas were registered by Controller
+        if (!$this->seoManager->hasSchemas()) {
+            $this->processStatic($props);
+        }
 
         $view->with('seoManager', $this->seoManager);
     }
 
-    protected function processStatic(View $view, array $props): void
+    protected function processStatic(array $props): void
     {
         $seoData = $props['seo']['tags'] ?? [];
         $title = $seoData['title'] ?? config('app.name');
@@ -62,115 +60,46 @@ class SeoViewComposer
         ]));
     }
 
-    protected function processModel(Model $model): void
-    {
-        $data = $this->seoService->extract($model);
-
-        // Always add WebPage
-        $this->seoManager->addSchema(new WebPageSchema(
-            title: $data['title'],
-            description: $data['description'],
-            url: $data['url'],
-            websiteId: $this->seoManager->getWebsiteId(),
-            mainEntityId: $this->resolveMainEntityId($data)
-        ));
-
-        // Article Schema
-        if ($data['type'] === 'Article' && isset($data['article'])) {
-            $this->seoManager->addSchema(new ArticleSchema(
-                headline: $data['title'],
-                description: $data['description'],
-                url: $data['url'],
-                image: $data['og_image'],
-                author: ['@type' => 'Organization', 'name' => config('app.name')],
-                publisher: ['@id' => $this->seoManager->getOrganizationId()],
-                datePublished: $data['article']['datePublished'],
-                dateModified: $data['article']['dateModified'],
-                keywords: $data['keywords'],
-                articleSection: $data['article']['section']
-            ));
-        }
-
-        // Service Schema
-        if ($data['type'] === 'Service' && isset($data['service'])) {
-            $this->seoManager->addSchema(new ServiceSchema(
-                name: $data['title'],
-                description: $data['description'],
-                url: $data['url'],
-                image: $data['og_image'],
-                provider: ['@id' => $this->seoManager->getOrganizationId()],
-                offers: $data['service']['offers']
-            ));
-        }
-
-        // FAQ Schema (auto-detect from sections)
-        $this->addFaqSchema($model);
-
-        // Review Schema (auto-detect from sections or testimonials)
-        $this->addReviewSchema($model);
-
-        // Breadcrumbs
-        $this->seoManager->addSchema(new BreadcrumbSchema(
-            $this->generateBreadcrumbs($model, $data['url'])
-        ));
-    }
-
-    protected function addFaqSchema(Model $model): void
+    protected function addFaqSchema(array $props): void
     {
         $faqItems = [];
+        $sections = $props['sections'] ?? [];
 
-        // Priority 1: Check if model has sections with FAQ type
-        if (method_exists($model, 'sections') || isset($model->sections)) {
-            $sections = $model->sections ?? collect();
-            foreach ($sections as $section) {
-                $type = strtolower($section->type ?? '');
-                if (in_array($type, ['faq', 'faqs', 'questions', 'accordion'])) {
-                    $items = $section->settings['items'] ?? $section->settings['faqs'] ?? $section->settings['questions'] ?? [];
-                    $faqItems = array_merge($faqItems, $items);
-                }
+        foreach ($sections as $section) {
+            $type = strtolower($section['type'] ?? '');
+            if (in_array($type, ['faq', 'faqs', 'questions', 'accordion'])) {
+                $items = $section['settings']['items'] ?? $section['settings']['faqs'] ?? $section['settings']['questions'] ?? [];
+                $faqItems = array_merge($faqItems, $items);
             }
-        }
-
-        // Priority 2: Check seo_meta for manual override
-        if (empty($faqItems) && $model->seo?->faq_items) {
-            $faqItems = $model->seo->faq_items;
         }
 
         if (!empty($faqItems)) {
-            $schema = new FaqSchema($faqItems);
-            $result = $schema->toArray();
-            if (!empty($result)) {
-                $this->seoManager->addSchema($schema);
-            }
+            $this->seoManager->addSchema(new FaqSchema($faqItems));
         }
     }
 
-    protected function addReviewSchema(Model $model): void
+    protected function addReviewSchema(array $props): void
     {
         $reviews = [];
+        $sections = $props['sections'] ?? [];
 
-        // Check if model has sections with testimonial type
-        if (method_exists($model, 'sections') || isset($model->sections)) {
-            $sections = $model->sections ?? collect();
-            foreach ($sections as $section) {
-                $type = strtolower($section->type ?? '');
-                if (in_array($type, ['testimonial', 'testimonials', 'review', 'reviews'])) {
-                    $items = $section->settings['items'] ?? $section->settings['testimonials'] ?? $section->settings['reviews'] ?? [];
-                    $reviews = array_merge($reviews, $items);
-                }
+        foreach ($sections as $section) {
+            $type = strtolower($section['type'] ?? '');
+            if (in_array($type, ['testimonial', 'testimonials', 'review', 'reviews'])) {
+                $items = $section['settings']['items'] ?? $section['settings']['testimonials'] ?? $section['settings']['reviews'] ?? [];
+                $reviews = array_merge($reviews, $items);
             }
         }
 
         if (!empty($reviews)) {
-            $schema = new ReviewSchema(
-                itemName: $model->title ?? $model->name ?? config('app.name'),
-                itemUrl: $model->url ?? url()->current(),
+            $title = $props['page']['title'] ?? $props['post']['title'] ?? $props['service']['title'] ?? config('app.name');
+            $url = $props['page']['url'] ?? $props['post']['url'] ?? $props['service']['url'] ?? url()->current();
+
+            $this->seoManager->addSchema(new ReviewSchema(
+                itemName: $title,
+                itemUrl: $url,
                 reviews: $reviews
-            );
-            $result = $schema->toArray();
-            if (!empty($result)) {
-                $this->seoManager->addSchema($schema);
-            }
+            ));
         }
     }
 
@@ -206,30 +135,5 @@ class SeoViewComposer
         } catch (\Exception $e) {
             // Silently skip if settings table doesn't exist or has issues
         }
-    }
-
-    protected function resolveMainEntityId(array $data): ?string
-    {
-        if ($data['type'] === 'Article') return $data['url'] . '#article';
-        if ($data['type'] === 'Service') return $data['url'] . '#service';
-        return null;
-    }
-
-    protected function generateBreadcrumbs(Model $model, string $currentUrl): array
-    {
-        $baseUrl = config('app.url');
-        $crumbs = [['name' => 'Home', 'item' => $baseUrl]];
-
-        if ($model instanceof \App\Models\News) {
-            $crumbs[] = ['name' => 'News', 'item' => $baseUrl . '/news'];
-        } elseif ($model instanceof \Modules\ServiceSolutions\Models\Service) {
-            $crumbs[] = ['name' => 'Services', 'item' => $baseUrl . '/services'];
-        } elseif ($model instanceof \App\Models\Project) {
-            $crumbs[] = ['name' => 'Projects', 'item' => $baseUrl . '/projects'];
-        }
-
-        $crumbs[] = ['name' => $model->title ?? $model->name, 'item' => $currentUrl];
-
-        return $crumbs;
     }
 }

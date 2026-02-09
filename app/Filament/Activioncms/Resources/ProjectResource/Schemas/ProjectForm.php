@@ -84,6 +84,13 @@ class ProjectForm
                                                         ->default('draft')
                                                         ->required(),
 
+                                                    Select::make('user_id')
+                                                        ->label('Author')
+                                                        ->relationship('author', 'name')
+                                                        ->default(auth()->id())
+                                                        ->required()
+                                                        ->searchable(),
+
                                                     DateTimePicker::make('published_at'),
 
                                                     Toggle::make('is_featured')

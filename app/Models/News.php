@@ -12,7 +12,7 @@ class News extends Model
 {
     use HasFactory, HasSeoMeta, HasImageCleanup;
 
-    protected $cleanupFields = ['featured_image'];
+    protected $cleanupFields = ['thumbnail'];
 
     protected $guarded = ['id'];
 
@@ -28,5 +28,10 @@ class News extends Model
     public function tags()
     {
         return $this->belongsToMany(NewsTag::class, 'news_tag_post');
+    }
+
+    public function author()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'user_id');
     }
 }

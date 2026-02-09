@@ -62,7 +62,7 @@ class NewsController extends Controller
                     'title' => $post->title,
                     'slug' => $post->slug,
                     'link' => route('dynamic.resolve', $post->slug),
-                    'image' => $resolvePath($post->featured_image),
+                    'image' => $resolvePath($post->thumbnail),
                     'date' => $post->published_at ? $post->published_at->format('d M, Y') : '',
                     'author' => 'ACTiV Team',
                     'category' => $post->categories->first()?->name ?? 'Uncategorized', // Display primary category
@@ -87,7 +87,7 @@ class NewsController extends Controller
                     'title' => $post->title,
                     'slug' => $post->slug,
                     'link' => route('dynamic.resolve', $post->slug),
-                    'image' => $resolvePath($post->featured_image),
+                    'image' => $resolvePath($post->thumbnail),
                     'date' => $post->published_at ? $post->published_at->format('d M, Y') : '',
                 ];
             });

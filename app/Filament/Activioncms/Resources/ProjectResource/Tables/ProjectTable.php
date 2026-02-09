@@ -19,7 +19,11 @@ class ProjectTable
     {
         return $table
             ->columns([
-                ImageColumn::make('thumbnail'),
+                ImageColumn::make('thumbnail')
+                    ->disk('public')
+                    ->width(160)
+                    ->height(90)
+                    ->extraImgAttributes(['style' => 'object-fit: contain; background: #222;']),
                 TextColumn::make('title')->searchable()->sortable(),
                 BadgeColumn::make('status')
                     ->colors([

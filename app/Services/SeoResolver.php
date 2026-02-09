@@ -13,6 +13,10 @@ class SeoResolver
         $seoService = app(SeoService::class);
         $data = $seoService->extract($model);
 
+        // Register schemas in SeoManager (singleton)
+        $seoManager = app(\App\Services\Seo\SeoManager::class);
+        self::registerSchemas($seoManager, $model, $data);
+
         $seo = $model->seo;
 
         return [
@@ -39,6 +43,62 @@ class SeoResolver
             ],
             'json_ld' => [], // Managed by SeoViewComposer now
         ];
+    }
+
+    protected static function registerSchemas($seoManager, $model, $data): void
+    {
+        // 1. Article (Registered first for prominence)
+        if ($data['type'] === 'Article' && isset($data['article'])) {
+            $seoManager->addSchema(new \App\Services\Seo\Schemas\ArticleSchema(
+                headline: $data['title'],
+                description: $data['description'],
+                url: $data['url'],
+                image: $data['og_image'],
+                author: [
+                    '@type' => 'Person',
+                    'name' => $model->author?->name ?? $model->user?->name ?? $seoManager->getAppName(),
+                    'url' => config('app.url')
+                ],
+                publisher: ['@id' => $seoManager->getOrganizationId()],
+                datePublished: $data['article']['datePublished'],
+                dateModified: $data['article']['dateModified'],
+                wordCount: $data['article']['wordCount'] ?? null,
+                keywords: $data['article']['keywords'] ?? $data['keywords'] ?? [],
+                articleSection: $data['article']['section']
+            ));
+        }
+
+        // 2. WebPage
+        $seoManager->addSchema(new \App\Services\Seo\Schemas\WebPageSchema(
+            title: $data['title'],
+            description: $data['description'],
+            url: $data['url'],
+            websiteId: $seoManager->getWebsiteId(),
+            mainEntityId: $data['type'] === 'Article' ? $data['url'] . '#article' : ($data['type'] === 'Service' ? $data['url'] . '#service' : null)
+        ));
+
+        // 3. Service
+        if ($data['type'] === 'Service' && isset($data['service'])) {
+            $seoManager->addSchema(new \App\Services\Seo\Schemas\ServiceSchema(
+                name: $data['title'],
+                description: $data['description'],
+                url: $data['url'],
+                image: $data['og_image'],
+                provider: ['@id' => $seoManager->getOrganizationId()],
+                offers: $data['service']['offers']
+            ));
+        }
+
+        // 4. Breadcrumbs
+        $crumbs = [['name' => 'Home', 'item' => config('app.url')]];
+        if ($model instanceof \App\Models\News) {
+            $crumbs[] = ['name' => 'News', 'item' => config('app.url') . '/news'];
+        } elseif ($model instanceof \Modules\ServiceSolutions\Models\Service) {
+            $crumbs[] = ['name' => 'Services', 'item' => config('app.url') . '/services'];
+        }
+        $crumbs[] = ['name' => $model->title ?? $model->name, 'item' => $data['url']];
+
+        $seoManager->addSchema(new \App\Services\Seo\Schemas\BreadcrumbSchema($crumbs));
     }
 
 

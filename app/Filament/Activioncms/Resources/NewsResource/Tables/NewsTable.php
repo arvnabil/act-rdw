@@ -18,7 +18,13 @@ class NewsTable
     {
         return $table
             ->columns([
-                ImageColumn::make('featured_image'),
+                ImageColumn::make('thumbnail')
+                    ->label('Featured image')
+                    ->disk('public')
+                    ->defaultImageUrl(url('/assets/img/logo/logo.png'))
+                    ->width(160)
+                    ->height(90)
+                    ->extraImgAttributes(['style' => 'object-fit: contain; background: #222;']),
                 TextColumn::make('title')->searchable()->sortable(),
                 BadgeColumn::make('status')
                     ->colors([

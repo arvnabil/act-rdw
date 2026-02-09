@@ -63,36 +63,55 @@ class NewsForm
                                                         ->default('draft')
                                                         ->required(),
 
-                                                    DateTimePicker::make('published_at'),
+                                                    Select::make('user_id')
+                                                        ->label('Author')
+                                                        ->relationship('author', 'name')
+                                                        ->default(auth()->id())
+                                                        ->required()
+                                                        ->searchable(),
 
-                                                    Forms\Components\CheckboxList::make('categories')
+                                                    DateTimePicker::make('published_at')
+                                                        ->columnSpanFull(),
+
+                                                    Select::make('categories')
                                                         ->relationship('categories', 'name')
-                                                        ->searchable()
-                                                        ->bulkToggleable()
-                                                        ->columns(1),
-
-                                                    Forms\Components\Select::make('tags')
-                                                        ->relationship('tags', 'name')
                                                         ->multiple()
                                                         ->searchable()
                                                         ->preload()
                                                         ->createOptionForm([
-                                                            Forms\Components\TextInput::make('name')
+                                                            TextInput::make('name')
                                                                 ->required()
                                                                 ->live(onBlur: true)
-                                                                ->afterStateUpdated(fn (string $operation, $state, $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
-                                                            Forms\Components\TextInput::make('slug')
-                                                                ->disabled()
-                                                                ->dehydrated()
+                                                                ->afterStateUpdated(fn ($state, $set) => $set('slug', Str::slug($state))),
+                                                            TextInput::make('slug')
                                                                 ->required()
-                                                                ->unique(\App\Models\NewsTag::class, 'slug'),
+                                                                ->unique(\App\Models\NewsCategory::class, 'slug', ignoreRecord: true),
                                                         ])
+                                                        ->columnSpanFull(),
+
+                                                    Forms\Components\TagsInput::make('tags_input')
+                                                        ->label('Tags')
+                                                        ->placeholder('Type a tag and press enter or space...')
+                                                        ->afterStateHydrated(function (Forms\Components\TagsInput $component, ?\App\Models\News $record) {
+                                                            $component->state($record ? $record->tags->pluck('name')->toArray() : []);
+                                                        })
+                                                        ->saveRelationshipsUsing(function (\App\Models\News $record, $state) {
+                                                            $tagIds = collect($state)->map(function ($tagName) {
+                                                                $tag = \App\Models\NewsTag::firstOrCreate(
+                                                                    ['name' => $tagName],
+                                                                    ['slug' => \Illuminate\Support\Str::slug($tagName)]
+                                                                );
+                                                                return $tag->id;
+                                                            });
+                                                            
+                                                            $record->tags()->sync($tagIds);
+                                                        })
                                                         ->columnSpanFull(),
                                                 ]),
 
                                             Section::make('Media')
                                                 ->schema([
-                                                    FileUpload::make('featured_image')
+                                                    FileUpload::make('thumbnail')
                                                         ->image()
                                                         ->disk('public')
                                                         ->directory(fn (\Filament\Schemas\Components\Utilities\Get $get) => 'news/' . ($get('slug') ?? 'temp'))

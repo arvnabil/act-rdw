@@ -12,11 +12,24 @@ class ProductTable
     {
         return $table
             ->columns([
-                Tables\Columns\ImageColumn::make('image_path'),
+                Tables\Columns\ImageColumn::make('image_path')
+                    ->label('Image')
+                    ->disk('public')
+                    ->width(120)
+                    ->height(80)
+                    ->extraImgAttributes(['style' => 'object-fit: contain; background: #222;']),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
+                Tables\Columns\TextColumn::make('sku')
+                    ->label('SKU')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('category.name')
+                    ->label('Category')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('brand.name')
+                    ->label('Brand')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('price')
                     ->money('IDR')

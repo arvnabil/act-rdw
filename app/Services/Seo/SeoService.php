@@ -30,7 +30,9 @@ class SeoService
             $data['article'] = [
                 'datePublished' => $model->published_at?->toIso8601String() ?? $model->created_at->toIso8601String(),
                 'dateModified' => $model->updated_at->toIso8601String(),
-                'section' => $model->category?->name,
+                'section' => $model->categories->pluck('name')->first(),
+                'wordCount' => str_word_count(strip_tags($model->content ?? $model->description ?? '')),
+                'keywords' => array_merge($data['keywords'], $model->tags->pluck('name')->toArray())
             ];
         }
 
@@ -70,7 +72,7 @@ class SeoService
 
     protected function resolveImage(Model $model): ?string
     {
-        $path = $model->seo?->og_image ?? $model->featured_image ?? $model->thumbnail ?? $model->image_path;
+        $path = $model->seo?->og_image ?? $model->thumbnail ?? $model->featured_image ?? $model->image_path;
         return $path ? asset('storage/' . $path) : asset('assets/img/logo/logo.png');
     }
 

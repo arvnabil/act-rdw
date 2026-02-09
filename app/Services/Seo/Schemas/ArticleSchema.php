@@ -31,9 +31,11 @@ class ArticleSchema extends BaseSchema
             'author' => $this->author,
             'publisher' => $this->publisher,
             'wordCount' => $this->wordCount,
-            'keywords' => implode(', ', $this->keywords),
+            'keywords' => $this->keywords,
             'articleSection' => $this->articleSection,
             'mainEntityOfPage' => ['@id' => $this->url . '#webpage'],
+            'isPartOf' => ['@id' => $this->url . '#webpage'],
+            'inLanguage' => 'id-ID',
         ]);
     }
 }

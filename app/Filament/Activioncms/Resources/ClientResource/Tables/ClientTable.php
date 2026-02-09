@@ -17,9 +17,11 @@ class ClientTable
     {
         return $table
             ->columns([
-                ImageColumn::make('logo'),
+                ImageColumn::make('logo')
+                    ->disk('public')
+                    ->height(40)
+                    ->extraImgAttributes(['style' => 'object-fit: contain;']),
                 TextColumn::make('name')->searchable()->sortable(),
-                TextColumn::make('slug'),
                 IconColumn::make('is_active')->boolean(),
                 TextColumn::make('updated_at')->dateTime()->sortable(),
             ])

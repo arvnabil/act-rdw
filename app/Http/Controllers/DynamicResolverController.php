@@ -84,7 +84,7 @@ class DynamicResolverController extends Controller
                         'id' => $post->id,
                         'title' => $post->title,
                         'date' => $post->published_at ? $post->published_at->format('d M, Y') : '',
-                        'image' => $resolvePath($post->featured_image),
+                        'image' => $resolvePath($post->thumbnail),
                         'link' => route('dynamic.resolve', $post->slug)
                     ];
                 });
@@ -97,7 +97,7 @@ class DynamicResolverController extends Controller
 
             // Prepare post data with resolved image paths
             $postData = $news->toArray();
-            $postData['image'] = $resolvePath($news->featured_image);
+            $postData['image'] = $resolvePath($news->thumbnail);
             $postData['thumbnail'] = $postData['image']; // For BlogDetailContent compatibility
 
             return Inertia::render('News/Detail', [

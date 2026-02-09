@@ -12,12 +12,20 @@ class BrandTable
     {
         return $table
             ->columns([
-Tables\Columns\ImageColumn::make('image'),
+                Tables\Columns\ImageColumn::make('image')
+                    ->disk('public')
+                    ->width(120)
+                    ->height(60)
+                    ->extraImgAttributes(['style' => 'object-fit: contain; background: #222;']),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('website')
+                Tables\Columns\TextColumn::make('website_url')
+                    ->label('Website')
                     ->limit(30),
+                Tables\Columns\IconColumn::make('is_featured')
+                    ->label('Featured')
+                    ->boolean(),
             ])
             ->filters([
                 //
