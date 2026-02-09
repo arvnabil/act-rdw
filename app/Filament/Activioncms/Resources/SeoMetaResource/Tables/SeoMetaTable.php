@@ -47,7 +47,13 @@ class SeoMetaTable
 
                 TextColumn::make('seo_score')
                     ->label('Score')
-                    ->state(fn (?SeoMeta $record) => $record?->seo_score ?? 'N/A')
+                    ->state(function (?SeoMeta $record) {
+                        if (!$record?->seoable) {
+                            return 'N/A';
+                        }
+                        // Calculate score in real-time for consistency with modal
+                        return app(SeoAuditService::class)->calculateScore($record->seoable);
+                    })
                     ->badge()
                     ->color(fn ($state): string => match (true) {
                         $state === 'N/A' => 'gray',
