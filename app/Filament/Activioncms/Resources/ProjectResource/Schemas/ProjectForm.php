@@ -65,7 +65,10 @@ class ProjectForm
                                                         ->maxFiles(2)
                                                         ->maxSize(2048) // 2MB
                                                         ->disk('public')
-                                                        ->directory('project-brochures')
+                                                        ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, \Filament\Schemas\Components\Utilities\Get $get): string {
+                                                            $slug = $get('slug') ?: 'temp';
+                                                            return \App\Helpers\UploadHelper::getSluggedFilename($file, 'projects/' . $slug . '/brochures');
+                                                        })
                                                         ->visibility('public')
                                                         ->helperText('Max 2 files, 2MB each.'),
                                                 ])->columns(2),
@@ -102,7 +105,10 @@ class ProjectForm
                                                     FileUpload::make('thumbnail')
                                                         ->image()
                                                         ->disk('public')
-                                                        ->directory(fn (\Filament\Schemas\Components\Utilities\Get $get) => 'projects/' . ($get('slug') ?? 'temp'))
+                                                        ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, \Filament\Schemas\Components\Utilities\Get $get): string {
+                                                            $slug = $get('slug') ?: 'temp';
+                                                            return \App\Helpers\UploadHelper::getSluggedFilename($file, 'projects/' . $slug);
+                                                        })
                                                         ->visibility('public')
                                                         ->required(),
                                                 ]),

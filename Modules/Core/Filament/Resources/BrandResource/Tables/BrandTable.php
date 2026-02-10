@@ -13,16 +13,22 @@ class BrandTable
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('image')
+                    ->label('Logo')
                     ->disk('public')
-                    ->width(120)
-                    ->height(60)
-                    ->extraImgAttributes(['style' => 'object-fit: contain; background: #222;']),
+                    ->height(40)
+                    ->extraImgAttributes([
+                        'style' => 'object-fit: contain; background-color: #ffffff; padding: 4px; border-radius: 4px; border: 1px solid #eee;',
+                    ]),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('website_url')
                     ->label('Website')
                     ->limit(30),
+                Tables\Columns\TextColumn::make('category')
+                    ->label('Category')
+                    ->searchable()
+                    ->sortable(),
                 Tables\Columns\IconColumn::make('is_featured')
                     ->label('Featured')
                     ->boolean(),

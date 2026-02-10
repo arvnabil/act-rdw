@@ -9,8 +9,10 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Utilities\Set;
 use Illuminate\Support\Str;
+use App\Helpers\UploadHelper;
 
 class BrandForm
 {
@@ -32,7 +34,10 @@ class BrandForm
                                 ->image()
                                 ->disk('public')
                                 ->visibility('public')
-                                ->directory('brands')
+                                ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
+                                    $slug = $get('slug') ?: 'temp';
+                                    return UploadHelper::getSluggedFilename($file, 'brands/' . $slug);
+                                })
                                 ->imageEditor(),
                             Textarea::make('desc')
                                 ->label('Description')
@@ -41,6 +46,10 @@ class BrandForm
                                 ->label('Website URL')
                                 ->url()
                                 ->prefix('https://'),
+                            TextInput::make('category')
+                                ->label('Category')
+                                ->placeholder('e.g. Telecommunication, Security')
+                                ->helperText('Digunakan untuk pengelompokan di halaman Partner.'),
                             Toggle::make('is_featured')
                                 ->label('Featured Brand')
                                 ->helperText('Featured brands can be highlighted or filtered separately.')
@@ -77,7 +86,10 @@ class BrandForm
                                         ->label('Hero Background Image')
                                         ->image()
                                         ->disk('public')
-                                        ->directory('brands/hero')
+                                        ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
+                                            $slug = $get('../../slug') ?: 'temp';
+                                            return UploadHelper::getSluggedFilename($file, 'brands/' . $slug . '/hero');
+                                        })
                                         ->imageEditor()
                                         ->columnSpanFull(),
                                     Repeater::make('awards')
@@ -87,7 +99,10 @@ class BrandForm
                                                 ->label('Badge Image')
                                                 ->image()
                                                 ->disk('public')
-                                                ->directory('brands/awards')
+                                                ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
+                                                    $slug = $get('../../../slug') ?: 'temp';
+                                                    return UploadHelper::getSluggedFilename($file, 'brands/' . $slug . '/awards');
+                                                })
                                                 ->required(),
                                             TextInput::make('alt')
                                                 ->label('Alt Text')
@@ -148,7 +163,10 @@ class BrandForm
                                             FileUpload::make('image')
                                                 ->image()
                                                 ->disk('public')
-                                                ->directory('brands/showcase')
+                                                ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
+                                                    $slug = $get('../../../slug') ?: 'temp';
+                                                    return UploadHelper::getSluggedFilename($file, 'brands/' . $slug . '/showcase');
+                                                })
                                                 ->required(),
                                         ])
                                         ->columns(2)
