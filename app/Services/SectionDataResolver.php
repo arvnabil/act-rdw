@@ -224,7 +224,7 @@ class SectionDataResolver
                                 return str_starts_with($path, '/') ? $path : "/{$path}";
                             }
                             return "/storage/{$path}";
-                        })($b->image) ?? "/assets/img/brand/brand_1_1.svg",
+                        })($b->image) ?? "/assets/default.png",
                         'name' => $b->name
                     ];
                 })
@@ -266,7 +266,7 @@ class SectionDataResolver
                                 return str_starts_with($path, '/') ? $path : "/{$path}";
                             }
                             return "/storage/{$path}";
-                        })($c->logo) ?? "/assets/img/client/client_1_1.svg",
+                        })($c->logo) ?? "/assets/default.png",
                         'name' => $c->name,
                         'url' => $c->website_url ?? '#'
                     ];

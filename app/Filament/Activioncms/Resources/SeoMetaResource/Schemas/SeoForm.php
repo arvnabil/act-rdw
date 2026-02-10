@@ -31,13 +31,13 @@ class SeoForm
                         TextInput::make('title')
                             ->label('Meta Title')
                             ->helperText('Recommended: 50-60 characters.')
-                            ->maxLength(60)
+                            ->maxLength(255) // Relaxed from 60
                             ->live(debounce: 500),
 
                         Textarea::make('description')
                             ->label('Meta Description')
                             ->helperText('Recommended: 150-160 characters.')
-                            ->maxLength(250)
+                            ->maxLength(500) // Relaxed from 250
                             ->rows(2)
                             ->live(debounce: 500),
 
@@ -48,7 +48,8 @@ class SeoForm
 
                         TextInput::make('canonical_url')
                             ->label('Canonical URL')
-                            ->url()
+                            ->rule('url') // Use backend rule instead of ->url() to avoid HTML5 type="url" validation issues in hidden tabs
+                            ->nullable()
                             ->helperText('Leave empty to use the default page URL. Use this to prevent duplicate content issues.')
                             ->live(debounce: 500),
                     ]),

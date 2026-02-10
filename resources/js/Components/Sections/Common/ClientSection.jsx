@@ -10,20 +10,11 @@ export default function ClientSection({
     button_url,
 }) {
     const defaultClients = [
-        "1_1",
-        "1_2",
-        "1_3",
-        "1_4",
-        "1_5",
-        "1_6",
-        "1_7",
-        "1_1",
-        "1_4",
-        "1_3",
-        "1_2",
-        "1_1",
-        "1_1",
-        "1_1",
+        { image: null },
+        { image: null },
+        { image: null },
+        { image: null },
+        { image: null },
     ];
 
     const list = clients && clients.length > 0 ? clients : defaultClients;
