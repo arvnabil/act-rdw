@@ -37,7 +37,13 @@ Route::get('/partners', function () {
         // Normalize categories to array
         $cats = $b->category;
         if (is_string($cats)) {
-            $cats = json_decode($cats, true) ?: [$cats];
+            // First try JSON, then try comma split
+            $decoded = json_decode($cats, true);
+            if (is_array($decoded)) {
+                $cats = $decoded;
+            } else {
+                $cats = array_map('trim', explode(',', $cats));
+            }
         }
         if (empty($cats)) {
             $cats = ['General'];
@@ -78,6 +84,53 @@ Route::get('/partners', function () {
         'seo' => \App\Services\SeoResolver::staticPage('Our Partners', 'Discover our authorized partners and brands.')
     ]);
 })->name('partners');
+
+Route::get('/clients', function () {
+    $clients = \App\Models\Client::where('is_active', true)->orderBy('position')->get()->map(function($c) {
+        $resolvePath = function($path) {
+            if (!$path) return null;
+            if (str_starts_with($path, 'http')) return $path;
+            if (str_starts_with($path, 'assets') || str_starts_with($path, '/assets')) {
+                return str_starts_with($path, '/') ? $path : "/{$path}";
+            }
+            return "/storage/{$path}";
+        };
+        
+        $cats = $c->category ? array_map('trim', explode(',', $c->category)) : ['General'];
+        
+        return [
+            'id' => $c->id,
+            'name' => $c->name,
+            'image' => $resolvePath($c->logo),
+            'website_url' => $c->website_url,
+            'categories' => $cats, 
+            'is_featured' => true // Most clients are featured in this context
+        ];
+    });
+
+    $allMappedCats = [];
+    foreach ($clients as $client) {
+        foreach ($client['categories'] as $catName) {
+            if (!isset($allMappedCats[$catName])) {
+                $allMappedCats[$catName] = 0;
+            }
+            $allMappedCats[$catName]++;
+        }
+    }
+
+    $categories = collect($allMappedCats)->map(function ($count, $name) {
+        return [
+            'name' => $name,
+            'count' => $count,
+        ];
+    })->values();
+
+    return Inertia::render('Clients', [
+        'clients' => $clients,
+        'categories' => $categories,
+        'seo' => \App\Services\SeoResolver::staticPage('Our Clients', 'Trusted by leading companies across industries.')
+    ]);
+})->name('clients');
 
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Http\Request;

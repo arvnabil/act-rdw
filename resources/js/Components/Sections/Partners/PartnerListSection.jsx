@@ -17,6 +17,8 @@ export default function PartnerListSection({ brands = [], categories = [] }) {
         });
     }, [brands, selectedCategory, filters]);
 
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
     const totalCount = brands.length;
 
     // Soft backgrounds for branding boxes - Using theme-aware tints
@@ -58,13 +60,78 @@ export default function PartnerListSection({ brands = [], categories = [] }) {
                     from { opacity: 0; transform: translateY(20px); }
                     to { opacity: 1; transform: translateY(0); }
                 }
+                .rotate-180 {
+                    transform: rotate(180deg);
+                }
             `}</style>
 
             <div className="container">
                 <div className="row">
                     {/* Sidebar Area */}
-                    <div className="col-lg-4 col-xl-3">
-                        <aside className="sidebar-area pe-lg-4">
+                    <div className="col-lg-4 col-xl-3 mb-4 mb-lg-0 px-3 px-lg-0">
+                        {/* Mobile Dropdown - Redesigned as Premium Custom Dropdown */}
+                        <div className="d-block d-lg-none mb-3">
+                            <h3 className="widget_title mb-3" style={{ fontSize: '16px', fontWeight: '700', color: '#0F172A' }}>Kategori Partner</h3>
+                            <div className="position-relative">
+                                <button
+                                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                                    className="w-100 d-flex align-items-center justify-content-between px-3 py-3 rounded-4 border-0 shadow-sm bg-white"
+                                    style={{ transition: 'all 0.3s ease' }}
+                                >
+                                    <div className="d-flex align-items-center gap-2">
+                                        <div className="rounded-circle d-flex align-items-center justify-content-center"
+                                            style={{ width: '32px', height: '32px', backgroundColor: `${themeGreen}15` }}>
+                                            <i className="fa-regular fa-handshake text-success" style={{ fontSize: '14px', color: themeGreen }}></i>
+                                        </div>
+                                        <span className="fw-bold text-dark" style={{ fontSize: '14px' }}>
+                                            {selectedCategory === "All Partners" ? "Semua Partner" : selectedCategory}
+                                        </span>
+                                    </div>
+                                    <i className={`fa-regular fa-chevron-down transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}
+                                        style={{ fontSize: '12px', color: '#64748B' }}></i>
+                                </button>
+
+                                {/* Dropdown Menu */}
+                                {isDropdownOpen && (
+                                    <div className="position-absolute w-100 mt-2 bg-white rounded-4 shadow-lg border-0 overflow-hidden fade-in-up"
+                                        style={{ zIndex: 1000, animationDuration: '0.3s' }}>
+                                        <div className="p-2 d-flex flex-column gap-1">
+                                            <button
+                                                onClick={() => {
+                                                    setSelectedCategory("All Partners");
+                                                    setIsDropdownOpen(false);
+                                                }}
+                                                className={`d-flex align-items-center justify-content-between px-3 py-2.5 rounded-3 border-0 transition-all ${selectedCategory === "All Partners" ? "bg-light text-success fw-bold" : "bg-transparent text-secondary"
+                                                    }`}
+                                                style={{ textAlign: 'left', fontSize: '13.5px' }}
+                                            >
+                                                <span>Semua Partner</span>
+                                                <span className="badge rounded-pill bg-light text-dark px-2 py-1" style={{ fontSize: '10px' }}>{totalCount}</span>
+                                            </button>
+
+                                            {categories.map((cat) => (
+                                                <button
+                                                    key={cat.name}
+                                                    onClick={() => {
+                                                        setSelectedCategory(cat.name);
+                                                        setIsDropdownOpen(false);
+                                                    }}
+                                                    className={`d-flex align-items-center justify-content-between px-3 py-2.5 rounded-3 border-0 transition-all ${selectedCategory === cat.name ? "bg-light text-success fw-bold" : "bg-transparent text-secondary"
+                                                        }`}
+                                                    style={{ textAlign: 'left', fontSize: '13.5px' }}
+                                                >
+                                                    <span className="text-truncate">{cat.name}</span>
+                                                    <span className="badge rounded-pill bg-light text-dark px-2 py-1" style={{ fontSize: '10px' }}>{cat.count}</span>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+
+                        {/* Desktop Sidebar - Hidden on mobile */}
+                        <aside className="sidebar-area pe-lg-4 d-none d-lg-block">
                             <div className="widget bg-transparent border-0 p-0">
                                 <h3 className="widget_title mb-4" style={{ fontSize: '18px', fontWeight: '700', color: '#0F172A', letterSpacing: '-0.01em' }}>Categories</h3>
                                 <div className="d-flex flex-column gap-1">

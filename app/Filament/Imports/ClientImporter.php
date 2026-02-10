@@ -29,6 +29,8 @@ class ClientImporter extends Importer
             ImportColumn::make('website_url')
                 ->castStateUsing(fn ($state) => blank($state) ? null : $state)
                 ->example('https://www.telkom.co.id'),
+            ImportColumn::make('category')
+                ->example('Telecommunication, BUMN'),
             ImportColumn::make('is_active')
                 ->example(true), // Removed boolean()/rules() to handle empty strings
             ImportColumn::make('position')

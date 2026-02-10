@@ -43,6 +43,11 @@ class ClientForm
                             TextInput::make('website_url')
                                 ->url(),
 
+                            TextInput::make('category')
+                                ->label('Category')
+                                ->placeholder('e.g. Telecommunication, Security')
+                                ->helperText('Digunakan untuk pengelompokan di halaman Klien.'),
+
                             TextInput::make('position')
                                 ->numeric()
                                 ->default(0),

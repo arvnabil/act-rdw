@@ -37,7 +37,7 @@ class BrandImporter extends Importer
             ImportColumn::make('category')
                 ->label('Category')
                 ->castStateUsing(fn ($state) => blank($state) ? null : $state)
-                ->example('Technology'),
+                ->example('Technology, Security'),
             ImportColumn::make('is_featured')
                 ->label('Is Featured')
                 ->boolean()

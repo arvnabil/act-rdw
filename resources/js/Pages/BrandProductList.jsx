@@ -77,8 +77,8 @@ const BrandProductList = ({
                 ]}
             />
 
-            <div className="product-list-area space-top space-extra-bottom">
-                <div className="container th-container">
+            <section className="space-extra-bottom space">
+                <div className="container">
                     {/* Hero Card for Category - Moved to Top */}
                     <div className="mb-4">
                         <CategoryHero heroContent={heroContent} />
@@ -116,7 +116,7 @@ const BrandProductList = ({
                         </div>
                     </div>
                 </div>
-            </div>
+            </section>
 
             <style>{`
                 .active.text-theme { color: #E8B4B4 !important; } /* Logitech Pinkish Accents */

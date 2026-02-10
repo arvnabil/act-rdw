@@ -23,6 +23,7 @@ class ClientTable
                     ->height(40)
                     ->extraImgAttributes(['style' => 'object-fit: contain;']),
                 TextColumn::make('name')->searchable()->sortable(),
+                TextColumn::make('category')->searchable()->sortable(),
                 ToggleColumn::make('is_active'),
                 TextColumn::make('updated_at')->dateTime()->sortable(),
             ])

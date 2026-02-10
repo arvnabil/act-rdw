@@ -19,6 +19,7 @@ class Client extends Model
         'slug',
         'logo',
         'website_url',
+        'category',
         'is_active',
         'position',
     ];
