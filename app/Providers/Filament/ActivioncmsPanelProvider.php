@@ -30,6 +30,7 @@ class ActivioncmsPanelProvider extends PanelProvider
             ->id('activioncms')
             ->path('activioncms')
             ->login()
+            ->databaseNotifications()
             ->colors([
                 'primary' => Color::Amber,
             ])

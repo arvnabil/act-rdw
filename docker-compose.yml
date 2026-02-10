@@ -61,6 +61,23 @@ services:
         depends_on:
             - mysql
 
+    queue:
+        image: sail-8.3/app
+        command: php artisan queue:work
+        restart: always
+        extra_hosts:
+            - 'host.docker.internal:host-gateway'
+        environment:
+            WWWUSER: '${WWWUSER:-1000}'
+            LARAVEL_SAIL: 1
+        volumes:
+            - '.:/var/www/html'
+        networks:
+            - sail
+        depends_on:
+            - mysql
+            - activ.test
+
 networks:
     sail:
         driver: bridge

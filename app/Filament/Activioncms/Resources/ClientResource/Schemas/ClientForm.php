@@ -29,8 +29,26 @@ class ClientForm
                             FileUpload::make('logo')
                                 ->image()
                                 ->disk('public')
-                                ->directory(fn (\Filament\Schemas\Components\Utilities\Get $get) => 'clients/' . (Str::slug($get('name')) ?? 'temp'))
                                 ->visibility('public')
+                                ->preserveFilenames()
+                                ->downloadable()
+                                ->openable()
+                                ->helperText('Nama file akan otomatis disesuaikan (contoh: telkom-indonesia.png).')
+                                ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, \Filament\Schemas\Components\Utilities\Get $get): string {
+                                    $slug = Str::slug($get('name')) ?: 'temp';
+                                    $filename = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME));
+                                    $extension = $file->getClientOriginalExtension();
+                                    $basePath = 'clients/' . $slug . '/' . $filename . '.' . $extension;
+                                    
+                                    $counter = 1;
+                                    $finalPath = $basePath;
+                                    while (\Illuminate\Support\Facades\Storage::disk('public')->exists($finalPath)) {
+                                        $finalPath = 'clients/' . $slug . '/' . $filename . '-(' . $counter . ').' . $extension;
+                                        $counter++;
+                                    }
+                                    
+                                    return $finalPath;
+                                })
                                 ->required(),
 
                             TextInput::make('website_url')
