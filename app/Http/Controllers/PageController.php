@@ -49,9 +49,23 @@ class PageController extends Controller
                     });
             }
 
+            $clients = [];
+            if (class_exists(\App\Models\Client::class)) {
+                $clients = \App\Models\Client::where('is_active', true)
+                    ->orderBy('position', 'asc')
+                    ->get()
+                    ->map(function ($c) {
+                        return [
+                            'name' => $c->name,
+                            'image' => $c->logo ? "/storage/{$c->logo}" : null,
+                        ];
+                    });
+            }
+
             return Inertia::render('Home', [
                 'services' => $services,
                 'projects' => $projects,
+                'clients' => $clients,
                 'seo' => \App\Services\SeoResolver::staticPage('Home')
             ]);
         }
