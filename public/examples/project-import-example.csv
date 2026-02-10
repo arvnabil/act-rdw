@@ -1,0 +1,3 @@
+title,slug,client,category,project_date,address,excerpt,content,status,is_featured,seo_title,seo_description,seo_keywords,og_title,og_description,og_image,canonical_url,noindex
+"Proyek Alpha","proyek-alpha","PT Telkom Indonesia","IT Services","2024-01-01","Jalan Gatot Subroto No. 52","Deskripsi singkat proyek.","Konten lengkap proyek alpha.","published",false,"Judul SEO","Deskripsi SEO","keyword,satu,dua","Judul OG","Deskripsi OG","projects/alpha.jpg","https://activ.co.id/projects/proyek-alpha",false
+"Proyek Beta","proyek-beta","Bank Mandiri","Finance","2024-02-15","Plaza Mandiri Jakarta","Deskripsi singkat beta.","Konten lengkap proyek beta.","draft",true,"","",,"","",,"",
