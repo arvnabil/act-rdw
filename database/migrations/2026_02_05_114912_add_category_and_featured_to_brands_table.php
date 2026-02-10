@@ -12,8 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('brands', function (Blueprint $table) {
-            $table->string('category')->nullable()->after('desc');
-            $table->boolean('is_featured')->default(false)->after('category');
+            if (!Schema::hasColumn('brands', 'category')) {
+                $table->string('category')->nullable()->after('desc');
+            }
+            if (!Schema::hasColumn('brands', 'is_featured')) {
+                $table->boolean('is_featured')->default(false)->after('category');
+            }
         });
     }
 
