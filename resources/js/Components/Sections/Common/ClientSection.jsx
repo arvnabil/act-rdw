@@ -84,8 +84,7 @@ export default function ClientSection({
                                                         typeof brand ===
                                                             "string"
                                                             ? `/assets/img/brand/brand_${brand}.svg`
-                                                            : brand.image ||
-                                                            brand
+                                                            : (brand.image || "/assets/default.png")
                                                     }
                                                     alt="Brand Logo"
                                                     style={{
@@ -102,8 +101,7 @@ export default function ClientSection({
                                                         typeof brand ===
                                                             "string"
                                                             ? `/assets/img/brand/brand_${brand}.svg`
-                                                            : brand.image ||
-                                                            brand
+                                                            : (brand.image || "/assets/default.png")
                                                     }
                                                     alt="Brand Logo"
                                                     style={{

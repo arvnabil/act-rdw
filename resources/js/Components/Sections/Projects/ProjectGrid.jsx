@@ -22,7 +22,7 @@ export default function ProjectGrid({ projects }) {
                 <div className="col-xl-4 col-md-6" key={project.id}>
                     <div className="case-box style2 position-relative">
                         <div className="case-img global-img">
-                            <img src={project.image} alt={project.title} />
+                            <img src={project.image || "/assets/default.png"} alt={project.title} />
                             <Link href={project.link} className="icon-btn">
                                 <i className="fa-light fa-arrow-right-long"></i>
                             </Link>

@@ -147,7 +147,7 @@ export default function PartnerListSection({ brands = [], categories = [] }) {
                                                 <div className={`d-flex align-items-center justify-content-center p-3 transition-all duration-500 ${bgColors[idx % bgColors.length]}`}
                                                     style={{ width: '100%', height: '110px', borderRadius: '20px' }}>
                                                     <img
-                                                        src={brand.image}
+                                                        src={brand.image || "/assets/default.png"}
                                                         alt={brand.name}
                                                         className="img-fluid transition-all duration-700"
                                                         style={{ maxWidth: '80%', maxHeight: '65px', objectFit: 'contain', filter: 'drop-shadow(0 4px 6px rgba(0,0,0,0.05))' }}
