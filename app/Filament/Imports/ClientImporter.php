@@ -24,8 +24,10 @@ class ClientImporter extends Importer
                 ->rules(['required', 'max:255'])
                 ->example('pt-telkom-indonesia-persero-tbk'),
             ImportColumn::make('logo')
+                ->castStateUsing(fn ($state) => blank($state) ? null : $state)
                 ->example('clients/telkom-indonesia.png'),
             ImportColumn::make('website_url')
+                ->castStateUsing(fn ($state) => blank($state) ? null : $state)
                 ->example('https://www.telkom.co.id'),
             ImportColumn::make('is_active')
                 ->example(true), // Removed boolean()/rules() to handle empty strings
@@ -90,28 +92,20 @@ class ClientImporter extends Importer
         $seoKeywords = blank($seoKeywords) ? null : array_map('trim', explode(',', $seoKeywords));
 
         $seoData = [
-            'title' => $this->data['seo_title'] ?? null,
-            'description' => $this->data['seo_description'] ?? null,
+            'title' => blank($this->data['seo_title'] ?? null) ? null : $this->data['seo_title'],
+            'description' => blank($this->data['seo_description'] ?? null) ? null : $this->data['seo_description'],
             'keywords' => $seoKeywords,
-            'og_title' => $this->data['og_title'] ?? null,
-            'og_description' => $this->data['og_description'] ?? null,
-            'og_image' => $this->data['og_image'] ?? null,
-            'canonical_url' => $this->data['canonical_url'] ?? null,
+            'og_title' => blank($this->data['og_title'] ?? null) ? null : $this->data['og_title'],
+            'og_description' => blank($this->data['og_description'] ?? null) ? null : $this->data['og_description'],
+            'og_image' => blank($this->data['og_image'] ?? null) ? null : $this->data['og_image'],
+            'canonical_url' => blank($this->data['canonical_url'] ?? null) ? null : $this->data['canonical_url'],
             'noindex' => blank($this->data['noindex'] ?? null) ? false : (bool) $this->data['noindex'],
         ];
 
-        // Filter out null values to avoid overwriting existing data with nulls if not intended,
-        // BUT keep 'noindex' as it is handled above.
-        // Actually, array_filter removes false values if no callback.
-        // We use callback to remove only NULLs.
-        $seoData = array_filter($seoData, fn($value) => !is_null($value));
-
-        if (!empty($seoData)) {
-            $this->record->seo()->updateOrCreate(
-                ['seoable_id' => $this->record->id, 'seoable_type' => get_class($this->record)],
-                $seoData
-            );
-        }
+        $this->record->seo()->updateOrCreate(
+            ['seoable_id' => $this->record->id, 'seoable_type' => get_class($this->record)],
+            $seoData
+        );
     }
 
     public function resolveRecord(): Client
