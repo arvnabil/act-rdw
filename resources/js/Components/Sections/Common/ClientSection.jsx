@@ -17,6 +17,12 @@ export default function ClientSection({
         { image: null },
     ];
 
+    const isExplicitlyEmpty = Array.isArray(clients) && clients.length === 0;
+
+    if (isExplicitlyEmpty) {
+        return null;
+    }
+
     const list = clients && clients.length > 0 ? clients : defaultClients;
     const t = title || "Klien Kami";
     const st = subtitle || "Klien";
