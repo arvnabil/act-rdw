@@ -565,15 +565,15 @@
       "_SectionTitle-legacy-DQXhpBIU.js"
     ]
   },
-  "_ProductCard-CNlkHX20.js": {
-    "file": "assets/ProductCard-CNlkHX20.js",
+  "_ProductCard-DzCdV0Ro.js": {
+    "file": "assets/ProductCard-DzCdV0Ro.js",
     "name": "ProductCard",
     "imports": [
       "_vendor-KZSLvCor.js"
     ]
   },
-  "_ProductCard-legacy-BYYSDxbp.js": {
-    "file": "assets/ProductCard-legacy-BYYSDxbp.js",
+  "_ProductCard-legacy-mTL-tZ93.js": {
+    "file": "assets/ProductCard-legacy-mTL-tZ93.js",
     "name": "ProductCard",
     "imports": [
       "_vendor-legacy-eYkSftPT.js"
@@ -1136,7 +1136,7 @@
     ]
   },
   "resources/js/Pages/BrandProductList-legacy.jsx": {
-    "file": "assets/BrandProductList-legacy-CZkZUqJ5.js",
+    "file": "assets/BrandProductList-legacy-CoXkxlx1.js",
     "name": "BrandProductList",
     "src": "resources/js/Pages/BrandProductList-legacy.jsx",
     "isDynamicEntry": true,
@@ -1144,14 +1144,14 @@
       "_vendor-legacy-eYkSftPT.js",
       "_MainLayout-legacy-BFr_zfQH.js",
       "_Breadcrumb-legacy-Cce7RSFT.js",
-      "_ProductCard-legacy-BYYSDxbp.js",
+      "_ProductCard-legacy-mTL-tZ93.js",
       "_Seo-legacy-BkN9z8UG.js",
       "_Toast-legacy-C8BMLmv1.js",
       "_whatsapp-legacy-TvHSf1_t.js"
     ]
   },
   "resources/js/Pages/BrandProductList.jsx": {
-    "file": "assets/BrandProductList-BfW8srHP.js",
+    "file": "assets/BrandProductList-BguAgdCw.js",
     "name": "BrandProductList",
     "src": "resources/js/Pages/BrandProductList.jsx",
     "isDynamicEntry": true,
@@ -1159,7 +1159,7 @@
       "_vendor-KZSLvCor.js",
       "_MainLayout-zJS1Kl8g.js",
       "_Breadcrumb-ChEOC6dX.js",
-      "_ProductCard-CNlkHX20.js",
+      "_ProductCard-DzCdV0Ro.js",
       "_Seo-Cdfi6htv.js",
       "_Toast-hpu2Jnrp.js",
       "_whatsapp-Df9uErmj.js"
@@ -1824,7 +1824,7 @@
     ]
   },
   "resources/js/Pages/ProductDetail-legacy.jsx": {
-    "file": "assets/ProductDetail-legacy-BHVMhS9k.js",
+    "file": "assets/ProductDetail-legacy-Chg22UAS.js",
     "name": "ProductDetail",
     "src": "resources/js/Pages/ProductDetail-legacy.jsx",
     "isDynamicEntry": true,
@@ -1833,13 +1833,13 @@
       "_MainLayout-legacy-BFr_zfQH.js",
       "_Breadcrumb-legacy-Cce7RSFT.js",
       "_whatsapp-legacy-TvHSf1_t.js",
-      "_ProductCard-legacy-BYYSDxbp.js",
+      "_ProductCard-legacy-mTL-tZ93.js",
       "_Seo-legacy-BkN9z8UG.js",
       "_Toast-legacy-C8BMLmv1.js"
     ]
   },
   "resources/js/Pages/ProductDetail.jsx": {
-    "file": "assets/ProductDetail-D5lNLng_.js",
+    "file": "assets/ProductDetail-5DrUVwjt.js",
     "name": "ProductDetail",
     "src": "resources/js/Pages/ProductDetail.jsx",
     "isDynamicEntry": true,
@@ -1848,13 +1848,13 @@
       "_MainLayout-zJS1Kl8g.js",
       "_Breadcrumb-ChEOC6dX.js",
       "_whatsapp-Df9uErmj.js",
-      "_ProductCard-CNlkHX20.js",
+      "_ProductCard-DzCdV0Ro.js",
       "_Seo-Cdfi6htv.js",
       "_Toast-hpu2Jnrp.js"
     ]
   },
   "resources/js/Pages/Products-legacy.jsx": {
-    "file": "assets/Products-legacy-wxLYUO_U.js",
+    "file": "assets/Products-legacy-DZvf9ouc.js",
     "name": "Products",
     "src": "resources/js/Pages/Products-legacy.jsx",
     "isDynamicEntry": true,
@@ -1862,14 +1862,14 @@
       "_vendor-legacy-eYkSftPT.js",
       "_MainLayout-legacy-BFr_zfQH.js",
       "_Breadcrumb-legacy-Cce7RSFT.js",
-      "_ProductCard-legacy-BYYSDxbp.js",
+      "_ProductCard-legacy-mTL-tZ93.js",
       "_Seo-legacy-BkN9z8UG.js",
       "_Toast-legacy-C8BMLmv1.js",
       "_whatsapp-legacy-TvHSf1_t.js"
     ]
   },
   "resources/js/Pages/Products.jsx": {
-    "file": "assets/Products-BuSTEVqt.js",
+    "file": "assets/Products-Cfw1ia77.js",
     "name": "Products",
     "src": "resources/js/Pages/Products.jsx",
     "isDynamicEntry": true,
@@ -1877,14 +1877,14 @@
       "_vendor-KZSLvCor.js",
       "_MainLayout-zJS1Kl8g.js",
       "_Breadcrumb-ChEOC6dX.js",
-      "_ProductCard-CNlkHX20.js",
+      "_ProductCard-DzCdV0Ro.js",
       "_Seo-Cdfi6htv.js",
       "_Toast-hpu2Jnrp.js",
       "_whatsapp-Df9uErmj.js"
     ]
   },
   "resources/js/Pages/Projects/Detail-legacy.jsx": {
-    "file": "assets/Detail-legacy-DAGbDMB5.js",
+    "file": "assets/Detail-legacy-CDuMwCW4.js",
     "name": "Detail",
     "src": "resources/js/Pages/Projects/Detail-legacy.jsx",
     "isDynamicEntry": true,
@@ -1898,7 +1898,7 @@
     ]
   },
   "resources/js/Pages/Projects/Detail.jsx": {
-    "file": "assets/Detail-CJyiBW68.js",
+    "file": "assets/Detail-2R1gC00D.js",
     "name": "Detail",
     "src": "resources/js/Pages/Projects/Detail.jsx",
     "isDynamicEntry": true,
@@ -2130,7 +2130,7 @@
     ]
   },
   "resources/js/app-legacy.jsx": {
-    "file": "assets/app-legacy-dCFSdpAQ.js",
+    "file": "assets/app-legacy-CSbHXvda.js",
     "name": "app",
     "src": "resources/js/app-legacy.jsx",
     "isEntry": true,
@@ -2205,7 +2205,7 @@
     ]
   },
   "resources/js/app.jsx": {
-    "file": "assets/app-eBR7YDMi.js",
+    "file": "assets/app-CN-AXqCh.js",
     "name": "app",
     "src": "resources/js/app.jsx",
     "isEntry": true,
