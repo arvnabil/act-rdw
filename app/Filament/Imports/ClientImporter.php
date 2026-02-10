@@ -35,40 +35,48 @@ class ClientImporter extends Importer
                 ->example(1), // Removed numeric()/rules()
             ImportColumn::make('seo_title')
                 ->label('SEO Title')
+                ->castStateUsing(fn ($state) => blank($state) ? null : $state)
                 ->fillRecordUsing(fn ($record, $state) => null)
                 ->rules(['nullable', 'max:60'])
                 ->example('PT Telkom Indonesia (Persero) Tbk - Digital Telco Company'),
             ImportColumn::make('seo_description')
                 ->label('SEO Description')
+                ->castStateUsing(fn ($state) => blank($state) ? null : $state)
                 ->fillRecordUsing(fn ($record, $state) => null)
                 ->rules(['nullable', 'max:160'])
                 ->example('Telkom Indonesia adalah BUMN yang bergerak di bidang jasa layanan teknologi informasi dan komunikasi (TIK) dan jaringan telekomunikasi di Indonesia.'),
             ImportColumn::make('seo_keywords')
                 ->label('SEO Keywords')
+                ->castStateUsing(fn ($state) => blank($state) ? null : $state)
                 ->fillRecordUsing(fn ($record, $state) => null)
                 ->helperText('Comma separated keywords')
                 ->example('telkom, indonesia, bumn, tik, telekomunikasi, digital, telco'),
             ImportColumn::make('og_title')
                 ->label('OG Title')
+                ->castStateUsing(fn ($state) => blank($state) ? null : $state)
                 ->fillRecordUsing(fn ($record, $state) => null)
                 ->rules(['nullable', 'max:255'])
                 ->example('PT Telkom Indonesia (Persero) Tbk'),
             ImportColumn::make('og_description')
                 ->label('OG Description')
+                ->castStateUsing(fn ($state) => blank($state) ? null : $state)
                 ->fillRecordUsing(fn ($record, $state) => null)
                 ->rules(['nullable', 'max:255'])
                 ->example('Telkom Indonesia solusinya digital masa depan.'),
             ImportColumn::make('og_image')
                 ->label('OG Image')
+                ->castStateUsing(fn ($state) => blank($state) ? null : $state)
                 ->fillRecordUsing(fn ($record, $state) => null)
                 ->example('clients/telkom-og.jpg'),
             ImportColumn::make('canonical_url')
                 ->label('Canonical URL')
+                ->castStateUsing(fn ($state) => blank($state) ? null : $state)
                 ->fillRecordUsing(fn ($record, $state) => null)
                 ->rules(['nullable', 'max:255'])
                 ->example('https://activ.co.id/clients/pt-telkom-indonesia-persero-tbk'),
             ImportColumn::make('noindex')
                 ->label('No Index')
+                ->castStateUsing(fn ($state) => blank($state) ? null : $state)
                 ->fillRecordUsing(fn ($record, $state) => null)
                 ->example(false), // Removed boolean()/rules()
         ];
@@ -88,6 +96,9 @@ class ClientImporter extends Importer
 
     protected function afterSave(): void
     {
+        \Log::info('Importing Client ID: ' . $this->record->id . ' | Slug: ' . $this->record->slug);
+        \Log::info('Raw Data for SEO:', $this->data);
+
         $seoKeywords = $this->data['seo_keywords'] ?? null;
         $seoKeywords = blank($seoKeywords) ? null : array_map('trim', explode(',', $seoKeywords));
 
