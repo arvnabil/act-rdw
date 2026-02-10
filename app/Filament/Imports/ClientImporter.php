@@ -37,13 +37,13 @@ class ClientImporter extends Importer
                 ->label('SEO Title')
                 ->castStateUsing(fn ($state) => blank($state) ? null : $state)
                 ->fillRecordUsing(fn ($record, $state) => null)
-                ->rules(['nullable', 'max:60'])
+                ->rules(['nullable', 'max:255'])
                 ->example('PT Telkom Indonesia (Persero) Tbk - Digital Telco Company'),
             ImportColumn::make('seo_description')
                 ->label('SEO Description')
                 ->castStateUsing(fn ($state) => blank($state) ? null : $state)
                 ->fillRecordUsing(fn ($record, $state) => null)
-                ->rules(['nullable', 'max:160'])
+                ->rules(['nullable', 'max:500'])
                 ->example('Telkom Indonesia adalah BUMN yang bergerak di bidang jasa layanan teknologi informasi dan komunikasi (TIK) dan jaringan telekomunikasi di Indonesia.'),
             ImportColumn::make('seo_keywords')
                 ->label('SEO Keywords')
@@ -56,7 +56,7 @@ class ClientImporter extends Importer
                 ->castStateUsing(fn ($state) => blank($state) ? null : $state)
                 ->fillRecordUsing(fn ($record, $state) => null)
                 ->rules(['nullable', 'max:255'])
-                ->example('PT Telkom Indonesia (Persero) Tbk'),
+                ->example('Project Alpha - Best IT Service'),
             ImportColumn::make('og_description')
                 ->label('OG Description')
                 ->castStateUsing(fn ($state) => blank($state) ? null : $state)

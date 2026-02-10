@@ -12,7 +12,7 @@ export default function ProjectDetail({ project, seo }) {
             <Seo seo={seo} />
 
             <Breadcrumb
-                title="Project Details"
+                title={project.title}
                 items={[
                     { label: "Home", link: "/" },
                     { label: "Projects", link: "/projects" },

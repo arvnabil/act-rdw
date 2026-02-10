@@ -83,12 +83,12 @@ class BrandImporter extends Importer
                 ->label('SEO Title')
                 ->castStateUsing(fn ($state) => blank($state) ? null : $state)
                 ->fillRecordUsing(fn ($record, $state) => null)
-                ->rules(['nullable', 'max:60']),
+                ->rules(['nullable', 'max:255']),
             ImportColumn::make('seo_description')
                 ->label('SEO Description')
                 ->castStateUsing(fn ($state) => blank($state) ? null : $state)
                 ->fillRecordUsing(fn ($record, $state) => null)
-                ->rules(['nullable', 'max:160']),
+                ->rules(['nullable', 'max:500']),
             ImportColumn::make('seo_keywords')
                 ->label('SEO Keywords')
                 ->castStateUsing(fn ($state) => blank($state) ? null : $state)
