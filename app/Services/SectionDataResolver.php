@@ -306,6 +306,9 @@ class SectionDataResolver
                     ->limit($limit)
                     ->get()
                     ->map(function($p) {
+                        // Handle renamed column (thumbnail -> featured_image)
+                        $thumbnail = $p->featured_image ?? $p->thumbnail ?? null;
+
                         return [
                             'title' => $p->title,
                             'slug' => $p->slug,
@@ -316,7 +319,7 @@ class SectionDataResolver
                                     return str_starts_with($path, '/') ? $path : "/{$path}";
                                 }
                                 return "/storage/{$path}";
-                            })($p->thumbnail),
+                            })($thumbnail),
                             'image' => (function($path) { // standardized
                                 if (!$path) return null;
                                 if (str_starts_with($path, 'http')) return $path;
@@ -324,7 +327,7 @@ class SectionDataResolver
                                     return str_starts_with($path, '/') ? $path : "/{$path}";
                                 }
                                 return "/storage/{$path}";
-                            })($p->thumbnail),
+                            })($thumbnail),
                             'published_at' => $p->published_at,
                             'published_at_formatted' => $p->published_at ? date('M d, Y', strtotime($p->published_at)) : '',
                             'read_time' => '5 min read',
