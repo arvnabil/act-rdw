@@ -23,18 +23,14 @@ class BrandImporter extends Importer
                 ->requiredMapping()
                 ->rules(['required', 'max:255'])
                 ->example('brand-slug'),
-            ImportColumn::make('logo_path')
-                ->label('Logo Path')
+            ImportColumn::make('image')
+                ->label('Logo')
                 ->castStateUsing(fn ($state) => blank($state) ? null : $state)
-                ->example('brands/logo.png'),
+                ->example('brands/featured.jpg'),
             ImportColumn::make('website_url')
                 ->label('Website URL')
                 ->castStateUsing(fn ($state) => blank($state) ? null : $state)
                 ->example('https://brand.com'),
-            ImportColumn::make('image')
-                ->label('Featured Image')
-                ->castStateUsing(fn ($state) => blank($state) ? null : $state)
-                ->example('brands/featured.jpg'),
             ImportColumn::make('desc')
                 ->label('Description')
                 ->castStateUsing(fn ($state) => blank($state) ? null : $state),

@@ -12,7 +12,6 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('slug')->unique();
-            $table->string('logo_path')->nullable();
             $table->string('website_url')->nullable();
             $table->text('desc')->nullable(); // Matches Form Schema
             $table->string('image')->nullable(); // Matches Form Schema (image)
