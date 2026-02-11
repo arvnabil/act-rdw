@@ -123,7 +123,8 @@ class PageSectionSchema
                 ->schema([
                     TextInput::make('config.title')->label('Section Title')->required(),
                     TextInput::make('config.subtitle')->label('Subtitle'),
-                    RichEditor::make('config.description')->label('Content'),
+                    RichEditor::make('config.description')
+                        ->label('Content'),
 
                     FileUpload::make('config.images')
                         ->label('Images (Gallery)')

@@ -4,8 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+use App\Traits\HasImageCleanup;
+
 class SeoMeta extends Model
 {
+    use HasImageCleanup;
+
+    protected $cleanupFields = ['og_image'];
+
     protected $table = 'seo_meta';
 
     protected $fillable = [

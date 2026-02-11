@@ -202,8 +202,14 @@ class PageBuilderController extends Controller
     {
         if ($request->hasFile('file')) {
             $file = $request->file('file');
-            // Store in 'page-builder' directory for better organization and safe cleanup
-            $path = $file->store('page-builder', 'public');
+            
+            // Use SEO-friendly naming and WebP conversion via UploadHelper
+            $fullPath = \App\Helpers\UploadHelper::getSluggedFilename($file, 'page');
+            $directory = dirname($fullPath);
+            $filename = basename($fullPath);
+            
+            $path = $file->storeAs($directory, $filename, 'public');
+            
             return response()->json(['url' => '/storage/' . $path]);
         }
         return response()->json(['error' => 'No file uploaded'], 400);

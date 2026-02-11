@@ -34,6 +34,10 @@ class BrandForm
                                 ->image()
                                 ->disk('public')
                                 ->visibility('public')
+                                ->maxSize(2048)
+                                ->downloadable()
+                                ->openable()
+                                ->helperText('Nama file akan otomatis disesuaikan (Contoh: nama-brand.png). Ukuran maks: 2MB.')
                                 ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
                                     $slug = $get('slug') ?: 'temp';
                                     return UploadHelper::getSluggedFilename($file, 'brands/' . $slug);
@@ -86,6 +90,10 @@ class BrandForm
                                         ->label('Hero Background Image')
                                         ->image()
                                         ->disk('public')
+                                        ->maxSize(2048)
+                                        ->downloadable()
+                                        ->openable()
+                                        ->helperText('Nama file akan otomatis disesuaikan (Contoh: nama-brand-hero.png). Ukuran maks: 2MB.')
                                         ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
                                             $slug = $get('../../slug') ?: 'temp';
                                             return UploadHelper::getSluggedFilename($file, 'brands/' . $slug . '/hero');
@@ -99,6 +107,10 @@ class BrandForm
                                                 ->label('Badge Image')
                                                 ->image()
                                                 ->disk('public')
+                                                ->maxSize(2048)
+                                                ->downloadable()
+                                                ->openable()
+                                                ->helperText('Ukuran maks: 2MB.')
                                                 ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
                                                     $slug = $get('../../../slug') ?: 'temp';
                                                     return UploadHelper::getSluggedFilename($file, 'brands/' . $slug . '/awards');
@@ -163,6 +175,10 @@ class BrandForm
                                             FileUpload::make('image')
                                                 ->image()
                                                 ->disk('public')
+                                                ->maxSize(2048)
+                                                ->downloadable()
+                                                ->openable()
+                                                ->helperText('Ukuran maks: 2MB.')
                                                 ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
                                                     $slug = $get('../../../slug') ?: 'temp';
                                                     return UploadHelper::getSluggedFilename($file, 'brands/' . $slug . '/showcase');

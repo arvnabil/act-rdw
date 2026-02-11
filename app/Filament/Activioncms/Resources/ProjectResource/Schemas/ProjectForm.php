@@ -48,7 +48,12 @@ class ProjectForm
 
                                             RichEditor::make('content')
                                                 ->required()
-                                                ->columnSpanFull(),
+                                                ->columnSpanFull()
+                                                ->fileAttachmentsAcceptedFileTypes(['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'])
+                                                ->fileAttachmentsMaxSize(2048)
+                                                ->fileAttachmentsDisk('public')
+                                                ->fileAttachmentsDirectory(fn ($get) => 'projects/' . ($get('slug') ?? 'default') . '/media-contents')
+                                                ->fileAttachmentsVisibility('public'),
 
                                             Section::make('Project Information')
                                                 ->schema([

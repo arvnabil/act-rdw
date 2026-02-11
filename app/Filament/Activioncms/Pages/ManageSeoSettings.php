@@ -83,15 +83,27 @@ class ManageSeoSettings extends Page implements HasForms
                             ->label('Site Favicon')
                             ->image()
                             ->disk('public')
-                            ->directory('seo')
-                            ->helperText('Upload a square image (32x32 or 64x64 recommended).'),
+                            ->visibility('public')
+                            ->maxSize(2048)
+                            ->downloadable()
+                            ->openable()
+                            ->helperText('Nama file akan otomatis disesuaikan. Ukuran maks: 2MB.')
+                            ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file): string {
+                                return \App\Helpers\UploadHelper::getSluggedFilename($file, 'seo/favicon');
+                            }),
 
                         \Filament\Forms\Components\FileUpload::make('seo_default_og_image')
                             ->label('Default OG Image (Social Share)')
                             ->image()
                             ->disk('public')
-                            ->directory('seo')
-                            ->helperText('Fallback image for social sharing (1200x630px recommended).'),
+                            ->visibility('public')
+                            ->maxSize(2048)
+                            ->downloadable()
+                            ->openable()
+                            ->helperText('Nama file akan otomatis disesuaikan. Ukuran maks: 2MB.')
+                            ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file): string {
+                                return \App\Helpers\UploadHelper::getSluggedFilename($file, 'seo/og-default');
+                            }),
                     ]),
 
                 Section::make('Google Analytics Dashboard API')

@@ -73,7 +73,19 @@ class StepsForm
                                         ->prefix('IDR'),
                                     FileUpload::make('metadata.image')
                                         ->image()
-                                        ->directory('configurator-images'),
+                                        ->disk('public')
+                                        ->visibility('public')
+                                        ->maxSize(2048)
+                                        ->placeholder('')
+                                        ->imagePreviewHeight('250')
+                                        ->extraAttributes([
+                                            'class' => '[&_.filepond--drop-label]:hidden',
+                                        ])
+                                        ->helperText('Ukuran maks: 2MB.')
+                                        ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
+                                            $stepName = $get('../../name') ?: 'step';
+                                            return \App\Helpers\UploadHelper::getSluggedFilename($file, 'configurator-images/' . $stepName);
+                                        }),
 
                                     Group::make()
                                         ->schema([
@@ -143,7 +155,19 @@ class StepsForm
                                             FileUpload::make('url')
                                                 ->label('Upload Image')
                                                 ->image()
-                                                ->directory('configurator-attributes')
+                                                ->disk('public')
+                                                ->visibility('public')
+                                                ->maxSize(2048)
+                                                ->placeholder('')
+                                                ->imagePreviewHeight('250')
+                                                ->extraAttributes([
+                                                    'class' => '[&_.filepond--drop-label]:hidden',
+                                                ])
+                                                ->helperText('Ukuran maks: 2MB.')
+                                                ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
+                                                    $stepName = $get('../../../name') ?: 'attribute';
+                                                    return \App\Helpers\UploadHelper::getSluggedFilename($file, 'configurator-attributes/' . $stepName);
+                                                })
                                                 ->hidden(fn (Get $get) => $get('type') !== 'image'),
                                             TextInput::make('alt')
                                                 ->label('Alt Text')

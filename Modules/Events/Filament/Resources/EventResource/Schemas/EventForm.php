@@ -32,6 +32,7 @@ class EventForm
                 ->fileAttachmentsDisk('public')
                 ->fileAttachmentsDirectory(fn ($get) => 'events/' . ($get('slug') ?? 'default') . '/media-descriptions')
                 ->fileAttachmentsVisibility('public'),
+                
             Forms\Components\DateTimePicker::make('start_date')
                 ->required(),
             Forms\Components\DateTimePicker::make('end_date'),
@@ -62,9 +63,15 @@ class EventForm
                 ->image()
                 ->disk('public')
                 ->visibility('public')
-                ->directory(fn ($get) => 'events/' . ($get('slug') ?? 'default') . '/thumbnail')
-                ->preserveFilenames()
-                ->maxSize(2048),
+                ->maxSize(2048)
+                ->downloadable()
+                ->openable()
+                ->helperText('Ukuran maks: 2MB.')
+                ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, $get): string {
+                    $slug = $get('slug') ?: 'event';
+                    return \App\Helpers\UploadHelper::getSluggedFilename($file, 'events/' . $slug . '/thumbnail');
+                })
+                ->preserveFilenames(),
             Forms\Components\Toggle::make('is_active')
                 ->required(),
             Forms\Components\Toggle::make('is_certificate_available')
@@ -78,9 +85,15 @@ class EventForm
                         ->image()
                         ->disk('public')
                         ->visibility('public')
-                        ->directory(fn ($get) => 'events/' . ($get('../../slug') ?? 'default') . '/speakers')
-                        ->preserveFilenames()
-                        ->maxSize(2048),
+                        ->maxSize(2048)
+                        ->downloadable()
+                        ->openable()
+                        ->helperText('Ukuran maks: 2MB.')
+                        ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, $get): string {
+                            $slug = $get('../../slug') ?: 'event';
+                            return \App\Helpers\UploadHelper::getSluggedFilename($file, 'events/' . $slug . '/speakers');
+                        })
+                        ->preserveFilenames(),
                     Forms\Components\TextInput::make('linkedin_link')->url()->label('LinkedIn'),
                     Forms\Components\TextInput::make('instagram_link')->url()->label('Instagram'),
                     Forms\Components\TextInput::make('tiktok_link')->url()->label('TikTok'),

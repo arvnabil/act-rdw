@@ -5,7 +5,7 @@ import SectionTitle from "@/Components/Common/SectionTitle";
 export default function ServiceListSection({ services, getImageUrl }) {
     return (
         <section
-            className="position-relative bg-top-center overflow-hidden space-top"
+            className="position-relative bg-top-center overflow-hidden space space-bottom"
             id="service-sec"
         >
             <div className="container">
@@ -58,9 +58,9 @@ export default function ServiceListSection({ services, getImageUrl }) {
                                             <p className="service-box_text">
                                                 {service.description
                                                     ? service.description.substring(
-                                                          0,
-                                                          100
-                                                      ) + "..."
+                                                        0,
+                                                        100
+                                                    ) + "..."
                                                     : ""}
                                             </p>
                                             <Link

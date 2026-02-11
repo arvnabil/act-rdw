@@ -10,6 +10,8 @@ use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Components\Group;
 use Filament\Forms\Components\RichEditor;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use App\Filament\Activioncms\Resources\SeoMetaResource\Schemas\SeoForm;
 use Illuminate\Support\Str;
 
@@ -49,7 +51,12 @@ class ServiceForm
                                 ->schema([
                                     RichEditor::make('content')
                                         ->label('Detailed Content')
-                                        ->columnSpanFull(),
+                                        ->columnSpanFull()
+                                        ->fileAttachmentsAcceptedFileTypes(['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'])
+                                        ->fileAttachmentsMaxSize(2048)
+                                        ->fileAttachmentsDisk('public')
+                                        ->fileAttachmentsDirectory(fn (Get $get) => 'services/' . ($get('slug') ?? 'default') . '/content-media')
+                                        ->fileAttachmentsVisibility('public'),
                                 ]),
 
                             Section::make('Visuals & Branding')
@@ -57,20 +64,41 @@ class ServiceForm
                                     FileUpload::make('featured_image')
                                         ->label('Featured Hero Image')
                                         ->image()
-                                        ->directory('services/featured')
                                         ->disk('public')
                                         ->visibility('public')
+                                        ->maxSize(2048)
+                                        ->downloadable()
+                                        ->openable()
+                                        ->helperText('Nama file akan otomatis disesuaikan. Ukuran maks: 2MB.')
+                                        ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
+                                            $slug = $get('slug') ?: 'temp';
+                                            return \App\Helpers\UploadHelper::getSluggedFilename($file, 'services/' . $slug . '/featured');
+                                        })
                                         ->columnSpanFull(),
                                     FileUpload::make('thumbnail')
                                         ->image()
-                                        ->directory('services/thumbnails')
                                         ->disk('public')
-                                        ->visibility('public'),
+                                        ->visibility('public')
+                                        ->maxSize(2048)
+                                        ->downloadable()
+                                        ->openable()
+                                        ->helperText('Ukuran maks: 2MB.')
+                                        ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
+                                            $slug = $get('slug') ?: 'temp';
+                                            return \App\Helpers\UploadHelper::getSluggedFilename($file, 'services/' . $slug . '/thumbnails');
+                                        }),
                                     FileUpload::make('icon')
                                         ->image()
-                                        ->directory('services/icons')
                                         ->disk('public')
-                                        ->visibility('public'),
+                                        ->visibility('public')
+                                        ->maxSize(2048)
+                                        ->downloadable()
+                                        ->openable()
+                                        ->helperText('Ukuran maks: 2MB.')
+                                        ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
+                                            $slug = $get('slug') ?: 'temp';
+                                            return \App\Helpers\UploadHelper::getSluggedFilename($file, 'services/' . $slug . '/icons');
+                                        }),
                                     TextInput::make('hero_subtitle')
                                         ->helperText('Subtitle in the hero section of the detail page'),
                                     TextInput::make('grid_title')

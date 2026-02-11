@@ -76,7 +76,13 @@ class ProductForm
                                             TextInput::make('datasheet_url')
                                                 ->url(),
                                             RichEditor::make('description')
-                                                ->columnSpanFull(),
+                                                ->columnSpanFull()
+                                                ->fileAttachmentsAcceptedFileTypes(['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'])
+                                                ->fileAttachmentsMaxSize(2048)
+                                                ->fileAttachmentsDisk('public')
+                                                ->fileAttachmentsDirectory(fn ($get) => 'products/' . ($get('slug') ?? 'default') . '/media-descriptions')
+                                                ->fileAttachmentsVisibility('public'),
+                                               
                                         ])->columns(2),
 
                                     Section::make('Specifications & Features')
@@ -93,9 +99,20 @@ class ProductForm
                                                 ])
                                                 ->columns(3),
                                             RichEditor::make('specification_text')
-                                                ->columnSpanFull(),
+                                                ->columnSpanFull()
+                                                ->fileAttachmentsAcceptedFileTypes(['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'])
+                                                ->fileAttachmentsMaxSize(2048)
+                                                ->fileAttachmentsDisk('public')
+                                                ->fileAttachmentsDirectory(fn ($get) => 'products/' . ($get('slug') ?? 'default') . '/media-specifications')
+                                                ->fileAttachmentsVisibility('public'),
+                                                
                                             RichEditor::make('features_text')
-                                                ->columnSpanFull(),
+                                                ->columnSpanFull()
+                                                ->fileAttachmentsAcceptedFileTypes(['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'])
+                                                ->fileAttachmentsMaxSize(2048)
+                                                ->fileAttachmentsDisk('public')
+                                                ->fileAttachmentsDirectory(fn ($get) => 'products/' . ($get('slug') ?? 'default') . '/media-features')
+                                                ->fileAttachmentsVisibility('public'),
                                         ]),
 
                                     Section::make('Marketplace Links')
@@ -116,7 +133,14 @@ class ProductForm
                                                 ->image()
                                                 ->disk('public')
                                                 ->visibility('public')
-                                                ->directory('products'),
+                                                ->maxSize(2048)
+                                                ->downloadable()
+                                                ->openable()
+                                                ->helperText('Nama file akan otomatis disesuaikan (Contoh: nama-produk.png). Ukuran maks: 2MB.')
+                                                ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
+                                                    $slug = $get('slug') ?: 'temp';
+                                                    return \App\Helpers\UploadHelper::getSluggedFilename($file, 'products/' . $slug);
+                                                }),
                                         ]),
                                     Section::make('Status')
                                         ->schema([

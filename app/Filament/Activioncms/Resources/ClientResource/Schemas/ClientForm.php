@@ -24,16 +24,15 @@ class ClientForm
                                 ->required()
                                 ->live(onBlur: true),
 
-
-
                             FileUpload::make('logo')
                                 ->image()
                                 ->disk('public')
                                 ->visibility('public')
+                                ->maxSize(2048)
                                 ->preserveFilenames()
                                 ->downloadable()
                                 ->openable()
-                                ->helperText('Nama file akan otomatis disesuaikan (contoh: telkom-indonesia.png).')
+                                ->helperText('Nama file akan otomatis disesuaikan (contoh: telkom-indonesia.png). Ukuran maks: 2MB.')
                                 ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, \Filament\Schemas\Components\Utilities\Get $get): string {
                                     $slug = Str::slug($get('name')) ?: 'temp';
                                     return \App\Helpers\UploadHelper::getSluggedFilename($file, 'clients/' . $slug);

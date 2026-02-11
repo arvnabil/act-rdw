@@ -5,9 +5,13 @@ namespace Modules\Core\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Traits\HasImageCleanup;
+
 class ProductCategory extends Model
 {
-    use HasFactory;
+    use HasFactory, HasImageCleanup;
+
+    protected $cleanupFields = ['icon'];
 
     protected $fillable = [
         'name',

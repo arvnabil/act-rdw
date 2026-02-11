@@ -78,16 +78,12 @@ class CertificateDesignerController extends Controller
 
         $directory = $this->getAssetDirectory($id);
         $file = $request->file('file');
-        $filename = $file->getClientOriginalName();
-        $path = $directory . '/' . $filename;
         
-        if (\Illuminate\Support\Facades\Storage::disk('public')->exists($path)) {
-            $name = pathinfo($filename, PATHINFO_FILENAME);
-            $extension = $file->getClientOriginalExtension();
-            $filename = $name . '_' . time() . '.' . $extension;
-        }
-
-        // Store with original (or unique) name in slug directory
+        // Use SEO-friendly naming and WebP conversion via UploadHelper
+        $fullPath = \App\Helpers\UploadHelper::getSluggedFilename($file, $directory);
+        $directory = dirname($fullPath);
+        $filename = basename($fullPath);
+        
         $path = $file->storeAs($directory, $filename, 'public');
         $url = asset('storage/' . $path);
 

@@ -6,22 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
+use App\Traits\HasImageCleanup;
+
 class Organizer extends Model
 {
-    use HasFactory;
-    use \Modules\Events\Traits\HasEventFileManagement;
+    use HasFactory, HasImageCleanup;
 
-    protected function fileFields(): array
-    {
-        return [
-            'logo' => 'logo',
-        ];
-    }
-
-    protected function getStorageBasePath(): string
-    {
-        return "events/organizer";
-    }
+    protected $cleanupFields = ['logo', 'description'];
 
     protected $fillable = [
         'name',

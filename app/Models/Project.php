@@ -17,7 +17,8 @@ class Project extends Model
         return $this->belongsTo(\App\Models\User::class, 'user_id');
     }
 
-    protected $cleanupFields = ['thumbnail'];
+    protected $cleanupFields = ['thumbnail', 'download_brochures'];
+    protected $richEditorCleanupFields = ['content'];
 
     protected $guarded = ['id'];
 

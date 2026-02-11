@@ -7,9 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 use Modules\ServiceSolutions\Models\ConfiguratorStep;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+use App\Traits\HasImageCleanup;
+
 class Configurator extends Model
 {
-    use HasFactory;
+    use HasFactory, HasImageCleanup;
+
+    protected $cleanupFields = ['image'];
 
     protected $fillable = [
         'name',

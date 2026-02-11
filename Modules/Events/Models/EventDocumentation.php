@@ -5,24 +5,12 @@ namespace Modules\Events\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Traits\HasImageCleanup;
+
 class EventDocumentation extends Model
 {
-    use HasFactory;
-    use \Modules\Events\Traits\HasEventFileManagement;
-
-    protected function fileFields(): array
-    {
-        return [
-            'file_path' => 'documentations',
-        ];
-    }
-
-    protected function getStorageBasePath(): string
-    {
-        // Safety check if event relationship is loaded or exists
-        $slug = $this->event->slug ?? 'default';
-        return "events/{$slug}/documentations";
-    }
+    use HasFactory, HasImageCleanup;
+    protected $cleanupFields = ['file_path'];
 
     protected $fillable = [
         'event_id',

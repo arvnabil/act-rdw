@@ -29,10 +29,16 @@ class OrganizerForm
             Forms\Components\FileUpload::make('logo')
                 ->image()
                 ->disk('public')
-                ->directory('events/organizer')
                 ->visibility('public')
-                ->preserveFilenames()
-                ->maxSize(1024),
+                ->maxSize(2048)
+                ->downloadable()
+                ->openable()
+                ->helperText('Nama file akan otomatis disesuaikan (Contoh: nama-organizer.png). Ukuran maks: 2MB.')
+                ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, $get): string {
+                    $slug = $get('slug') ?: 'organizer';
+                    return \App\Helpers\UploadHelper::getSluggedFilename($file, 'events/organizers/' . $slug);
+                })
+                ->preserveFilenames(),
             Forms\Components\TextInput::make('website')
                 ->url()
                 ->maxLength(255),

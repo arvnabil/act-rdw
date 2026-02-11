@@ -57,7 +57,10 @@ export default function SolutionSection({
     const featuresCol2 = finalFeatures.slice(computedSplitIndex);
 
     return (
-        <section className="choose-6-area space-bottom">
+        <section
+            className="choose-6-area space"
+            style={{ paddingBottom: "120px" }}
+        >
             <div className="container">
                 <div className="row gy-4 align-items-start">
                     <div className="col-xl-5 order-1 order-xl-0">

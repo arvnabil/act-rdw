@@ -5,8 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Page; // Added for the relationship
 
+use App\Traits\HasImageCleanup;
+
 class PageSection extends Model
 {
+    use HasImageCleanup;
+
+    protected $cleanupFields = ['config'];
+
     protected $fillable = [
         'page_id',
         'section_key',

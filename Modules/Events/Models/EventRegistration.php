@@ -6,23 +6,13 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Traits\HasImageCleanup;
+
 class EventRegistration extends Model
 {
-    use HasFactory;
-    use \Modules\Events\Traits\HasEventFileManagement;
+    use HasImageCleanup, HasFactory;
 
-    protected function fileFields(): array
-    {
-        return [
-            'payment_proof' => 'payment_proof',
-        ];
-    }
-
-    protected function getStorageBasePath(): string
-    {
-        $slug = $this->event->slug ?? 'default';
-        return "events/{$slug}/payment_proof";
-    }
+    protected $cleanupFields = ['payment_proof'];
 
     protected $fillable = [
         'event_id',

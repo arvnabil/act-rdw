@@ -8,9 +8,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\ServiceSolutions\Models\ConfiguratorQuestion;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+use App\Traits\HasImageCleanup;
+
 class ConfiguratorStep extends Model
 {
-    use HasFactory;
+    use HasFactory, HasImageCleanup;
+
+    protected $cleanupFields = ['image'];
 
     protected $fillable = [
         'configurator_id',

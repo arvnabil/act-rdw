@@ -47,7 +47,12 @@ class NewsForm
 
                                             RichEditor::make('content')
                                                 ->required()
-                                                ->columnSpanFull(),
+                                                ->columnSpanFull()
+                                                ->fileAttachmentsAcceptedFileTypes(['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'])
+                                                ->fileAttachmentsMaxSize(2048)
+                                                ->fileAttachmentsDisk('public')
+                                                ->fileAttachmentsDirectory(fn ($get) => 'news/' . ($get('slug') ?? 'default') . '/content-media')
+                                                ->fileAttachmentsVisibility('public'),
                                         ]),
 
                                     Group::make()
@@ -114,8 +119,15 @@ class NewsForm
                                                     FileUpload::make('thumbnail')
                                                         ->image()
                                                         ->disk('public')
-                                                        ->directory(fn (\Filament\Schemas\Components\Utilities\Get $get) => 'news/' . ($get('slug') ?? 'temp'))
                                                         ->visibility('public')
+                                                        ->maxSize(2048)
+                                                        ->downloadable()
+                                                        ->openable()
+                                                        ->helperText('Nama file akan otomatis disesuaikan (Contoh: judul-berita.png). Ukuran maks: 2MB.')
+                                                        ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, \Filament\Schemas\Components\Utilities\Get $get): string {
+                                                            $slug = $get('slug') ?: 'temp';
+                                                            return \App\Helpers\UploadHelper::getSluggedFilename($file, 'news/' . $slug);
+                                                        })
                                                         ->required(),
                                                 ]),
                                         ]),

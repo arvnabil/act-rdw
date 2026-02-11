@@ -21,6 +21,7 @@ use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Tables\Columns\ImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Illuminate\Support\Str;
@@ -50,9 +51,16 @@ class ServiceSolutionRelationManager extends RelationManager
                                     ->columnSpanFull(),
                                 FileUpload::make('thumbnail')
                                     ->image()
-                                    ->directory('services/solutions')
                                     ->disk('public')
-                                    ->visibility('public'),
+                                    ->visibility('public')
+                                    ->maxSize(2048)
+                                    ->downloadable()
+                                    ->openable()
+                                    ->helperText('Nama file akan otomatis disesuaikan (Contoh: nama-solution.png). Ukuran maks: 2MB.')
+                                    ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
+                                        $slug = $get('slug') ?: 'temp';
+                                        return \App\Helpers\UploadHelper::getSluggedFilename($file, 'services/solutions/' . $slug);
+                                    }),
                             ])->columns(2),
 
                         Tab::make('Features & Links')
@@ -61,9 +69,17 @@ class ServiceSolutionRelationManager extends RelationManager
                                     ->schema([
                                         FileUpload::make('icon')
                                             ->image()
-                                            ->directory('services/features')
                                             ->disk('public')
-                                            ->visibility('public'),
+                                            ->visibility('public')
+                                            ->maxSize(2048)
+                                            ->downloadable()
+                                            ->openable()
+                                            ->helperText('Ukuran maks: 2MB.')
+                                            ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
+                                                // Look up to the solution slug
+                                                $solutionSlug = $get('../../slug') ?: 'feature';
+                                                return \App\Helpers\UploadHelper::getSluggedFilename($file, 'services/features/' . $solutionSlug);
+                                            }),
                                         TextInput::make('title')->required(),
                                         Textarea::make('text')->rows(2),
                                     ])->columns(2)->columnSpanFull(),

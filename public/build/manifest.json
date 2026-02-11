@@ -771,8 +771,8 @@
       "_react-core-legacy-MaQOtt75.js"
     ]
   },
-  "_ServiceCtaSection-IIEVm20e.js": {
-    "file": "assets/ServiceCtaSection-IIEVm20e.js",
+  "_ServiceCtaSection-BYOwZgS0.js": {
+    "file": "assets/ServiceCtaSection-BYOwZgS0.js",
     "name": "ServiceCtaSection",
     "imports": [
       "_react-core-BZS_6Arc.js",
@@ -780,8 +780,8 @@
       "_SectionTitle-DGQnDq9T.js"
     ]
   },
-  "_ServiceCtaSection-legacy-BCLBgfsX.js": {
-    "file": "assets/ServiceCtaSection-legacy-BCLBgfsX.js",
+  "_ServiceCtaSection-legacy-B8zUj0_9.js": {
+    "file": "assets/ServiceCtaSection-legacy-B8zUj0_9.js",
     "name": "ServiceCtaSection",
     "imports": [
       "_react-core-legacy-MaQOtt75.js",
@@ -889,20 +889,20 @@
       "_vendor-legacy-DG0v0S8r.js"
     ]
   },
-  "_sectionRegistry-legacy-CZZYggSY.js": {
-    "file": "assets/sectionRegistry-legacy-CZZYggSY.js",
+  "_sectionRegistry-Cg4NWCWA.js": {
+    "file": "assets/sectionRegistry-Cg4NWCWA.js",
     "name": "sectionRegistry",
     "imports": [
-      "_ServiceCtaSection-legacy-BCLBgfsX.js",
-      "_VisionMissionSection-legacy-CA_wLreK.js"
+      "_ServiceCtaSection-BYOwZgS0.js",
+      "_VisionMissionSection-C7ozQQ-u.js"
     ]
   },
-  "_sectionRegistry-vYp-Bbtv.js": {
-    "file": "assets/sectionRegistry-vYp-Bbtv.js",
+  "_sectionRegistry-legacy-DI1WkQ8y.js": {
+    "file": "assets/sectionRegistry-legacy-DI1WkQ8y.js",
     "name": "sectionRegistry",
     "imports": [
-      "_ServiceCtaSection-IIEVm20e.js",
-      "_VisionMissionSection-C7ozQQ-u.js"
+      "_ServiceCtaSection-legacy-B8zUj0_9.js",
+      "_VisionMissionSection-legacy-CA_wLreK.js"
     ]
   },
   "_ui-jquery-B_dqbqb-.js": {
@@ -1104,7 +1104,7 @@
     ]
   },
   "resources/js/Pages/Admin/PageBuilder/BuilderCanvas-legacy.jsx": {
-    "file": "assets/BuilderCanvas-legacy-Bv0B8d6v.js",
+    "file": "assets/BuilderCanvas-legacy-BW5yGngt.js",
     "name": "BuilderCanvas",
     "src": "resources/js/Pages/Admin/PageBuilder/BuilderCanvas-legacy.jsx",
     "isDynamicEntry": true,
@@ -1112,8 +1112,8 @@
       "_react-core-legacy-MaQOtt75.js",
       "resources/js/Pages/Admin/PageBuilder/SectionPreview-legacy.jsx",
       "_vendor-legacy-DG0v0S8r.js",
-      "_sectionRegistry-legacy-CZZYggSY.js",
-      "_ServiceCtaSection-legacy-BCLBgfsX.js",
+      "_sectionRegistry-legacy-DI1WkQ8y.js",
+      "_ServiceCtaSection-legacy-B8zUj0_9.js",
       "_NewsSection-legacy-BlemwCAW.js",
       "_whatsapp-legacy-TvHSf1_t.js",
       "_ui-swiper-legacy-CKGAcGy_.js",
@@ -1123,7 +1123,7 @@
     ]
   },
   "resources/js/Pages/Admin/PageBuilder/BuilderCanvas.jsx": {
-    "file": "assets/BuilderCanvas-DPwEF7rQ.js",
+    "file": "assets/BuilderCanvas-B34uBDuJ.js",
     "name": "BuilderCanvas",
     "src": "resources/js/Pages/Admin/PageBuilder/BuilderCanvas.jsx",
     "isDynamicEntry": true,
@@ -1131,8 +1131,8 @@
       "_react-core-BZS_6Arc.js",
       "resources/js/Pages/Admin/PageBuilder/SectionPreview.jsx",
       "_vendor-DViQF3d3.js",
-      "_sectionRegistry-vYp-Bbtv.js",
-      "_ServiceCtaSection-IIEVm20e.js",
+      "_sectionRegistry-Cg4NWCWA.js",
+      "_ServiceCtaSection-BYOwZgS0.js",
       "_NewsSection-CY_r_eTc.js",
       "_whatsapp-Df9uErmj.js",
       "_ui-swiper-Db3Ms2SX.js",
@@ -1162,7 +1162,7 @@
     ]
   },
   "resources/js/Pages/Admin/PageBuilder/BuilderSidebar-legacy.jsx": {
-    "file": "assets/BuilderSidebar-legacy-C6LHTqKP.js",
+    "file": "assets/BuilderSidebar-legacy-yyDq5ZXu.js",
     "name": "BuilderSidebar",
     "src": "resources/js/Pages/Admin/PageBuilder/BuilderSidebar-legacy.jsx",
     "isDynamicEntry": true,
@@ -1170,8 +1170,8 @@
       "_react-core-legacy-MaQOtt75.js",
       "_vendor-legacy-DG0v0S8r.js",
       "resources/js/Pages/Admin/PageBuilder/SortableSectionItem-legacy.jsx",
-      "_sectionRegistry-legacy-CZZYggSY.js",
-      "_ServiceCtaSection-legacy-BCLBgfsX.js",
+      "_sectionRegistry-legacy-DI1WkQ8y.js",
+      "_ServiceCtaSection-legacy-B8zUj0_9.js",
       "_NewsSection-legacy-BlemwCAW.js",
       "_whatsapp-legacy-TvHSf1_t.js",
       "_ui-swiper-legacy-CKGAcGy_.js",
@@ -1180,7 +1180,7 @@
     ]
   },
   "resources/js/Pages/Admin/PageBuilder/BuilderSidebar.jsx": {
-    "file": "assets/BuilderSidebar-Cc_0HWwr.js",
+    "file": "assets/BuilderSidebar-CuaqOs2i.js",
     "name": "BuilderSidebar",
     "src": "resources/js/Pages/Admin/PageBuilder/BuilderSidebar.jsx",
     "isDynamicEntry": true,
@@ -1188,8 +1188,8 @@
       "_react-core-BZS_6Arc.js",
       "_vendor-DViQF3d3.js",
       "resources/js/Pages/Admin/PageBuilder/SortableSectionItem.jsx",
-      "_sectionRegistry-vYp-Bbtv.js",
-      "_ServiceCtaSection-IIEVm20e.js",
+      "_sectionRegistry-Cg4NWCWA.js",
+      "_ServiceCtaSection-BYOwZgS0.js",
       "_NewsSection-CY_r_eTc.js",
       "_whatsapp-Df9uErmj.js",
       "_ui-swiper-Db3Ms2SX.js",
@@ -1218,16 +1218,16 @@
     ]
   },
   "resources/js/Pages/Admin/PageBuilder/InspectorPanel-legacy.jsx": {
-    "file": "assets/InspectorPanel-legacy-DDctzxz7.js",
+    "file": "assets/InspectorPanel-legacy-B7FMOJyX.js",
     "name": "InspectorPanel",
     "src": "resources/js/Pages/Admin/PageBuilder/InspectorPanel-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-core-legacy-MaQOtt75.js",
       "_RepeaterEditor-legacy-PWsFpnRt.js",
-      "_sectionRegistry-legacy-CZZYggSY.js",
+      "_sectionRegistry-legacy-DI1WkQ8y.js",
       "_vendor-legacy-DG0v0S8r.js",
-      "_ServiceCtaSection-legacy-BCLBgfsX.js",
+      "_ServiceCtaSection-legacy-B8zUj0_9.js",
       "_NewsSection-legacy-BlemwCAW.js",
       "_whatsapp-legacy-TvHSf1_t.js",
       "_ui-swiper-legacy-CKGAcGy_.js",
@@ -1236,16 +1236,16 @@
     ]
   },
   "resources/js/Pages/Admin/PageBuilder/InspectorPanel.jsx": {
-    "file": "assets/InspectorPanel-DJwKtHhN.js",
+    "file": "assets/InspectorPanel-D_ryIr9i.js",
     "name": "InspectorPanel",
     "src": "resources/js/Pages/Admin/PageBuilder/InspectorPanel.jsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-core-BZS_6Arc.js",
       "_RepeaterEditor-BIWFPFyI.js",
-      "_sectionRegistry-vYp-Bbtv.js",
+      "_sectionRegistry-Cg4NWCWA.js",
       "_vendor-DViQF3d3.js",
-      "_ServiceCtaSection-IIEVm20e.js",
+      "_ServiceCtaSection-BYOwZgS0.js",
       "_NewsSection-CY_r_eTc.js",
       "_whatsapp-Df9uErmj.js",
       "_ui-swiper-Db3Ms2SX.js",
@@ -1254,7 +1254,7 @@
     ]
   },
   "resources/js/Pages/Admin/PageBuilder/PageBuilder-legacy.jsx": {
-    "file": "assets/PageBuilder-legacy-BXKDVgF1.js",
+    "file": "assets/PageBuilder-legacy-BDBEeJtQ.js",
     "name": "PageBuilder",
     "src": "resources/js/Pages/Admin/PageBuilder/PageBuilder-legacy.jsx",
     "isDynamicEntry": true,
@@ -1265,12 +1265,12 @@
       "resources/js/Pages/Admin/PageBuilder/BuilderSidebar-legacy.jsx",
       "resources/js/Pages/Admin/PageBuilder/BuilderCanvas-legacy.jsx",
       "resources/js/Pages/Admin/PageBuilder/InspectorPanel-legacy.jsx",
-      "_sectionRegistry-legacy-CZZYggSY.js",
+      "_sectionRegistry-legacy-DI1WkQ8y.js",
       "resources/js/Pages/Admin/PageBuilder/SortableSectionItem-legacy.jsx",
       "resources/js/Pages/Admin/PageBuilder/SectionPreview-legacy.jsx",
       "resources/js/Pages/Admin/PageBuilder/Components/ErrorBoundary-legacy.jsx",
       "_RepeaterEditor-legacy-PWsFpnRt.js",
-      "_ServiceCtaSection-legacy-BCLBgfsX.js",
+      "_ServiceCtaSection-legacy-B8zUj0_9.js",
       "_NewsSection-legacy-BlemwCAW.js",
       "_whatsapp-legacy-TvHSf1_t.js",
       "_ui-swiper-legacy-CKGAcGy_.js",
@@ -1279,7 +1279,7 @@
     ]
   },
   "resources/js/Pages/Admin/PageBuilder/PageBuilder.jsx": {
-    "file": "assets/PageBuilder-YzCwZh2Y.js",
+    "file": "assets/PageBuilder-pK1IvGwA.js",
     "name": "PageBuilder",
     "src": "resources/js/Pages/Admin/PageBuilder/PageBuilder.jsx",
     "isDynamicEntry": true,
@@ -1290,12 +1290,12 @@
       "resources/js/Pages/Admin/PageBuilder/BuilderSidebar.jsx",
       "resources/js/Pages/Admin/PageBuilder/BuilderCanvas.jsx",
       "resources/js/Pages/Admin/PageBuilder/InspectorPanel.jsx",
-      "_sectionRegistry-vYp-Bbtv.js",
+      "_sectionRegistry-Cg4NWCWA.js",
       "resources/js/Pages/Admin/PageBuilder/SortableSectionItem.jsx",
       "resources/js/Pages/Admin/PageBuilder/SectionPreview.jsx",
       "resources/js/Pages/Admin/PageBuilder/Components/ErrorBoundary.jsx",
       "_RepeaterEditor-BIWFPFyI.js",
-      "_ServiceCtaSection-IIEVm20e.js",
+      "_ServiceCtaSection-BYOwZgS0.js",
       "_NewsSection-CY_r_eTc.js",
       "_whatsapp-Df9uErmj.js",
       "_ui-swiper-Db3Ms2SX.js",
@@ -1304,16 +1304,16 @@
     ]
   },
   "resources/js/Pages/Admin/PageBuilder/SectionPreview-legacy.jsx": {
-    "file": "assets/SectionPreview-legacy-Czk3p0en.js",
+    "file": "assets/SectionPreview-legacy-DlGGwI6u.js",
     "name": "SectionPreview",
     "src": "resources/js/Pages/Admin/PageBuilder/SectionPreview-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-core-legacy-MaQOtt75.js",
-      "_sectionRegistry-legacy-CZZYggSY.js",
+      "_sectionRegistry-legacy-DI1WkQ8y.js",
       "resources/js/Pages/Admin/PageBuilder/Components/ErrorBoundary-legacy.jsx",
       "_vendor-legacy-DG0v0S8r.js",
-      "_ServiceCtaSection-legacy-BCLBgfsX.js",
+      "_ServiceCtaSection-legacy-B8zUj0_9.js",
       "_NewsSection-legacy-BlemwCAW.js",
       "_whatsapp-legacy-TvHSf1_t.js",
       "_ui-swiper-legacy-CKGAcGy_.js",
@@ -1322,16 +1322,16 @@
     ]
   },
   "resources/js/Pages/Admin/PageBuilder/SectionPreview.jsx": {
-    "file": "assets/SectionPreview-C_2gKL4c.js",
+    "file": "assets/SectionPreview-ClDLBhkF.js",
     "name": "SectionPreview",
     "src": "resources/js/Pages/Admin/PageBuilder/SectionPreview.jsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-core-BZS_6Arc.js",
-      "_sectionRegistry-vYp-Bbtv.js",
+      "_sectionRegistry-Cg4NWCWA.js",
       "resources/js/Pages/Admin/PageBuilder/Components/ErrorBoundary.jsx",
       "_vendor-DViQF3d3.js",
-      "_ServiceCtaSection-IIEVm20e.js",
+      "_ServiceCtaSection-BYOwZgS0.js",
       "_NewsSection-CY_r_eTc.js",
       "_whatsapp-Df9uErmj.js",
       "_ui-swiper-Db3Ms2SX.js",
@@ -1340,15 +1340,15 @@
     ]
   },
   "resources/js/Pages/Admin/PageBuilder/SortableSectionItem-legacy.jsx": {
-    "file": "assets/SortableSectionItem-legacy-DkFo37kA.js",
+    "file": "assets/SortableSectionItem-legacy-BgbJ-L7p.js",
     "name": "SortableSectionItem",
     "src": "resources/js/Pages/Admin/PageBuilder/SortableSectionItem-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-core-legacy-MaQOtt75.js",
       "_vendor-legacy-DG0v0S8r.js",
-      "_sectionRegistry-legacy-CZZYggSY.js",
-      "_ServiceCtaSection-legacy-BCLBgfsX.js",
+      "_sectionRegistry-legacy-DI1WkQ8y.js",
+      "_ServiceCtaSection-legacy-B8zUj0_9.js",
       "_NewsSection-legacy-BlemwCAW.js",
       "_whatsapp-legacy-TvHSf1_t.js",
       "_ui-swiper-legacy-CKGAcGy_.js",
@@ -1357,15 +1357,15 @@
     ]
   },
   "resources/js/Pages/Admin/PageBuilder/SortableSectionItem.jsx": {
-    "file": "assets/SortableSectionItem-DjaN76UH.js",
+    "file": "assets/SortableSectionItem-tqGXQ8tJ.js",
     "name": "SortableSectionItem",
     "src": "resources/js/Pages/Admin/PageBuilder/SortableSectionItem.jsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-core-BZS_6Arc.js",
       "_vendor-DViQF3d3.js",
-      "_sectionRegistry-vYp-Bbtv.js",
-      "_ServiceCtaSection-IIEVm20e.js",
+      "_sectionRegistry-Cg4NWCWA.js",
+      "_ServiceCtaSection-BYOwZgS0.js",
       "_NewsSection-CY_r_eTc.js",
       "_whatsapp-Df9uErmj.js",
       "_ui-swiper-Db3Ms2SX.js",
@@ -1598,14 +1598,14 @@
     ]
   },
   "resources/js/Pages/DynamicPage-legacy.jsx": {
-    "file": "assets/DynamicPage-legacy-BhuUGO1u.js",
+    "file": "assets/DynamicPage-legacy-Cp_CKcx4.js",
     "name": "DynamicPage",
     "src": "resources/js/Pages/DynamicPage-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-core-legacy-MaQOtt75.js",
       "_MainLayout-legacy-DlaEiD1G.js",
-      "_ServiceCtaSection-legacy-BCLBgfsX.js",
+      "_ServiceCtaSection-legacy-B8zUj0_9.js",
       "_VisionMissionSection-legacy-CA_wLreK.js",
       "_Breadcrumb-legacy-BEl96lBB.js",
       "_Seo-legacy-nxAxhNPC.js",
@@ -1620,14 +1620,14 @@
     ]
   },
   "resources/js/Pages/DynamicPage.jsx": {
-    "file": "assets/DynamicPage-BCAA6umX.js",
+    "file": "assets/DynamicPage-D6EG3JJ8.js",
     "name": "DynamicPage",
     "src": "resources/js/Pages/DynamicPage.jsx",
     "isDynamicEntry": true,
     "imports": [
       "_react-core-BZS_6Arc.js",
       "_MainLayout-uekdQ7_P.js",
-      "_ServiceCtaSection-IIEVm20e.js",
+      "_ServiceCtaSection-BYOwZgS0.js",
       "_VisionMissionSection-C7ozQQ-u.js",
       "_Breadcrumb-x3_UjPrh.js",
       "_Seo-DKP8D82Q.js",
@@ -2672,7 +2672,7 @@
     ]
   },
   "resources/js/Pages/Services-legacy.jsx": {
-    "file": "assets/Services-legacy-BCu1mbKG.js",
+    "file": "assets/Services-legacy-CbewfR1G.js",
     "name": "Services",
     "src": "resources/js/Pages/Services-legacy.jsx",
     "isDynamicEntry": true,
@@ -2686,7 +2686,7 @@
       "_animations-legacy-BWgBFhLZ.js",
       "_Toast-legacy-CtOORL7G.js",
       "_whatsapp-legacy-TvHSf1_t.js",
-      "_ServiceCtaSection-legacy-BCLBgfsX.js",
+      "_ServiceCtaSection-legacy-B8zUj0_9.js",
       "_NewsSection-legacy-BlemwCAW.js",
       "_SectionTitle-legacy-BWHBgNVt.js",
       "_VisionMissionSection-legacy-CA_wLreK.js",
@@ -2695,7 +2695,7 @@
     ]
   },
   "resources/js/Pages/Services.jsx": {
-    "file": "assets/Services-D7xITug5.js",
+    "file": "assets/Services-COf7Rj9g.js",
     "name": "Services",
     "src": "resources/js/Pages/Services.jsx",
     "isDynamicEntry": true,
@@ -2709,7 +2709,7 @@
       "_animations-CPskncXY.js",
       "_Toast-DWtzSCpk.js",
       "_whatsapp-Df9uErmj.js",
-      "_ServiceCtaSection-IIEVm20e.js",
+      "_ServiceCtaSection-BYOwZgS0.js",
       "_NewsSection-CY_r_eTc.js",
       "_SectionTitle-DGQnDq9T.js",
       "_VisionMissionSection-C7ozQQ-u.js",
@@ -2758,7 +2758,7 @@
     ]
   },
   "resources/js/app-legacy.jsx": {
-    "file": "assets/app-legacy-C037lcVk.js",
+    "file": "assets/app-legacy-BEQwJioC.js",
     "name": "app",
     "src": "resources/js/app-legacy.jsx",
     "isEntry": true,
@@ -2837,7 +2837,7 @@
     ]
   },
   "resources/js/app.jsx": {
-    "file": "assets/app-FIEU-rK3.js",
+    "file": "assets/app-q-8Medr7.js",
     "name": "app",
     "src": "resources/js/app.jsx",
     "isEntry": true,

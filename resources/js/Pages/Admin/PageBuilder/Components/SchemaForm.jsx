@@ -22,8 +22,8 @@ export default function SchemaForm({ schema, data, onChange }) {
             currentData?.[fieldName] !== undefined
                 ? currentData[fieldName]
                 : field.type === "repeater"
-                  ? []
-                  : "";
+                    ? []
+                    : "";
         const uniqueKey = keyPrefix + fieldName;
 
         switch (field.type) {
@@ -105,11 +105,9 @@ export default function SchemaForm({ schema, data, onChange }) {
                                             const formData = new FormData();
                                             formData.append("file", file);
 
-                                            // Show uploading state if needed, here simply direct fetch
-                                            const btn =
-                                                e.target.nextElementSibling;
-                                            if (btn)
-                                                btn.innerText = "Uploading...";
+                                            // Show uploading state
+                                            const btn = e.target.nextElementSibling;
+                                            if (btn) btn.innerText = "Uploading...";
 
                                             fetch("/admin/upload-media", {
                                                 method: "POST",

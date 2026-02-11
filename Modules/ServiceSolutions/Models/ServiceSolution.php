@@ -11,6 +11,9 @@ use Modules\Core\Models\Brand;
 class ServiceSolution extends Model
 {
     use \App\Traits\HasSeoMeta;
+    use \App\Traits\HasImageCleanup;
+
+    protected $cleanupFields = ['thumbnail', 'features', 'showcase'];
 
     protected $fillable = [
         'service_id',

@@ -13,6 +13,7 @@ class News extends Model
     use HasFactory, HasSeoMeta, HasImageCleanup;
 
     protected $cleanupFields = ['thumbnail'];
+    protected $richEditorCleanupFields = ['content'];
 
     protected $guarded = ['id'];
 

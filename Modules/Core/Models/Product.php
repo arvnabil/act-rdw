@@ -7,9 +7,14 @@ use Illuminate\Database\Eloquent\Model;
 use Modules\ServiceSolutions\Models\Service;
 use App\Traits\HasSeoMeta;
 
+use App\Traits\HasImageCleanup;
+
 class Product extends Model
 {
-    use HasFactory, HasSeoMeta;
+    use HasFactory, HasSeoMeta, HasImageCleanup;
+
+    protected $cleanupFields = ['image_path', 'datasheet_url'];
+    protected $richEditorCleanupFields = ['description', 'specification_text', 'features_text'];
 
     protected $fillable = [
         'service_id', 'product_category_id', 'brand_id', 'name', 'slug',

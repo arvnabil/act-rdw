@@ -28,10 +28,16 @@ class EventUserForm
             Forms\Components\FileUpload::make('avatar')
                 ->image()
                 ->disk('public')
-                ->directory('events/users/avatar')
                 ->visibility('public')
-                ->preserveFilenames()
-                ->maxSize(2048),
+                ->maxSize(2048)
+                ->downloadable()
+                ->openable()
+                ->helperText('Ukuran maks: 2MB.')
+                ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, $get): string {
+                    $name = $get('name') ?: 'user';
+                    return \App\Helpers\UploadHelper::getSluggedFilename($file, 'events/users/avatars/' . $name);
+                })
+                ->preserveFilenames(),
         ];
     }
 }

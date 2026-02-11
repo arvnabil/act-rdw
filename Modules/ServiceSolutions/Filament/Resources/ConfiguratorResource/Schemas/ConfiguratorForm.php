@@ -7,7 +7,7 @@ use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Get;
+use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Set;
 use Illuminate\Support\Str;
@@ -35,7 +35,19 @@ class ConfiguratorForm
 
                     FileUpload::make('image')
                         ->image()
-                        ->directory('configurators'),
+                        ->disk('public')
+                        ->visibility('public')
+                        ->maxSize(2048)
+                        ->placeholder('')
+                        ->imagePreviewHeight('250')
+                        ->extraAttributes([
+                            'class' => '[&_.filepond--drop-label]:hidden',
+                        ])
+                        ->helperText('Nama file akan otomatis disesuaikan. Ukuran maks: 2MB.')
+                        ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
+                            $slug = $get('slug') ?: 'temp';
+                            return \App\Helpers\UploadHelper::getSluggedFilename($file, 'configurators/' . $slug);
+                        }),
 
                     Toggle::make('is_active')
                         ->required()

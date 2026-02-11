@@ -69,9 +69,15 @@ class SeoForm
                                 ->label('Social Share Image')
                                 ->image()
                                 ->disk('public')
-                                ->directory('seo-images')
                                 ->visibility('public')
-                                ->helperText('Recommended: 1200x630px'),
+                                ->maxSize(2048)
+                                ->downloadable()
+                                ->openable()
+                                ->helperText('Nama file akan otomatis disesuaikan (Contoh: seo-slug.png). Ukuran maks: 2MB.')
+                                ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
+                                    $slug = $get('../../slug') ?: ($get('../../title') ?: ($get('title') ?: 'seo'));
+                                    return \App\Helpers\UploadHelper::getSluggedFilename($file, 'seo/' . $slug);
+                                }),
                         ])
                         ->collapsible(),
 

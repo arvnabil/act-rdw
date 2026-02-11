@@ -25,20 +25,16 @@ class EventDocumentationForm
             Forms\Components\FileUpload::make('file_path')
                 ->label('Upload Files')
                 ->disk('public')
-                ->directory(function ($get, ?\Illuminate\Database\Eloquent\Model $record) {
-                    $slug = 'default';
-                     if ($record && $record->event) {
-                        $slug = $record->event->slug;
-                    } elseif ($eventId = $get('event_id')) {
-                        $event = \Modules\Events\Models\Event::find($eventId);
-                        if ($event) {
-                             $slug = $event->slug;
-                        }
-                    }
-                    return "events/{$slug}/documentations";
-                })
                 ->visibility('public')
                 ->maxSize(2048)
+                ->downloadable()
+                ->openable()
+                ->helperText('Ukuran maks: 2MB.')
+                ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, $get): string {
+                    $eventId = $get('event_id');
+                    $slug = $eventId ? \Modules\Events\Models\Event::find($eventId)?->slug : 'event';
+                    return \App\Helpers\UploadHelper::getSluggedFilename($file, 'events/' . $slug . '/documentations');
+                })
                 ->preserveFilenames()
                 ->multiple() // multiple upload
                 ->reorderable()

@@ -5,9 +5,13 @@ namespace Modules\Core\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use App\Traits\HasImageCleanup;
+
 class Brand extends Model
 {
-    use HasFactory;
+    use HasFactory, HasImageCleanup;
+
+    protected $cleanupFields = ['image', 'logo_path', 'landing_config'];
 
     protected $fillable = ['name', 'slug', 'logo_path', 'website_url', 'image', 'desc', 'category', 'is_featured', 'landing_config'];
 

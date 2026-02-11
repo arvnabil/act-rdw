@@ -8,9 +8,14 @@ use Modules\Core\Models\Product;
 use App\Traits\HasSeoMeta;
 
 
+use App\Traits\HasImageCleanup;
+
 class Service extends Model
 {
-    use HasFactory, HasSeoMeta;
+    use HasFactory, HasSeoMeta, HasImageCleanup;
+
+    protected $cleanupFields = ['featured_image', 'thumbnail', 'icon'];
+    protected $richEditorCleanupFields = ['content'];
 
     protected $fillable = [
         'name',

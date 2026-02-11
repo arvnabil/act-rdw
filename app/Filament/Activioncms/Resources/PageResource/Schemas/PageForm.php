@@ -151,16 +151,30 @@ class PageForm
                                                                 ->label('Background Image')
                                                                 ->image()
                                                                 ->disk('public')
-                                                                ->directory('hero-slides')
                                                                 ->visibility('public')
+                                                                ->maxSize(2048)
+                                                                ->downloadable()
+                                                                ->openable()
+                                                                ->helperText('Ukuran maks: 2MB.')
+                                                                ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
+                                                                    $pageSlug = $get('../../../slug') ?: 'page';
+                                                                    return \App\Helpers\UploadHelper::getSluggedFilename($file, 'pages/' . $pageSlug . '/hero');
+                                                                })
                                                                 ->visible(fn (Get $get) => $get('../../config.variant') === 'hero'),
 
                                                             FileUpload::make('image')
                                                                 ->label('Image/Logo')
                                                                 ->image()
                                                                 ->disk('public')
-                                                                ->directory('slider-images')
-                                                                ->visibility('public'),
+                                                                ->visibility('public')
+                                                                ->maxSize(2048)
+                                                                ->downloadable()
+                                                                ->openable()
+                                                                ->helperText('Ukuran maks: 2MB.')
+                                                                ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
+                                                                    $pageSlug = $get('../../../slug') ?: 'page';
+                                                                    return \App\Helpers\UploadHelper::getSluggedFilename($file, 'pages/' . $pageSlug . '/slider');
+                                                                }),
 
                                                             TextInput::make('title')->label('Title'),
                                                             Textarea::make('description')->label('Description'),
@@ -214,8 +228,15 @@ class PageForm
                                                         ->image()
                                                         ->multiple()
                                                         ->disk('public')
-                                                        ->directory('about-images')
                                                         ->visibility('public')
+                                                        ->maxSize(2048)
+                                                        ->downloadable()
+                                                        ->openable()
+                                                        ->helperText('Ukuran maks: 2MB.')
+                                                        ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
+                                                            $pageSlug = $get('../slug') ?: 'page';
+                                                            return \App\Helpers\UploadHelper::getSluggedFilename($file, 'pages/' . $pageSlug . '/about');
+                                                        })
                                                         ->imageEditor(),
                                                     // Features Repeater
                                                     Repeater::make('config.features')
@@ -226,9 +247,15 @@ class PageForm
                                                             FileUpload::make('icon')
                                                                 ->image()
                                                                 ->disk('public')
-                                                                ->directory('icons')
                                                                 ->visibility('public')
-                                                                ->preserveFilenames(),
+                                                                ->maxSize(2048)
+                                                                ->downloadable()
+                                                                ->openable()
+                                                                ->helperText('Ukuran maks: 2MB.')
+                                                                ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
+                                                                    $pageSlug = $get('../../slug') ?: 'page';
+                                                                    return \App\Helpers\UploadHelper::getSluggedFilename($file, 'pages/' . $pageSlug . '/icons');
+                                                                }),
                                                         ])
                                                         ->collapsible()
                                                         ->itemLabel(fn (array $state): ?string => $state['title'] ?? null)
@@ -249,14 +276,32 @@ class PageForm
                                                         ->image()
                                                         ->multiple()
                                                         ->disk('public')
-                                                        ->directory('why-choose-us-images')
-                                                        ->visibility('public'),
+                                                        ->visibility('public')
+                                                        ->maxSize(2048)
+                                                        ->downloadable()
+                                                        ->openable()
+                                                        ->helperText('Ukuran maks: 2MB.')
+                                                        ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
+                                                            $pageSlug = $get('../slug') ?: 'page';
+                                                            return \App\Helpers\UploadHelper::getSluggedFilename($file, 'pages/' . $pageSlug . '/why-choose-us');
+                                                        }),
                                                     Repeater::make('config.features')
                                                         ->label('Features')
                                                         ->schema([
                                                             TextInput::make('title')->required(),
                                                             Textarea::make('text')->rows(2),
-                                                            FileUpload::make('icon')->image()->disk('public')->directory('icons')->visibility('public'),
+                                                            FileUpload::make('icon')
+                                                                ->image()
+                                                                ->disk('public')
+                                                                ->visibility('public')
+                                                                ->maxSize(2048)
+                                                                ->downloadable()
+                                                                ->openable()
+                                                                ->helperText('Ukuran maks: 2MB.')
+                                                                ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
+                                                                    $pageSlug = $get('../../slug') ?: 'page';
+                                                                    return \App\Helpers\UploadHelper::getSluggedFilename($file, 'pages/' . $pageSlug . '/icons');
+                                                                }),
                                                         ])
                                                         ->collapsible()
                                                         ->itemLabel(fn (array $state): ?string => $state['title'] ?? null)
@@ -275,8 +320,15 @@ class PageForm
                                                             FileUpload::make('image')
                                                                 ->image()
                                                                 ->disk('public')
-                                                                ->directory('brand-images')
                                                                 ->visibility('public')
+                                                                ->maxSize(2048)
+                                                                ->downloadable()
+                                                                ->openable()
+                                                                ->helperText('Ukuran maks: 2MB.')
+                                                                ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
+                                                                    $pageSlug = $get('../../slug') ?: 'page';
+                                                                    return \App\Helpers\UploadHelper::getSluggedFilename($file, 'pages/' . $pageSlug . '/brands');
+                                                                })
                                                                 ->required(),
                                                             TextInput::make('name')->label('Brand Name'),
                                                             TextInput::make('url')->label('Website URL'),

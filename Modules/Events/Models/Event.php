@@ -7,37 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Modules\Events\Models\Organizer;
 
+use App\Traits\HasImageCleanup;
+
 class Event extends Model
 {
-    use HasFactory;
-    use \Modules\Events\Traits\HasEventFileManagement;
+    use HasFactory, HasImageCleanup;
 
-    protected function fileFields(): array
-    {
-        return [
-            'thumbnail' => 'thumbnail',
-            'speakers' => 'speakers',
-        ];
-    }
-
-    protected function getStorageBasePath(): string
-    {
-        return "events/" . ($this->slug ?? 'default');
-    }
-
-    protected function richEditorFields(): array
-    {
-        return ['description'];
-    }
-
-    protected function shouldDeleteEntireDirectory(): bool
-    {
-        return true;
-    }
+    protected $cleanupFields = ['thumbnail', 'speakers'];
+    protected $richEditorCleanupFields = ['description'];
 
     protected $fillable = [
         'title',
         'slug',
+        'thumbnail',
         'description',
         'start_date',
         'end_date',
