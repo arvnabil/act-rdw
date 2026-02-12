@@ -11,6 +11,7 @@ export default function MainLayout({ children }) {
     console.log("MainLayout menus:", menus);
     const [toast, setToast] = useState(null);
     const [isScrolled, setIsScrolled] = useState(false);
+    const [mobileLangOpen, setMobileLangOpen] = useState(false);
 
     useEffect(() => {
         const handleScroll = () => {
@@ -714,12 +715,61 @@ export default function MainLayout({ children }) {
                                             )}
                                         </ul>
                                     </nav>
-                                    <button
-                                        type="button"
-                                        className="th-menu-toggle d-block d-lg-none"
-                                    >
-                                        <i className="far fa-bars"></i>
-                                    </button>
+                                    <div className="d-flex align-items-center gap-3 d-lg-none justify-content-end">
+                                        <div className="gt_switcher_wrapper notranslate" style={{ zIndex: 9 }}>
+                                            <div className="gt_switcher border-0 p-0 shadow-none bg-transparent">
+                                                <div
+                                                    className="gt_selected p-0 d-flex align-items-center gap-1"
+                                                    role="button"
+                                                    onClick={(e) => { e.stopPropagation(); setMobileLangOpen(!mobileLangOpen); }}
+                                                >
+                                                    <img src={selectedLang.flag} alt={selectedLang.code} style={{ width: '22px', borderRadius: '3px', cursor: 'pointer' }} />
+                                                    <i className={`fa-light fa-angle-${mobileLangOpen ? 'up' : 'down'}`} style={{ fontSize: '12px', color: 'var(--title-color)' }}></i>
+                                                </div>
+                                                <div
+                                                    className={`gt_option shadow-sm ${mobileLangOpen ? 'd-block' : 'd-none'}`}
+                                                    style={{ width: '150px', left: 'auto', right: '-10px', top: '35px', borderRadius: '6px' }}
+                                                >
+                                                    {[
+                                                        { code: 'en', label: 'English', flag: 'https://cdn.gtranslate.net/flags/svg/en.svg' },
+                                                        { code: 'id', label: 'Indonesian', flag: 'https://cdn.gtranslate.net/flags/svg/id.svg' },
+                                                        { code: 'ar', label: 'Arabic', flag: 'https://cdn.gtranslate.net/flags/svg/countries/sa.svg' },
+                                                        { code: 'zh-CN', label: 'Chinese', flag: 'https://cdn.gtranslate.net/flags/svg/zh-CN.svg' },
+                                                        { code: 'nl', label: 'Dutch', flag: 'https://cdn.gtranslate.net/flags/svg/nl.svg' },
+                                                        { code: 'fr', label: 'French', flag: 'https://cdn.gtranslate.net/flags/svg/fr.svg' },
+                                                        { code: 'de', label: 'German', flag: 'https://cdn.gtranslate.net/flags/svg/de.svg' },
+                                                        { code: 'hi', label: 'Hindi', flag: 'https://cdn.gtranslate.net/flags/svg/hi.svg' },
+                                                        { code: 'it', label: 'Italian', flag: 'https://cdn.gtranslate.net/flags/svg/it.svg' },
+                                                        { code: 'ja', label: 'Japanese', flag: 'https://cdn.gtranslate.net/flags/svg/ja.svg' },
+                                                        { code: 'ko', label: 'Korean', flag: 'https://cdn.gtranslate.net/flags/svg/ko.svg' },
+                                                        { code: 'pt', label: 'Portuguese', flag: 'https://cdn.gtranslate.net/flags/svg/pt.svg' },
+                                                        { code: 'ru', label: 'Russian', flag: 'https://cdn.gtranslate.net/flags/svg/ru.svg' },
+                                                        { code: 'es', label: 'Spanish', flag: 'https://cdn.gtranslate.net/flags/svg/es.svg' },
+                                                        { code: 'th', label: 'Thai', flag: 'https://cdn.gtranslate.net/flags/svg/th.svg' }
+                                                    ].map(lang => (
+                                                        <a
+                                                            key={lang.code}
+                                                            href="#"
+                                                            onClick={(e) => {
+                                                                e.preventDefault();
+                                                                window.doGTranslate(`id|${lang.code}`);
+                                                                setMobileLangOpen(false);
+                                                            }}
+                                                            title={lang.label}
+                                                        >
+                                                            <img src={lang.flag} alt={lang.code} /> {lang.label}
+                                                        </a>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <button
+                                            type="button"
+                                            className="th-menu-toggle"
+                                        >
+                                            <i className="far fa-bars"></i>
+                                        </button>
+                                    </div>
                                 </div>
                                 <div className="col-xl-2 col-xxl-3 col-auto d-none d-lg-block">
                                     <div className="header-button">
