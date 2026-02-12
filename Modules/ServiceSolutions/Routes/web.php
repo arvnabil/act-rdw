@@ -62,6 +62,8 @@ Route::middleware(['web'])->group(function () {
                 ]),
                 'projects' => $dummyProjects,
                 'configurator_route' => $solution->configurator_slug ? '/' . $solution->configurator_slug : '/room-configurator',
+                'thumbnail' => $solution->thumbnail,
+                'show_showcase' => $solution->show_showcase,
                 'wa_message' => $solution->wa_message
             ]
         ]);

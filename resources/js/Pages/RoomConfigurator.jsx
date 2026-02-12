@@ -281,7 +281,7 @@ export default function RoomConfigurator() {
                 {
                     id: "rally-bar-mini",
                     name: "Logitech Rally Bar Mini",
-                    image: "/assets/img/product/product_1_1.png",
+                    image: item.image_path || "/assets/default.png",
                     desc: "Premier Video Bar for Small Rooms",
                     price: 25000000,
                     accessories: [
@@ -568,7 +568,7 @@ export default function RoomConfigurator() {
             crypto.randomUUID
                 ? crypto.randomUUID()
                 : Math.random().toString(36).substring(2) +
-                      Date.now().toString(36)
+                Date.now().toString(36)
         );
 
         const urlParams = new URLSearchParams(window.location.search);
@@ -1035,11 +1035,10 @@ export default function RoomConfigurator() {
                                                                 themeColor={
                                                                     themeColor
                                                                 }
-                                                                className={`p-4 h-100 position-relative ${
-                                                                    isSelected
+                                                                className={`p-4 h-100 position-relative ${isSelected
                                                                         ? "shadow-lg"
                                                                         : "shadow-sm"
-                                                                }`}
+                                                                    }`}
                                                             >
                                                                 {/* Main Product Selection */}
                                                                 <div
@@ -1060,16 +1059,16 @@ export default function RoomConfigurator() {
                                                                                         product,
                                                                                     ],
                                                                                 quantities:
-                                                                                    {
-                                                                                        ...prev.quantities,
-                                                                                        [product.id]:
-                                                                                            prev
-                                                                                                .quantities[
-                                                                                                product
-                                                                                                    .id
-                                                                                            ] ||
-                                                                                            1,
-                                                                                    },
+                                                                                {
+                                                                                    ...prev.quantities,
+                                                                                    [product.id]:
+                                                                                        prev
+                                                                                            .quantities[
+                                                                                        product
+                                                                                            .id
+                                                                                        ] ||
+                                                                                        1,
+                                                                                },
                                                                             })
                                                                         )
                                                                     }
@@ -1163,11 +1162,10 @@ export default function RoomConfigurator() {
                                                                                         key={
                                                                                             acc.id
                                                                                         }
-                                                                                        className={`d-flex align-items-center bg-white p-3 rounded mb-2 border transition-all ${
-                                                                                            isAccSelected
+                                                                                        className={`d-flex align-items-center bg-white p-3 rounded mb-2 border transition-all ${isAccSelected
                                                                                                 ? "border-success bg-gradient-success-subtle"
                                                                                                 : ""
-                                                                                        }`}
+                                                                                            }`}
                                                                                         style={{
                                                                                             cursor: "pointer",
                                                                                             borderColor:
@@ -1203,7 +1201,7 @@ export default function RoomConfigurator() {
                                                                                                 checked={
                                                                                                     isAccSelected
                                                                                                 }
-                                                                                                onChange={() => {}}
+                                                                                                onChange={() => { }}
                                                                                                 style={{
                                                                                                     cursor: "pointer",
                                                                                                 }}
@@ -1276,11 +1274,10 @@ export default function RoomConfigurator() {
                                                                 themeColor={
                                                                     themeColor
                                                                 }
-                                                                className={`p-4 h-100 position-relative ${
-                                                                    isSelected
+                                                                className={`p-4 h-100 position-relative ${isSelected
                                                                         ? "shadow-lg"
                                                                         : "shadow-sm"
-                                                                }`}
+                                                                    }`}
                                                             >
                                                                 <div
                                                                     className="d-flex align-items-center mb-3"
@@ -1295,16 +1292,16 @@ export default function RoomConfigurator() {
                                                                                 ...prev,
                                                                                 pc: pc,
                                                                                 quantities:
-                                                                                    {
-                                                                                        ...prev.quantities,
-                                                                                        [pc.id]:
-                                                                                            prev
-                                                                                                .quantities[
-                                                                                                pc
-                                                                                                    .id
-                                                                                            ] ||
-                                                                                            1,
-                                                                                    },
+                                                                                {
+                                                                                    ...prev.quantities,
+                                                                                    [pc.id]:
+                                                                                        prev
+                                                                                            .quantities[
+                                                                                        pc
+                                                                                            .id
+                                                                                        ] ||
+                                                                                        1,
+                                                                                },
                                                                             })
                                                                         )
                                                                     }
@@ -1425,11 +1422,10 @@ export default function RoomConfigurator() {
                                                     <SelectionCard
                                                         selected={isSelected}
                                                         themeColor={themeColor}
-                                                        className={`p-4 rounded-4 text-center h-100 position-relative ${
-                                                            isSelected
+                                                        className={`p-4 rounded-4 text-center h-100 position-relative ${isSelected
                                                                 ? "shadow-lg"
                                                                 : ""
-                                                        }`}
+                                                            }`}
                                                         onClick={() =>
                                                             handleToggle(
                                                                 "audio",
@@ -1511,11 +1507,10 @@ export default function RoomConfigurator() {
                                                     <SelectionCard
                                                         selected={isSelected}
                                                         themeColor={themeColor}
-                                                        className={`p-4 h-100 d-flex align-items-center ${
-                                                            isSelected
+                                                        className={`p-4 h-100 d-flex align-items-center ${isSelected
                                                                 ? "shadow-lg"
                                                                 : "shadow-sm"
-                                                        }`}
+                                                            }`}
                                                         onClick={() =>
                                                             setSelection(
                                                                 (prev) => ({
@@ -1682,11 +1677,10 @@ export default function RoomConfigurator() {
                                                     <SelectionCard
                                                         selected={isSelected}
                                                         themeColor={themeColor}
-                                                        className={`p-4 rounded-4 text-center h-100 position-relative ${
-                                                            isSelected
+                                                        className={`p-4 rounded-4 text-center h-100 position-relative ${isSelected
                                                                 ? "shadow-lg"
                                                                 : ""
-                                                        }`}
+                                                            }`}
                                                         onClick={() =>
                                                             handleToggle(
                                                                 "accessories",
@@ -1718,10 +1712,9 @@ export default function RoomConfigurator() {
                                                             }}
                                                         >
                                                             <i
-                                                                className={`fa-solid ${
-                                                                    acc.icon ||
+                                                                className={`fa-solid ${acc.icon ||
                                                                     "fa-box"
-                                                                } fa-lg text-muted`}
+                                                                    } fa-lg text-muted`}
                                                             ></i>
                                                         </div>
                                                         <h6 className="mb-1 fw-bold">
@@ -1772,7 +1765,7 @@ export default function RoomConfigurator() {
                                                 (q, index) => {
                                                     const isAnswered =
                                                         !!selection.services[
-                                                            q.id
+                                                        q.id
                                                         ];
                                                     const isEditing =
                                                         editingServiceId ===
@@ -1784,15 +1777,15 @@ export default function RoomConfigurator() {
                                                     const prevQuestionId =
                                                         index > 0
                                                             ? metaData
-                                                                  .serviceQuestions[
-                                                                  index - 1
-                                                              ].id
+                                                                .serviceQuestions[
+                                                                index - 1
+                                                            ].id
                                                             : null;
                                                     const isVisible =
                                                         index === 0 ||
                                                         (prevQuestionId &&
                                                             selection.services[
-                                                                prevQuestionId
+                                                            prevQuestionId
                                                             ]);
 
                                                     if (!isVisible) return null;
@@ -1845,8 +1838,8 @@ export default function RoomConfigurator() {
                                                                         {
                                                                             selection
                                                                                 .services[
-                                                                                q
-                                                                                    .id
+                                                                            q
+                                                                                .id
                                                                             ]
                                                                         }
                                                                     </div>
@@ -1898,8 +1891,8 @@ export default function RoomConfigurator() {
                                                                             const isSelected =
                                                                                 selection
                                                                                     .services[
-                                                                                    q
-                                                                                        .id
+                                                                                q
+                                                                                    .id
                                                                                 ] ===
                                                                                 opt;
                                                                             return (
@@ -1954,142 +1947,242 @@ export default function RoomConfigurator() {
                                                 .length >=
                                                 metaData.serviceQuestions
                                                     .length && (
-                                                <div className="mt-5 animation-fadeIn">
-                                                    {/* Room Platform License (Zoom/Teams only) */}
-                                                    {(selection.platform ===
-                                                        "zoom" ||
-                                                        selection.platform ===
+                                                    <div className="mt-5 animation-fadeIn">
+                                                        {/* Room Platform License (Zoom/Teams only) */}
+                                                        {(selection.platform ===
+                                                            "zoom" ||
+                                                            selection.platform ===
                                                             "teams") && (
+                                                                <div className="mb-5">
+                                                                    <h5 className="fw-bold mb-3 border-bottom pb-2">
+                                                                        Room Platform
+                                                                        License
+                                                                    </h5>
+                                                                    <div className="row g-3">
+                                                                        {platformLicenses
+                                                                            .filter(
+                                                                                (lic) =>
+                                                                                    lic.id ===
+                                                                                    selection.platform
+                                                                            )
+                                                                            .map(
+                                                                                (
+                                                                                    lic
+                                                                                ) => {
+                                                                                    const isSelected =
+                                                                                        selection
+                                                                                            .platformLicense
+                                                                                            ?.id ===
+                                                                                        lic.id;
+                                                                                    return (
+                                                                                        <div
+                                                                                            className="col-md-6"
+                                                                                            key={
+                                                                                                lic.id
+                                                                                            }
+                                                                                        >
+                                                                                            <SelectionCard
+                                                                                                selected={
+                                                                                                    isSelected
+                                                                                                }
+                                                                                                themeColor={
+                                                                                                    themeColor
+                                                                                                }
+                                                                                                className="p-3 position-relative"
+                                                                                                onClick={() => {
+                                                                                                    const newSelection =
+                                                                                                        isSelected
+                                                                                                            ? null
+                                                                                                            : lic;
+                                                                                                    setSelection(
+                                                                                                        (
+                                                                                                            prev
+                                                                                                        ) => ({
+                                                                                                            ...prev,
+                                                                                                            platformLicense:
+                                                                                                                newSelection,
+                                                                                                            quantities:
+                                                                                                            {
+                                                                                                                ...prev.quantities,
+                                                                                                                [lic.id]:
+                                                                                                                    newSelection
+                                                                                                                        ? prev
+                                                                                                                            .quantities[
+                                                                                                                        lic
+                                                                                                                            .id
+                                                                                                                        ] ||
+                                                                                                                        1
+                                                                                                                        : 0,
+                                                                                                            },
+                                                                                                        })
+                                                                                                    );
+                                                                                                }}
+                                                                                            >
+                                                                                                <div className="d-flex justify-content-between align-items-center mb-2">
+                                                                                                    <h6 className="fw-bold mb-0">
+                                                                                                        {
+                                                                                                            lic.name
+                                                                                                        }
+                                                                                                    </h6>
+                                                                                                    {isSelected && (
+                                                                                                        <i
+                                                                                                            className="fa-solid fa-circle-check"
+                                                                                                            style={{
+                                                                                                                color: themeColor,
+                                                                                                            }}
+                                                                                                        ></i>
+                                                                                                    )}
+                                                                                                </div>
+                                                                                                <p className="small text-muted mb-2">
+                                                                                                    {
+                                                                                                        lic.desc
+                                                                                                    }
+                                                                                                </p>
+                                                                                                {isSelected && (
+                                                                                                    <div
+                                                                                                        className="mt-3 pt-2 border-top d-flex align-items-center"
+                                                                                                        onClick={(
+                                                                                                            e
+                                                                                                        ) =>
+                                                                                                            e.stopPropagation()
+                                                                                                        }
+                                                                                                    >
+                                                                                                        <label className="small fw-bold me-2 mb-0">
+                                                                                                            Qty:
+                                                                                                        </label>
+                                                                                                        {renderQuantityControl(
+                                                                                                            lic.id
+                                                                                                        )}
+                                                                                                    </div>
+                                                                                                )}
+                                                                                            </SelectionCard>
+                                                                                        </div>
+                                                                                    );
+                                                                                }
+                                                                            )}
+                                                                    </div>
+                                                                </div>
+                                                            )}
+
+                                                        {/* Room Management Licenses */}
                                                         <div className="mb-5">
                                                             <h5 className="fw-bold mb-3 border-bottom pb-2">
-                                                                Room Platform
-                                                                License
+                                                                Room Management
+                                                                Licenses
                                                             </h5>
                                                             <div className="row g-3">
-                                                                {platformLicenses
-                                                                    .filter(
-                                                                        (lic) =>
-                                                                            lic.id ===
-                                                                            selection.platform
-                                                                    )
-                                                                    .map(
-                                                                        (
-                                                                            lic
-                                                                        ) => {
-                                                                            const isSelected =
-                                                                                selection
-                                                                                    .platformLicense
-                                                                                    ?.id ===
-                                                                                lic.id;
-                                                                            return (
-                                                                                <div
-                                                                                    className="col-md-6"
-                                                                                    key={
-                                                                                        lic.id
+                                                                {managementLicenses.map(
+                                                                    (lic) => {
+                                                                        const isSelected =
+                                                                            selection
+                                                                                .managementLicense
+                                                                                ?.id ===
+                                                                            lic.id;
+                                                                        return (
+                                                                            <div
+                                                                                className="col-md-6"
+                                                                                key={
+                                                                                    lic.id
+                                                                                }
+                                                                            >
+                                                                                <SelectionCard
+                                                                                    selected={
+                                                                                        isSelected
                                                                                     }
-                                                                                >
-                                                                                    <SelectionCard
-                                                                                        selected={
+                                                                                    themeColor={
+                                                                                        themeColor
+                                                                                    }
+                                                                                    className="p-3 position-relative"
+                                                                                    onClick={() => {
+                                                                                        const newSelection =
                                                                                             isSelected
-                                                                                        }
-                                                                                        themeColor={
-                                                                                            themeColor
-                                                                                        }
-                                                                                        className="p-3 position-relative"
-                                                                                        onClick={() => {
-                                                                                            const newSelection =
-                                                                                                isSelected
-                                                                                                    ? null
-                                                                                                    : lic;
-                                                                                            setSelection(
-                                                                                                (
-                                                                                                    prev
-                                                                                                ) => ({
-                                                                                                    ...prev,
-                                                                                                    platformLicense:
-                                                                                                        newSelection,
-                                                                                                    quantities:
-                                                                                                        {
-                                                                                                            ...prev.quantities,
-                                                                                                            [lic.id]:
-                                                                                                                newSelection
-                                                                                                                    ? prev
-                                                                                                                          .quantities[
-                                                                                                                          lic
-                                                                                                                              .id
-                                                                                                                      ] ||
-                                                                                                                      1
-                                                                                                                    : 0,
-                                                                                                        },
-                                                                                                })
-                                                                                            );
-                                                                                        }}
-                                                                                    >
-                                                                                        <div className="d-flex justify-content-between align-items-center mb-2">
-                                                                                            <h6 className="fw-bold mb-0">
+                                                                                                ? null
+                                                                                                : lic;
+                                                                                        setSelection(
+                                                                                            (
+                                                                                                prev
+                                                                                            ) => ({
+                                                                                                ...prev,
+                                                                                                managementLicense:
+                                                                                                    newSelection,
+                                                                                                quantities:
                                                                                                 {
-                                                                                                    lic.name
-                                                                                                }
-                                                                                            </h6>
-                                                                                            {isSelected && (
-                                                                                                <i
-                                                                                                    className="fa-solid fa-circle-check"
-                                                                                                    style={{
-                                                                                                        color: themeColor,
-                                                                                                    }}
-                                                                                                ></i>
+                                                                                                    ...prev.quantities,
+                                                                                                    [lic.id]:
+                                                                                                        newSelection
+                                                                                                            ? prev
+                                                                                                                .quantities[
+                                                                                                            lic
+                                                                                                                .id
+                                                                                                            ] ||
+                                                                                                            1
+                                                                                                            : 0,
+                                                                                                },
+                                                                                            })
+                                                                                        );
+                                                                                    }}
+                                                                                >
+                                                                                    <div className="d-flex justify-content-between align-items-center mb-2">
+                                                                                        <h6 className="fw-bold mb-0">
+                                                                                            {
+                                                                                                lic.name
+                                                                                            }
+                                                                                        </h6>
+                                                                                        {isSelected && (
+                                                                                            <i
+                                                                                                className="fa-solid fa-circle-check"
+                                                                                                style={{
+                                                                                                    color: themeColor,
+                                                                                                }}
+                                                                                            ></i>
+                                                                                        )}
+                                                                                    </div>
+                                                                                    <p className="small text-muted mb-2">
+                                                                                        {
+                                                                                            lic.desc
+                                                                                        }
+                                                                                    </p>
+                                                                                    {isSelected && (
+                                                                                        <div
+                                                                                            className="mt-3 pt-2 border-top d-flex align-items-center"
+                                                                                            onClick={(
+                                                                                                e
+                                                                                            ) =>
+                                                                                                e.stopPropagation()
+                                                                                            }
+                                                                                        >
+                                                                                            <label className="small fw-bold me-2 mb-0">
+                                                                                                Qty:
+                                                                                            </label>
+                                                                                            {renderQuantityControl(
+                                                                                                lic.id
                                                                                             )}
                                                                                         </div>
-                                                                                        <p className="small text-muted mb-2">
-                                                                                            {
-                                                                                                lic.desc
-                                                                                            }
-                                                                                        </p>
-                                                                                        {isSelected && (
-                                                                                            <div
-                                                                                                className="mt-3 pt-2 border-top d-flex align-items-center"
-                                                                                                onClick={(
-                                                                                                    e
-                                                                                                ) =>
-                                                                                                    e.stopPropagation()
-                                                                                                }
-                                                                                            >
-                                                                                                <label className="small fw-bold me-2 mb-0">
-                                                                                                    Qty:
-                                                                                                </label>
-                                                                                                {renderQuantityControl(
-                                                                                                    lic.id
-                                                                                                )}
-                                                                                            </div>
-                                                                                        )}
-                                                                                    </SelectionCard>
-                                                                                </div>
-                                                                            );
-                                                                        }
-                                                                    )}
+                                                                                    )}
+                                                                                </SelectionCard>
+                                                                            </div>
+                                                                        );
+                                                                    }
+                                                                )}
                                                             </div>
                                                         </div>
-                                                    )}
 
-                                                    {/* Room Management Licenses */}
-                                                    <div className="mb-5">
                                                         <h5 className="fw-bold mb-3 border-bottom pb-2">
-                                                            Room Management
-                                                            Licenses
+                                                            Extended Warranty
                                                         </h5>
                                                         <div className="row g-3">
-                                                            {managementLicenses.map(
-                                                                (lic) => {
+                                                            {warrantyData.map(
+                                                                (war) => {
                                                                     const isSelected =
                                                                         selection
-                                                                            .managementLicense
+                                                                            .warranty
                                                                             ?.id ===
-                                                                        lic.id;
+                                                                        war.id;
                                                                     return (
                                                                         <div
-                                                                            className="col-md-6"
+                                                                            className="col-md-4"
                                                                             key={
-                                                                                lic.id
+                                                                                war.id
                                                                             }
                                                                         >
                                                                             <SelectionCard
@@ -2099,40 +2192,34 @@ export default function RoomConfigurator() {
                                                                                 themeColor={
                                                                                     themeColor
                                                                                 }
-                                                                                className="p-3 position-relative"
-                                                                                onClick={() => {
-                                                                                    const newSelection =
-                                                                                        isSelected
-                                                                                            ? null
-                                                                                            : lic;
+                                                                                className="p-3 h-100 position-relative"
+                                                                                onClick={() =>
                                                                                     setSelection(
                                                                                         (
                                                                                             prev
                                                                                         ) => ({
                                                                                             ...prev,
-                                                                                            managementLicense:
-                                                                                                newSelection,
+                                                                                            warranty:
+                                                                                                war,
                                                                                             quantities:
-                                                                                                {
-                                                                                                    ...prev.quantities,
-                                                                                                    [lic.id]:
-                                                                                                        newSelection
-                                                                                                            ? prev
-                                                                                                                  .quantities[
-                                                                                                                  lic
-                                                                                                                      .id
-                                                                                                              ] ||
-                                                                                                              1
-                                                                                                            : 0,
-                                                                                                },
+                                                                                            {
+                                                                                                ...prev.quantities,
+                                                                                                [war.id]:
+                                                                                                    prev
+                                                                                                        .quantities[
+                                                                                                    war
+                                                                                                        .id
+                                                                                                    ] ||
+                                                                                                    1,
+                                                                                            },
                                                                                         })
-                                                                                    );
-                                                                                }}
+                                                                                    )
+                                                                                }
                                                                             >
-                                                                                <div className="d-flex justify-content-between align-items-center mb-2">
-                                                                                    <h6 className="fw-bold mb-0">
+                                                                                <div className="d-flex justify-content-between align-items-start mb-2">
+                                                                                    <h6 className="fw-bold mb-0 small">
                                                                                         {
-                                                                                            lic.name
+                                                                                            war.name
                                                                                         }
                                                                                     </h6>
                                                                                     {isSelected && (
@@ -2144,11 +2231,18 @@ export default function RoomConfigurator() {
                                                                                         ></i>
                                                                                     )}
                                                                                 </div>
-                                                                                <p className="small text-muted mb-2">
+                                                                                <p
+                                                                                    className="small text-muted mb-2"
+                                                                                    style={{
+                                                                                        fontSize:
+                                                                                            "11px",
+                                                                                    }}
+                                                                                >
                                                                                     {
-                                                                                        lic.desc
+                                                                                        war.desc
                                                                                     }
                                                                                 </p>
+
                                                                                 {isSelected && (
                                                                                     <div
                                                                                         className="mt-3 pt-2 border-top d-flex align-items-center"
@@ -2158,11 +2252,17 @@ export default function RoomConfigurator() {
                                                                                             e.stopPropagation()
                                                                                         }
                                                                                     >
-                                                                                        <label className="small fw-bold me-2 mb-0">
+                                                                                        <label
+                                                                                            className="small fw-bold me-2 mb-0"
+                                                                                            style={{
+                                                                                                fontSize:
+                                                                                                    "10px",
+                                                                                            }}
+                                                                                        >
                                                                                             Qty:
                                                                                         </label>
                                                                                         {renderQuantityControl(
-                                                                                            lic.id
+                                                                                            war.id
                                                                                         )}
                                                                                     </div>
                                                                                 )}
@@ -2173,114 +2273,7 @@ export default function RoomConfigurator() {
                                                             )}
                                                         </div>
                                                     </div>
-
-                                                    <h5 className="fw-bold mb-3 border-bottom pb-2">
-                                                        Extended Warranty
-                                                    </h5>
-                                                    <div className="row g-3">
-                                                        {warrantyData.map(
-                                                            (war) => {
-                                                                const isSelected =
-                                                                    selection
-                                                                        .warranty
-                                                                        ?.id ===
-                                                                    war.id;
-                                                                return (
-                                                                    <div
-                                                                        className="col-md-4"
-                                                                        key={
-                                                                            war.id
-                                                                        }
-                                                                    >
-                                                                        <SelectionCard
-                                                                            selected={
-                                                                                isSelected
-                                                                            }
-                                                                            themeColor={
-                                                                                themeColor
-                                                                            }
-                                                                            className="p-3 h-100 position-relative"
-                                                                            onClick={() =>
-                                                                                setSelection(
-                                                                                    (
-                                                                                        prev
-                                                                                    ) => ({
-                                                                                        ...prev,
-                                                                                        warranty:
-                                                                                            war,
-                                                                                        quantities:
-                                                                                            {
-                                                                                                ...prev.quantities,
-                                                                                                [war.id]:
-                                                                                                    prev
-                                                                                                        .quantities[
-                                                                                                        war
-                                                                                                            .id
-                                                                                                    ] ||
-                                                                                                    1,
-                                                                                            },
-                                                                                    })
-                                                                                )
-                                                                            }
-                                                                        >
-                                                                            <div className="d-flex justify-content-between align-items-start mb-2">
-                                                                                <h6 className="fw-bold mb-0 small">
-                                                                                    {
-                                                                                        war.name
-                                                                                    }
-                                                                                </h6>
-                                                                                {isSelected && (
-                                                                                    <i
-                                                                                        className="fa-solid fa-circle-check"
-                                                                                        style={{
-                                                                                            color: themeColor,
-                                                                                        }}
-                                                                                    ></i>
-                                                                                )}
-                                                                            </div>
-                                                                            <p
-                                                                                className="small text-muted mb-2"
-                                                                                style={{
-                                                                                    fontSize:
-                                                                                        "11px",
-                                                                                }}
-                                                                            >
-                                                                                {
-                                                                                    war.desc
-                                                                                }
-                                                                            </p>
-
-                                                                            {isSelected && (
-                                                                                <div
-                                                                                    className="mt-3 pt-2 border-top d-flex align-items-center"
-                                                                                    onClick={(
-                                                                                        e
-                                                                                    ) =>
-                                                                                        e.stopPropagation()
-                                                                                    }
-                                                                                >
-                                                                                    <label
-                                                                                        className="small fw-bold me-2 mb-0"
-                                                                                        style={{
-                                                                                            fontSize:
-                                                                                                "10px",
-                                                                                        }}
-                                                                                    >
-                                                                                        Qty:
-                                                                                    </label>
-                                                                                    {renderQuantityControl(
-                                                                                        war.id
-                                                                                    )}
-                                                                                </div>
-                                                                            )}
-                                                                        </SelectionCard>
-                                                                    </div>
-                                                                );
-                                                            }
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            )}
+                                                )}
                                         </div>
                                     </div>
                                 </div>
@@ -2350,35 +2343,35 @@ export default function RoomConfigurator() {
                                                             <div className="d-flex align-items-center">
                                                                 {selection.platform !==
                                                                     "byod" && (
-                                                                    <img
-                                                                        src={
-                                                                            metaData.platforms.find(
-                                                                                (
-                                                                                    p
-                                                                                ) =>
-                                                                                    p.id ===
-                                                                                    selection.platform
-                                                                            )
-                                                                                ?.icon
-                                                                        }
-                                                                        className="me-2"
-                                                                        style={{
-                                                                            height: "16px",
-                                                                        }}
-                                                                    />
-                                                                )}
+                                                                        <img
+                                                                            src={
+                                                                                metaData.platforms.find(
+                                                                                    (
+                                                                                        p
+                                                                                    ) =>
+                                                                                        p.id ===
+                                                                                        selection.platform
+                                                                                )
+                                                                                    ?.icon
+                                                                            }
+                                                                            className="me-2"
+                                                                            style={{
+                                                                                height: "16px",
+                                                                            }}
+                                                                        />
+                                                                    )}
                                                                 <strong className="text-dark">
                                                                     {selection.platform ===
-                                                                    "byod"
+                                                                        "byod"
                                                                         ? "BYOD"
                                                                         : metaData.platforms.find(
-                                                                              (
-                                                                                  p
-                                                                              ) =>
-                                                                                  p.id ===
-                                                                                  selection.platform
-                                                                          )
-                                                                              ?.name}
+                                                                            (
+                                                                                p
+                                                                            ) =>
+                                                                                p.id ===
+                                                                                selection.platform
+                                                                        )
+                                                                            ?.name}
                                                                 </strong>
                                                             </div>
                                                         </div>
@@ -2395,10 +2388,10 @@ export default function RoomConfigurator() {
                                                             <strong className="text-dark">
                                                                 {selection.deployment
                                                                     ? metaData.deploymentTypes.find(
-                                                                          (d) =>
-                                                                              d.id ===
-                                                                              selection.deployment
-                                                                      )?.name
+                                                                        (d) =>
+                                                                            d.id ===
+                                                                            selection.deployment
+                                                                    )?.name
                                                                     : "N/A"}
                                                             </strong>
                                                         </div>

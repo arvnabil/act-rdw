@@ -5,7 +5,14 @@ import SectionTitle from "@/Components/Common/SectionTitle";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 
-export default function WorkShowcaseSection({ staticShowcase, config }) {
+export default function WorkShowcaseSection({
+    staticShowcase,
+    config,
+    getImageUrl,
+}) {
+    // Helper to resolve image if getImageUrl is not passed (fallback for shared component)
+    const resolveImg = (img) => (getImageUrl ? getImageUrl(img) : img);
+
     return (
         <div
             className="case-area3 position-relative overflow-hidden space-bottom"
@@ -13,8 +20,8 @@ export default function WorkShowcaseSection({ staticShowcase, config }) {
         >
             <div className="container th-container">
                 <SectionTitle
-                    subTitle="Project"
-                    title={config?.title || "Our Work Showcase"}
+                    subTitle="Proyek"
+                    title={config?.title || "Portofolio Proyek Kami"}
                     align="text-center"
                 />
                 <div className="slider-area">
@@ -26,9 +33,9 @@ export default function WorkShowcaseSection({ staticShowcase, config }) {
                         loop={true}
                         slidesPerView={"auto"}
                         coverflowEffect={{
-                            rotate: -17,
-                            stretch: -8,
-                            depth: 330,
+                            rotate: 0,
+                            stretch: 0,
+                            depth: 100,
                             modifier: 1,
                             slideShadows: false,
                         }}
@@ -47,15 +54,15 @@ export default function WorkShowcaseSection({ staticShowcase, config }) {
                                         <div
                                             className="case-img position-relative"
                                             style={{
-                                                height: "400px",
                                                 overflow: "hidden",
                                             }}
                                         >
                                             <img
-                                                src={project.image}
+                                                src={resolveImg(project.image)}
                                                 alt="case image"
                                                 className="w-100 h-100 object-fit-cover rounded-3"
                                             />
+
                                             <div className="case-content">
                                                 <h3 className="case-title">
                                                     <a href="#">
@@ -80,6 +87,27 @@ export default function WorkShowcaseSection({ staticShowcase, config }) {
                     </Swiper>
                 </div>
             </div>
+            <style jsx="true">{`
+                .case-img {
+                    height: 480px;
+                }
+                @media (max-width: 991px) {
+                    .case-img {
+                        height: 380px;
+                    }
+                }
+                @media (max-width: 767px) {
+                    .case-img {
+                        height: 320px;
+                    }
+                    .case-title {
+                        font-size: 20px !important;
+                    }
+                    .case-area3 {
+                        padding-bottom: 40px !important;
+                    }
+                }
+            `}</style>
         </div>
     );
 }

@@ -31,6 +31,7 @@ class BrandForm
                                 ->required()
                                 ->unique(ignoreRecord: true),
                             FileUpload::make('image')
+                                ->label('Background Image (Banner)')
                                 ->image()
                                 ->disk('public')
                                 ->visibility('public')
@@ -43,6 +44,21 @@ class BrandForm
                                     return UploadHelper::getSluggedFilename($file, 'brands/' . $slug);
                                 })
                                 ->imageEditor(),
+                            FileUpload::make('thumbnail')
+                                ->label('Thumbnail (Square)')
+                                ->image()
+                                ->disk('public')
+                                ->visibility('public')
+                                ->maxSize(1024)
+                                ->downloadable()
+                                ->openable()
+                                ->helperText('Thumbnail untuk kartu brand. Ukuran maks: 1MB.')
+                                ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
+                                    $slug = $get('slug') ?: 'temp';
+                                    return UploadHelper::getSluggedFilename($file, 'brands/' . $slug . '/thumb');
+                                })
+                                ->imageEditor()
+                                ->imageEditorAspectRatios(['1:1']),
                             Textarea::make('desc')
                                 ->label('Description')
                                 ->columnSpanFull(),
@@ -115,6 +131,8 @@ class BrandForm
                                                     $slug = $get('../../../slug') ?: 'temp';
                                                     return UploadHelper::getSluggedFilename($file, 'brands/' . $slug . '/awards');
                                                 })
+                                                ->imageEditor()
+                                                ->imageEditorAspectRatios(['1:1'])
                                                 ->required(),
                                             TextInput::make('alt')
                                                 ->label('Alt Text')

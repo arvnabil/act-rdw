@@ -469,10 +469,9 @@ export default function DynamicConfigurator({ configurator }) {
                                                                             key={
                                                                                 attrIdx
                                                                             }
-                                                                            className={`badge bg-${
-                                                                                attr.color ||
+                                                                            className={`badge bg-${attr.color ||
                                                                                 "primary"
-                                                                            } me-1 mb-1`}
+                                                                                } me-1 mb-1`}
                                                                         >
                                                                             {
                                                                                 attr.text
@@ -485,12 +484,11 @@ export default function DynamicConfigurator({ configurator }) {
                                                                             key={
                                                                                 attrIdx
                                                                             }
-                                                                            className={`small ${
-                                                                                attr.color
+                                                                            className={`small ${attr.color
                                                                                     ? "text-" +
-                                                                                      attr.color
+                                                                                    attr.color
                                                                                     : "text-muted"
-                                                                            } mb-1`}
+                                                                                } mb-1`}
                                                                         >
                                                                             {attr.icon && (
                                                                                 <i
@@ -550,12 +548,11 @@ export default function DynamicConfigurator({ configurator }) {
                                                                             }
                                                                             target="_blank"
                                                                             rel="noopener noreferrer"
-                                                                            className={`btn btn-sm ${
-                                                                                attr.style ===
-                                                                                "button"
+                                                                            className={`btn btn-sm ${attr.style ===
+                                                                                    "button"
                                                                                     ? "btn-outline-primary w-100 mt-2"
                                                                                     : "text-primary text-decoration-none"
-                                                                            } mb-1`}
+                                                                                } mb-1`}
                                                                             onClick={(
                                                                                 e
                                                                             ) =>
@@ -764,10 +761,10 @@ export default function DynamicConfigurator({ configurator }) {
                                                                             opt.value
                                                                         ),
                                                                     selection[
-                                                                        q
-                                                                            .variable_name
+                                                                    q
+                                                                        .variable_name
                                                                     ] ===
-                                                                        opt.value
+                                                                    opt.value
                                                                 );
                                                             }}
                                                         >
@@ -788,7 +785,7 @@ export default function DynamicConfigurator({ configurator }) {
                                                         {meta.attributes.map(
                                                             (attr, attrIdx) => {
                                                                 switch (
-                                                                    attr.type
+                                                                attr.type
                                                                 ) {
                                                                     case "badge":
                                                                         return (
@@ -796,10 +793,9 @@ export default function DynamicConfigurator({ configurator }) {
                                                                                 key={
                                                                                     attrIdx
                                                                                 }
-                                                                                className={`badge rounded-pill bg-${
-                                                                                    attr.color ||
+                                                                                className={`badge rounded-pill bg-${attr.color ||
                                                                                     "primary"
-                                                                                } me-1 mb-1`}
+                                                                                    } me-1 mb-1`}
                                                                             >
                                                                                 {
                                                                                     attr.text
@@ -812,12 +808,11 @@ export default function DynamicConfigurator({ configurator }) {
                                                                                 key={
                                                                                     attrIdx
                                                                                 }
-                                                                                className={`small ${
-                                                                                    attr.color
+                                                                                className={`small ${attr.color
                                                                                         ? "text-" +
-                                                                                          attr.color
+                                                                                        attr.color
                                                                                         : "text-muted"
-                                                                                } mb-1`}
+                                                                                    } mb-1`}
                                                                             >
                                                                                 {attr.icon && (
                                                                                     <i
@@ -877,12 +872,11 @@ export default function DynamicConfigurator({ configurator }) {
                                                                                 }
                                                                                 target="_blank"
                                                                                 rel="noopener noreferrer"
-                                                                                className={`btn btn-sm ${
-                                                                                    attr.style ===
-                                                                                    "button"
+                                                                                className={`btn btn-sm ${attr.style ===
+                                                                                        "button"
                                                                                         ? "btn-outline-primary w-100 mt-2"
                                                                                         : "text-primary text-decoration-none"
-                                                                                } mb-1`}
+                                                                                    } mb-1`}
                                                                                 onClick={(
                                                                                     e
                                                                                 ) =>
@@ -1184,11 +1178,10 @@ export default function DynamicConfigurator({ configurator }) {
                                 <div
                                     className="position-absolute top-50 start-0 translate-middle-y"
                                     style={{
-                                        width: `${
-                                            (currentStepIndex /
+                                        width: `${(currentStepIndex /
                                                 (steps.length - 1)) *
                                             100
-                                        }%`,
+                                            }%`,
                                         height: "2px",
                                         background: themeColor,
                                         zIndex: 0,
@@ -1215,11 +1208,10 @@ export default function DynamicConfigurator({ configurator }) {
                                                     idx <= currentStepIndex
                                                         ? "#fff"
                                                         : "#9CA3AF",
-                                                border: `2px solid ${
-                                                    idx <= currentStepIndex
+                                                border: `2px solid ${idx <= currentStepIndex
                                                         ? themeColor
                                                         : "#E5E7EB"
-                                                }`,
+                                                    }`,
                                                 transition: "all 0.3s",
                                             }}
                                         >
@@ -1230,11 +1222,10 @@ export default function DynamicConfigurator({ configurator }) {
                                             )}
                                         </div>
                                         <small
-                                            className={`d-none d-md-block fw-bold pt-3 ${
-                                                idx <= currentStepIndex
+                                            className={`d-none d-md-block fw-bold pt-3 ${idx <= currentStepIndex
                                                     ? "text-dark"
                                                     : "text-muted"
-                                            }`}
+                                                }`}
                                             style={{ fontSize: "12px" }}
                                         >
                                             {s.name}
@@ -1297,11 +1288,10 @@ export default function DynamicConfigurator({ configurator }) {
                             )}
 
                             <button
-                                className={`th-btn th-radius shadow-none ${
-                                    currentStepIndex === steps.length - 1
+                                className={`th-btn th-radius shadow-none ${currentStepIndex === steps.length - 1
                                         ? "style8"
                                         : ""
-                                }`}
+                                    }`}
                                 onClick={
                                     currentStepIndex === steps.length - 1
                                         ? () => setShowSubmitModal(true)
@@ -1310,9 +1300,9 @@ export default function DynamicConfigurator({ configurator }) {
                                 style={
                                     currentStepIndex !== steps.length - 1
                                         ? {
-                                              backgroundColor: themeColor,
-                                              borderColor: themeColor,
-                                          }
+                                            backgroundColor: themeColor,
+                                            borderColor: themeColor,
+                                        }
                                         : {}
                                 }
                             >
@@ -1460,7 +1450,7 @@ const ProductDetailModal = ({
                                             src={
                                                 product.image_path ||
                                                 product.image ||
-                                                "/assets/img/product/product_1_1.png"
+                                                "/assets/default.png"
                                             }
                                             alt={product.name}
                                             className="img-fluid"
@@ -1629,9 +1619,8 @@ const ProductDetailModal = ({
                                     {onAdd && (
                                         <div className="mt-3">
                                             <button
-                                                className={`th-btn th-radius w-100 ${
-                                                    isSelected ? "disabled" : ""
-                                                }`}
+                                                className={`th-btn th-radius w-100 ${isSelected ? "disabled" : ""
+                                                    }`}
                                                 style={{
                                                     backgroundColor: isSelected
                                                         ? "#ccc"
@@ -1669,11 +1658,10 @@ const ProductDetailModal = ({
                             >
                                 <li className="nav-item">
                                     <button
-                                        className={`nav-link ${
-                                            activeTab === "description"
+                                        className={`nav-link ${activeTab === "description"
                                                 ? "active"
                                                 : ""
-                                        }`}
+                                            }`}
                                         onClick={() =>
                                             setActiveTab("description")
                                         }
@@ -1684,11 +1672,10 @@ const ProductDetailModal = ({
                                 </li>
                                 <li className="nav-item">
                                     <button
-                                        className={`nav-link ${
-                                            activeTab === "specification"
+                                        className={`nav-link ${activeTab === "specification"
                                                 ? "active"
                                                 : ""
-                                        }`}
+                                            }`}
                                         onClick={() =>
                                             setActiveTab("specification")
                                         }
@@ -1699,11 +1686,10 @@ const ProductDetailModal = ({
                                 </li>
                                 <li className="nav-item">
                                     <button
-                                        className={`nav-link ${
-                                            activeTab === "features"
+                                        className={`nav-link ${activeTab === "features"
                                                 ? "active"
                                                 : ""
-                                        }`}
+                                            }`}
                                         onClick={() => setActiveTab("features")}
                                         style={{ cursor: "pointer" }}
                                     >

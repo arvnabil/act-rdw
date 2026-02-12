@@ -5,7 +5,8 @@ import "swiper/css";
 
 export default function BrandHeroSection({
     brand,
-    pageData,
+    bgImage,
+    bgColor,
     relatedServices,
     getImageUrl,
     setLightboxImage,
@@ -28,26 +29,27 @@ export default function BrandHeroSection({
         }
     };
 
+
     return (
         <section>
             <div
                 className="brand-hero-area position-relative"
                 style={{
-                    backgroundColor:
-                        pageData.hero_styles?.background_color || "#E8B4B4",
-                    backgroundImage: pageData.hero_styles?.background_image
-                        ? `url(${getImageUrl(
-                              pageData.hero_styles.background_image,
-                          )})`
-                        : "none",
+                    backgroundColor: bgColor,
+                    backgroundImage: `url(${getImageUrl(
+                        bgImage,
+                        "/assets/img/foto-dok-logitech-1.png",
+                    )})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
-                    padding: "100px 0",
+                    backgroundRepeat: "no-repeat",
+                    padding: "var(--hero-padding, 100px 0)",
                     minHeight: "500px",
                     display: "flex",
                     alignItems: "center",
                 }}
             >
+
                 {/* Overlay */}
                 <div
                     className="position-absolute top-0 start-0 w-100 h-100"
@@ -58,15 +60,15 @@ export default function BrandHeroSection({
                 ></div>
 
                 <div
-                    className="container th-container position-relative"
+                    className="container th-container position-relative px-lg-5"
                     style={{ zIndex: 1 }}
                 >
-                    <div className="row align-items-center">
-                        <div className="col-lg-6">
-                            <div className="hero-content wow fadeInUp">
+                    <div className="row align-items-center gy-5 gx-lg-5">
+                        <div className={config?.awards?.length > 0 ? "col-lg-6" : "col-lg-12 text-center"}>
+                            <div className="hero-content wow fadeInUp text-center text-lg-start">
                                 <span
-                                    className="sub-title text-uppercase mb-20"
-                                    style={{ letterSpacing: "2px" }}
+                                    className="sub-title text-uppercase mb-20 d-block"
+                                    style={{ letterSpacing: "2px", color: "rgba(255,255,255,0.9)" }}
                                 >
                                     {config?.eyebrow ||
                                         config?.subtitle ||
@@ -75,10 +77,10 @@ export default function BrandHeroSection({
                                 <h1
                                     className="hero-title text-anime-style-3 mb-4"
                                     style={{
-                                        fontSize: "clamp(2rem, 5vw, 4rem)",
+                                        fontSize: "var(--hero-title-size, clamp(2.2rem, 5vw, 4rem))",
                                         fontWeight: "bold",
                                         color: "white",
-                                        lineHeight: "1.2",
+                                        lineHeight: "1.1",
                                     }}
                                 >
                                     {(
@@ -86,115 +88,103 @@ export default function BrandHeroSection({
                                     ).toUpperCase()}
                                 </h1>
                                 <p
-                                    className="hero-text mb-30"
+                                    className="hero-text mb-30 mx-auto mx-lg-0"
                                     style={{
-                                        fontSize: "1.2rem",
+                                        fontSize: "1.1rem",
                                         maxWidth: "500px",
                                         color: "rgba(255,255,255,0.8)",
+                                        lineHeight: "1.6"
                                     }}
                                 >
                                     {config?.desc ||
                                         config?.subtitle ||
                                         "Explore video conferencing products, including conference cameras, room solutions, webcams, headsets, collaboration tools, and accessories."}
                                 </p>
-                                <a
-                                    href={config?.cta_url || "#products"}
-                                    className="th-btn style3 th-radius th-icon"
-                                >
-                                    {config?.cta_label || "Contact Sales"}{" "}
-                                    <i className="fa-regular fa-arrow-right ms-2"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <div className="col-lg-6">
-                            <div
-                                className="hero-scroll-cards wow fadeInRight"
-                                style={{
-                                    maxWidth: "800px",
-                                    marginLeft: "auto",
-                                }}
-                            >
-                                <div className="mb-4 ps-0 ps-lg-2 text-center text-lg-start">
-                                    <span className="sub-title style1 text-anime-style-2 text-white">
-                                        <span className="squre-shape left me-3 bg-white"></span>
-                                        Award & Certified
-                                        <span className="squre-shape d-lg-none right ms-3 bg-white"></span>
-                                    </span>
+                                <div className="d-flex justify-content-center justify-content-lg-start mt-4">
+                                    <a
+                                        href={config?.cta_url || "#products"}
+                                        className="th-btn style3 th-radius th-icon px-4"
+                                    >
+                                        {config?.cta_label || "Contact Sales"}{" "}
+                                        <i className="fa-regular fa-arrow-right ms-2"></i>
+                                    </a>
                                 </div>
-                                <Swiper
-                                    modules={[Autoplay]}
-                                    spaceBetween={20}
-                                    autoplay={{
-                                        delay: 2500,
-                                        disableOnInteraction: false,
-                                    }}
-                                    loop={true}
-                                    breakpoints={{
-                                        0: { slidesPerView: 1 },
-                                        768: { slidesPerView: 2 },
-                                        1024: { slidesPerView: 3 },
-                                    }}
-                                    className="hero-badge-slider"
-                                >
-                                    {(config?.awards?.length > 0
-                                        ? config.awards
-                                        : [
-                                              {
-                                                  image: "https://activ.co.id/wp-content/uploads/2024/11/elite-dk-360x360-1.png",
-                                                  alt: "Elite Partner",
-                                              },
-                                              {
-                                                  image: "https://activ.co.id/wp-content/uploads/2024/11/elite-dk-360x360-1.png",
-                                                  alt: "Elite Partner",
-                                              },
-                                              {
-                                                  image: "https://activ.co.id/wp-content/uploads/2024/11/elite-dk-360x360-1.png",
-                                                  alt: "Elite Partner",
-                                              },
-                                              {
-                                                  image: "https://activ.co.id/wp-content/uploads/2024/11/elite-dk-360x360-1.png",
-                                                  alt: "Elite Partner",
-                                              },
-                                          ]
-                                    ).map((item, index) => (
-                                        <SwiperSlide key={index}>
-                                            <div
-                                                className="bg-white d-flex align-items-center justify-content-center shadow-lg"
-                                                style={{
-                                                    width: "250px",
-                                                    height: "250px",
-                                                    padding: "20px",
-                                                    margin: "0 auto",
-                                                    borderRadius: "10px",
-                                                    cursor: "pointer",
-                                                }}
-                                                onClick={() =>
-                                                    setLightboxImage(
-                                                        getImageUrl(item.image),
-                                                    )
-                                                }
-                                            >
-                                                <img
-                                                    src={getImageUrl(
-                                                        item.image,
-                                                    )}
-                                                    alt={
-                                                        item.alt ||
-                                                        "Award Badge"
-                                                    }
-                                                    className="img-fluid"
-                                                    style={{
-                                                        maxHeight: "100%",
-                                                        maxWidth: "100%",
-                                                        objectFit: "contain",
-                                                    }}
-                                                />
-                                            </div>
-                                        </SwiperSlide>
-                                    ))}
-                                </Swiper>
                             </div>
                         </div>
+                        {config?.awards?.length > 0 && (
+                            <div className="col-lg-6 px-lg-4">
+                                <div
+                                    className="hero-scroll-cards wow fadeInRight mt-5 mt-lg-0"
+                                    style={{
+                                        maxWidth: "800px",
+                                        marginLeft: "auto",
+                                    }}
+                                >
+                                    <div className="mb-5 ps-0 ps-lg-2 text-center text-lg-start">
+                                        <span className="sub-title style1 text-anime-style-2 text-white justify-content-center justify-content-lg-start">
+                                            <span className="squre-shape left me-4 bg-white"></span>
+                                            Official Accreditations
+                                            <span className="squre-shape d-lg-none right ms-4 bg-white"></span>
+                                        </span>
+                                    </div>
+                                    <Swiper
+                                        modules={[Autoplay]}
+                                        spaceBetween={20}
+                                        autoplay={{
+                                            delay: 2500,
+                                            disableOnInteraction: false,
+                                        }}
+                                        speed={800}
+                                        grabCursor={true}
+                                        loop={true}
+                                        breakpoints={{
+                                            0: { slidesPerView: 1.2, centeredSlides: true },
+                                            576: { slidesPerView: 2 },
+                                            1024: { slidesPerView: 3 },
+                                        }}
+                                        className="hero-badge-slider"
+                                    >
+                                        {config.awards.map((item, index) => (
+                                            <SwiperSlide key={index}>
+                                                <div
+                                                    className="bg-white d-flex align-items-center justify-content-center shadow-lg"
+                                                    style={{
+                                                        aspectRatio: "1/1",
+                                                        padding: "20px",
+                                                        margin: "0 auto",
+                                                        borderRadius: "15px",
+                                                        cursor: "pointer",
+                                                        maxWidth: "250px"
+                                                    }}
+                                                    onClick={() =>
+                                                        setLightboxImage(
+                                                            getImageUrl(item.image),
+                                                        )
+                                                    }
+                                                >
+                                                    <img
+                                                        src={getImageUrl(
+                                                            item.image,
+                                                            "/assets/default.png"
+                                                        )}
+                                                        alt={
+                                                            item.alt ||
+                                                            "Award Badge"
+                                                        }
+                                                        className="img-fluid"
+                                                        style={{
+                                                            maxHeight: "100%",
+                                                            maxWidth: "100%",
+                                                            objectFit: "contain",
+                                                        }}
+                                                    />
+                                                </div>
+                                            </SwiperSlide>
+                                        ))}
+                                    </Swiper>
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>
@@ -235,7 +225,8 @@ export default function BrandHeroSection({
                                     key={i}
                                     href={item.link}
                                     onClick={(e) => handleScroll(e, item.link)}
-                                    className="text-white text-uppercase fw-bold text-decoration-none fs-6 hover-opacity"
+                                    className="text-white text-uppercase fw-bold text-decoration-none fs-xs-small hover-opacity"
+                                    style={{ fontSize: "13px" }}
                                 >
                                     {item.name}
                                 </a>
@@ -244,6 +235,33 @@ export default function BrandHeroSection({
                     </div>
                 </div>
             </div>
+            <style>{`
+                :root {
+                    --hero-padding: 120px 0;
+                    --hero-title-size: clamp(2.5rem, 6vw, 4rem);
+                }
+                @media (max-width: 991px) {
+                    :root {
+                        --hero-padding: 80px 0;
+                        --hero-title-size: 2.5rem;
+                    }
+                    .hero-content {
+                        margin-bottom: 20px;
+                    }
+                }
+                @media (max-width: 575px) {
+                    :root {
+                        --hero-padding: 60px 0 80px;
+                        --hero-title-size: 2rem;
+                    }
+                    .hero-text {
+                        font-size: 1rem !important;
+                    }
+                    .fs-xs-small {
+                        font-size: 11px !important;
+                    }
+                }
+            `}</style>
         </section>
     );
 }

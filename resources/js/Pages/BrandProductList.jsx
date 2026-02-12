@@ -7,6 +7,7 @@ import ProductFilterSidebar from "@/Components/Sections/BrandProduct/ProductFilt
 import CategoryHero from "@/Components/Sections/BrandProduct/CategoryHero";
 import ProductList from "@/Components/Sections/BrandProduct/ProductList";
 import Seo from "@/Components/Common/Seo";
+import { getImageUrl } from "@/Utils/image";
 
 const BrandProductList = ({
     brand,
@@ -20,11 +21,6 @@ const BrandProductList = ({
     const [showFilters, setShowFilters] = useState(false);
 
     // Helpers
-    const getImageUrl = (path) => {
-        if (!path) return "";
-        if (path.startsWith("http") || path.startsWith("/assets")) return path;
-        return `/storage/${path}`;
-    };
 
     const handleFilterChange = (key, value) => {
         const newFilters = { ...filters, [key]: value };

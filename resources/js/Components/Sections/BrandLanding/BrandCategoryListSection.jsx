@@ -44,10 +44,14 @@ export default function BrandCategoryListSection({
                                             style={{
                                                 height: "160px",
                                                 width: "100%",
+                                                backgroundColor: !cat.image ? "white" : "transparent",
+                                                borderRadius: "15px",
+                                                padding: !cat.image ? "15px" : "0",
+                                                boxShadow: !cat.image ? "0 5px 15px rgba(0,0,0,0.05)" : "none"
                                             }}
                                         >
                                             <img
-                                                src={getImageUrl(cat.image)}
+                                                src={getImageUrl(cat.image, "/assets/default.png")}
                                                 alt={cat.name}
                                                 style={{
                                                     maxHeight: "100%",

@@ -38,8 +38,8 @@ const BrandLanding = ({
     }, []);
 
     // Helper for images
-    const getImageUrl = (path) => {
-        if (!path) return "";
+    const getImageUrl = (path, fallback = "") => {
+        if (!path) return fallback;
         if (path.startsWith("http") || path.startsWith("/assets")) {
             return path;
         }
@@ -48,14 +48,11 @@ const BrandLanding = ({
 
     const getBrandSlug = (b) => b.slug || b.name.toLowerCase();
 
-    // Dummy Data for PageSite (until module is ready)
-    const pageData = pageSite || {
-        hero_styles: {
-            background_color: "#444A572C", // Dark Slate Blue
-            background_image:
-                "https://activ.co.id/wp-content/uploads/2023/11/Group-97-1.png?id=5807",
-        },
-    };
+    // Brand Landing Configuration (Visual Styles)
+    const landingStyles = brand.landing_config?.hero || {};
+    const heroBgImage = landingStyles.background_image || brand.image;
+    const heroBgColor = landingStyles.background_color || "#0B1422"; // Dark Navy default
+
 
     const staticShowcase = [
         {
@@ -94,10 +91,10 @@ const BrandLanding = ({
     const defaults = {
         hero: {
             enabled: true,
-            title: pageData?.title ?? brand.name,
+            title: pageSite?.title ?? brand.name,
             subtitle: "Authorized Partner",
             desc:
-                pageData?.meta_desc ??
+                pageSite?.meta_desc ??
                 `Discover premium ${brand.name} solutions.`,
             background_image: null, // Component handles fallback
         },
@@ -193,7 +190,8 @@ const BrandLanding = ({
             {hero.enabled && hero.safe && (
                 <BrandHeroSection
                     brand={brand}
-                    pageData={pageData}
+                    bgImage={heroBgImage}
+                    bgColor={heroBgColor}
                     relatedServices={relatedServices}
                     getImageUrl={getImageUrl}
                     setLightboxImage={setLightboxImage}
@@ -236,6 +234,7 @@ const BrandLanding = ({
                 <WorkShowcaseSection
                     staticShowcase={showcase.config.items || staticShowcase}
                     config={showcase.config}
+                    getImageUrl={getImageUrl}
                 />
             )}
             <style>{`

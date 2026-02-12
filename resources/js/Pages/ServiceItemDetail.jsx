@@ -55,6 +55,7 @@ const ServiceItemDetail = ({ item }) => {
             <Breadcrumb
                 title={item.title}
                 subtitle={`${item.parent_title} Solution`}
+                bgImage={item.thumbnail}
                 items={[
                     { label: "Home", link: "/" },
                     { label: "Services", link: "/services" },
@@ -75,7 +76,9 @@ const ServiceItemDetail = ({ item }) => {
             <RelatedCategoriesSection item={item} getImageUrl={getImageUrl} />
 
             {/* Work Showcase Section */}
-            <WorkShowcaseSection staticShowcase={staticShowcase} />
+            {item.show_showcase !== false && (
+                <WorkShowcaseSection staticShowcase={staticShowcase} />
+            )}
         </MainLayout>
     );
 };

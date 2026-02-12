@@ -1,13 +1,8 @@
 import React from "react";
 import { Link } from "@inertiajs/react";
+import { getImageUrl } from "@/Utils/image";
 
 export default function ProductCard({ product, className = "" }) {
-    // Helper to resolve image URL
-    const getImageUrl = (path) => {
-        if (!path) return "/assets/default.png";
-        if (path.startsWith("http") || path.startsWith("/assets")) return path;
-        return `/storage/${path}`;
-    };
 
     return (
         <div
@@ -34,7 +29,7 @@ export default function ProductCard({ product, className = "" }) {
                     className="img-wrapper position-relative"
                     style={{
                         height: "260px",
-                        backgroundColor: "#F8F9FA", // Light gray background
+                        backgroundColor: !product.image_path ? "#ffffff" : "#F8F9FA",
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",

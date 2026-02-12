@@ -64,19 +64,34 @@ export default function LatestProductsSection({
                                             zIndex: 1,
                                         }}
                                     >
-                                        <img
-                                            src={getImageUrl(
-                                                product.image_path,
-                                            )}
-                                            alt={product.name}
-                                            className="w-100 h-100"
+                                        <div
+                                            className="d-flex align-items-center justify-content-center"
                                             style={{
-                                                objectFit: "contain",
-                                                transition:
-                                                    "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-                                                filter: "drop-shadow(0 10px 20px rgba(0,0,0,0.2))",
+                                                width: "80%",
+                                                height: "80%",
+                                                backgroundColor: !product.image_path ? "white" : "transparent",
+                                                borderRadius: "20px",
+                                                padding: !product.image_path ? "20px" : "0",
+                                                boxShadow: !product.image_path ? "0 10px 20px rgba(0,0,0,0.1)" : "none"
                                             }}
-                                        />
+                                        >
+                                            <img
+                                                src={getImageUrl(
+                                                    product.image_path,
+                                                    "/assets/default.png"
+                                                )}
+                                                alt={product.name}
+                                                className="w-100 h-100"
+                                                style={{
+                                                    objectFit: "contain",
+                                                    transition:
+                                                        "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
+                                                    filter: product.image_path
+                                                        ? "drop-shadow(0 10px 20px rgba(0,0,0,0.2))"
+                                                        : "none",
+                                                }}
+                                            />
+                                        </div>
                                     </div>
 
                                     {/* Content */}

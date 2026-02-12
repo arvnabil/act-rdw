@@ -23,11 +23,10 @@ export default function BrandServiceSolutionsSection({
                     className="position-relative space-top space-extra-bottom"
                     id={`service-${service.slug}`}
                     style={{
-                        backgroundImage: `url(${
-                            service.image
-                                ? getImageUrl(service.image)
-                                : "/assets/img/bg/bg_overlay_1.png"
-                        })`,
+                        backgroundImage: `url(${getImageUrl(
+                            service.image,
+                            "/assets/img/bg/bg_overlay_1.png",
+                        )})`,
                         backgroundSize: "cover",
                         backgroundPosition: "center",
                     }}
@@ -92,26 +91,32 @@ export default function BrandServiceSolutionsSection({
                                                 className="room-img position-relative overflow-hidden room-img-height"
                                                 style={{ borderRadius: "20px" }}
                                             >
-                                                <img
-                                                    src={
-                                                        solution.image
-                                                            ? getImageUrl(
-                                                                  solution.image,
-                                                              )
-                                                            : "/assets/img/logo/activ-logo-white.png"
-                                                    }
-                                                    onError={(e) => {
-                                                        e.target.onerror = null;
-                                                        e.target.src =
-                                                            "https://placehold.co/600x400?text=No+Image";
-                                                    }}
-                                                    alt={solution.title}
-                                                    className="w-100 h-100 object-fit-cover"
+                                                <div
+                                                    className="w-100 h-100 d-flex align-items-center justify-content-center"
                                                     style={{
-                                                        transition:
-                                                            "transform 0.5s ease",
+                                                        backgroundColor: !solution.image ? "white" : "transparent",
+                                                        padding: !solution.image ? "30px" : "0"
                                                     }}
-                                                />
+                                                >
+                                                    <img
+                                                        src={getImageUrl(
+                                                            solution.image,
+                                                            "/assets/default.png"
+                                                        )}
+                                                        onError={(e) => {
+                                                            e.target.onerror = null;
+                                                            e.target.src =
+                                                                "https://placehold.co/600x400?text=No+Image";
+                                                        }}
+                                                        alt={solution.title}
+                                                        className="w-100 h-100"
+                                                        style={{
+                                                            objectFit: solution.image ? "cover" : "contain",
+                                                            transition:
+                                                                "transform 0.5s ease",
+                                                        }}
+                                                    />
+                                                </div>
                                                 <div
                                                     className="position-absolute bottom-0 start-0 w-100 p-4"
                                                     style={{

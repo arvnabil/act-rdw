@@ -26,12 +26,14 @@ class ServiceSolution extends Model
         'showcase',
         'wa_message',
         'configurator_slug',
+        'show_showcase',
         'sort_order'
     ];
 
     protected $casts = [
         'features' => 'array',
         'showcase' => 'array',
+        'show_showcase' => 'boolean',
     ];
 
     public function service(): BelongsTo

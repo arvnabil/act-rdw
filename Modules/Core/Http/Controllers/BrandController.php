@@ -36,7 +36,7 @@ class BrandController extends Controller
                 'name' => $cat->name,
                 'slug' => $cat->slug,
                 // Fallback image logic if icon is missing
-                'image' => $cat->icon ?? '/assets/img/product/product_1_1.png'
+                'image' => $cat->icon ?? '/assets/default.png'
             ];
         });
 
@@ -78,7 +78,7 @@ class BrandController extends Controller
             ->map(function ($product) {
                 return (object) [
                     'name' => $product->name,
-                    'image_path' => $product->image_path ?? '/assets/img/product/product_1_1.png', // Fallback
+                    'image_path' => $product->image_path ?? '/assets/default.png', // Fallback
                     'price' => $product->price ?? 0,
                     'category' => $product->category?->name ?? 'General',
                     'is_active' => $product->is_active,

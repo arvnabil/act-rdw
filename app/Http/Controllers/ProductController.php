@@ -80,7 +80,8 @@ class ProductController extends Controller
             ->firstOrFail();
 
         // Get related products from the same service or brand
-        $relatedProducts = Product::where('service_id', $product->service_id)
+        $relatedProducts = Product::with(['brand', 'service'])
+            ->where('service_id', $product->service_id)
             ->where('id', '!=', $product->id)
             ->limit(4)
             ->get()
@@ -90,14 +91,14 @@ class ProductController extends Controller
                     'name' => $related->name,
                     'image' => $related->image_path,
                     'tag' => $related->tags ? $related->tags[0] ?? null : null,
-                    'category' => $related->service->name,
+                    'category' => $related->service?->name ?? $related->category?->name ?? 'General',
                     'slug' => $related->slug,
                     // Map price for ProductCard
                     'price' => $related->price,
                     // Map brand for ProductCard
                     'brand' => [
-                         'name' => $related->brand->name ?? '',
-                         'logo' => $related->brand->logo ?? ''
+                         'name' => $related->brand?->name ?? '',
+                         'logo' => $related->brand?->logo ?? ''
                     ]
                 ];
             });
@@ -110,7 +111,7 @@ class ProductController extends Controller
             'solution_type' => $product->solutions->pluck('title')->join(', ') ?: $product->solution_type,
             'datasheet_url' => $product->datasheet_url,
             'description' => $product->description,
-            'category' => $product->category->name ?? $product->service->name,
+            'category' => $product->category?->name ?? $product->service?->name ?? 'General',
             'brand' => [
                 'name' => $product->brand->name,
                 'logo' => $product->brand->logo,

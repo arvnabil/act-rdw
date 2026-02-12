@@ -3,7 +3,7 @@ import { Link } from "@inertiajs/react";
 import { getImageUrl } from "@/Utils/image";
 
 export default function Breadcrumb({ title, items, bgImage }) {
-    const resolvedBgImage = getImageUrl(bgImage) || "/assets/img/foto-dok-logitech-1.png";
+    const resolvedBgImage = getImageUrl(bgImage, "/assets/img/foto-dok-logitech-1.png");
 
     return (
         <div className="breadcumb-area">
@@ -33,6 +33,22 @@ export default function Breadcrumb({ title, items, bgImage }) {
                     </div>
                 </div>
             </div>
+            <style jsx="true">{`
+                .breadcumb-wrapper::before {
+                    background: rgba(11, 20, 34, 0.55) !important; /* Lightened from 0.8 */
+                }
+                @media (max-width: 767px) {
+                    .breadcumb-title {
+                        font-size: 32px !important;
+                    }
+                    .breadcumb-menu li {
+                        font-size: 13px !important;
+                    }
+                    .breadcumb-wrapper {
+                        padding: 80px 0 !important;
+                    }
+                }
+            `}</style>
         </div>
     );
 }

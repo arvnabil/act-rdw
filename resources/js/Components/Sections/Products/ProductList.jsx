@@ -1,13 +1,8 @@
 import ProductCard from "@/Components/Common/ProductCard";
 import { Link } from "@inertiajs/react";
+import { getImageUrl } from "@/Utils/image";
 
 export default function ProductList({ products, viewMode }) {
-    // Helper to resolve image URL
-    const getImageUrl = (path) => {
-        if (!path) return "/assets/img/product/product_1_1.png";
-        if (path.startsWith("http") || path.startsWith("/assets")) return path;
-        return `/storage/${path}`;
-    };
 
     if (!products || !products.data || products.data.length === 0) {
         return (

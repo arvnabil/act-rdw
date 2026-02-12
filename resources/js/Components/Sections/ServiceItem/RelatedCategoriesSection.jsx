@@ -11,11 +11,14 @@ export default function RelatedCategoriesSection({ item, getImageUrl }) {
                     <div className="col-xl-6">
                         <div className="title-area text-center mb-55">
                             <span className="sub-title text-anime-style-2">
-                                Set Brand
+                                Mitra Teknologi
                             </span>
                             <h2 className="sec-title text-anime-style-3">
-                                Select a Brand
+                                Pilih Brand
                             </h2>
+                            <p className="sec-text mt-n2">
+                                Jelajahi solusi dan produk berdasarkan brand pilihan Anda. Klik brand untuk melihat detail dan daftar produk yang tersedia.
+                            </p>
                         </div>
                     </div>
                 </div>

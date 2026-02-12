@@ -1,4 +1,5 @@
 import React from "react";
+import { getImageUrl } from "@/Utils/image";
 
 export default function ProductGallery({ image, name }) {
     return (
@@ -6,7 +7,7 @@ export default function ProductGallery({ image, name }) {
             <div className="th-team team-grid">
                 <div className="team-img m-auto text-center text-xxl-start">
                     <img
-                        src={image || "/assets/default.png"}
+                        src={getImageUrl(image)}
                         alt={name}
                         className="img-fluid"
                         style={{ maxHeight: '400px', objectFit: 'contain' }}

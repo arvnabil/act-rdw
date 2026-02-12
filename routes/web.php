@@ -328,7 +328,7 @@ Route::get('/{brandSlug}/products', function ($brandSlug) {
         return (object) [
             'name' => $cat->name,
             'slug' => $cat->slug,
-            'image' => $cat->icon ?? '/assets/img/product/product_1_1.png',
+            'image' => $cat->icon,
             'count' => $cat->products()->where('brand_id', $brand->id)->where('is_active', true)->count()
         ];
     });

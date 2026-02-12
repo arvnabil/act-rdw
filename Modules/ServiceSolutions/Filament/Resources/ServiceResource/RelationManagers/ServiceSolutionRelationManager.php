@@ -48,6 +48,10 @@ class ServiceSolutionRelationManager extends RelationManager
                                     ->dehydrated()
                                     ->required(),
                                 TextInput::make('subtitle'),
+                                Forms\Components\Toggle::make('show_showcase')
+                                    ->label('Show Project Showcase')
+                                    ->default(true)
+                                    ->columnSpanFull(),
                                 Textarea::make('description')
                                     ->columnSpanFull(),
                                 FileUpload::make('thumbnail')
