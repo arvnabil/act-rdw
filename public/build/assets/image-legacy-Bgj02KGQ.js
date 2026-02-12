@@ -1,0 +1,1 @@
+System.register([],function(t,s){"use strict";return{execute:function(){t("g",t=>t?t.startsWith("http")||t.startsWith("/assets")||t.startsWith("/storage")?t:`/storage/${t.startsWith("/")?t.substring(1):t}`:"")}}});

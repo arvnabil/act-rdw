@@ -1,9 +1,12 @@
 import React from "react";
 import { Link } from "@inertiajs/react";
 import SectionTitle from "@/Components/Common/SectionTitle";
+import { getImageUrl as globalGetImageUrl } from "@/Utils/image";
 
 export default function ServiceListSection({ services, getImageUrl }) {
+    const resolveImage = getImageUrl || globalGetImageUrl;
     return (
+
         <section
             className="position-relative bg-top-center overflow-hidden space space-bottom"
             id="service-sec"
@@ -40,7 +43,7 @@ export default function ServiceListSection({ services, getImageUrl }) {
                                                 href={`/services/${service.slug}`}
                                             >
                                                 <img
-                                                    src={getImageUrl(
+                                                    src={resolveImage(
                                                         service.thumbnail
                                                     )}
                                                     alt={service.name}

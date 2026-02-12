@@ -1,5 +1,6 @@
 import { Link } from "@inertiajs/react";
 import React from "react";
+import { getImageUrl } from "@/Utils/image";
 
 export default function ServiceSection({
     services,
@@ -11,13 +12,6 @@ export default function ServiceSection({
 }) {
     const [activeIndex, setActiveIndex] = React.useState(0);
 
-    const getImageUrl = (path) => {
-        if (!path) return "";
-        if (path.startsWith("http") || path.startsWith("/assets")) {
-            return path;
-        }
-        return `/storage/${path}`;
-    };
 
     if (!services || services.length === 0) return null;
 
