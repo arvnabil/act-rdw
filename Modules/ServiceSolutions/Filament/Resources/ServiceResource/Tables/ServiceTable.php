@@ -18,6 +18,9 @@ class ServiceTable
                     ->square()
                     ->disk('public')
                     ->visibility('public'),
+                ImageColumn::make('thumbnail')
+                    ->disk('public')
+                    ->visibility('public'),
                 TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
