@@ -1,0 +1,4 @@
+service_name,title,slug,subtitle,description,category_names
+Audio Video Konferensi,Zoom Rooms,zoom-rooms,Subtitle Zoom,Description Zoom,"Meeting Rooms, Individual"
+Audio Video Konferensi,Microsoft Teams Rooms,teams-rooms,Subtitle Teams,Description Teams,Training Space
+Smart Surveillance,CCTV Monitoring,cctv-monitoring,Subtitle CCTV,Description CCTV,"Public Sector, Industrial"

@@ -17,17 +17,24 @@ class ProductCategoryImporter extends Importer
         return [
             ImportColumn::make('name')
                 ->requiredMapping()
-                ->rules(['required', 'max:255']),
+                ->rules(['required', 'max:255'])
+                ->example('Video Conferencing'),
             ImportColumn::make('slug')
                 ->requiredMapping()
-                ->rules(['required', 'max:255']),
-            ImportColumn::make('icon'),
+                ->rules(['required', 'max:255'])
+                ->example('video-conferencing'),
+            ImportColumn::make('icon')
+                ->example('heroicon-o-video-camera'),
             ImportColumn::make('sort_order')
-                ->numeric()
-                ->rules(['integer']),
+                ->label('sort_order')
+                ->rules([]) // Explicitly clear any rules to avoid ghost validation
+                ->castStateUsing(fn ($state) => blank($state) ? 0 : (int) $state)
+                ->example(1),
             ImportColumn::make('is_active')
-                ->boolean()
-                ->rules(['boolean']),
+                ->label('is_active')
+                ->rules([]) // Explicitly clear any rules
+                ->castStateUsing(fn ($state) => blank($state) ? true : (bool) $state)
+                ->example(true),
         ];
     }
 
@@ -38,12 +45,25 @@ class ProductCategoryImporter extends Importer
         ]);
     }
 
+    protected function beforeSave(): void
+    {
+        // Handle default value for sort_order if blank
+        if (blank($this->data['sort_order'] ?? null)) {
+            $this->record->sort_order = 0;
+        }
+
+        // Handle default value for is_active if blank
+        if (blank($this->data['is_active'] ?? null)) {
+            $this->record->is_active = true;
+        }
+    }
+
     public static function getCompletedNotificationBody(Import $import): string
     {
-        $body = 'Your product category import has completed and ' . Number::format($import->successful_rows) . ' ' . str('row')->plural($import->successful_rows) . ' imported.';
+        $body = 'Proses import data kategori produk selesai. ' . Number::format($import->successful_rows) . ' baris berhasil diimport.';
 
         if ($failedRowsCount = $import->getFailedRowsCount()) {
-            $body .= ' ' . Number::format($failedRowsCount) . ' ' . str('row')->plural($failedRowsCount) . ' failed to import.';
+            $body .= ' ' . Number::format($failedRowsCount) . ' baris gagal diimport.';
         }
 
         return $body;

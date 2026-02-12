@@ -525,8 +525,10 @@ export function useTemplateInit() {
         // Isotope Grid (Partners Page - .grid)
         if ($(".grid").length > 0) {
             $(".grid").imagesLoaded(function () {
+                var initialFilter = $(".case-menu button.active").attr("data-filter") || "*";
                 var grid = $(".grid").isotope({
                     itemSelector: ".grid-item",
+                    filter: initialFilter,
                     percentPosition: true,
                     masonry: {
                         columnWidth: ".grid-item",

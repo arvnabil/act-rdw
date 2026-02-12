@@ -5,6 +5,7 @@ namespace Modules\ServiceSolutions\Filament\Resources\ServiceResource\RelationMa
 use Filament\Actions\AttachAction;
 use Filament\Actions\BulkActionGroup as ActionsBulkActionGroup;
 use Filament\Actions\CreateAction;
+use Filament\Actions\ImportAction;
 use Filament\Actions\DetachAction;
 use Filament\Actions\DetachBulkAction;
 use Filament\Actions\EditAction;
@@ -130,6 +131,13 @@ class ServiceSolutionRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
+                \Filament\Actions\ImportAction::make()
+                    ->importer(\App\Filament\Imports\ServiceSolutionImporter::class)
+                    ->modalDescription(fn () => new \Illuminate\Support\HtmlString('Download example CSV: <a href="#" wire:click.prevent="mountAction(\'downloadExample\')">Click here</a>')),
+                \Filament\Actions\Action::make('downloadExample')
+                    ->label('Download Example CSV')
+                    ->hidden()
+                    ->action(fn () => response()->download(public_path('examples/solution-import.csv'))),
                 CreateAction::make(),
             ])
             ->actions([
