@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('pages', function (Blueprint $table) {
-            //
-        });
+        if (!Schema::hasColumn('pages', 'breadcrumb_image')) {
+            Schema::table('pages', function (Blueprint $table) {
+                $table->string('breadcrumb_image')->nullable()->after('show_breadcrumb');
+            });
+        }
     }
 
     /**
@@ -21,8 +23,10 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('pages', function (Blueprint $table) {
-            //
-        });
+        if (Schema::hasColumn('pages', 'breadcrumb_image')) {
+            Schema::table('pages', function (Blueprint $table) {
+                $table->dropColumn('breadcrumb_image');
+            });
+        }
     }
 };
