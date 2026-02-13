@@ -281,6 +281,24 @@ export default function ProductFilterTopBar({
                             </span>
                         )}
 
+                        {/* Search Chip */}
+                        {filters.search && (
+                            <span className="filter-chip bg-white border rounded-pill px-3 py-2 d-inline-flex align-items-center shadow-sm">
+                                <span className="fw-bold text-uppercase fs-xs me-2">
+                                    Search: {filters.search}
+                                </span>
+                                <button
+                                    onClick={() => {
+                                        setSearch("");
+                                        handleFilterChange("search", "");
+                                    }}
+                                    className="bg-transparent border-0 p-0 text-muted hover-red"
+                                >
+                                    <i className="fa-regular fa-times"></i>
+                                </button>
+                            </span>
+                        )}
+
                         {/* Clear All */}
                         <button
                             onClick={() => {

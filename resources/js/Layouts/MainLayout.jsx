@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, usePage } from "@inertiajs/react";
+import { Link, usePage, router } from "@inertiajs/react";
 import { useTemplateInit } from "@/hooks/useTemplateInit";
 import Toast from "@/Components/Common/Toast";
 import { getWhatsAppLink } from "@/Utils/whatsapp";
@@ -104,6 +104,21 @@ export default function MainLayout({ children }) {
     const isExternalUrl = (url) => {
         if (!url) return false;
         return url.startsWith("http://") || url.startsWith("https://");
+    };
+
+    const handleSearchSubmit = (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.currentTarget);
+        const query = formData.get('q');
+
+        if (query) {
+            // Force close all search-related UI
+            document.querySelectorAll(".popup-search-box").forEach(el => el.classList.remove("show"));
+            document.querySelectorAll(".th-menu-wrapper").forEach(el => el.classList.remove("th-body-visible"));
+            document.body.classList.remove("th-body-visible");
+
+            router.get('/search', { q: query });
+        }
     };
 
     // Helper to render menu items recursively
@@ -461,10 +476,12 @@ export default function MainLayout({ children }) {
                 <button className="searchClose">
                     <i className="fal fa-times"></i>
                 </button>
-                <form action="#">
+                <form action="/search" method="GET" onSubmit={handleSearchSubmit}>
                     <input
                         type="text"
+                        name="q"
                         placeholder="Apa yang Anda cari?"
+                        autoComplete="off"
                     />
                     <button type="submit">
                         <i className="fal fa-search"></i>
@@ -487,11 +504,13 @@ export default function MainLayout({ children }) {
                             className="mobile-search-box position-relative mb-4"
                             style={{ padding: "0 20px" }}
                         >
-                            <form action="#">
+                            <form action="/search" method="GET" onSubmit={handleSearchSubmit}>
                                 <input
                                     type="text"
+                                    name="q"
                                     placeholder="Cari..."
                                     className="form-control"
+                                    autoComplete="off"
                                     style={{
                                         height: "50px",
                                         paddingRight: "50px",

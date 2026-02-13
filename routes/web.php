@@ -9,6 +9,8 @@ Route::get('/login', function () {
     return redirect()->route('filament.activioncms.auth.login');
 })->name('login');
 
+Route::get('/search', [\App\Http\Controllers\SearchController::class, 'index'])->name('search');
+
 Route::get('/about', function () {
     return Inertia::render('About', [
         'seo' => \App\Services\SeoResolver::staticPage('About Us', 'Akses cepat ke fitur-fitur penting sistem, termasuk dasbor untuk gambaran umum operasional.')
@@ -290,7 +292,16 @@ Route::get('/{brandSlug}/products', function ($brandSlug) {
     // 2. Base Query
     $query = $brand->products()->where('is_active', true)->with('service');
 
-    // 3. Filter by Device Category (ProductCategory)
+    // 3. Filter by Search Term
+    if (request()->filled('search')) {
+        $searchTerm = request()->input('search');
+        $query->where(function ($q) use ($searchTerm) {
+            $q->where('name', 'LIKE', "%{$searchTerm}%")
+              ->orWhere('description', 'LIKE', "%{$searchTerm}%");
+        });
+    }
+
+    // 4. Filter by Device Category (ProductCategory)
     if (request()->filled('category')) {
         $categorySlug = request()->input('category');
         $query->whereHas('category', function ($q) use ($categorySlug) {

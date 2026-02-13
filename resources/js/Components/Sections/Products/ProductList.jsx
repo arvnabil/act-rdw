@@ -1,21 +1,16 @@
 import ProductCard from "@/Components/Common/ProductCard";
 import { Link } from "@inertiajs/react";
 import { getImageUrl } from "@/Utils/image";
+import EmptyState from "@/Components/Common/EmptyState";
 
 export default function ProductList({ products, viewMode }) {
 
     if (!products || !products.data || products.data.length === 0) {
         return (
-            <div className="text-center py-5">
-                <div className="mb-4">
-                    <i className="fa-regular fa-box-open fa-3x text-muted"></i>
-                </div>
-                <h3>No Products Found</h3>
-                <p className="text-muted">
-                    Try adjusting your search or filter to find what you're
-                    looking for.
-                </p>
-            </div>
+            <EmptyState
+                title="Produk Tidak Ditemukan"
+                message="Maaf, tidak ada produk yang sesuai dengan kriteria pencarian Anda. Coba sesuaikan kata kunci atau filter Anda."
+            />
         );
     }
 

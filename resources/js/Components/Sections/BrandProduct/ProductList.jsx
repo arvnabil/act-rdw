@@ -1,8 +1,18 @@
 import React from "react";
 import ProductCard from "@/Components/Common/ProductCard";
 import { Link } from "@inertiajs/react";
+import EmptyState from "@/Components/Common/EmptyState";
 
 export default function ProductList({ products }) {
+    if (products.data.length === 0) {
+        return (
+            <EmptyState
+                title="Produk Tidak Ditemukan"
+                message="Maaf, tidak ada produk yang sesuai dengan kriteria pencarian Anda."
+            />
+        );
+    }
+
     return (
         <div className="row gy-4">
             {products.data.map((product) => (

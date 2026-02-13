@@ -12,14 +12,9 @@ export default function BlogSidebar({
 
     const handleSearch = (e) => {
         e.preventDefault();
-        router.get(
-            route("news.index"),
-            { search: searchTerm },
-            {
-                preserveState: true,
-                replace: true,
-            },
-        );
+        if (searchTerm) {
+            router.get('/search', { q: searchTerm });
+        }
     };
 
     return (
