@@ -61,7 +61,24 @@ class PageForm
 
                                             Toggle::make('show_breadcrumb')
                                                 ->label('Show Breadcrumb')
-                                                ->default(true),
+                                                ->default(true)
+                                                ->live(),
+
+                                            FileUpload::make('breadcrumb_image')
+                                                ->label('Breadcrumb Thumbnail')
+                                                ->image()
+                                                ->directory('public/services')
+                                                ->disk('public')
+                                                ->visibility('public')
+                                                ->maxSize(2048)
+                                                ->downloadable()
+                                                ->openable()
+                                                ->imageEditor()
+                                                ->helperText('Custom background for breadcrumb. Leave empty for default. (Max: 2MB)')
+                                                ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
+                                                    return \App\Helpers\UploadHelper::getSluggedFilename($file, 'public/services');
+                                                })
+                                                ->visible(fn (Get $get) => $get('show_breadcrumb')),
                                         ])
                                         ->columns(2)
                                         ->columnSpan(['lg' => 8]),

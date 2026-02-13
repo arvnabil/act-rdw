@@ -34,8 +34,8 @@ export default function ServiceRoomGrid({ rooms, serviceId }) {
                             >
                                 <div
                                     className={`about-item style-16 ${index % 2 !== 0
-                                            ? "pe-xxl-4 me-xxl-4"
-                                            : "ps-xxl-4 ms-xxl-4"
+                                        ? "pe-xxl-4 me-xxl-4"
+                                        : "ps-xxl-4 ms-xxl-4"
                                         }`}
                                 >
                                     <div className="about-content">
@@ -72,7 +72,7 @@ export default function ServiceRoomGrid({ rooms, serviceId }) {
                                                 href={`/services/${serviceId}/${room.id}`}
                                                 className="th-btn btn-2 th-icon"
                                             >
-                                                Get Started Now
+                                                Selengkapnya
                                                 <i className="fa-light fa-arrow-right-long"></i>
                                             </Link>
                                         </div>

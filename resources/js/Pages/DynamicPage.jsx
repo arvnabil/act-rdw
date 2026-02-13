@@ -15,6 +15,7 @@ export default function DynamicPage({ page, sections, seo }) {
             {page.show_breadcrumb && (
                 <Breadcrumb
                     title={page.title}
+                    bgImage={page.breadcrumb_image} // Pass the custom thumbnail
                     items={[
                         { label: "Beranda", link: "/" },
                         { label: page.title }, // Current page label

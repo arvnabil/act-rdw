@@ -3,7 +3,7 @@ import { Link } from "@inertiajs/react";
 import SectionTitle from "@/Components/Common/SectionTitle";
 import { getImageUrl as globalGetImageUrl } from "@/Utils/image";
 
-export default function ServiceListSection({ services, getImageUrl }) {
+export default function ServiceListSection({ services, getImageUrl, has_more, cta_url }) {
     const resolveImage = getImageUrl || globalGetImageUrl;
 
     return (
@@ -122,6 +122,27 @@ export default function ServiceListSection({ services, getImageUrl }) {
                     background: var(--theme-color);
                     color: #fff;
                 }
+
+                .load-more-btn {
+                    margin-top: 50px;
+                    padding: 12px 30px;
+                    border-radius: 50px;
+                    background: var(--theme-color);
+                    color: #fff;
+                    font-weight: 600;
+                    display: inline-flex;
+                    align-items: center;
+                    gap: 10px;
+                    transition: all 0.3s ease;
+                    border: none;
+                }
+
+                .load-more-btn:hover {
+                    background: var(--title-color);
+                    color: #fff;
+                    transform: translateY(-3px);
+                    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+                }
             `}</style>
 
             <div className="container">
@@ -188,6 +209,15 @@ export default function ServiceListSection({ services, getImageUrl }) {
                             </div>
                         )}
                     </div>
+
+                    {has_more && (
+                        <div className="text-center mt-4">
+                            <Link href={cta_url || "/services"} className="load-more-btn">
+                                Lihat Selengkapnya
+                                <i className="fa-solid fa-arrow-right"></i>
+                            </Link>
+                        </div>
+                    )}
                 </div>
             </div>
         </section>

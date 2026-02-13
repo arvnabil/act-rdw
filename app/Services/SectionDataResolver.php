@@ -94,14 +94,17 @@ class SectionDataResolver
 
     protected function resolveServices(array $config): array
     {
-        $limit = $config['limit'] ?? 6;
+        $limit = $config['limit'] ?? 12; // Increased from 6 to 12
         $order = $config['order'] ?? 'asc';
         $services = collect([]);
+        $total = 0;
 
         // 1. Prioritize Services Table (Parent/Category)
         if (Schema::hasTable('services')) {
-             $query = DB::table('services')
-                ->select('id', 'name', 'slug', 'thumbnail', 'icon', 'description');
+             $query = DB::table('services');
+             $total = $query->count();
+             
+             $query->select('id', 'name', 'slug', 'thumbnail', 'icon', 'description');
 
             if ($order === 'desc') $query->orderBy('id', 'desc');
             else $query->orderBy('id', 'asc');
@@ -111,8 +114,10 @@ class SectionDataResolver
 
         // 2. Fallback to Service Solutions ONLY if Services is empty/missing
         if ($services->isEmpty() && Schema::hasTable('service_solutions')) {
-            $query = DB::table('service_solutions')
-                ->select('id', 'title as name', 'slug', 'thumbnail', 'description', DB::raw('NULL as icon'));
+            $query = DB::table('service_solutions');
+            $total = $query->count();
+            
+            $query->select('id', 'title as name', 'slug', 'thumbnail', 'description', DB::raw('NULL as icon'));
 
             if ($order === 'desc') $query->orderBy('id', 'desc');
             else $query->orderBy('id', 'asc');
@@ -143,9 +148,10 @@ class SectionDataResolver
         return [
             'title' => $config['title'] ?? null,
             'subtitle' => $config['subtitle'] ?? null,
-            'cta_text' => $config['cta_text'] ?? null,
-            'cta_url' => $config['cta_url'] ?? null,
+            'cta_text' => $config['cta_text'] ?? 'Lihat Selengkapnya',
+            'cta_url' => $config['cta_url'] ?? '/services',
             'services' => $services,
+            'has_more' => $total > $limit,
         ];
     }
 
