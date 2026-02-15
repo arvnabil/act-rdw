@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "@inertiajs/react";
+import { getWhatsAppLink } from "@/Utils/whatsapp";
 import SectionTitle from "@/Components/Common/SectionTitle";
 
 export default function WhyChooseUsSection({
@@ -12,6 +13,7 @@ export default function WhyChooseUsSection({
     show_button,
     button_text,
     button_url,
+    button_whatsapp,
     builderMode,
 }) {
     // Defaults
@@ -106,11 +108,12 @@ export default function WhyChooseUsSection({
                                     data-wow-delay=".5s"
                                 >
                                     <Link
-                                        href={btnUrl}
+                                        href={button_whatsapp ? getWhatsAppLink(button_whatsapp, { cta_position: 'why_choose_us', cta_label: `WCU Section ${btnText}` }) : btnUrl}
                                         className="th-btn th-radius th-icon"
+                                        target={button_whatsapp ? "_blank" : undefined}
                                     >
                                         {btnText}{" "}
-                                        <i className="fa-light fa-arrow-right-long"></i>
+                                        <i className={button_whatsapp ? "fa-brands fa-whatsapp ms-2" : "fa-light fa-arrow-right-long"}></i>
                                     </Link>
                                 </div>
                             )}

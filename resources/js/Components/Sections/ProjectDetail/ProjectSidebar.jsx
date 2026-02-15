@@ -121,7 +121,14 @@ export default function ProjectSidebar({ project }) {
                         const defaultMessage = `Halo, saya tertarik dengan project: ${project.title}`;
                         const message = project.whatsapp_note || defaultMessage;
 
-                        const link = getWhatsAppLink(settings?.whatsapp_number, message) || "/contact";
+                        const link = getWhatsAppLink(settings?.whatsapp_number, {
+                            message: message,
+                            cta_position: 'project_sidebar',
+                            cta_label: 'WhatsApp Project Banner',
+                            entity_type: 'project',
+                            entity_id: project.id,
+                            entity_slug: project.slug
+                        }) || "/contact";
                         const target = link.startsWith("http") ? "_blank" : "_self";
 
                         return (

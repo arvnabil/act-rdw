@@ -20,6 +20,9 @@ Route::get('/about', function () {
 Route::post('/form/submit', [\App\Http\Controllers\FormSubmissionController::class, 'store'])->name('form.submit')->middleware('throttle:10,1');
 Route::post('/form/view', [\App\Http\Controllers\FormSubmissionController::class, 'trackView'])->name('form.view');
 
+// WhatsApp Redirect Route
+Route::get('/wa', [\App\Http\Controllers\WhatsAppController::class, 'redirect'])->name('whatsapp.redirect');
+
 // Services routes are now handled by Modules/ServiceSolutions
 
 Route::get('/projects', function () {

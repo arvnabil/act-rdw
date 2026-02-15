@@ -275,9 +275,20 @@ class PageForm
                                                                 }),
                                                         ])
                                                         ->collapsible()
-                                                        ->itemLabel(fn (array $state): ?string => $state['title'] ?? null)
+                                                        ->itemLabel(fn (array $state): ?string => $state['title'] ?? null),
+
+                                                    Grid::make(2)
+                                                        ->schema([
+                                                            TextInput::make('config.button_text')
+                                                                ->label('Button Text')
+                                                                ->placeholder('Kontak Kami'),
+                                                            TextInput::make('config.button_whatsapp')
+                                                                ->label('WhatsApp Number Override')
+                                                                ->placeholder('6285162994602')
+                                                                ->helperText('Leave empty to use global setting.'),
+                                                        ]),
                                                 ])
-                                                ->visible(fn (Get $get) => $get('section_key') === 'about'),
+                                                ->visible(fn (Get $get) => in_array($get('section_key'), ['about', 'about_content'])),
 
                                             // --- WHY CHOOSE US ---
                                             Group::make()
@@ -321,7 +332,17 @@ class PageForm
                                                                 }),
                                                         ])
                                                         ->collapsible()
-                                                        ->itemLabel(fn (array $state): ?string => $state['title'] ?? null)
+                                                        ->itemLabel(fn (array $state): ?string => $state['title'] ?? null),
+
+                                                    Grid::make(2)
+                                                        ->schema([
+                                                            TextInput::make('config.button_text')
+                                                                ->label('Button Text')
+                                                                ->placeholder('Pelajari Selengkapnya'),
+                                                            TextInput::make('config.button_url')
+                                                                ->label('Button URL Override')
+                                                                ->placeholder('/about'),
+                                                        ]),
                                                 ])
                                                 ->visible(fn (Get $get) => $get('section_key') === 'why_choose_us'),
 

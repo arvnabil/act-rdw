@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "@inertiajs/react";
 import { getImageUrl } from "@/Utils/image";
 
-export default function ServiceRoomGrid({ rooms, serviceId }) {
+export default function ServiceRoomGrid({ rooms, serviceId, serviceSlug }) {
 
     return (
 
@@ -41,7 +41,7 @@ export default function ServiceRoomGrid({ rooms, serviceId }) {
                                     <div className="about-content">
                                         <h3 className="box-title text-anime-style-2">
                                             <Link
-                                                href={`/services/${serviceId}/${room.id}`}
+                                                href={`/services/${serviceSlug}/${room.id}`}
                                             >
                                                 {room.title}
                                             </Link>
@@ -69,7 +69,7 @@ export default function ServiceRoomGrid({ rooms, serviceId }) {
                                         </div>
                                         <div className="about-btn mt-30 wow fadeInUp">
                                             <Link
-                                                href={`/services/${serviceId}/${room.id}`}
+                                                href={`/services/${serviceSlug}/${room.id}`}
                                                 className="th-btn btn-2 th-icon"
                                             >
                                                 Selengkapnya

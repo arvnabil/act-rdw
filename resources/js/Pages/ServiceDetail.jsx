@@ -81,6 +81,7 @@ const ServiceDetail = ({ service, seo }) => {
                         <div className="solutions-content-area">
                             <ServiceRoomGrid
                                 rooms={service.rooms}
+                                serviceSlug={service.slug}
                                 serviceId={service.id}
                             />
                         </div>

@@ -108,7 +108,11 @@ class ProductController extends Controller
             'name' => $product->name,
             'image' => $product->image_path ? "/storage/" . $product->image_path : null,
             'sku' => $product->sku,
-            'solution_type' => $product->solutions->pluck('title')->join(', ') ?: $product->solution_type,
+            'solution_type' => $product->solutions
+                ->where('service_id', $product->service_id)
+                ->pluck('title')
+                ->unique()
+                ->join(', ') ?: $product->solution_type,
             'datasheet_url' => $product->datasheet_url,
             'description' => $product->description,
             'category' => $product->category?->name ?? $product->service?->name ?? 'General',

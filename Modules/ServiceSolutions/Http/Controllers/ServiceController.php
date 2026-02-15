@@ -27,7 +27,9 @@ class ServiceController extends Controller
 
         return Inertia::render('ServiceDetail', [
             'service' => [
-                'id' => $service->slug, // Frontend historically uses slug as id in some places
+                'id' => $service->id,
+                'slug' => $service->slug,
+                'entity_type' => 'service',
                 'title' => $service->name,
                 'hero_subtitle' => $service->hero_subtitle,
                 'grid_title' => $service->grid_title,

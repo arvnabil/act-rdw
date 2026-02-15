@@ -1,1 +1,0 @@
-System.register([],function(n,e){"use strict";return{execute:function(){n("g",(n,e="Halo ACTiV, saya ingin bertanya mengenai layanan Anda.")=>{if(!n)return null;let a=n.replace(/\D/g,"");return a.startsWith("0")&&(a="62"+a.substring(1)),`https://wa.me/${a}?text=${encodeURIComponent(e||"Halo ACTiV, saya ingin bertanya mengenai layanan Anda.")}`})}}});

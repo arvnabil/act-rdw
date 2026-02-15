@@ -102,6 +102,14 @@ class BrandForm
                                         ->label('CTA Button URL')
                                         ->placeholder('#products')
                                         ->prefix('https:// or #'),
+                                    TextInput::make('cta_whatsapp')
+                                        ->label('CTA WhatsApp Number')
+                                        ->placeholder('6285162994602')
+                                        ->helperText('Jika diisi, URL di atas akan diabaikan dan tombol akan diarahkan ke sistem tracking WhatsApp kami.'),
+                                    TextInput::make('cta_whatsapp_message')
+                                        ->label('CTA WhatsApp Default Message')
+                                        ->placeholder('Halo ACTiV, saya ingin bertanya...')
+                                        ->columnSpanFull(),
                                     FileUpload::make('background_image')
                                         ->label('Hero Background Image')
                                         ->image()

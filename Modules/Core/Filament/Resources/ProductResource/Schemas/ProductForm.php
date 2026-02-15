@@ -48,7 +48,8 @@ class ProductForm
                                                 ->required()
                                                 ->searchable()
                                                 ->preload()
-                                                ->live(),
+                                                ->live()
+                                                ->afterStateUpdated(fn (Set $set) => $set('solutions', [])),
                                             Select::make('brand_id')
                                                 ->relationship('brand', 'name')
                                                 ->required()

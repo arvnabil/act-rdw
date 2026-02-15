@@ -87,6 +87,7 @@ class SectionDataResolver
             'features' => $config['features'] ?? [],
             'button_text' => $config['button_text'] ?? null,
             'button_url' => $config['button_url'] ?? null,
+            'button_whatsapp' => $config['button_whatsapp'] ?? null,
             'show_button' => $config['show_button'] ?? true,
             'variant' => $config['variant'] ?? 'default',
         ];
@@ -167,6 +168,7 @@ class SectionDataResolver
             'show_button' => $config['show_button'] ?? true,
             'button_text' => $config['button_text'] ?? 'Pelajari Selengkapnya',
             'button_url' => $config['button_url'] ?? '/about',
+            'button_whatsapp' => $config['button_whatsapp'] ?? null,
         ];
     }
 

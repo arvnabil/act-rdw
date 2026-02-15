@@ -130,7 +130,11 @@ export default function BlogSidebar({
                     {(() => {
                         const { settings } = usePage().props;
                         const message = "Halo, saya butuh bantuan terkait layanan Anda.";
-                        const link = getWhatsAppLink(settings?.whatsapp_number, message) || "/contact";
+                        const link = getWhatsAppLink(settings?.whatsapp_number, {
+                            message: message,
+                            cta_position: 'blog_sidebar',
+                            cta_label: 'WhatsApp Blog Banner'
+                        }) || "/contact";
                         const target = link.startsWith("http") ? "_blank" : "_self";
 
                         return (

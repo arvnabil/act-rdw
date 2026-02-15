@@ -1,5 +1,6 @@
-import { Head } from "@inertiajs/react";
+import { Head, usePage } from "@inertiajs/react";
 import React from "react";
+import { getWhatsAppLink } from "@/Utils/whatsapp";
 import MainLayout from "@/Layouts/MainLayout";
 import Breadcrumb from "@/Components/Common/Breadcrumb";
 import ServiceAboutSection from "@/Components/Sections/ServiceItem/ServiceAboutSection";
@@ -7,10 +8,15 @@ import RelatedCategoriesSection from "@/Components/Sections/ServiceItem/RelatedC
 import WorkShowcaseSection from "@/Components/Sections/Common/WorkShowcaseSection";
 
 const ServiceItemDetail = ({ item }) => {
-    const waNumber = "62811400262"; // Replace with actual number
-    const waLink = `https://wa.me/${waNumber}?text=${encodeURIComponent(
-        item.wa_message || `I am interested in ${item.title}`
-    )}`;
+    const { settings } = usePage().props;
+    const waLink = getWhatsAppLink(settings?.whatsapp_number || "62811400262", {
+        message: item.wa_message || `I am interested in ${item.title}`,
+        cta_position: 'service_detail',
+        cta_label: 'Service About Section WA',
+        entity_type: item.entity_type || 'service',
+        entity_id: item.id,
+        entity_slug: item.slug || item.id
+    });
 
     const getImageUrl = (path) => {
         if (!path) return "";

@@ -181,15 +181,19 @@ export function useTemplateInit() {
         }
 
         // Sticky Header
-        $(window).on("scroll", function () {
+        const handleStickyScroll = function () {
             if ($(this).scrollTop() > 500) {
                 $(".sticky-wrapper").addClass("sticky");
             } else {
                 $(".sticky-wrapper").removeClass("sticky");
             }
-        });
+        };
+        $(window).on("scroll", handleStickyScroll);
 
         // --- Scroll To Top (SVG Logic) ---
+        let updateProgress = () => { };
+        let handleScrollTopShow = () => { };
+
         if ($(".scroll-top").length > 0) {
             var scrollTopbtn = $(".scroll-top")[0];
             var progressPath = $(".scroll-top path")[0];
@@ -204,7 +208,7 @@ export function useTemplateInit() {
                 progressPath.style.WebkitTransition =
                 "stroke-dashoffset 10ms linear";
 
-            var updateProgress = function () {
+            updateProgress = function () {
                 var scroll = $(window).scrollTop();
                 var height = $(document).height() - $(window).height();
                 var progress = pathLength - (scroll * pathLength) / height;
@@ -215,13 +219,14 @@ export function useTemplateInit() {
 
             var offset = 50;
             var duration = 750;
-            $(window).on("scroll", function () {
+            handleScrollTopShow = function () {
                 if ($(this).scrollTop() > offset) {
                     $(scrollTopbtn).addClass("show");
                 } else {
                     $(scrollTopbtn).removeClass("show");
                 }
-            });
+            };
+            $(window).on("scroll", handleScrollTopShow);
             $(scrollTopbtn).on("click", function (event) {
                 event.preventDefault();
                 $("html, body").animate({ scrollTop: 0 }, duration);
@@ -591,5 +596,30 @@ export function useTemplateInit() {
         }
 
         // --- Counter Up (if needed, currently no jQuery.counterUp loaded, but could be added) ---
+
+        // --- Final Cleanup Function ---
+        return () => {
+            // 1. Destroy Lenis
+            if (lenis) {
+                lenis.destroy();
+            }
+
+            // 2. Kill GSAP Triggers
+            if (typeof ScrollTrigger !== "undefined") {
+                ScrollTrigger.getAll().forEach((t) => t.kill());
+            }
+
+            // 3. Remove Window Listeners
+            $(window).off("scroll", handleStickyScroll);
+            $(window).off("scroll", updateProgress);
+            $(window).off("scroll", handleScrollTopShow);
+
+            // 4. Remove jQuery listeners
+            $(document).off("click", ".preloaderCls");
+            $(document).off("click", "[data-slider-prev], [data-slider-next]");
+            $(document).off("mouseover", ".hover-item");
+            $(document).off("mouseover", ".hover-item2");
+            $(document).off("click", ".service7-list");
+        };
     }, [url]);
 }

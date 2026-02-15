@@ -106,13 +106,20 @@ export default function ProductInfo({ product }) {
                             `Halo, saya tertarik dengan produk ${product.name}. Mohon info harga terbaik.`
                         ).replace("{Product Name}", product.name);
 
-                        const link = getWhatsAppLink(settings?.whatsapp_number, message) || "#";
+                        const link = getWhatsAppLink(settings?.whatsapp_number, {
+                            message: message,
+                            cta_position: 'product_detail',
+                            cta_label: 'Permintaan Harga Terbaik',
+                            entity_type: 'product',
+                            entity_id: product.id,
+                            entity_slug: product.slug
+                        }) || "#";
 
                         return (
                             <a
                                 href={link}
                                 target="_blank"
-                                rel="noreferrer"
+                                rel="noopener"
                                 className="th-btn th-icon"
                             >
                                 Permintaan Harga Terbaik{" "}

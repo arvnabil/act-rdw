@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "@inertiajs/react";
+import { getWhatsAppLink } from "@/Utils/whatsapp";
 import SectionTitle from "@/Components/Common/SectionTitle";
 
 export default function AboutSection({
@@ -10,6 +11,7 @@ export default function AboutSection({
     images,
     button_text,
     button_url,
+    button_whatsapp,
     show_button = true, // Default to true if not provided
 }) {
     // Defaults
@@ -120,11 +122,12 @@ export default function AboutSection({
                                     data-wow-delay=".5s"
                                 >
                                     <Link
-                                        href={btnUrl}
+                                        href={button_whatsapp ? getWhatsAppLink(button_whatsapp, { cta_position: 'about_home', cta_label: `About Section ${btnText}` }) : btnUrl}
                                         className="th-btn th-radius th-icon"
+                                        target={button_whatsapp ? "_blank" : undefined}
                                     >
                                         {btnText}{" "}
-                                        <i className="fa-light fa-arrow-right-long"></i>
+                                        <i className={button_whatsapp ? "fa-brands fa-whatsapp ms-2" : "fa-light fa-arrow-right-long"}></i>
                                     </Link>
                                 </div>
                             )}

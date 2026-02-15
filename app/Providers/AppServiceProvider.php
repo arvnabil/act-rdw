@@ -23,6 +23,13 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::DefaultStringLength(191);
 
+        \Illuminate\Database\Eloquent\Relations\Relation::morphMap([
+            'service'          => \Modules\ServiceSolutions\Models\Service::class,
+            'service_solution' => \Modules\ServiceSolutions\Models\ServiceSolution::class,
+            'product'          => \Modules\Core\Models\Product::class,
+            'brand'            => \Modules\Core\Models\Brand::class,
+        ]);
+
         view()->composer('app', \App\View\Composers\SeoViewComposer::class);
     }
 

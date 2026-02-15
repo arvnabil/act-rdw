@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
+import { getWhatsAppLink } from "@/Utils/whatsapp";
 
 export default function ContactSection({
     title = "Contact Information",
@@ -174,7 +175,16 @@ export default function ContactSection({
                                                 Tel: {phone}{" "}
                                             </a>
                                             <br />
-                                            <a href="#">WA: {whatsapp}</a>
+                                            <a
+                                                href={getWhatsAppLink(whatsapp, {
+                                                    cta_position: 'contact_section',
+                                                    cta_label: 'WhatsApp Contact Page'
+                                                }) || "#"}
+                                                target="_blank"
+                                                rel="noopener"
+                                            >
+                                                WA: {whatsapp}
+                                            </a>
                                         </p>
                                     </div>
                                 </div>
@@ -244,11 +254,11 @@ export default function ContactSection({
                                         )}
                                         {(!form_fields ||
                                             Object.keys(form_fields).length ===
-                                                0) && (
-                                            <p style={{ color: "red" }}>
-                                                DEBUG: form_fields is empty
-                                            </p>
-                                        )}
+                                            0) && (
+                                                <p style={{ color: "red" }}>
+                                                    DEBUG: form_fields is empty
+                                                </p>
+                                            )}
 
                                         {(() => {
                                             const fieldsArray = Array.isArray(
@@ -257,9 +267,9 @@ export default function ContactSection({
                                                 ? form_fields
                                                 : form_fields &&
                                                     typeof form_fields ===
-                                                        "object"
-                                                  ? Object.values(form_fields)
-                                                  : [];
+                                                    "object"
+                                                    ? Object.values(form_fields)
+                                                    : [];
 
                                             return fieldsArray.filter(
                                                 (f) =>
@@ -292,14 +302,14 @@ export default function ContactSection({
                                                             }
                                                             value={
                                                                 formData[
-                                                                    field.name
+                                                                field.name
                                                                 ] || ""
                                                             }
                                                             required={
                                                                 field.required ===
-                                                                    "true" ||
+                                                                "true" ||
                                                                 field.required ===
-                                                                    true
+                                                                true
                                                             }
                                                         >
                                                             <option
@@ -342,7 +352,7 @@ export default function ContactSection({
                                                             }
                                                             value={
                                                                 formData[
-                                                                    field.name
+                                                                field.name
                                                                 ] || ""
                                                             }
                                                             placeholder={
@@ -350,9 +360,9 @@ export default function ContactSection({
                                                             }
                                                             required={
                                                                 field.required ===
-                                                                    "true" ||
+                                                                "true" ||
                                                                 field.required ===
-                                                                    true
+                                                                true
                                                             }
                                                         ></textarea>
                                                         {field.icon && (
@@ -380,7 +390,7 @@ export default function ContactSection({
                                                         onChange={handleChange}
                                                         value={
                                                             formData[
-                                                                field.name
+                                                            field.name
                                                             ] || ""
                                                         }
                                                         placeholder={
@@ -388,9 +398,9 @@ export default function ContactSection({
                                                         }
                                                         required={
                                                             field.required ===
-                                                                "true" ||
+                                                            "true" ||
                                                             field.required ===
-                                                                true
+                                                            true
                                                         }
                                                     />
                                                     {field.icon && (

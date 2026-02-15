@@ -21,7 +21,6 @@ class Product extends Model
         'description', 'image_path', 'sku', 'solution_type',
         'datasheet_url', 'tags', 'specs', 'specification_text',
         'features', 'features_text', 'is_active', 'is_featured',
-        'features', 'features_text', 'is_active', 'is_featured',
         'price', 'link_accommerce', 'whatsapp_note'
     ];
 

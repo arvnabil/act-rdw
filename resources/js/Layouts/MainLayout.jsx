@@ -7,7 +7,6 @@ import { getWhatsAppLink } from "@/Utils/whatsapp";
 export default function MainLayout({ children }) {
     useTemplateInit();
     const { auth, flash, menus, settings } = usePage().props;
-    const whatsappLink = getWhatsAppLink(settings?.whatsapp_number);
     console.log("MainLayout menus:", menus);
     const [toast, setToast] = useState(null);
     const [isScrolled, setIsScrolled] = useState(false);
@@ -136,7 +135,7 @@ export default function MainLayout({ children }) {
                             href={item.url || "#"}
                             target={item.target || "_self"}
                             onClick={closeMobileMenu}
-                            rel={item.target === "_blank" ? "noopener noreferrer" : ""}
+                            rel={item.target === "_blank" ? "noopener" : ""}
                         >
                             {item.title}
                         </a>
@@ -171,7 +170,7 @@ export default function MainLayout({ children }) {
                             href={item.url || "#"}
                             style={{ color: "#fff" }}
                             target={item.target || "_self"}
-                            rel={item.target === "_blank" ? "noopener noreferrer" : ""}
+                            rel={item.target === "_blank" ? "noopener" : ""}
                         >
                             {item.title}
                         </a>
@@ -331,7 +330,14 @@ export default function MainLayout({ children }) {
                                 <a href="https://www.linkedin.com/">
                                     <i className="fab fa-linkedin-in"></i>
                                 </a>
-                                <a href="https://www.whatsapp.com/">
+                                <a
+                                    href={getWhatsAppLink(settings?.whatsapp_number, {
+                                        cta_position: 'header_social',
+                                        cta_label: 'WhatsApp Top Social'
+                                    }) || "https://www.whatsapp.com/"}
+                                    target="_blank"
+                                    rel="noopener"
+                                >
                                     <i className="fab fa-whatsapp"></i>
                                 </a>
                                 <a href="https://instagram.com/">
@@ -567,27 +573,49 @@ export default function MainLayout({ children }) {
                                     )}
                                 </ul>
                             </div>
-                            <div className="text-center mt-3">
-                                {whatsappLink ? (
-                                    <a
-                                        href={whatsappLink}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="th-btn th-radius th-icon"
-                                    >
-                                        Hubungi Kami{" "}
-                                        <i className="fa-light fa-arrow-right-long"></i>
-                                    </a>
-                                ) : (
-                                    <Link
-                                        href="#"
-                                        className="th-btn th-radius th-icon"
-                                    >
-                                        Hubungi Kami{" "}
-                                        <i className="fa-light fa-arrow-right-long"></i>
-                                    </Link>
-                                )}
-                            </div>
+                            {settings?.header_button_visible !== '0' && (() => {
+                                const btnUrl = settings?.header_button_url || "whatsapp";
+                                const isWa = btnUrl.startsWith('whatsapp');
+
+                                if (isWa) {
+                                    // Extract static params if any (e.g. whatsapp?utm_source=header)
+                                    const staticParams = {};
+                                    if (btnUrl.includes('?')) {
+                                        const search = btnUrl.split('?')[1];
+                                        new URLSearchParams(search).forEach((v, k) => { staticParams[k] = v; });
+                                    }
+
+                                    return (
+                                        <div className="text-center mt-3">
+                                            <a
+                                                href={getWhatsAppLink(settings?.whatsapp_number, {
+                                                    cta_position: 'mobile_menu',
+                                                    cta_label: settings?.header_button_text || 'Hubungi Kami Mobile',
+                                                    ...staticParams
+                                                })}
+                                                target="_blank"
+                                                rel="noopener"
+                                                className="th-btn th-radius th-icon"
+                                            >
+                                                {settings?.header_button_text || 'Hubungi Kami'}{" "}
+                                                <i className="fa-light fa-arrow-right-long"></i>
+                                            </a>
+                                        </div>
+                                    );
+                                }
+
+                                return (
+                                    <div className="text-center mt-3">
+                                        <Link
+                                            href={btnUrl || "/contact"}
+                                            className="th-btn th-radius th-icon"
+                                        >
+                                            {settings?.header_button_text || 'Hubungi Kami'}{" "}
+                                            <i className="fa-light fa-arrow-right-long"></i>
+                                        </Link>
+                                    </div>
+                                );
+                            })()}
                         </div>
                     </div>
                 </div>
@@ -801,25 +829,44 @@ export default function MainLayout({ children }) {
                                                 alt="icon"
                                             />
                                         </button>
-                                        {whatsappLink ? (
-                                            <a
-                                                href={whatsappLink}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="th-btn th-radius th-icon"
-                                            >
-                                                Hubungi Kami{" "}
-                                                <i className="fa-light fa-arrow-right-long"></i>
-                                            </a>
-                                        ) : (
-                                            <Link
-                                                href="/abouts"
-                                                className="th-btn th-radius th-icon d-none d-xxl-block"
-                                            >
-                                                Hubungi Kami{" "}
-                                                <i className="fa-light fa-arrow-right-long"></i>
-                                            </Link>
-                                        )}
+                                        {settings?.header_button_visible !== '0' && (() => {
+                                            const btnUrl = settings?.header_button_url || "whatsapp";
+                                            const isWa = btnUrl.startsWith('whatsapp');
+
+                                            if (isWa) {
+                                                const staticParams = {};
+                                                if (btnUrl.includes('?')) {
+                                                    const search = btnUrl.split('?')[1];
+                                                    new URLSearchParams(search).forEach((v, k) => { staticParams[k] = v; });
+                                                }
+
+                                                return (
+                                                    <a
+                                                        href={getWhatsAppLink(settings?.whatsapp_number, {
+                                                            cta_position: 'header',
+                                                            cta_label: settings?.header_button_text || 'Hubungi Kami Header',
+                                                            ...staticParams
+                                                        })}
+                                                        target="_blank"
+                                                        rel="noopener"
+                                                        className="th-btn th-radius th-icon"
+                                                    >
+                                                        {settings?.header_button_text || 'Hubungi Kami'}{" "}
+                                                        <i className="fa-light fa-arrow-right-long"></i>
+                                                    </a>
+                                                );
+                                            }
+
+                                            return (
+                                                <Link
+                                                    href={btnUrl || "/abouts"}
+                                                    className="th-btn th-radius th-icon"
+                                                >
+                                                    {settings?.header_button_text || 'Hubungi Kami'}{" "}
+                                                    <i className="fa-light fa-arrow-right-long"></i>
+                                                </Link>
+                                            );
+                                        })()}
                                     </div>
                                 </div>
                             </div>
@@ -867,7 +914,14 @@ export default function MainLayout({ children }) {
                                             <a href="https://www.linkedin.com/">
                                                 <i className="fab fa-linkedin-in"></i>
                                             </a>
-                                            <a href="https://www.whatsapp.com/">
+                                            <a
+                                                href={getWhatsAppLink(settings?.whatsapp_number, {
+                                                    cta_position: 'footer_social',
+                                                    cta_label: 'WhatsApp Footer Social'
+                                                }) || "https://www.whatsapp.com/"}
+                                                target="_blank"
+                                                rel="noopener"
+                                            >
                                                 <i className="fab fa-whatsapp"></i>
                                             </a>
                                             <a href="https://instagram.com/">
@@ -932,7 +986,10 @@ export default function MainLayout({ children }) {
                                                         style={{
                                                             color: "#fff",
                                                         }}
-                                                        href="https://api.whatsapp.com/send?phone=6285162994602"
+                                                        href={getWhatsAppLink(settings?.whatsapp_number || '6285162994602', {
+                                                            cta_position: 'footer_info',
+                                                            cta_label: 'WhatsApp Footer Text'
+                                                        })}
                                                         className="info-box_link"
                                                     >
                                                         WA: (+62) 851-6299-4602

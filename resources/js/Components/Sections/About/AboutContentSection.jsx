@@ -1,5 +1,6 @@
 import React from "react";
-import { Link } from "@inertiajs/react";
+import { Link, usePage } from "@inertiajs/react";
+import { getWhatsAppLink } from "@/Utils/whatsapp";
 import SectionTitle from "@/Components/Common/SectionTitle";
 
 export default function AboutContentSection({
@@ -25,7 +26,11 @@ export default function AboutContentSection({
             icon: "/assets/img/icon/support.svg",
         },
     ],
+    button_text = "Kontak Kami",
+    button_whatsapp = null,
+    isBuilder = false, // Boolean to detect builder mode
 }) {
+    const { settings } = usePage().props;
     // Helper to get image URL safely
     const getImage = (index, fallback) => {
         if (images && images[index]) {
@@ -290,12 +295,15 @@ export default function AboutContentSection({
 
                         <div className="mt-40">
                             <a
-                                href="https://wa.me/6285162994602"
+                                href={getWhatsAppLink(button_whatsapp || settings?.whatsapp_number || "6285162994602", {
+                                    cta_position: 'about_section',
+                                    cta_label: `Kontak Kami About ${button_text !== 'Kontak Kami' ? button_text : ''}`.trim()
+                                })}
                                 target="_blank"
-                                rel="noopener noreferrer"
+                                rel="noopener"
                                 className="th-btn style3 th-radius th-icon"
                             >
-                                Kontak Kami <i className="fa-brands fa-whatsapp ms-2"></i>
+                                {button_text} <i className="fa-brands fa-whatsapp ms-2"></i>
                             </a>
                         </div>
                     </div>

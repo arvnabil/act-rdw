@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
 import { Head, Link, useForm, usePage } from "@inertiajs/react";
+import React, { useState, useEffect } from "react";
+import { getWhatsAppLink } from "@/Utils/whatsapp";
 import MainLayout from "@/Layouts/MainLayout";
 
 import Modal from "@/Components/Common/Modal";
@@ -219,7 +220,7 @@ export default function EventDetail({ event }) {
                                                 padding: "20px",
                                                 borderBottom:
                                                     index !==
-                                                    event.schedule.length - 1
+                                                        event.schedule.length - 1
                                                         ? "1px solid #eee"
                                                         : "none",
                                                 backgroundColor:
@@ -512,7 +513,7 @@ export default function EventDetail({ event }) {
                                                                     >
                                                                         <div className="documentation-item position-relative rounded-20 overflow-hidden group-image-scale transition-all duration-500">
                                                                             {item.type ===
-                                                                            "video_link" ? (
+                                                                                "video_link" ? (
                                                                                 <div className="ratio ratio-16x9">
                                                                                     <iframe
                                                                                         src={item.path.replace(
@@ -565,39 +566,37 @@ export default function EventDetail({ event }) {
                                     {(event.faq && event.faq.length > 0
                                         ? event.faq
                                         : [
-                                              {
-                                                  question:
-                                                      "Bagaimana cara mendaftar event ini?",
-                                                  answer: "Anda dapat mendaftar dengan mengklik tombol 'Booking Now' di bagian kanan halaman ini, lalu isi formulir pendaftaran secara lengkap.",
-                                              },
-                                              {
-                                                  question:
-                                                      "Apakah event ini berbayar?",
-                                                  answer: `Event ini ${
-                                                      Number(event.price) === 0
-                                                          ? "Gratis"
-                                                          : "Berbayar sebesar " +
-                                                            new Intl.NumberFormat(
-                                                                "id-ID",
-                                                                {
-                                                                    style: "currency",
-                                                                    currency:
-                                                                        "IDR",
-                                                                    minimumFractionDigits: 0,
-                                                                }
-                                                            ).format(
-                                                                event.price
-                                                            )
-                                                  }. Silakan cek detail booking untuk informasi lebih lanjut.`,
-                                              },
-                                          ]
+                                            {
+                                                question:
+                                                    "Bagaimana cara mendaftar event ini?",
+                                                answer: "Anda dapat mendaftar dengan mengklik tombol 'Booking Now' di bagian kanan halaman ini, lalu isi formulir pendaftaran secara lengkap.",
+                                            },
+                                            {
+                                                question:
+                                                    "Apakah event ini berbayar?",
+                                                answer: `Event ini ${Number(event.price) === 0
+                                                        ? "Gratis"
+                                                        : "Berbayar sebesar " +
+                                                        new Intl.NumberFormat(
+                                                            "id-ID",
+                                                            {
+                                                                style: "currency",
+                                                                currency:
+                                                                    "IDR",
+                                                                minimumFractionDigits: 0,
+                                                            }
+                                                        ).format(
+                                                            event.price
+                                                        )
+                                                    }. Silakan cek detail booking untuk informasi lebih lanjut.`,
+                                            },
+                                        ]
                                     ).map((item, i) => {
                                         const isActive = activeFaqIndex === i;
                                         return (
                                             <div
-                                                className={`accordion-card style4 ${
-                                                    isActive ? "active" : ""
-                                                }`}
+                                                className={`accordion-card style4 ${isActive ? "active" : ""
+                                                    }`}
                                                 key={i}
                                             >
                                                 <div
@@ -605,11 +604,10 @@ export default function EventDetail({ event }) {
                                                     id={`collapse-item-${i}`}
                                                 >
                                                     <button
-                                                        className={`accordion-button ${
-                                                            isActive
+                                                        className={`accordion-button ${isActive
                                                                 ? ""
                                                                 : "collapsed"
-                                                        }`}
+                                                            }`}
                                                         type="button"
                                                         onClick={() =>
                                                             setActiveFaqIndex(
@@ -626,9 +624,8 @@ export default function EventDetail({ event }) {
                                                 </div>
                                                 <div
                                                     id={`collapse-${i}`}
-                                                    className={`accordion-collapse collapse ${
-                                                        isActive ? "show" : ""
-                                                    }`}
+                                                    className={`accordion-collapse collapse ${isActive ? "show" : ""
+                                                        }`}
                                                     aria-labelledby={`collapse-item-${i}`}
                                                     data-bs-parent="#faqAccordion"
                                                 >
@@ -688,19 +685,19 @@ export default function EventDetail({ event }) {
                                                     </small>
                                                     <span className="d-block fw-bold text-dark fs-5">
                                                         {Number(event.price) ===
-                                                        0
+                                                            0
                                                             ? "Free"
                                                             : new Intl.NumberFormat(
-                                                                  "id-ID",
-                                                                  {
-                                                                      style: "currency",
-                                                                      currency:
-                                                                          "IDR",
-                                                                      minimumFractionDigits: 0,
-                                                                  }
-                                                              ).format(
-                                                                  event.price
-                                                              )}
+                                                                "id-ID",
+                                                                {
+                                                                    style: "currency",
+                                                                    currency:
+                                                                        "IDR",
+                                                                    minimumFractionDigits: 0,
+                                                                }
+                                                            ).format(
+                                                                event.price
+                                                            )}
                                                     </span>
                                                 </div>
                                             </div>
@@ -725,7 +722,7 @@ export default function EventDetail({ event }) {
                                                     </small>
                                                     <span className="d-block fw-bold text-dark fs-5">
                                                         {event.available_seats >
-                                                        0
+                                                            0
                                                             ? `${event.available_seats} Seats`
                                                             : "Full"}
                                                     </span>
@@ -733,31 +730,16 @@ export default function EventDetail({ event }) {
                                             </div>
                                             {event.is_registered ? (
                                                 event.registration_status ===
-                                                "Pending" ? (
+                                                    "Pending" ? (
                                                     <a
-                                                        href={`https://wa.me/${
-                                                            event.organizer_phone
-                                                        }?text=${encodeURIComponent(
-                                                            `Halo, saya ingin konfirmasi pendaftaran event:\n\n*${
-                                                                event.title
-                                                            }*\nHarga: ${
-                                                                Number(
-                                                                    event.price
-                                                                ) === 0
-                                                                    ? "Gratis"
-                                                                    : new Intl.NumberFormat(
-                                                                          "id-ID",
-                                                                          {
-                                                                              style: "currency",
-                                                                              currency:
-                                                                                  "IDR",
-                                                                              minimumFractionDigits: 0,
-                                                                          }
-                                                                      ).format(
-                                                                          event.price
-                                                                      )
-                                                            }\nStatus: Pending Payment`
-                                                        )}`}
+                                                        href={getWhatsAppLink(event.organizer_phone, {
+                                                            message: `Halo, saya ingin konfirmasi pendaftaran event:\n\n*${event.title}*\nHarga: ${Number(event.price) === 0 ? "Gratis" : new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(event.price)}\nStatus: Pending Payment`,
+                                                            cta_position: 'event_detail',
+                                                            cta_label: 'Confirm Payment WA',
+                                                            entity_type: 'event',
+                                                            entity_id: event.id,
+                                                            entity_slug: event.slug
+                                                        })}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
                                                         className="th-btn th-radius th-icon w-100 bg-warning border-warning"
@@ -978,27 +960,23 @@ export default function EventDetail({ event }) {
                                         </div>
                                     </div>
                                     <a
-                                        href={`https://wa.me/${
-                                            event.organizer_phone
-                                        }?text=${encodeURIComponent(
-                                            `Halo, saya ingin bertanya/konfirmasi event:\n\n*${
-                                                event.title
-                                            }*\nHarga: ${
-                                                Number(event.price) === 0
+                                        href={`https://wa.me/${event.organizer_phone
+                                            }?text=${encodeURIComponent(
+                                                `Halo, saya ingin bertanya/konfirmasi event:\n\n*${event.title
+                                                }*\nHarga: ${Number(event.price) === 0
                                                     ? "Gratis"
                                                     : new Intl.NumberFormat(
-                                                          "id-ID",
-                                                          {
-                                                              style: "currency",
-                                                              currency: "IDR",
-                                                              minimumFractionDigits: 0,
-                                                          }
-                                                      ).format(event.price)
-                                            }\nStatus: ${
-                                                event.registration_status ||
+                                                        "id-ID",
+                                                        {
+                                                            style: "currency",
+                                                            currency: "IDR",
+                                                            minimumFractionDigits: 0,
+                                                        }
+                                                    ).format(event.price)
+                                                }\nStatus: ${event.registration_status ||
                                                 "Belum Terdaftar"
-                                            }`
-                                        )}`}
+                                                }`
+                                            )}`}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="th-btn style4 w-100"

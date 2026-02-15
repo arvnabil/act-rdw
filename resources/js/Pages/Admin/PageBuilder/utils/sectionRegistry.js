@@ -120,7 +120,7 @@ export const sectionRegistry = {
                         },
                         {
                             text: "Hubungi via WhatsApp",
-                            url: "https://wa.me/6285162994602",
+                            url: "/wa",
                             style: "style7",
                         },
                     ],
@@ -141,6 +141,7 @@ export const sectionRegistry = {
             { name: "title", type: "text", label: "Title" },
             { name: "description", type: "textarea", label: "Description" },
             { name: "button_text", type: "text", label: "Button Text" },
+            { name: "button_whatsapp", type: "text", label: "WhatsApp Override" },
             { name: "button_url", type: "text", label: "Button URL" },
             {
                 name: "show_button",
@@ -255,6 +256,7 @@ export const sectionRegistry = {
                 ],
             },
             { name: "button_text", type: "text", label: "Button Text" },
+            { name: "button_whatsapp", type: "text", label: "WhatsApp Override" },
             { name: "button_url", type: "text", label: "Button URL" },
         ],
         defaultConfig: {
@@ -476,6 +478,8 @@ export const sectionRegistry = {
                     { name: "icon", type: "image", label: "Icon" },
                 ],
             },
+            { name: "button_text", type: "text", label: "Button Text" },
+            { name: "button_whatsapp", type: "text", label: "WhatsApp Override" },
         ],
         defaultConfig: {
             subtitle: "About ACTiV",

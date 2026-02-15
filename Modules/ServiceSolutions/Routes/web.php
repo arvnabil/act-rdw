@@ -44,10 +44,12 @@ Route::middleware(['web'])->group(function () {
 
         return Inertia::render('ServiceItemDetail', [
             'item' => [
-                'id' => $solution->slug,
+                'id' => $solution->id,
+                'slug' => $solution->slug,
                 'title' => $solution->title,
                 'parent_service' => $service->slug,
                 'parent_title' => $service->name,
+                'entity_type' => 'service_solution',
                 'subtitle' => $solution->subtitle,
                 'description' => $solution->description,
                 'features' => $solution->features ?? [],

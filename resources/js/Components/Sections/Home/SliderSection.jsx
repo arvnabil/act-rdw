@@ -130,8 +130,49 @@ export default function SliderSection({ slides, elementId = "heroSlide2" }) {
                                                     const lowerText = btn.text?.toLowerCase() || "";
                                                     const isContactBtn = lowerText.includes("hubungi") || lowerText.includes("contact");
 
-                                                    if (isContactBtn) {
-                                                        const waLink = getWhatsAppLink(settings?.whatsapp_number);
+                                                    // Detect if it's already a manual WhatsApp link
+                                                    const isManualWa = finalUrl?.includes('wa.me') || finalUrl?.includes('whatsapp.com/send');
+
+                                                    if (isContactBtn || isManualWa) {
+                                                        let targetNumber = settings?.whatsapp_number;
+                                                        let targetMessage = undefined;
+                                                        let targetOptions = {};
+
+                                                        if (isManualWa) {
+                                                            try {
+                                                                const urlObj = new URL(finalUrl.startsWith('http') ? finalUrl : `https://${finalUrl}`);
+                                                                const searchParams = urlObj.searchParams;
+
+                                                                // Extract phone number
+                                                                const phone = searchParams.get('phone');
+                                                                if (phone) {
+                                                                    targetNumber = phone;
+                                                                } else if (urlObj.hostname.includes('wa.me')) {
+                                                                    const pathParts = urlObj.pathname.split('/').filter(p => p);
+                                                                    if (pathParts.length > 0) targetNumber = pathParts[0];
+                                                                }
+
+                                                                // Extract message
+                                                                targetMessage = searchParams.get('text') || searchParams.get('message') || undefined;
+
+                                                                // Extract all other params (including UTMs)
+                                                                searchParams.forEach((v, k) => {
+                                                                    if (k !== 'phone' && k !== 'text' && k !== 'message') {
+                                                                        targetOptions[k] = v;
+                                                                    }
+                                                                });
+                                                            } catch (e) {
+                                                                console.error("Failed to parse manual WA URL", e);
+                                                            }
+                                                        }
+
+                                                        const waLink = getWhatsAppLink(targetNumber, {
+                                                            message: targetMessage,
+                                                            cta_position: 'hero_slider',
+                                                            cta_label: `Slider: ${btn.text}`,
+                                                            ...targetOptions
+                                                        });
+
                                                         if (waLink) {
                                                             finalUrl = waLink;
                                                             openNewTab = true;
