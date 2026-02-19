@@ -28,6 +28,9 @@ class AppServiceProvider extends ServiceProvider
             'service_solution' => \Modules\ServiceSolutions\Models\ServiceSolution::class,
             'product'          => \Modules\Core\Models\Product::class,
             'brand'            => \Modules\Core\Models\Brand::class,
+            'news'             => \App\Models\News::class,
+            'project'          => \App\Models\Project::class,
+            'page'             => \App\Models\Page::class,
         ]);
 
         view()->composer('app', \App\View\Composers\SeoViewComposer::class);

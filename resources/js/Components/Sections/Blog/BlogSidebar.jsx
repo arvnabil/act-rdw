@@ -44,7 +44,30 @@ export default function BlogSidebar({
                                 >
                                     {cat.name}
                                 </Link>
-                                <span>({cat.posts_count})</span>
+                                {cat.posts_count > 0 && (
+                                    <span
+                                        style={{
+                                            position: 'absolute',
+                                            right: '55px',
+                                            top: '50%',
+                                            transform: 'translateY(-50%)',
+                                            backgroundColor: 'rgba(0, 172, 193, 0.1)',
+                                            color: '#00ACC1',
+                                            padding: '2px 12px',
+                                            borderRadius: '50px',
+                                            fontSize: '13px',
+                                            fontWeight: '700',
+                                            border: '1px solid rgba(0, 172, 193, 0.2)',
+                                            boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+                                            lineHeight: '1',
+                                            display: 'flex',
+                                            alignItems: 'center',
+                                            justifyContent: 'center'
+                                        }}
+                                    >
+                                        {cat.posts_count}
+                                    </span>
+                                )}
                                 <span className="float-end">
                                     <i className="fa-regular fa-arrow-up-right"></i>
                                 </span>

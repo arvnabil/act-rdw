@@ -1,34 +1,55 @@
 import React from 'react';
-import { Link, Head } from '@inertiajs/react';
+import { Link, Head, usePage } from '@inertiajs/react';
 import MainLayout from '@/Layouts/MainLayout';
+import { getWhatsAppLink } from "@/Utils/whatsapp";
 
 export default function Error({ status }) {
+    const { settings } = usePage().props;
+
     const title = {
         503: '503: Service Unavailable',
         500: '500: Server Error',
         404: '404: Page Not Found',
         403: '403: Forbidden',
-    }[status];
+    }[status] || 'Error';
 
     const description = {
-        503: 'Sorry, we are doing some maintenance. Please check back soon.',
-        500: 'Whoops, something went wrong on our servers.',
-        404: 'Sorry, the page you are looking for could not be found.',
-        403: 'Sorry, you are forbidden from accessing this page.',
-    }[status];
+        503: 'Kami sedang melakukan pemeliharaan rutin. Silakan cek kembali beberapa saat lagi.',
+        500: 'Oops! Terjadi kesalahan pada server kami. Tim kami sedang menanganinya.',
+        404: 'Maaf, halaman yang Anda cari tidak dapat ditemukan atau telah dipindahkan.',
+        403: 'Maaf, Anda tidak memiliki izin untuk mengakses halaman ini.',
+    }[status] || 'Terjadi kesalahan yang tidak terduga.';
+
+    const waLink = getWhatsAppLink(settings?.whatsapp_number || "6285162994602", {
+        cta_position: `error_page_${status}`,
+        cta_label: 'Hubungi Kami (Error Page)',
+        message: `Halo ACTiV, saya menemukan kendala ${status} di halaman ${window.location.href}. Mohon bantuannya.`
+    });
 
     return (
         <MainLayout>
             <Head title={title} />
-            <div className="space" style={{ minHeight: '60vh', display: 'flex', alignItems: 'center' }}>
+            <div className="error-v2-area">
                 <div className="container">
-                    <div className="error-content text-center">
-                        <h2 className="error-title transform-none">{status}</h2>
-                        <h3 className="error-subtitle text-theme fw-semibold">{title}</h3>
-                        <p className="error-text">{description}</p>
-                        <Link href="/" className="th-btn style3">
-                            Back To Home <i className="fa-regular fa-arrow-right ms-2"></i>
-                        </Link>
+                    <div className="error-v2-card text-center scale-up">
+                        <a href={waLink} className="error-v2-icon slide-bottom" title="Hubungi Kami via WhatsApp">
+                            <i className="fa-duotone fa-triangle-exclamation"></i>
+                        </a>
+
+                        <h1 className="error-v2-title">{title}</h1>
+
+                        <p className="error-v2-text">
+                            {description}
+                        </p>
+
+                        <div className="error-v2-btn-group fade-in-up">
+                            <Link href="/" className="error-v2-btn-primary">
+                                <i className="fa-regular fa-house me-2"></i> Ke Beranda
+                            </Link>
+                            <a href={waLink} className="error-v2-btn-secondary">
+                                Hubungi Kami <i className="fa-brands fa-whatsapp ms-2"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

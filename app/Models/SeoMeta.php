@@ -41,8 +41,12 @@ class SeoMeta extends Model
         static::saving(function ($seoMeta) {
             // Only calculate score if the parent model exists
             if ($seoMeta->seoable) {
-                $auditService = app(\App\Services\Seo\SeoAuditService::class);
-                $seoMeta->seo_score = $auditService->calculateScore($seoMeta->seoable);
+                try {
+                    $auditService = app(\App\Services\Seo\SeoAuditService::class);
+                    $seoMeta->seo_score = $auditService->calculateScore($seoMeta->seoable);
+                } catch (\Throwable $e) {
+                    \Illuminate\Support\Facades\Log::warning("SEO Score calculation failed for " . get_class($seoMeta->seoable) . " {$seoMeta->seoable_id}: " . $e->getMessage());
+                }
             }
         });
     }

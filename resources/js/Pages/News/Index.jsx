@@ -16,10 +16,10 @@ export default function Blog({
     const pageTitle = activeCategory
         ? `Category: ${activeCategory.name}`
         : activeTag
-          ? `Tag: ${activeTag.name}`
-          : filters?.search
-            ? `Search: ${filters.search}`
-            : "News";
+            ? `Tag: ${activeTag.name}`
+            : filters?.search
+                ? `Search: ${filters.search}`
+                : "News";
 
     return (
         <MainLayout>

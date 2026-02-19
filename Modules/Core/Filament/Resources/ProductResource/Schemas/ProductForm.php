@@ -89,9 +89,31 @@ class ProductForm
                                     Section::make('Specifications & Features')
                                         ->schema([
                                             TagsInput::make('tags'),
-                                            KeyValue::make('specs')
-                                                ->keyLabel('Spec Name')
-                                                ->valueLabel('Value'),
+                                            \Filament\Forms\Components\Repeater::make('specs')
+                                                ->label('Specifications (Grouped)')
+                                                ->schema([
+                                                    TextInput::make('group_name')
+                                                        ->label('Group Name')
+                                                        ->required()
+                                                        ->placeholder('e.g. Dimensions, Audio, etc.'),
+                                                    KeyValue::make('items')
+                                                        ->label('Items')
+                                                        ->keyLabel('Key')
+                                                        ->valueLabel('Value')
+                                                        ->required(),
+                                                ])
+                                                ->itemLabel(fn (array $state): ?string => $state['group_name'] ?? null)
+                                                ->collapsible()
+                                                ->grid(2)
+                                                ->columnSpanFull()
+                                                ->afterStateHydrated(function ($component, $state) {
+                                                    if (is_array($state) || is_null($state)) {
+                                                        $component->state(\App\Helpers\JsonHelper::toRepeater($state, 'Spesifikasi'));
+                                                    }
+                                                })
+                                                ->dehydrateStateUsing(function ($state) {
+                                                    return \App\Helpers\JsonHelper::fromRepeater($state ?? [], 'Spesifikasi');
+                                                }),
                                             \Filament\Forms\Components\Repeater::make('features')
                                                 ->schema([
                                                     TextInput::make('name')->required(),

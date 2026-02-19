@@ -89,7 +89,7 @@ class ProductController extends Controller
                 return [
                     'id' => $related->id, // Ideally slug, but using ID for now to match file or existing logic
                     'name' => $related->name,
-                    'image' => $related->image_path,
+                    'image_path' => $related->image_path,
                     'tag' => $related->tags ? $related->tags[0] ?? null : null,
                     'category' => $related->service?->name ?? $related->category?->name ?? 'General',
                     'slug' => $related->slug,
@@ -107,6 +107,7 @@ class ProductController extends Controller
         $productData = [
             'name' => $product->name,
             'image' => $product->image_path ? "/storage/" . $product->image_path : null,
+            'image_path' => $product->image_path,
             'sku' => $product->sku,
             'solution_type' => $product->solutions
                 ->where('service_id', $product->service_id)
@@ -122,9 +123,7 @@ class ProductController extends Controller
                 'slug' => $product->brand->slug,
             ],
             'tags' => $product->tags ?? [],
-            'specification' => collect($product->specs ?? [])->map(function($value, $key) {
-                return ['name' => $key, 'value' => $value];
-            })->values()->all(),
+            'specification' => $product->specs,
             'specification_text' => $product->specification_text,
             'features' => $product->features ?? [], // Features is now a Repeater (Array of Objects), so we pass it directly.
             // If legacy data exists (KeyValue format), the frontend might need to handle it or we migrate it.

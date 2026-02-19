@@ -11,6 +11,10 @@ export default function ProductGallery({ image, name }) {
                         alt={name}
                         className="img-fluid"
                         style={{ maxHeight: '400px', objectFit: 'contain' }}
+                        onError={(e) => {
+                            e.currentTarget.src = "/assets/default.png";
+                            e.currentTarget.onerror = null;
+                        }}
                     />
                 </div>
             </div>

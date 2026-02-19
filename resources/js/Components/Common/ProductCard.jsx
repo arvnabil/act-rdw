@@ -38,7 +38,7 @@ export default function ProductCard({ product, className = "" }) {
                     }}
                 >
                     <img
-                        src={getImageUrl(product.image_path)}
+                        src={getImageUrl(product.image_path || product.image)}
                         alt={product.name}
                         className="product-img"
                         style={{
@@ -46,6 +46,10 @@ export default function ProductCard({ product, className = "" }) {
                             maxHeight: "100%",
                             objectFit: "contain", // Ensure transparent PNGs float nicely
                             transition: "transform 0.4s ease",
+                        }}
+                        onError={(e) => {
+                            e.currentTarget.src = "/assets/default.png";
+                            e.currentTarget.onerror = null; // Prevent infinite loop if default is missing
                         }}
                     />
 

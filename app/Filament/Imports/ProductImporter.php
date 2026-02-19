@@ -42,12 +42,35 @@ class ProductImporter extends Importer
                 ->label('Description')
                 ->example('Microsoft Teams Room System for Large Rooms'),
             ImportColumn::make('image_path')
-                ->label('Image Path')
-                ->example('products/yealink-mvc840.jpg'),
+                ->label('Image Path / URL')
+                ->fillRecordUsing(fn ($record, $state) => null) // Handle in afterSave
+                ->castStateUsing(fn ($state) => blank($state) ? null : $state)
+                ->example('https://example.com/product.jpg'),
             ImportColumn::make('datasheet_url')
                 ->label('Datasheet URL')
                 ->rules(['nullable', 'url'])
+                ->castStateUsing(fn ($state) => blank($state) ? null : $state)
                 ->example('https://example.com/datasheet.pdf'),
+            
+            // Specifications & Features
+            ImportColumn::make('specs')
+                ->label('Specs (JSON)')
+                ->fillRecordUsing(fn ($record, $state) => $record->specs = \App\Helpers\JsonHelper::nest($state, 'Spesifikasi'))
+                ->example('{"Dimensi - Tinggi": "100 mm", "Dimensi - Lebar": "50 mm"}'),
+            ImportColumn::make('features')
+                ->label('Features (JSON)')
+                ->fillRecordUsing(fn ($record, $state) => $record->features = is_string($state) ? json_decode($state, true) : $state)
+                ->example('[{"name": "Fast", "value": "Yes"}]'),
+            ImportColumn::make('tags')
+                ->label('Tags (Comma Separated)')
+                ->fillRecordUsing(fn ($record, $state) => $record->tags = is_string($state) ? array_map('trim', explode(',', $state)) : $state)
+                ->example('Gadget, New, Sale'),
+            ImportColumn::make('specification_text')
+                ->label('Specification Text (Rich)')
+                ->example('<p>Detailed specs...</p>'),
+            ImportColumn::make('features_text')
+                ->label('Features Text (Rich)')
+                ->example('<ul><li>Feature 1</li></ul>'),
             
             // Relationships (Auto-Create if not exists)
             // Relationships (Auto-Create if not exists)
@@ -106,7 +129,8 @@ class ProductImporter extends Importer
             // Market Links
             ImportColumn::make('link_accommerce')
                 ->label('Acommerce Link')
-                ->rules(['nullable', 'url']),
+                ->rules(['nullable', 'url'])
+                ->castStateUsing(fn ($state) => blank($state) ? null : $state),
             ImportColumn::make('whatsapp_note')
                 ->label('WhatsApp Note'),
 
@@ -172,32 +196,72 @@ class ProductImporter extends Importer
         $data = $this->data;
 
         // 1. Handle M2M Solutions
-        if (!empty($data['solutions'])) {
-            $solutionNames = array_map('trim', explode(',', $data['solutions']));
-            $solutionIds = ServiceSolution::whereIn('title', $solutionNames)->pluck('id')->toArray();
-            $record->solutions()->sync($solutionIds);
+        try {
+            if (!empty($data['solutions'])) {
+                $solutionNames = array_map('trim', explode(',', $data['solutions']));
+                $solutionIds = ServiceSolution::whereIn('title', $solutionNames)->pluck('id')->toArray();
+                $record->solutions()->sync($solutionIds);
+            }
+        } catch (\Throwable $e) {
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'solutions' => "Gagal menghubungkan Solusi: " . $e->getMessage(),
+            ]);
         }
 
-        // 2. Handle SEO Metadata
+        // 2. Handle Image Auto-Download from URL
+        if ($imageUrl = $data['image_path'] ?? null) {
+            $imageUrl = trim($imageUrl);
+            if (str_starts_with($imageUrl, 'http')) {
+                try {
+                    $response = \Illuminate\Support\Facades\Http::timeout(15)->get($imageUrl);
+                    if ($response->successful()) {
+                        $contents = $response->body();
+                        $extension = pathinfo(parse_url($imageUrl, PHP_URL_PATH), PATHINFO_EXTENSION) ?: 'jpg';
+                        $filename = $record->slug . '-activ-teknologi-' . date('Y-is') . '.' . $extension;
+                        $path = 'products/' . $record->slug . '/' . $filename;
+                        
+                        \Illuminate\Support\Facades\Storage::disk('public')->put($path, $contents);
+                        $record->updateQuietly(['image_path' => $path]);
+                    } else {
+                        throw new \Exception("Status HTTP {$response->status()}");
+                    }
+                } catch (\Throwable $e) {
+                    \Illuminate\Support\Facades\Log::warning("Product image download failed for {$record->id}: " . $e->getMessage());
+                    // Fallback to URL if download fails, but let's notify the user via row error if it was a catastrophic failure
+                    // For now, just logging and using fallback to allow completion
+                    $record->updateQuietly(['image_path' => Str::limit($imageUrl, 190)]);
+                }
+            } else if (!empty($imageUrl)) {
+                // Limit the path to avoid database errors if URL is too long and wasn't downloaded
+                $record->updateQuietly(['image_path' => Str::limit($imageUrl, 190)]);
+            }
+        }
+
+        // 3. Handle SEO Metadata
         $seoData = [
-            'title' => $data['seo_title'] ?? $record->name,
+            'title' => Str::limit($data['seo_title'] ?? $record->name, 190),
             'description' => $data['seo_description'] ?? Str::limit(strip_tags($record->description), 160),
-            'keywords' => $data['seo_keywords'] ?? null,
-            'og_title' => $data['og_title'] ?? null,
-            'og_description' => $data['og_description'] ?? null,
-            'og_image' => $data['og_image'] ?? $record->image_path,
-            'canonical_url' => $data['canonical_url'] ?? null,
+            'keywords' => Str::limit($data['seo_keywords'] ?? null, 190),
+            'og_title' => Str::limit($data['og_title'] ?? null, 190),
+            'og_description' => $data['og_description'] ?? null, 
+            'og_image' => Str::limit($data['og_image'] ?? $record->image_path, 190),
+            'canonical_url' => Str::limit($data['canonical_url'] ?? null, 190),
             'noindex' => $data['noindex'] ?? false,
         ];
 
-        // Remove nulls to avoid overwriting existing data with nulls if partial update
-        // But for import, usually we want to set what's provided. 
-        // Logic: specific SEO columns provided > default fallback.
-        
-        $record->seo()->updateOrCreate(
-            ['seoable_id' => $record->id, 'seoable_type' => get_class($record)],
-            $seoData
-        );
+        \Illuminate\Support\Facades\Log::debug("SEO Data for Product {$record->id}: " . json_encode($seoData, JSON_PRETTY_PRINT));
+
+        try {
+            $record->seo()->updateOrCreate(
+                ['seoable_id' => $record->id, 'seoable_type' => get_class($record)],
+                $seoData
+            );
+        } catch (\Throwable $e) {
+            \Illuminate\Support\Facades\Log::error("SEO Meta sync failed for Product {$record->id}: " . $e->getMessage() . " | SQL values length - og_image: " . strlen($seoData['og_image'] ?? ''));
+            throw \Illuminate\Validation\ValidationException::withMessages([
+                'seo_title' => "Masalah SEO Meta: " . $e->getMessage(),
+            ]);
+        }
     }
 
     public static function getCompletedNotificationBody(Import $import): string
