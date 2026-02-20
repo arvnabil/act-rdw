@@ -30,6 +30,8 @@ export default function ProductShowcase({ product }) {
         return () => ctx.revert();
     }, []);
 
+    const [selectedPreviewImage, setSelectedPreviewImage] = useState(null);
+
     // --- Dynamic Spec Resolution ---
     const allSpecs = product.specification || {};
     const specEntries = Object.entries(allSpecs);
@@ -113,7 +115,17 @@ export default function ProductShowcase({ product }) {
             <div className="row g-5 align-items-center">
                 {/* LEFT SIDE – PRODUCT VISUAL */}
                 <div className="col-lg-5">
-                    <div className="premium-image-wrapper">
+                    <div 
+                        className="premium-image-wrapper p-4 cursor-pointer"
+                        style={{ position: 'relative' }}
+                        onClick={() => setSelectedPreviewImage({
+                            src: getImageUrl(product.image),
+                            title: product.name,
+                            badge: product.tags?.find(tag => 
+                                ["certified", "teams", "zoom", "google", "meet"].some(kw => tag.toLowerCase().includes(kw))
+                            )
+                        })}
+                    >
                         {/* Floating Badge (Certification/Highlight) */}
                         {(() => {
                             const certKeywords = ["certified", "teams", "zoom", "google", "meet"];
@@ -124,32 +136,39 @@ export default function ProductShowcase({ product }) {
                             if (!highlightTag) return null;
                             
                             return (
-                                <div className="premium-floating-badge">
+                                <div className="premium-floating-badge" style={{ zIndex: 10 }}>
                                     <i className="fa-solid fa-check-circle"></i>
                                     <span>{highlightTag}</span>
                                 </div>
                             );
                         })()}
                         
-                        <img
-                            src={getImageUrl(product.image)}
-                            alt={product.name}
-                            className="img-fluid"
-                            style={{ 
-                                maxHeight: '450px', 
-                                width: 'auto',
-                                objectFit: 'contain', 
-                                filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.1))',
-                                transform: 'perspective(1000px) rotateY(-5deg) scale(1.05)',
-                                transition: 'all 0.5s ease'
-                            }}
-                            onMouseEnter={e => e.target.style.transform = 'perspective(1000px) rotateY(0deg) scale(1.1)'}
-                            onMouseLeave={e => e.target.style.transform = 'perspective(1000px) rotateY(-5deg) scale(1.05)'}
-                            onError={(e) => {
-                                e.currentTarget.src = "/assets/default.png";
-                                e.currentTarget.onerror = null;
-                            }}
-                        />
+                        <div className="premium-image-inner" style={{ position: 'relative', textAlign: 'center' }}>
+                            <img
+                                src={getImageUrl(product.image)}
+                                alt={product.name}
+                                className="img-fluid"
+                                style={{ 
+                                    maxHeight: '450px', 
+                                    width: 'auto',
+                                    objectFit: 'contain', 
+                                    filter: 'drop-shadow(0 20px 30px rgba(0,0,0,0.1))',
+                                    transform: 'perspective(1000px) rotateY(-5deg) scale(1.05)',
+                                    transition: 'all 0.5s ease'
+                                }}
+                                onMouseEnter={e => e.target.style.transform = 'perspective(1000px) rotateY(0deg) scale(1.1)'}
+                                onMouseLeave={e => e.target.style.transform = 'perspective(1000px) rotateY(-5deg) scale(1.05)'}
+                                onError={(e) => {
+                                    e.currentTarget.src = "/assets/default.png";
+                                    e.currentTarget.onerror = null;
+                                }}
+                            />
+                            {/* Hover Indicator */}
+                            <div className="premium-preview-hint">
+                                <i className="fa-solid fa-expand"></i>
+                                <span>Preview Gambar</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -190,7 +209,7 @@ export default function ProductShowcase({ product }) {
                                     {item.label === "Brand" && (product.brand?.config?.partner?.enabled !== false) && (
                                         <div 
                                             className="premium-trust-badge"
-                                            onClick={() => setShowEliteModal(true)}
+                                            onClick={(e) => { e.stopPropagation(); setShowEliteModal(true); }}
                                         >
                                             <i className="fa-solid fa-circle-check"></i>
                                             {product.brand?.config?.partner?.modal_title || "Elite Partner Recommended"}
@@ -243,6 +262,88 @@ export default function ProductShowcase({ product }) {
                 awards={product.brand?.config?.awards}
                 brandName={product.brand?.name}
             />
+
+            {/* Lightbox / Popup */}
+            {selectedPreviewImage && (
+                <div 
+                    className="lightbox-overlay" 
+                    onClick={() => setSelectedPreviewImage(null)}
+                    style={{
+                        position: 'fixed',
+                        top: 0, left: 0, width: '100%', height: '100%',
+                        backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                        zIndex: 3000,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backdropFilter: 'blur(10px)',
+                        animation: 'fadeIn 0.3s ease'
+                    }}
+                >
+                    <div className="position-relative" style={{ maxWidth: '90%', maxHeight: '90%' }} onClick={e => e.stopPropagation()}>
+                        <button 
+                            className="btn-close btn-close-white position-absolute" 
+                            style={{ top: '-50px', right: '0', padding: '10px' }}
+                            onClick={() => setSelectedPreviewImage(null)}
+                        ></button>
+                        
+                        <div className="bg-white p-3 rounded-[2.5rem] shadow-2xl">
+                            <img 
+                                src={selectedPreviewImage.src} 
+                                alt={selectedPreviewImage.title} 
+                                style={{ width: 'auto', height: 'auto', maxWidth: '100%', maxHeight: '75vh', borderRadius: '1.5rem', objectFit: 'contain' }}
+                            />
+                            <div className="pt-4 pb-2 px-4 text-center">
+                                {selectedPreviewImage.badge && (
+                                    <span className="text-[10px] font-black tracking-widest text-success uppercase mb-1 d-block">
+                                        {selectedPreviewImage.badge}
+                                    </span>
+                                )}
+                                <h4 className="text-xl font-bold text-slate-900 m-0">
+                                    {selectedPreviewImage.title}
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            <style>{`
+                @keyframes fadeIn {
+                    from { opacity: 0; }
+                    to { opacity: 1; }
+                }
+                .premium-preview-hint {
+                    position: absolute;
+                    bottom: 1rem;
+                    left: 50%;
+                    transform: translateX(-50%) translateY(10px);
+                    background: rgba(255, 255, 255, 0.85);
+                    backdrop-filter: blur(8px);
+                    padding: 8px 16px;
+                    border-radius: 50px;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    font-size: 0.7rem;
+                    font-weight: 800;
+                    color: #0f172a;
+                    opacity: 0;
+                    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+                    pointer-events: none;
+                    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+                    z-index: 5;
+                    text-transform: uppercase;
+                    white-space: nowrap;
+                }
+                .premium-image-wrapper:hover .premium-preview-hint {
+                    opacity: 1;
+                    transform: translateX(-50%) translateY(0);
+                }
+                .premium-image-inner {
+                    position: relative;
+                }
+            `}</style>
         </div>
     );
 }
