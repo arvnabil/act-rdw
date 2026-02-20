@@ -2420,7 +2420,7 @@
     ]
   },
   "resources/js/Pages/ProductDetail-legacy.jsx": {
-    "file": "assets/ProductDetail-legacy-BseTzGKK.js",
+    "file": "assets/ProductDetail-legacy-NDdoVboc.js",
     "name": "ProductDetail",
     "src": "resources/js/Pages/ProductDetail-legacy.jsx",
     "isDynamicEntry": true,
@@ -2441,7 +2441,7 @@
     ]
   },
   "resources/js/Pages/ProductDetail.jsx": {
-    "file": "assets/ProductDetail-DyWi7UvA.js",
+    "file": "assets/ProductDetail-B2KGAkEm.js",
     "name": "ProductDetail",
     "src": "resources/js/Pages/ProductDetail.jsx",
     "isDynamicEntry": true,
@@ -2461,7 +2461,7 @@
       "_Toast-BUG4f64W.js"
     ],
     "css": [
-      "assets/ProductDetail-DXFrZcuL.css"
+      "assets/ProductDetail-C8WtQJMp.css"
     ]
   },
   "resources/js/Pages/Products-legacy.jsx": {
@@ -2871,7 +2871,7 @@
     ]
   },
   "resources/js/app-legacy.jsx": {
-    "file": "assets/app-legacy-DBzbbO0U.js",
+    "file": "assets/app-legacy-CdhzM0Wj.js",
     "name": "app",
     "src": "resources/js/app-legacy.jsx",
     "isEntry": true,
@@ -2951,7 +2951,7 @@
     ]
   },
   "resources/js/app.jsx": {
-    "file": "assets/app-D6qG3ndM.js",
+    "file": "assets/app-CYVOROcT.js",
     "name": "app",
     "src": "resources/js/app.jsx",
     "isEntry": true,

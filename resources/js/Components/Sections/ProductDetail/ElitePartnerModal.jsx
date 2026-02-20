@@ -66,9 +66,9 @@ const ElitePartnerModal = ({ show, onClose, config = {}, awards = [], brandName 
                         <h5 className="fw-bold text-dark mb-3">As an official partner, ACTiV guarantees:</h5>
                         <div className="row g-3">
                             {displayGuarantees.map((item, i) => (
-                                <div key={i} className="col-md-6 d-flex align-items-center gap-2">
+                                <div key={i} className="col-6 d-flex align-items-center gap-2">
                                     <i className="fa-solid fa-check text-success"></i>
-                                    <span style={{ fontSize: '0.875rem' }}>{item}</span>
+                                    <span style={{ fontSize: '0.8125rem', lineHeight: '1.2' }}>{item}</span>
                                 </div>
                             ))}
                         </div>
@@ -76,7 +76,7 @@ const ElitePartnerModal = ({ show, onClose, config = {}, awards = [], brandName 
 
                     <div className="awards-section">
                         <h6 className="text-muted text-uppercase fw-bold mb-3" style={{ fontSize: '0.75rem', letterSpacing: '0.05em' }}>Recent Awards & Recognition</h6>
-                        <div className="d-flex gap-3 justify-content-center flex-wrap">
+                        <div className="premium-scroll-x d-md-flex gap-3 justify-content-center flex-wrap">
                             {displayAwards.map((award) => (
                                 <img
                                     key={award.id}

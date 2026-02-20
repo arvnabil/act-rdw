@@ -19,7 +19,7 @@ return new class extends Migration
                 $table->text('excerpt')->nullable()->after('content');
             }
             if (!Schema::hasColumn('services', 'featured_image')) {
-                $table->string('featured_image')->nullable()->after('excerpt');
+                $table->text('featured_image')->nullable()->after('excerpt');
             }
         });
     }

@@ -258,7 +258,37 @@
     box-shadow: var(--premium-shadow);
 }
 
-/* Responsive Grid */
+
+/* Horizontal Scroll Utility for Mobile */
+.premium-scroll-x {
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 1.25rem;
+    padding: 0.5rem 0.5rem 1.5rem;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    margin: 0 -1rem; /* Negative margin to bleed to edge if needed */
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.premium-scroll-x::-webkit-scrollbar {
+    display: none;
+}
+
+.premium-scroll-x > * {
+    scroll-snap-align: center;
+    flex-shrink: 0;
+}
+
+/* Modal refinements */
+.elite-partner-modal-content {
+    padding: 1rem;
+}
+
+/* Responsive Grid & Modal */
 @media (max-width: 768px) {
     .premium-grid {
         grid-template-columns: 1fr;
@@ -271,5 +301,12 @@
     }
     .premium-info-title {
         font-size: 1.75rem;
+    }
+    .award-thumb {
+        width: 100px;
+        height: 100px;
+    }
+    .elite-partner-modal-content {
+        padding: 0.5rem;
     }
 }
