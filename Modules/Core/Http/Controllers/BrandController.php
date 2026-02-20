@@ -67,10 +67,11 @@ class BrandController extends Controller
             ];
         })->filter()->values();
 
-        // 4. Real "Latest Products"
-        // Frontend expects: { name, image_path, price, category (service name), is_active }
+        // 4. Real "Latest Products" (Filtered by New Arrival)
+        // Frontend expects: { name, image_path, price, category (service name), is_active, is_new }
         $products = Product::where('brand_id', $brand->id)
             ->where('is_active', true)
+            ->where('is_new', true) // Only New Arrivals
             ->with('categories') // Eager load categories
             ->latest()
             ->take(8) // Limit to 8 as per UI design
@@ -85,6 +86,7 @@ class BrandController extends Controller
                     'price' => $product->price ?? 0,
                     'category' => $categoryName,
                     'is_active' => $product->is_active,
+                    'is_new' => $product->is_new,
                     'slug' => $product->slug
                 ];
             });

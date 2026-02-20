@@ -57,8 +57,8 @@ export default function ProductShowcase({ product }) {
     // Fixed Top Items
     const topGridItems = [
         { label: "SKU", value: product.sku, icon: "fa-barcode" },
-        { label: "Brand", value: product.brand?.name || "Logitech", icon: "fa-copyright" },
         { label: "Category", value: product.category, icon: "fa-layer-group" },
+        { label: "Brand", value: product.brand?.name || "Logitech", icon: "fa-copyright" },
     ];
 
     // Add Product Sheet as a conditional high-priority card
@@ -212,7 +212,7 @@ export default function ProductShowcase({ product }) {
                                             onClick={(e) => { e.stopPropagation(); setShowEliteModal(true); }}
                                         >
                                             <i className="fa-solid fa-circle-check"></i>
-                                            {product.brand?.config?.partner?.modal_title || "Elite Partner Recommended"}
+                                            {product.brand?.config?.partner?.modal_title || `Authorized ${product.brand?.name} Partner`}
                                             <i className="fa-solid fa-circle-info ms-1" style={{ fontSize: '0.7em' }}></i>
                                         </div>
                                     )}

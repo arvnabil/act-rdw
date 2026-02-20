@@ -6,6 +6,7 @@ import BrandHeroSection from "@/Components/Sections/BrandLanding/BrandHeroSectio
 import BrandServiceSolutionsSection from "@/Components/Sections/BrandLanding/BrandServiceSolutionsSection";
 import BrandCategoryListSection from "@/Components/Sections/BrandLanding/BrandCategoryListSection";
 import LatestProductsSection from "@/Components/Sections/BrandLanding/LatestProductsSection";
+import PartnerVerificationSection from "@/Components/Sections/BrandLanding/PartnerVerificationSection";
 import WorkShowcaseSection from "@/Components/Sections/Common/WorkShowcaseSection";
 import Seo from "@/Components/Common/Seo";
 
@@ -211,6 +212,13 @@ const BrandLanding = ({
                     config={solutions.config}
                 />
             )}
+
+            {/* Partner Verification Section */}
+            <PartnerVerificationSection
+                brand={brand}
+                getImageUrl={getImageUrl}
+                setLightboxImage={setLightboxImage}
+            />
 
             {/* All Categories Section */}
             {categoriesSection.enabled && categoriesSection.safe && (

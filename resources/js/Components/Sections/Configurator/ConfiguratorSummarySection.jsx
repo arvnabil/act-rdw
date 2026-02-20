@@ -1,7 +1,3 @@
-import React, { useState } from "react";
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
-
 export default function ConfiguratorSummarySection({
     selection,
     userInfo,
@@ -20,6 +16,15 @@ export default function ConfiguratorSummarySection({
         }
 
         try {
+            setToastMessage("Preparing PDF...");
+            setShowToast(true);
+
+            // Dynamic imports for heavy libraries
+            const [jsPDF, html2canvas] = await Promise.all([
+                import("jspdf").then((m) => m.default || m),
+                import("html2canvas").then((m) => m.default || m),
+            ]);
+
             const canvas = await html2canvas(input, {
                 scale: 2, // Improve quality
                 useCORS: true, // Handle cross-origin images if any

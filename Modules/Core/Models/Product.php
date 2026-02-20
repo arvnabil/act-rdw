@@ -20,7 +20,7 @@ class Product extends Model
         'service_id', 'brand_id', 'name', 'slug',
         'description', 'image_path', 'sku', 'solution_type',
         'datasheet_url', 'tags', 'specs', 'specification_text',
-        'features', 'features_text', 'is_active', 'is_featured',
+        'features', 'features_text', 'is_active', 'is_featured', 'is_new',
         'price', 'link_accommerce', 'whatsapp_note'
     ];
 
@@ -30,6 +30,7 @@ class Product extends Model
         'features' => 'array',
         'is_active' => 'boolean',
         'is_featured' => 'boolean',
+        'is_new' => 'boolean',
     ];
 
     public function service()

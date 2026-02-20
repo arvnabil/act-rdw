@@ -35,6 +35,13 @@ class ProductTable
                     ->money('IDR')
                     ->sortable(),
                 Tables\Columns\IconColumn::make('is_active')
+                    ->label('Active')
+                    ->boolean(),
+                Tables\Columns\IconColumn::make('is_featured')
+                    ->label('Featured')
+                    ->boolean(),
+                Tables\Columns\IconColumn::make('is_new')
+                    ->label('New')
                     ->boolean(),
             ])
             ->filters([

@@ -4,7 +4,7 @@ import Modal from "@/Components/Common/Modal";
 const ElitePartnerModal = ({ show, onClose, config = {}, awards = [], brandName = "Logitech" }) => {
     const [selectedImage, setSelectedImage] = useState(null);
 
-    const title = config.modal_title || `${brandName} Elite Partner Certification`;
+    const title = config.modal_title || `Authorized ${brandName} Partner`;
     const subtitle = config.modal_subtitle || `ACTiV is an official ${brandName} Elite Partner in Indonesia`;
     const description = config.modal_description || `ACTiV is an official ${brandName} Elite Partner in Indonesia and recipient of the ${brandName} Partner Connect Program 2024 awards, including:`;
 

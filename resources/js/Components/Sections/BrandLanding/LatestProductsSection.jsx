@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "@inertiajs/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import SectionTitle from "@/Components/Common/SectionTitle";
@@ -28,6 +29,7 @@ export default function LatestProductsSection({
                     modules={[Navigation, Autoplay]}
                     spaceBetween={30}
                     slidesPerView={1}
+                    centerInsufficientSlides={true}
                     autoplay={{
                         delay: 3500,
                         disableOnInteraction: false,
@@ -43,41 +45,44 @@ export default function LatestProductsSection({
                     {products && products.length > 0 ? (
                         products.map((product, i) => (
                             <SwiperSlide key={i}>
-                                <div className="tech-product-card h-100 group">
-                                    {/* Badge (Optional/Static for now or based on newness) */}
-                                    <span className="new-badge">New</span>
-
-                                    {/* Image Area */}
-                                    <div className="product-img-area">
-                                        <div className="img-overlay"></div>
-                                        <img
-                                            src={getImageUrl(
-                                                product.image_path,
-                                                "/assets/default.png"
-                                            )}
-                                            alt={product.name}
-                                        />
-                                        {/* Quick Action */}
-                                        <button className="action-btn">
-                                            <i className="fa-regular fa-arrow-right"></i>
-                                        </button>
-                                    </div>
-
-                                    {/* Content Area */}
-                                    <div className="product-info">
-                                        {product.category && (
-                                            <div className="product-meta">
-                                                <span className="category-tag">
-                                                    {product.category}
-                                                </span>
-                                            </div>
+                                <Link
+                                    href={`/products/${product.slug}`}
+                                    className="text-decoration-none d-block h-100"
+                                >
+                                    <div className="tech-product-card h-100 group cursor-pointer">
+                                        {/* Badge (Optional/Static for now or based on newness) */}
+                                        {product.is_new && (
+                                            <span className="new-badge">New Arrival</span>
                                         )}
-                                        <h3 className="product-title">
-                                            {product.name}
-                                        </h3>
-                                        <div className="hover-line"></div>
+
+                                        {/* Image Area */}
+                                        <div className="product-img-area">
+                                            <div className="img-overlay"></div>
+                                            <img
+                                                src={getImageUrl(
+                                                    product.image_path,
+                                                    "/assets/default.png"
+                                                )}
+                                                alt={product.name}
+                                            />
+                                        </div>
+
+                                        {/* Content Area */}
+                                        <div className="product-info">
+                                            {product.category && (
+                                                <div className="product-meta">
+                                                    <span className="category-tag">
+                                                        {product.category}
+                                                    </span>
+                                                </div>
+                                            )}
+                                            <h3 className="product-title text-dark">
+                                                {product.name}
+                                            </h3>
+                                            <div className="hover-line"></div>
+                                        </div>
                                     </div>
-                                </div>
+                                </Link>
                             </SwiperSlide>
                         ))
                     ) : (
@@ -171,57 +176,6 @@ export default function LatestProductsSection({
                     filter: drop-shadow(0 10px 25px rgba(0,0,0,0.1));
                 }
 
-                /* Action Button */
-                .action-btn {
-                    position: absolute;
-                    bottom: 15px;
-                    right: 15px;
-                    width: 40px;
-                    height: 40px;
-                    border-radius: 50%;
-                    background: var(--theme-color, #2C9E8E);
-                    color: white;
-                    border: none;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    opacity: 0;
-                    transform: translateY(20px) scale(0.8);
-                    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-                    z-index: 2;
-                    box-shadow: 0 4px 12px rgba(44, 158, 142, 0.3);
-                    cursor: pointer;
-                }
-                
-                .tech-product-card:hover .action-btn {
-                    opacity: 1;
-                    transform: translateY(0) scale(1);
-                }
-                
-                .action-btn i {
-                    transition: transform 0.3s ease;
-                }
-                .action-btn:hover i {
-                    transform: translateX(3px);
-                }
-
-                /* Product Info */
-                .product-info {
-                    text-align: left;
-                    padding: 0 5px;
-                }
-
-                .category-tag {
-                    font-size: 11px;
-                    text-transform: uppercase;
-                    letter-spacing: 1.5px;
-                    color: #9ca3af;
-                    font-weight: 700;
-                    margin-bottom: 8px;
-                    display: block;
-                    transition: color 0.3s ease;
-                }
-                
                 .tech-product-card:hover .category-tag {
                     color: var(--theme-color, #2C9E8E);
                 }
@@ -236,6 +190,11 @@ export default function LatestProductsSection({
                     -webkit-line-clamp: 2;
                     -webkit-box-orient: vertical;
                     overflow: hidden;
+                    transition: color 0.3s ease;
+                }
+
+                .tech-product-card:hover .product-title {
+                    color: var(--theme-color, #2C9E8E);
                 }
 
                 /* Decorative Line */

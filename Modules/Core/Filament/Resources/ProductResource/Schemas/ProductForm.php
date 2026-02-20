@@ -165,12 +165,18 @@ class ProductForm
                                                     return \App\Helpers\UploadHelper::getSluggedFilename($file, 'products/' . $slug);
                                                 }),
                                         ]),
-                                    Section::make('Status')
-                                        ->schema([
-                                            Toggle::make('is_active')
-                                                ->required()
-                                                ->default(true),
-                                        ]),
+                                            Section::make('Status')
+                                         ->schema([
+                                             Toggle::make('is_active')
+                                                 ->required()
+                                                 ->default(true),
+                                             Toggle::make('is_featured')
+                                                 ->label('Featured Product')
+                                                 ->default(false),
+                                             Toggle::make('is_new')
+                                                 ->label('New Arrival')
+                                                 ->default(false),
+                                         ]),
                                 ])->columnSpan(['lg' => 1]),
                         ])
                         ->columns(3),

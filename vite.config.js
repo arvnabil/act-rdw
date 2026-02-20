@@ -31,21 +31,31 @@ export default defineConfig({
             output: {
                 manualChunks(id) {
                     if (id.includes("node_modules")) {
+                        // Group core React and related libraries to avoid circular dependency
+                        if (
+                            id.includes("react") || 
+                            id.includes("scheduler") || 
+                            id.includes("inertiajs") || 
+                            id.includes("react-is") ||
+                            id.includes("object-assign")
+                        ) {
+                            return "vendor-react";
+                        }
+                        
+                        // Heavy UI/Utility libraries that can be separate
                         if (id.includes("jspdf") || id.includes("html2canvas")) {
-                            return "utils-pdf";
+                            return "vendor-pdf";
                         }
+                        
+                        if (id.includes("swiper") || id.includes("jquery")) {
+                            return "vendor-ui";
+                        }
+
                         if (id.includes("gsap") || id.includes("lenis") || id.includes("wowjs")) {
-                            return "animations";
+                            return "vendor-animation";
                         }
-                        if (id.includes("swiper")) {
-                            return "ui-swiper";
-                        }
-                        if (id.includes("jquery")) {
-                            return "ui-jquery";
-                        }
-                        if (id.includes("react") || id.includes("scheduler") || id.includes("inertiajs") || id.includes("react-is")) {
-                            return "react-core";
-                        }
+
+                        // Everything else goes to a general vendor chunk
                         return "vendor";
                     }
                 },
