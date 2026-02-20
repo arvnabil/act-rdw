@@ -17,8 +17,13 @@ export default function MainLayout({ children }) {
             setIsScrolled(window.scrollY > 50);
         };
         window.addEventListener("scroll", handleScroll);
+
+        // Safety: Force unlock scroll on mount/URL change
+        document.body.style.overflow = "auto";
+        document.documentElement.style.overflow = "auto";
+        
         return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
+    }, [usePage().url]);
 
     useEffect(() => {
         // 1. Flash messages handling

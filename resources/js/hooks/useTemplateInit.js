@@ -26,17 +26,41 @@ export function useTemplateInit() {
         imagesLoaded.makeJQueryPlugin($);
 
         // --- Lenis Smooth Scroll ---
-        const lenis = new Lenis();
-        function raf(time) {
-            lenis.raf(time);
-            requestAnimationFrame(raf);
+        // Ensure only one Lenis instance and one GSAP ticker loop exist
+        if (window.lenis) {
+            window.lenis.destroy();
         }
-        requestAnimationFrame(raf);
+
+        const lenis = new Lenis({
+            autoResize: true,
+            duration: 1.2,
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        });
+        window.lenis = lenis;
+
+        // Use GSAP Ticker for better performance and easier cleanup
+        const updateLenis = (time) => {
+            lenis.raf(time * 1000);
+        };
+        gsap.ticker.add(updateLenis);
+        gsap.ticker.lagSmoothing(0);
 
         // --- 01. Preloader & Mobile Menu ---
         // --- 01. Preloader & Smart Loading (Hero First) ---
         const handleLoad = () => {
-            $(".preloader").fadeOut();
+            console.log("handleLoad called - Dismissing preloader");
+            $(".preloader").fadeOut(500, function() {
+                $(this).css("display", "none");
+                // Force Lenis Update and forceful Unlock
+                setTimeout(() => {
+                    lenis.update();
+                    // Absolute scroll unlock
+                    document.body.style.overflow = "auto";
+                    document.documentElement.style.overflow = "auto";
+                    document.body.classList.remove("preloader-active");
+                    console.log("Scroll unlocked and class removed");
+                }, 200);
+            });
 
             // Init WOW.js safely after preloader fades
             if (typeof window.WOW !== "undefined") {
@@ -599,9 +623,13 @@ export function useTemplateInit() {
 
         // --- Final Cleanup Function ---
         return () => {
-            // 1. Destroy Lenis
+            // 1. Destroy Lenis and remove ticker
             if (lenis) {
+                gsap.ticker.remove(updateLenis);
                 lenis.destroy();
+                if (window.lenis === lenis) {
+                    window.lenis = null;
+                }
             }
 
             // 2. Kill GSAP Triggers

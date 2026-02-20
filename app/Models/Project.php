@@ -17,6 +17,16 @@ class Project extends Model
         return $this->belongsTo(\App\Models\User::class, 'user_id');
     }
 
+    public function brands()
+    {
+        return $this->belongsToMany(\Modules\Core\Models\Brand::class, 'project_brand');
+    }
+
+    public function solutions()
+    {
+        return $this->belongsToMany(\Modules\ServiceSolutions\Models\ServiceSolution::class, 'project_service_solution');
+    }
+
     protected $cleanupFields = ['thumbnail', 'download_brochures'];
     protected $richEditorCleanupFields = ['content'];
 
@@ -26,5 +36,6 @@ class Project extends Model
         'published_at' => 'datetime',
         'project_date' => 'date',
         'download_brochures' => 'array',
+        'tags' => 'array',
     ];
 }

@@ -59,11 +59,38 @@ class ProjectForm
                                                 ->schema([
                                                     TextInput::make('client')
                                                         ->label('Client Name'),
-                                                    TextInput::make('category')
-                                                        ->label('Category'),
+                                                    Select::make('category')
+                                                        ->label('Industry')
+                                                        ->options([
+                                                            'Education' => 'Education',
+                                                            'Government' => 'Government',
+                                                            'Enterprise' => 'Enterprise',
+                                                            'Finance' => 'Finance',
+                                                            'Healthcare' => 'Healthcare',
+                                                            'Retails' => 'Retails',
+                                                        ])
+                                                        ->searchable(),
                                                     \Filament\Forms\Components\DatePicker::make('project_date'),
                                                     Textarea::make('address')
                                                         ->rows(2),
+                                                    
+                                                    Select::make('brands')
+                                                        ->relationship('brands', 'name')
+                                                        ->multiple()
+                                                        ->preload()
+                                                        ->searchable()
+                                                        ->columnSpanFull(),
+                                                    
+                                                    Select::make('solutions')
+                                                        ->relationship('solutions', 'title') // Solutions use 'title' usually
+                                                        ->multiple()
+                                                        ->preload()
+                                                        ->searchable()
+                                                        ->columnSpanFull(),
+                                                    
+                                                    \Filament\Forms\Components\TagsInput::make('tags')
+                                                        ->columnSpanFull(),
+
                                                     FileUpload::make('download_brochures')
                                                         ->label('Download Brochure')
                                                         ->multiple()

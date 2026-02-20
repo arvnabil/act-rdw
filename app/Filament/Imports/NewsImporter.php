@@ -169,17 +169,24 @@ class NewsImporter extends Importer
                             // Robust URL handling: encode spaces
                             $cleanUrl = str_replace(' ', '%20', $thumbnailPath);
                             
-                            $response = Http::withoutVerifying()->withHeaders([
-                                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
-                                'Accept' => 'image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
-                            ])->timeout(30)->get($cleanUrl);
+                            $response = Http::withoutVerifying()
+                                ->withHeaders([
+                                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+                                    'Accept' => 'image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
+                                ])
+                                ->timeout(60)
+                                ->retry(3, 1000)
+                                ->get($cleanUrl);
                             
                             if ($response->successful()) {
                                 $contents = $response->body();
                                 $sourceType = 'URL';
+                                \Illuminate\Support\Facades\Log::info("NewsImporter: Downloaded " . strlen($contents) . " bytes from {$thumbnailPath}");
+                            } else {
+                                \Illuminate\Support\Facades\Log::warning("NewsImporter: URL download failed for {$thumbnailPath}. Status: " . $response->status());
                             }
                         } catch (\Throwable $e) {
-                            \Illuminate\Support\Facades\Log::info("NewsImporter: URL download failed for {$thumbnailPath}. Suggest check local fallback.");
+                            \Illuminate\Support\Facades\Log::info("NewsImporter: URL download attempt failed for {$thumbnailPath}. Error: " . $e->getMessage());
                         }
                     }
 
