@@ -42,12 +42,19 @@ return new class extends Migration
         
         // Remove the old column
         if (Schema::hasColumn('products', 'product_category_id')) {
-             Schema::table('products', function (Blueprint $table) {
-                // Drop foreign key first if it exists, though constrained() usually names it distinctively.
-                // We'll rely on the database driver to handle or just drop the column which might error if FK constraint exists.
-                // Safer to just drop the column and let Laravel handle FK drop if possible, or explicit drop.
-                // Assuming standard naming convention: products_product_category_id_foreign
-                $table->dropForeign(['product_category_id']);
+            // Drop foreign key first if it exists. 
+            // We use a try-catch because in some hosting environments (like the user's cPanel),
+            // the foreign key name might differ or be missing entirely.
+            try {
+                Schema::table('products', function (Blueprint $table) {
+                    $table->dropForeign(['product_category_id']);
+                });
+            } catch (\Exception $e) {
+                // Log or ignore if the foreign key doesn't exist
+                \Illuminate\Support\Facades\Log::info("Migration: Could not drop foreign key products_product_category_id_foreign. It might not exist. Error: " . $e->getMessage());
+            }
+
+            Schema::table('products', function (Blueprint $table) {
                 $table->dropColumn('product_category_id');
             });
         }
