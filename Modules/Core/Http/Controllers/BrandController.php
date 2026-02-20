@@ -71,16 +71,19 @@ class BrandController extends Controller
         // Frontend expects: { name, image_path, price, category (service name), is_active }
         $products = Product::where('brand_id', $brand->id)
             ->where('is_active', true)
-            ->with('category') // Eager load category for 'category' name
+            ->with('categories') // Eager load categories
             ->latest()
             ->take(8) // Limit to 8 as per UI design
             ->get()
             ->map(function ($product) {
+                // Get first category name
+                $categoryName = $product->categories->first()?->name ?? 'General';
+                
                 return (object) [
                     'name' => $product->name,
                     'image_path' => $product->image_path ?? '/assets/default.png', // Fallback
                     'price' => $product->price ?? 0,
-                    'category' => $product->category?->name ?? 'General',
+                    'category' => $categoryName,
                     'is_active' => $product->is_active,
                     'slug' => $product->slug
                 ];

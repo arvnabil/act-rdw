@@ -55,7 +55,7 @@ class ProductImporter extends Importer
             // Specifications & Features
             ImportColumn::make('specs')
                 ->label('Specs (JSON)')
-                ->fillRecordUsing(fn ($record, $state) => $record->specs = \App\Helpers\JsonHelper::nest($state, 'Spesifikasi'))
+                ->fillRecordUsing(fn ($record, $state) => $record->specs = \App\Helpers\JsonHelper::nest($state))
                 ->example('{"Dimensi - Tinggi": "100 mm", "Dimensi - Lebar": "50 mm"}'),
             ImportColumn::make('features')
                 ->label('Features (JSON)')
@@ -88,18 +88,12 @@ class ProductImporter extends Importer
                 })
                 ->example('Yealink'),
             ImportColumn::make('category_name')
-                ->label('Category')
-                ->rules(['required', 'string', 'max:255'])
-                ->fillRecordUsing(function ($record, $state) {
-                    $state = trim($state);
-                    $slug = Str::slug($state);
-                    $item = ProductCategory::firstOrCreate(
-                        ['slug' => $slug],
-                        ['name' => $state, 'is_active' => true]
-                    );
-                    $record->category()->associate($item);
+                ->label('Category (Comma Separated)')
+                // Logic moved to afterSave to support multiple
+                ->fillRecordUsing(function ($record) {
+                    // Do nothing here, allow afterSave to handle
                 })
-                ->example('Video Conferencing'),
+                ->example('Video Conferencing, Audio Device'),
             ImportColumn::make('service_name')
                 ->label('Service')
                 ->rules(['required', 'string', 'max:255'])
@@ -185,6 +179,10 @@ class ProductImporter extends Importer
 
     public function resolveRecord(): Product
     {
+        // Fix: Remove product_category_id if it exists in data (legacy mapping) to prevent SQL error
+        // Use unset directly to handle null values (isset returns false on null)
+        unset($this->data['product_category_id']);
+
         return Product::firstOrNew([
             'slug' => $this->data['slug'],
         ]);
@@ -194,6 +192,22 @@ class ProductImporter extends Importer
     {
         $record = $this->record;
         $data = $this->data;
+
+        // 0. Handle M2M Categories (New)
+        if (!empty($data['category_name'])) {
+            $catNames = array_map('trim', explode(',', $data['category_name']));
+            $catIds = [];
+            foreach ($catNames as $catName) {
+                if (empty($catName)) continue;
+                $slug = Str::slug($catName);
+                $cat = ProductCategory::firstOrCreate(
+                    ['slug' => $slug],
+                    ['name' => $catName, 'is_active' => true]
+                );
+                $catIds[] = $cat->id;
+            }
+            $record->categories()->sync($catIds);
+        }
 
         // 1. Handle M2M Solutions
         try {
@@ -208,45 +222,97 @@ class ProductImporter extends Importer
             ]);
         }
 
-        // 2. Handle Image Auto-Download from URL
-        if ($imageUrl = $data['image_path'] ?? null) {
-            $imageUrl = trim($imageUrl);
-            if (str_starts_with($imageUrl, 'http')) {
-                try {
-                    $response = \Illuminate\Support\Facades\Http::timeout(15)->get($imageUrl);
-                    if ($response->successful()) {
-                        $contents = $response->body();
-                        $extension = pathinfo(parse_url($imageUrl, PHP_URL_PATH), PATHINFO_EXTENSION) ?: 'jpg';
-                        $filename = $record->slug . '-activ-teknologi-' . date('Y-is') . '.' . $extension;
-                        $path = 'products/' . $record->slug . '/' . $filename;
+        // 2. Handle Thumbnail Auto-Download from URL or Local Fallback
+        if (isset($data['image_path'])) {
+            $thumbnailPath = trim($data['image_path']);
+            
+            if (empty($thumbnailPath) || strtoupper($thumbnailPath) === 'DELETE') {
+                $record->update(['image_path' => null]);
+            } else {
+                $contents = null;
+                $sourceType = 'unknown';
+
+                // Level 1: Check if it's a URL
+                if (str_starts_with($thumbnailPath, 'http')) {
+                    try {
+                        // Robust URL handling: encode spaces
+                        $cleanUrl = str_replace(' ', '%20', $thumbnailPath);
                         
-                        \Illuminate\Support\Facades\Storage::disk('public')->put($path, $contents);
-                        $record->updateQuietly(['image_path' => $path]);
-                    } else {
-                        throw new \Exception("Status HTTP {$response->status()}");
+                        $response = \Illuminate\Support\Facades\Http::withoutVerifying()->withHeaders([
+                            'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+                            'Accept' => 'image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
+                        ])->timeout(30)->get($cleanUrl);
+                        
+                        if ($response->successful()) {
+                            $contents = $response->body();
+                            $sourceType = 'URL';
+                        }
+                    } catch (\Throwable $e) {
+                        \Illuminate\Support\Facades\Log::info("ProductImporter: URL download failed for {$thumbnailPath}. Suggest check local fallback.");
                     }
-                } catch (\Throwable $e) {
-                    \Illuminate\Support\Facades\Log::warning("Product image download failed for {$record->id}: " . $e->getMessage());
-                    // Fallback to URL if download fails, but let's notify the user via row error if it was a catastrophic failure
-                    // For now, just logging and using fallback to allow completion
-                    $record->updateQuietly(['image_path' => Str::limit($imageUrl, 190)]);
                 }
-            } else if (!empty($imageUrl)) {
-                // Limit the path to avoid database errors if URL is too long and wasn't downloaded
-                $record->updateQuietly(['image_path' => Str::limit($imageUrl, 190)]);
+
+                // Level 2: Local Fallback (Direct Upload)
+                // If URL failed OR if it was just a filename (e.g. "myimage.jpg")
+                if (!$contents) {
+                    $filename = basename($thumbnailPath);
+                    $localPath = 'import-products/' . $filename;
+                    
+                    if (\Illuminate\Support\Facades\Storage::disk('public')->exists($localPath)) {
+                        $contents = \Illuminate\Support\Facades\Storage::disk('public')->get($localPath);
+                        $sourceType = 'Local (import-products/)';
+                    }
+                }
+
+                if ($contents) {
+                    try {
+                        $targetPathWithoutExt = 'products/' . $record->slug . '/' . $record->slug . '-' . date('Y-U');
+                        $newPath = \App\Helpers\ImageHelper::processAndConvert($contents, $targetPathWithoutExt);
+                        
+                        if ($newPath) {
+                            $record->update(['image_path' => $newPath]);
+                            \Illuminate\Support\Facades\Log::info("ProductImporter successfully processed image from {$sourceType} for Product ID {$record->id}");
+                        } else {
+                            throw new \Exception("Gagal mengonversi gambar ke WebP (cek log ImageHelper)");
+                        }
+                    } catch (\Throwable $e) {
+                        \Illuminate\Support\Facades\Log::warning("Product Image Processing failed: " . $e->getMessage());
+                        throw \Illuminate\Validation\ValidationException::withMessages([
+                            'image_path' => "Gagal memproses gambar: " . $e->getMessage(),
+                        ]);
+                    }
+                } else {
+                    \Illuminate\Support\Facades\Log::warning("Product Image NOT found for Product ID {$record->id}. URL and Local ({$thumbnailPath}) both failed.");
+                    
+                    // Fallback to preserve URL string if it's not fatal, but we throw validation error for visibility
+                    $record->update(['image_path' => Str::limit($thumbnailPath, 190)]);
+
+                    throw \Illuminate\Validation\ValidationException::withMessages([
+                        'image_path' => "Gambar tidak ditemukan. Pastikan URL benar atau upload file ke 'storage/app/public/import-products/' dengan nama yang sama.",
+                    ]);
+                }
+            }
+        }
+
+        // 2b. Handle Datasheet deletion
+        if (isset($data['datasheet_url'])) {
+            $datasheet = trim($data['datasheet_url']);
+            if (empty($datasheet) || strtoupper($datasheet) === 'DELETE') {
+                $record->update(['datasheet_url' => null]);
             }
         }
 
         // 3. Handle SEO Metadata
+        $seoKeys = !empty($data['seo_keywords']) ? array_map('trim', explode(',', $data['seo_keywords'])) : null;
         $seoData = [
-            'title' => Str::limit($data['seo_title'] ?? $record->name, 190),
-            'description' => $data['seo_description'] ?? Str::limit(strip_tags($record->description), 160),
-            'keywords' => Str::limit($data['seo_keywords'] ?? null, 190),
-            'og_title' => Str::limit($data['og_title'] ?? null, 190),
-            'og_description' => $data['og_description'] ?? null, 
-            'og_image' => Str::limit($data['og_image'] ?? $record->image_path, 190),
-            'canonical_url' => Str::limit($data['canonical_url'] ?? null, 190),
-            'noindex' => $data['noindex'] ?? false,
+            'title' => Str::limit($data['seo_title'] ?? $record->name, 500, ''),
+            'description' => Str::limit($data['seo_description'] ?? Str::limit(strip_tags($record->description), 160, ''), 1000, ''),
+            'keywords' => $seoKeys,
+            'og_title' => Str::limit($data['og_title'] ?? null, 500, ''),
+            'og_description' => Str::limit($data['og_description'] ?? null, 1000, ''),
+            'og_image' => Str::limit($data['og_image'] ?? $record->image_path, 2000, ''),
+            'canonical_url' => Str::limit($data['canonical_url'] ?? null, 1000, ''),
+            'noindex' => (bool) ($data['noindex'] ?? false),
         ];
 
         \Illuminate\Support\Facades\Log::debug("SEO Data for Product {$record->id}: " . json_encode($seoData, JSON_PRETTY_PRINT));
@@ -262,6 +328,15 @@ class ProductImporter extends Importer
                 'seo_title' => "Masalah SEO Meta: " . $e->getMessage(),
             ]);
         }
+
+        // 4. Sync Brand to Solutions
+        try {
+            $record->syncBrandToSolutions();
+        } catch (\Throwable $e) {
+             \Illuminate\Support\Facades\Log::warning("Brand sync failed for Product {$record->id}: " . $e->getMessage());
+        }
+
+
     }
 
     public static function getCompletedNotificationBody(Import $import): string

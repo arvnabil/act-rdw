@@ -19,17 +19,17 @@ export default function LatestProductsSection({
         >
             <div className="container th-container">
                 <SectionTitle
-                    subTitle="New"
-                    title={config?.title || "Products"}
+                    subTitle="New Release"
+                    title={config?.title || "Latest Innovation"}
                     align="text-center"
                 />
 
                 <Swiper
                     modules={[Navigation, Autoplay]}
-                    spaceBetween={24}
+                    spaceBetween={30}
                     slidesPerView={1}
                     autoplay={{
-                        delay: 3000,
+                        delay: 3500,
                         disableOnInteraction: false,
                     }}
                     breakpoints={{
@@ -38,105 +38,219 @@ export default function LatestProductsSection({
                         1200: { slidesPerView: 4 },
                     }}
                     className="latest-products-slider"
-                    style={{ paddingBottom: "40px" }}
+                    style={{ padding: "40px 20px 60px 20px", margin: "0 -20px" }}
                 >
                     {products && products.length > 0 ? (
                         products.map((product, i) => (
                             <SwiperSlide key={i}>
-                                <div
-                                    className="product-card-gradient position-relative overflow-hidden w-100"
-                                    style={{
-                                        borderRadius: "30px",
-                                        aspectRatio: "4/5",
-                                        cursor: "pointer",
-                                        background:
-                                            "linear-gradient(180deg, #F3F4F6 0%, #D1D5DB 40%, #4B5563 100%)",
-                                        boxShadow:
-                                            "0 10px 30px rgba(0,0,0,0.1)",
-                                    }}
-                                >
-                                    <div
-                                        className="img-wrapper w-100 h-100 d-flex align-items-center justify-content-center p-4"
-                                        style={{
-                                            position: "absolute",
-                                            top: 0,
-                                            left: 0,
-                                            zIndex: 1,
-                                        }}
-                                    >
-                                        <div
-                                            className="d-flex align-items-center justify-content-center"
-                                            style={{
-                                                width: "80%",
-                                                height: "80%",
-                                                backgroundColor: !product.image_path ? "white" : "transparent",
-                                                borderRadius: "20px",
-                                                padding: !product.image_path ? "20px" : "0",
-                                                boxShadow: !product.image_path ? "0 10px 20px rgba(0,0,0,0.1)" : "none"
-                                            }}
-                                        >
-                                            <img
-                                                src={getImageUrl(
-                                                    product.image_path,
-                                                    "/assets/default.png"
-                                                )}
-                                                alt={product.name}
-                                                className="w-100 h-100"
-                                                style={{
-                                                    objectFit: "contain",
-                                                    transition:
-                                                        "transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)",
-                                                    filter: product.image_path
-                                                        ? "drop-shadow(0 10px 20px rgba(0,0,0,0.2))"
-                                                        : "none",
-                                                }}
-                                            />
-                                        </div>
+                                <div className="tech-product-card h-100 group">
+                                    {/* Badge (Optional/Static for now or based on newness) */}
+                                    <span className="new-badge">New</span>
+
+                                    {/* Image Area */}
+                                    <div className="product-img-area">
+                                        <div className="img-overlay"></div>
+                                        <img
+                                            src={getImageUrl(
+                                                product.image_path,
+                                                "/assets/default.png"
+                                            )}
+                                            alt={product.name}
+                                        />
+                                        {/* Quick Action */}
+                                        <button className="action-btn">
+                                            <i className="fa-regular fa-arrow-right"></i>
+                                        </button>
                                     </div>
 
-                                    {/* Content */}
-                                    <div
-                                        className="product-content position-absolute bottom-0 start-0 w-100 p-4"
-                                        style={{ zIndex: 2 }}
-                                    >
+                                    {/* Content Area */}
+                                    <div className="product-info">
                                         {product.category && (
-                                            <span
-                                                className="d-block text-white-50 text-uppercase fw-bold mb-2"
-                                                style={{
-                                                    fontSize: "0.7rem",
-                                                    letterSpacing: "2px",
-                                                }}
-                                            >
-                                                {product.category}
-                                            </span>
+                                            <div className="product-meta">
+                                                <span className="category-tag">
+                                                    {product.category}
+                                                </span>
+                                            </div>
                                         )}
-                                        <h5
-                                            className="text-white fw-bold mb-0"
-                                            style={{
-                                                fontSize: "1.5rem",
-                                                lineHeight: "1.2",
-                                                textShadow:
-                                                    "0 2px 4px rgba(0,0,0,0.3)",
-                                            }}
-                                        >
+                                        <h3 className="product-title">
                                             {product.name}
-                                        </h5>
+                                        </h3>
+                                        <div className="hover-line"></div>
                                     </div>
                                 </div>
-                                <style jsx="true">{`
-                                    .product-card-gradient:hover img {
-                                        transform: scale(1.1) translateY(-10px);
-                                    }
-                                `}</style>
                             </SwiperSlide>
                         ))
                     ) : (
-                        <div className="text-muted">
+                        <div className="text-muted text-center py-5">
                             No latest products found.
                         </div>
                     )}
                 </Swiper>
             </div>
+            <style jsx="true">{`
+                .tech-product-card {
+                    background: #ffffff;
+                    border-radius: 20px;
+                    padding: 25px;
+                    position: relative;
+                    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                    border: 1px solid #f3f4f6;
+                    overflow: hidden;
+                    height: 100%;
+                }
+
+                /* Hover Lift & Shadow */
+                .tech-product-card:hover {
+                    transform: translateY(-10px);
+                    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.08);
+                    border-color: transparent;
+                }
+
+                /* Gradient Border Reveal */
+                .tech-product-card::before {
+                    content: "";
+                    position: absolute;
+                    inset: 0;
+                    border-radius: 20px; 
+                    padding: 1.5px; 
+                    background: linear-gradient(135deg, var(--theme-color, #2C9E8E), #00d2ff); 
+                    -webkit-mask: 
+                        linear-gradient(#fff 0 0) content-box, 
+                        linear-gradient(#fff 0 0);
+                    -webkit-mask-composite: xor; 
+                    mask-composite: exclude; 
+                    opacity: 0;
+                    transition: opacity 0.4s ease;
+                    pointer-events: none;
+                }
+                .tech-product-card:hover::before {
+                    opacity: 1;
+                }
+
+                /* New Badge */
+                .new-badge {
+                    position: absolute;
+                    top: 20px;
+                    left: 20px;
+                    background: rgba(44, 158, 142, 0.1);
+                    color: var(--theme-color, #2C9E8E);
+                    font-size: 11px;
+                    font-weight: 700;
+                    text-transform: uppercase;
+                    padding: 4px 10px;
+                    border-radius: 30px;
+                    z-index: 2;
+                    letter-spacing: 0.5px;
+                }
+
+                /* Image Area */
+                .product-img-area {
+                    position: relative;
+                    height: 220px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    margin-bottom: 20px;
+                    padding: 10px;
+                    background: radial-gradient(circle at center, #f9fafb 0%, #ffffff 70%);
+                    border-radius: 15px;
+                    overflow: hidden;
+                }
+
+                .product-img-area img {
+                    max-width: 90%;
+                    max-height: 90%;
+                    object-fit: contain;
+                    transition: transform 0.5s ease;
+                    filter: drop-shadow(0 5px 15px rgba(0,0,0,0.05));
+                    z-index: 1;
+                }
+
+                .tech-product-card:hover .product-img-area img {
+                    transform: scale(1.08) translateY(-5px);
+                    filter: drop-shadow(0 10px 25px rgba(0,0,0,0.1));
+                }
+
+                /* Action Button */
+                .action-btn {
+                    position: absolute;
+                    bottom: 15px;
+                    right: 15px;
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    background: var(--theme-color, #2C9E8E);
+                    color: white;
+                    border: none;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    opacity: 0;
+                    transform: translateY(20px) scale(0.8);
+                    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                    z-index: 2;
+                    box-shadow: 0 4px 12px rgba(44, 158, 142, 0.3);
+                    cursor: pointer;
+                }
+                
+                .tech-product-card:hover .action-btn {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+                
+                .action-btn i {
+                    transition: transform 0.3s ease;
+                }
+                .action-btn:hover i {
+                    transform: translateX(3px);
+                }
+
+                /* Product Info */
+                .product-info {
+                    text-align: left;
+                    padding: 0 5px;
+                }
+
+                .category-tag {
+                    font-size: 11px;
+                    text-transform: uppercase;
+                    letter-spacing: 1.5px;
+                    color: #9ca3af;
+                    font-weight: 700;
+                    margin-bottom: 8px;
+                    display: block;
+                    transition: color 0.3s ease;
+                }
+                
+                .tech-product-card:hover .category-tag {
+                    color: var(--theme-color, #2C9E8E);
+                }
+
+                .product-title {
+                    font-size: 18px;
+                    font-weight: 700;
+                    color: #111827;
+                    margin: 0;
+                    line-height: 1.4;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                }
+
+                /* Decorative Line */
+                .hover-line {
+                    width: 0;
+                    height: 2px;
+                    background: var(--theme-color, #2C9E8E);
+                    margin-top: 15px;
+                    transition: width 0.4s ease;
+                }
+                
+                .tech-product-card:hover .hover-line {
+                    width: 40px;
+                }
+            `}</style>
         </section>
     );
 }

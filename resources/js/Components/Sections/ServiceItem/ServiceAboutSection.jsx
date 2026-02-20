@@ -71,6 +71,9 @@ export default function ServiceAboutSection({ item, getImageUrl, waLink }) {
                 </div>
             </div>
             <style jsx="true">{`
+                .about-7-titlebox .sec-title {
+                    font-size: 42px;
+                }
                 @media (max-width: 767px) {
                     .about-area {
                         padding-top: 40px !important;

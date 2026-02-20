@@ -55,9 +55,10 @@ class ProductForm
                                                 ->required()
                                                 ->searchable()
                                                 ->preload(),
-                                            Select::make('product_category_id')
-                                                ->relationship('category', 'name')
-                                                ->label('Device Category')
+                                            Select::make('categories')
+                                                ->relationship('categories', 'name')
+                                                ->label('Device Categories')
+                                                ->multiple()
                                                 ->searchable()
                                                 ->preload()
                                                 ->createOptionForm(\Modules\Core\Filament\Resources\ProductCategoryResource\Schemas\ProductCategoryForm::schema()),
@@ -96,24 +97,23 @@ class ProductForm
                                                         ->label('Group Name')
                                                         ->required()
                                                         ->placeholder('e.g. Dimensions, Audio, etc.'),
-                                                    KeyValue::make('items')
+                                                    \Filament\Forms\Components\Repeater::make('items')
                                                         ->label('Items')
-                                                        ->keyLabel('Key')
-                                                        ->valueLabel('Value')
+                                                        ->schema([
+                                                            TextInput::make('key')->required(),
+                                                            TextInput::make('value')->required(),
+                                                        ])
+                                                        ->columns(2)
+                                                        ->defaultItems(0)
+                                                        ->cloneable()
+                                                        ->collapsible()
                                                         ->required(),
                                                 ])
                                                 ->itemLabel(fn (array $state): ?string => $state['group_name'] ?? null)
                                                 ->collapsible()
-                                                ->grid(2)
-                                                ->columnSpanFull()
-                                                ->afterStateHydrated(function ($component, $state) {
-                                                    if (is_array($state) || is_null($state)) {
-                                                        $component->state(\App\Helpers\JsonHelper::toRepeater($state, 'Spesifikasi'));
-                                                    }
-                                                })
-                                                ->dehydrateStateUsing(function ($state) {
-                                                    return \App\Helpers\JsonHelper::fromRepeater($state ?? [], 'Spesifikasi');
-                                                }),
+                                                ->cloneable()
+                                                ->columns(2)
+                                                ->columnSpanFull(),
                                             \Filament\Forms\Components\Repeater::make('features')
                                                 ->schema([
                                                     TextInput::make('name')->required(),

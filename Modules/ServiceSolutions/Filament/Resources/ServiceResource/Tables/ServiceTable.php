@@ -16,10 +16,33 @@ class ServiceTable
             ->columns([
                 ImageColumn::make('icon')
                     ->square()
-                    ->disk('public')
-                    ->visibility('public'),
+                    ->state(function ($record) {
+                        $path = $record->icon;
+                        if (!$path) return null;
+                        if (str_starts_with($path, 'http')) return $path;
+                        if (str_starts_with($path, 'assets') || str_starts_with($path, '/assets')) return url($path);
+                        return url('storage/' . $path);
+                    })
+                    ->placeholder('-'),
                 ImageColumn::make('thumbnail')
-                    ->disk('public')
+                    ->state(function ($record) {
+                        $path = $record->thumbnail ?? $record->featured_image;
+                        if (!$path) return null;
+                        if (str_starts_with($path, 'http')) return $path;
+                        if (str_starts_with($path, 'assets') || str_starts_with($path, '/assets')) return url($path);
+                        return url('storage/' . $path);
+                    })
+                    ->placeholder('-'),
+                ImageColumn::make('featured_image')
+                    ->label('Background Detail')
+                    ->state(function ($record) {
+                        $path = $record->featured_image;
+                        if (!$path) return null;
+                        if (str_starts_with($path, 'http')) return $path;
+                        if (str_starts_with($path, 'assets') || str_starts_with($path, '/assets')) return url($path);
+                        return url('storage/' . $path);
+                    })
+                    ->placeholder('-')
                     ->visibility('public'),
                 TextColumn::make('name')
                     ->searchable()

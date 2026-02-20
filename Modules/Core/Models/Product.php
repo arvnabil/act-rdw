@@ -17,7 +17,7 @@ class Product extends Model
     protected $richEditorCleanupFields = ['description', 'specification_text', 'features_text'];
 
     protected $fillable = [
-        'service_id', 'product_category_id', 'brand_id', 'name', 'slug',
+        'service_id', 'brand_id', 'name', 'slug',
         'description', 'image_path', 'sku', 'solution_type',
         'datasheet_url', 'tags', 'specs', 'specification_text',
         'features', 'features_text', 'is_active', 'is_featured',
@@ -49,13 +49,23 @@ class Product extends Model
         return $this->belongsToMany(\Modules\ServiceSolutions\Models\ConfiguratorOption::class, 'product_configurator_option');
     }
 
-    public function category()
+    public function categories()
     {
-        return $this->belongsTo(ProductCategory::class, 'product_category_id');
+        return $this->belongsToMany(ProductCategory::class, 'product_category_product');
     }
 
     public function solutions()
     {
         return $this->belongsToMany(\Modules\ServiceSolutions\Models\ServiceSolution::class, 'product_service_solution');
+    }
+
+    public function syncBrandToSolutions()
+    {
+        if ($this->brand_id && $this->solutions()->exists()) {
+            foreach ($this->solutions as $solution) {
+                // Attach brand to solution properly (without detaching generic ones)
+                $solution->brands()->syncWithoutDetaching([$this->brand_id]);
+            }
+        }
     }
 }

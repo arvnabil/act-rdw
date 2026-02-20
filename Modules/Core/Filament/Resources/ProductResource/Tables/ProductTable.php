@@ -44,14 +44,10 @@ class ProductTable
             ->recordActions([
                 Actions\EditAction::make(),
                 Actions\DeleteAction::make(),
-                Actions\RestoreAction::make(),
-                Actions\ForceDeleteAction::make(),
             ])
-            ->toolbarActions([
+            ->bulkActions([
                 Actions\BulkActionGroup::make([
                     Actions\DeleteBulkAction::make(),
-                    Actions\RestoreBulkAction::make(),
-                    Actions\ForceDeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('created_at', 'desc');

@@ -4,6 +4,7 @@ namespace Modules\Core\Filament\Resources\BrandResource\Schemas;
 
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -124,31 +125,6 @@ class BrandForm
                                         })
                                         ->imageEditor()
                                         ->columnSpanFull(),
-                                    Repeater::make('awards')
-                                        ->label('Award & Certified Badges')
-                                        ->schema([
-                                            FileUpload::make('image')
-                                                ->label('Badge Image')
-                                                ->image()
-                                                ->disk('public')
-                                                ->maxSize(2048)
-                                                ->downloadable()
-                                                ->openable()
-                                                ->helperText('Ukuran maks: 2MB.')
-                                                ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
-                                                    $slug = $get('../../../slug') ?: 'temp';
-                                                    return UploadHelper::getSluggedFilename($file, 'brands/' . $slug . '/awards');
-                                                })
-                                                ->imageEditor()
-                                                ->imageEditorAspectRatios(['1:1'])
-                                                ->required(),
-                                            TextInput::make('alt')
-                                                ->label('Alt Text')
-                                                ->placeholder('Award Name'),
-                                        ])
-                                        ->grid(4)
-                                        ->columnSpanFull()
-                                        ->collapsible(),
                                 ])->columns(2)->statePath('landing_config.hero'),
                             Section::make('Service Solutions')
                                 ->schema([
@@ -235,6 +211,62 @@ class BrandForm
                             \Filament\Schemas\Components\Group::make()
                                 ->relationship('seo')
                                 ->schema(\App\Filament\Activioncms\Resources\SeoMetaResource\Schemas\SeoForm::schema())
+                        ]),
+                    Tabs\Tab::make('Partner Verification')
+                        ->schema([
+                            Section::make('Partner Modal Configuration')
+                                ->schema([
+                                    Toggle::make('enabled')
+                                        ->label('Enable Partner Modal')
+                                        ->default(true),
+                                    TextInput::make('modal_title')
+                                        ->label('Modal Title')
+                                        ->placeholder('Logitech Elite Partner Certification'),
+                                    TextInput::make('modal_subtitle')
+                                        ->label('Modal Subtitle')
+                                        ->placeholder('ACTiV is an official Logitech Elite Partner in Indonesia'),
+                                    RichEditor::make('modal_description')
+                                        ->label('Modal Description')
+                                        ->columnSpanFull(),
+                                    Repeater::make('guarantees')
+                                        ->label('Guarantees')
+                                        ->simple(TextInput::make('guarantee'))
+                                        ->helperText('Contoh: Original products with official warranty')
+                                        ->grid(2)
+                                        ->columnSpanFull(),
+                                ])->statePath('partner')
+                        ])->statePath('landing_config'),
+                    Tabs\Tab::make('Identity & Awards')
+                        ->schema([
+                            Section::make('Brand Identity & Badges')
+                                ->schema([
+                                    Repeater::make('awards')
+                                        ->label('Awards & Recognition')
+                                        ->helperText('Sertifikat atau penghargaan ini akan ditampilkan di Hero Section dan Modal Elite Partner.')
+                                        ->schema([
+                                            FileUpload::make('image')
+                                                ->label('Award/Badge Image')
+                                                ->image()
+                                                ->disk('public')
+                                                ->maxSize(2048)
+                                                ->downloadable()
+                                                ->openable()
+                                                ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
+                                                    $slug = $get('../../../slug') ?: 'temp';
+                                                    return UploadHelper::getSluggedFilename($file, 'brands/' . $slug . '/awards');
+                                                })
+                                                ->imageEditor()
+                                                ->required(),
+                                            TextInput::make('title')
+                                                ->label('Title/Alt Text')
+                                                ->placeholder('Logitech Partner of the Year 2024')
+                                                ->required(),
+                                        ])
+                                        ->grid(4)
+                                        ->columnSpanFull()
+                                        ->collapsible()
+                                        ->statePath('awards'),
+                                ])->statePath('landing_config'),
                         ]),
                 ])->columnSpanFull(),
         ];

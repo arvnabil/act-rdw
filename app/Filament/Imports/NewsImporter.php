@@ -153,38 +153,86 @@ class NewsImporter extends Importer
                 $record->tags()->sync($tagIds);
             }
 
-            // 3. Handle Thumbnail Auto-Download from URL
-            if ($thumbnailUrl = $data['thumbnail'] ?? null) {
-                $thumbnailUrl = trim($thumbnailUrl);
-                if (str_starts_with($thumbnailUrl, 'http')) {
-                    try {
-                        $response = Http::timeout(10)->get($thumbnailUrl);
-                        if ($response->successful()) {
-                            $contents = $response->body();
-                            $extension = pathinfo(parse_url($thumbnailUrl, PHP_URL_PATH), PATHINFO_EXTENSION) ?: 'jpg';
-                            $filename = $record->slug . '-activ-teknologi-' . date('Y-is') . '.' . $extension;
-                            $path = 'news/' . $record->slug . '/' . $filename;
+            // 3. Handle Thumbnail Auto-Download from URL or Local Fallback
+            if (isset($data['thumbnail'])) {
+                $thumbnailPath = trim($data['thumbnail']);
+                
+                if (empty($thumbnailPath) || strtoupper($thumbnailPath) === 'DELETE') {
+                    $record->update(['thumbnail' => null]);
+                } else {
+                    $contents = null;
+                    $sourceType = 'unknown';
+
+                    // Level 1: Check if it's a URL
+                    if (str_starts_with($thumbnailPath, 'http')) {
+                        try {
+                            // Robust URL handling: encode spaces
+                            $cleanUrl = str_replace(' ', '%20', $thumbnailPath);
                             
-                            Storage::disk('public')->put($path, $contents);
-                            $record->updateQuietly(['thumbnail' => $path]);
+                            $response = Http::withoutVerifying()->withHeaders([
+                                'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+                                'Accept' => 'image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
+                            ])->timeout(30)->get($cleanUrl);
+                            
+                            if ($response->successful()) {
+                                $contents = $response->body();
+                                $sourceType = 'URL';
+                            }
+                        } catch (\Throwable $e) {
+                            \Illuminate\Support\Facades\Log::info("NewsImporter: URL download failed for {$thumbnailPath}. Suggest check local fallback.");
                         }
-                    } catch (\Throwable $e) {
-                        \Illuminate\Support\Facades\Log::warning("Import Thumbnail failed for News {$record->id}: " . get_class($e) . " - " . $e->getMessage());
                     }
-                } else if (!empty($thumbnailUrl)) {
-                    $record->updateQuietly(['thumbnail' => $thumbnailUrl]);
+
+                    // Level 2: Local Fallback (Direct Upload)
+                    // If URL failed OR if it was just a filename (e.g. "myimage.jpg")
+                    if (!$contents) {
+                        $filename = basename($thumbnailPath);
+                        $localPath = 'import-news/' . $filename;
+                        
+                        if (Storage::disk('public')->exists($localPath)) {
+                            $contents = Storage::disk('public')->get($localPath);
+                            $sourceType = 'Local (import-news/)';
+                        }
+                    }
+
+                    if ($contents) {
+                        try {
+                            $targetPathWithoutExt = 'news/' . $record->slug . '/' . $record->slug . '-' . date('Y-U');
+                            $newPath = \App\Helpers\ImageHelper::processAndConvert($contents, $targetPathWithoutExt);
+                            
+                            if ($newPath) {
+                                $record->update(['thumbnail' => $newPath]);
+                                \Illuminate\Support\Facades\Log::info("NewsImporter successfully processed image from {$sourceType} for News ID {$record->id}");
+                            } else {
+                                throw new \Exception("Gagal mengonversi gambar ke WebP (cek log ImageHelper)");
+                            }
+                        } catch (\Throwable $e) {
+                            \Illuminate\Support\Facades\Log::warning("News Image Processing failed: " . $e->getMessage());
+                            throw \Illuminate\Validation\ValidationException::withMessages([
+                                'thumbnail' => "Gagal memproses gambar: " . $e->getMessage(),
+                            ]);
+                        }
+                    } else {
+                        // If both failed, we log it but maybe we should throw to let user know?
+                        \Illuminate\Support\Facades\Log::warning("News Image NOT found for News ID {$record->id}. URL and Local ({$thumbnailPath}) both failed.");
+                        
+                        throw \Illuminate\Validation\ValidationException::withMessages([
+                            'thumbnail' => "Gambar tidak ditemukan. Pastikan URL benar atau upload file ke 'storage/app/public/import-news/' dengan nama yang sama.",
+                        ]);
+                    }
                 }
             }
 
             // 4. Sync SEO Metadata
+            $seoKeys = !empty($data['seo_keywords']) ? array_map('trim', explode(',', $data['seo_keywords'])) : null;
             $seoData = [
-                'title' => Str::limit($data['seo_title'] ?? $record->title, 190),
-                'description' => Str::limit($data['seo_description'] ?? Str::limit(strip_tags($record->content), 160), 450),
-                'keywords' => Str::limit($data['seo_keywords'] ?? null, 190),
-                'og_title' => Str::limit($data['og_title'] ?? null, 190),
-                'og_description' => Str::limit($data['og_description'] ?? null, 450),
-                'og_image' => Str::limit($data['og_image'] ?? $record->thumbnail, 190),
-                'canonical_url' => Str::limit($data['canonical_url'] ?? null, 190),
+                'title' => Str::limit($data['seo_title'] ?? $record->title, 500, ''),
+                'description' => Str::limit($data['seo_description'] ?? Str::limit(strip_tags($record->content), 160, ''), 1000, ''),
+                'keywords' => $seoKeys,
+                'og_title' => Str::limit($data['og_title'] ?? null, 500, ''),
+                'og_description' => Str::limit($data['og_description'] ?? null, 1000, ''),
+                'og_image' => Str::limit($data['og_image'] ?? $record->thumbnail, 2000, ''),
+                'canonical_url' => Str::limit($data['canonical_url'] ?? null, 1000, ''),
                 'noindex' => (bool) ($data['noindex'] ?? false),
             ];
 

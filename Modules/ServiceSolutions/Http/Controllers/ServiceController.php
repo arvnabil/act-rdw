@@ -35,7 +35,7 @@ class ServiceController extends Controller
                 'grid_title' => $service->grid_title,
                 'content' => $service->content, 
                 'excerpt' => $service->excerpt, 
-                'featured_image' => $service->featured_image, 
+                'featured_image' => $service->featured_image ?? $service->thumbnail, 
                 'thumbnail' => $service->thumbnail,
                 'filters' => $service->categories->map(fn ($cat) => [
                     'label' => $cat->label,

@@ -105,7 +105,7 @@ class SectionDataResolver
              $query = DB::table('services');
              $total = $query->count();
              
-             $query->select('id', 'name', 'slug', 'thumbnail', 'icon', 'description');
+             $query->select('id', 'name', 'slug', 'thumbnail', 'featured_image', 'icon', 'description');
 
             if ($order === 'desc') $query->orderBy('id', 'desc');
             else $query->orderBy('id', 'asc');
@@ -118,7 +118,8 @@ class SectionDataResolver
             $query = DB::table('service_solutions');
             $total = $query->count();
             
-            $query->select('id', 'title as name', 'slug', 'thumbnail', 'description', DB::raw('NULL as icon'));
+            // ServiceSolutions don't have featured_image usually, but we can check or alias
+            $query->select('id', 'title as name', 'slug', 'thumbnail', 'description', DB::raw('NULL as icon'), DB::raw('NULL as featured_image'));
 
             if ($order === 'desc') $query->orderBy('id', 'desc');
             else $query->orderBy('id', 'asc');
@@ -139,6 +140,7 @@ class SectionDataResolver
             };
 
             $s->thumbnail = $resolvePath($s->thumbnail);
+            $s->featured_image = $resolvePath($s->featured_image ?? null);
 
             // Icon handling: Use processed icon path OR default asset
             $s->icon = $resolvePath($s->icon) ?? '/assets/img/icon/service_1_1.svg';

@@ -293,7 +293,7 @@ Route::get('/{brandSlug}/products', function ($brandSlug) {
     }
 
     // 2. Base Query
-    $query = $brand->products()->where('is_active', true)->with('service');
+    $query = $brand->products()->where('is_active', true)->with(['service', 'categories']);
 
     // 3. Filter by Search Term
     if (request()->filled('search')) {
@@ -307,7 +307,7 @@ Route::get('/{brandSlug}/products', function ($brandSlug) {
     // 4. Filter by Device Category (ProductCategory)
     if (request()->filled('category')) {
         $categorySlug = request()->input('category');
-        $query->whereHas('category', function ($q) use ($categorySlug) {
+        $query->whereHas('categories', function ($q) use ($categorySlug) {
              $q->where('slug', $categorySlug);
         });
     }
@@ -355,7 +355,7 @@ Route::get('/{brandSlug}/products', function ($brandSlug) {
     $serviceSolutions = \Modules\ServiceSolutions\Models\ServiceSolution::whereHas('products', function($q) use ($brand) {
           $q->where('brand_id', $brand->id)->where('is_active', true);
           if (request()->filled('category')) {
-              $q->whereHas('category', fn($c) => $c->where('slug', request()->input('category')));
+              $q->whereHas('categories', fn($c) => $c->where('slug', request()->input('category')));
           }
     })
     ->get()
@@ -366,7 +366,7 @@ Route::get('/{brandSlug}/products', function ($brandSlug) {
         $countQuery->whereHas('solutions', fn($s) => $s->where('service_solutions.id', $sol->id));
 
         if (request()->filled('category')) {
-            $countQuery->whereHas('category', fn($c) => $c->where('slug', request()->input('category')));
+            $countQuery->whereHas('categories', fn($c) => $c->where('slug', request()->input('category')));
         }
 
         return [

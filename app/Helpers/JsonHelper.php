@@ -7,93 +7,50 @@ use Illuminate\Support\Arr;
 class JsonHelper
 {
     /**
-     * Nests a flat associative array into a multi-dimensional array based on a separator.
-     * 
-     * @param array|string|null $flat The flat array or JSON string.
-     * @param string $rootKey The root key to wrap everything in (e.g. 'Spesifikasi').
-     * @param string $separator The separator to split keys (default ' - ').
-     * @return array
+     * Converts DB format (Nested Object) to Filament Repeater format (Array of Groups).
      */
-    public static function nest($flat, string $rootKey, string $separator = ' - '): array
+    public static function toRepeater(mixed $state): array
     {
-        if (is_string($flat)) {
-            $flat = json_decode($flat, true) ?: [];
+        if (empty($state)) return [];
+
+        if (is_string($state)) {
+            $state = json_decode($state, true) ?: [];
         }
 
-        if (empty($flat) || !is_array($flat)) {
-            return [$rootKey => []];
-        }
-
-        $nested = [];
-
-        foreach ($flat as $key => $value) {
-            // Case 1: Key has separator (e.g. "Dimensi - Tinggi")
-            if (str_contains($key, $separator)) {
-                $parts = explode($separator, $key);
-                $group = trim($parts[0]);
-                $item = trim(implode($separator, array_slice($parts, 1)));
-                
-                if (!isset($nested[$group])) {
-                    $nested[$group] = [];
-                }
-                $nested[$group][$item] = $value;
-            } 
-            // Case 2: Value is already an array (e.g. "Spesifikasi & Perincian" => [...])
-            // Treat key as the group name.
-            else if (is_array($value)) {
-                $nested[$key] = $value;
-            }
-            // Case 3: Flat key, scalar value -> put in General
-            else {
-                if (!isset($nested['General'])) {
-                    $nested['General'] = [];
-                }
-                $nested['General'][$key] = $value;
-            }
-        }
-
-        return [$rootKey => $nested];
-    }
-
-    /**
-     * Normalizes data to ensure it is nested under the root key.
-     * If the root key is missing, it assumes the data is flat and nests it.
-     * 
-     * @param array|null $data
-     * @param string $rootKey
-     * @return array
-     */
-    public static function normalize(array|null $data, string $rootKey): array
-    {
-        if (empty($data)) {
-            return [$rootKey => []];
-        }
-
-        if (isset($data[$rootKey])) {
-            return $data;
-        }
-
-        // If root key missing, nest the whole thing
-        return self::nest($data, $rootKey);
-    }
-
-    /**
-     * Flattens a nested array back into a format suitable for Filament's Repeater of KeyValues.
-     * 
-     * @param array|null $nested The nested array from database.
-     * @param string $rootKey The root key to look for.
-     * @return array In format [['group_name' => '...', 'items' => [...]]]
-     */
-    public static function toRepeater(array|null $nested, string $rootKey): array
-    {
-        $normalized = self::normalize($nested, $rootKey);
-        $data = $normalized[$rootKey] ?? [];
         $repeater = [];
 
-        foreach ($data as $groupName => $items) {
+        foreach ($state as $groupName => $items) {
+            $itemList = [];
+
+            if (is_array($items)) {
+                foreach ($items as $k => $v) {
+                    if (is_array($v)) {
+                        // If it's a nested array, flatten it and add as multiple entries
+                        $flattened = self::flatten($v, (string)$k);
+                        foreach ($flattened as $fk => $fv) {
+                            $itemList[] = [
+                                'key' => (string)$fk,
+                                'value' => (string)$fv,
+                            ];
+                        }
+                    } else {
+                        $itemList[] = [
+                            'key' => (string)$k,
+                            'value' => (string)$v,
+                        ];
+                    }
+                }
+            } else {
+                // If it's a string, treat as a single item with key "Value"
+                $itemList[] = [
+                    'key' => 'Value',
+                    'value' => (string)$items,
+                ];
+            }
+
             $repeater[] = [
-                'group_name' => $groupName,
-                'items' => is_array($items) ? $items : [],
+                'group_name' => (string)$groupName,
+                'items' => $itemList,
             ];
         }
 
@@ -101,25 +58,78 @@ class JsonHelper
     }
 
     /**
-     * Converts Repeater data back into the nested DB structure.
-     * 
-     * @param array $repeater In format [['group_name' => '...', 'items' => [...]]]
-     * @param string $rootKey The root key to wrap in.
-     * @return array
+     * Flattens nesting into "Key - SubKey" strings.
      */
-    public static function fromRepeater(array $repeater, string $rootKey): array
+    public static function flatten(array $array, string $prefix = ''): array
     {
-        $nested = [];
+        $result = [];
+        foreach ($array as $key => $value) {
+            $newKey = $prefix === '' ? (string)$key : $prefix . ' - ' . $key;
+            if (is_array($value)) {
+                $flattened = self::flatten($value, $newKey);
+                foreach ($flattened as $fk => $fv) {
+                    $result[$fk] = $fv;
+                }
+            } else {
+                $result[$newKey] = (is_scalar($value) || is_null($value)) ? (string)$value : json_encode($value);
+            }
+        }
+        return $result;
+    }
 
-        foreach ($repeater as $row) {
-            $groupName = $row['group_name'] ?? 'General';
-            $items = $row['items'] ?? [];
-            
-            if (!empty($items)) {
-                $nested[$groupName] = $items;
+    /**
+     * Converts Repeater data back into the nested DB structure (Object).
+     */
+    public static function fromRepeater(array $repeater): array
+    {
+        $result = [];
+
+        foreach ($repeater as $group) {
+            $groupName = $group['group_name'] ?? null;
+            $items = $group['items'] ?? [];
+
+            if (!$groupName) continue;
+
+            $groupData = [];
+            foreach ($items as $item) {
+                $k = $item['key'] ?? '';
+                $v = $item['value'] ?? '';
+                if ($k !== '') {
+                    $groupData[$k] = $v;
+                }
+            }
+
+            // Special Case: If only 1 item and key is "Value", save as string
+            if (count($groupData) === 1 && isset($groupData['Value'])) {
+                $result[$groupName] = $groupData['Value'];
+            } else {
+                $result[$groupName] = $groupData;
             }
         }
 
-        return [$rootKey => $nested];
+        return $result;
+    }
+    /**
+     * Helper for importer: converts flat keys and JSON strings into nested structure.
+     */
+    public static function nest(mixed $state, ?string $rootKey = null): array
+    {
+        if (empty($state)) return [];
+
+        if (is_string($state)) {
+            $state = json_decode($state, true) ?: [];
+        }
+
+        $result = [];
+        foreach ($state as $k => $v) {
+            // Support "Group - Key" flattening
+            if (str_contains((string)$k, ' - ')) {
+                Arr::set($result, str_replace(' - ', '.', (string)$k), $v);
+            } else {
+                $result[$k] = $v;
+            }
+        }
+
+        return $rootKey ? [$rootKey => $result] : $result;
     }
 }

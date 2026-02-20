@@ -72,9 +72,13 @@ class SeoMonitoringService
             ->where('seoable_id', $route['id'])
             ->first();
 
-        if (!$seo) return 0;
+        if (!$seo || !$seo->seoable) return 0;
 
-        $result = \App\Services\Seo\SeoScoreCalculator::calculate($seo);
+        /** @var \App\Services\Seo\SeoAuditService $auditService */
+        $auditService = app(\App\Services\Seo\SeoAuditService::class);
+        
+        // Calculate using the main audit service
+        $result = $auditService->audit($seo->seoable);
 
         // Persist the fix to the main SEO table too
         $seo->update(['seo_score' => $result['score']]);

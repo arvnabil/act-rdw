@@ -197,7 +197,7 @@ export default function BrandHeroSection({
                                                             "/assets/default.png"
                                                         )}
                                                         alt={
-                                                            item.alt ||
+                                                            item.title ||
                                                             "Award Badge"
                                                         }
                                                         className="img-fluid"

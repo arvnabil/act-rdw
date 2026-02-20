@@ -13,7 +13,7 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Product::with(['brand', 'service', 'category'])
+        $query = Product::with(['brand', 'service', 'categories'])
             ->where('is_active', true);
 
         // Filter by Search
@@ -39,7 +39,10 @@ class ProductController extends Controller
 
         // Filter by Category
         if ($request->filled('category')) {
-            $query->where('product_category_id', $request->input('category'));
+            $catId = $request->input('category');
+            $query->whereHas('categories', function($q) use ($catId) {
+                $q->where('product_categories.id', $catId);
+            });
         }
 
         // Sorting
@@ -74,13 +77,13 @@ class ProductController extends Controller
      */
     public function show($slug)
     {
-        $product = Product::with(['brand', 'service', 'solutions', 'category'])
+        $product = Product::with(['brand', 'service', 'solutions', 'categories'])
             ->where('slug', $slug)
             ->where('is_active', true)
             ->firstOrFail();
 
         // Get related products from the same service or brand
-        $relatedProducts = Product::with(['brand', 'service'])
+        $relatedProducts = Product::with(['brand', 'service', 'categories'])
             ->where('service_id', $product->service_id)
             ->where('id', '!=', $product->id)
             ->limit(4)
@@ -91,7 +94,7 @@ class ProductController extends Controller
                     'name' => $related->name,
                     'image_path' => $related->image_path,
                     'tag' => $related->tags ? $related->tags[0] ?? null : null,
-                    'category' => $related->service?->name ?? $related->category?->name ?? 'General',
+                    'category' => $related->categories->pluck('name')->join(', ') ?: ($related->service?->name ?? 'General'),
                     'slug' => $related->slug,
                     // Map price for ProductCard
                     'price' => $related->price,
@@ -109,26 +112,33 @@ class ProductController extends Controller
             'image' => $product->image_path ? "/storage/" . $product->image_path : null,
             'image_path' => $product->image_path,
             'sku' => $product->sku,
-            'solution_type' => $product->solutions
-                ->where('service_id', $product->service_id)
-                ->pluck('title')
-                ->unique()
-                ->join(', ') ?: $product->solution_type,
-            'datasheet_url' => $product->datasheet_url,
-            'description' => $product->description,
-            'category' => $product->category?->name ?? $product->service?->name ?? 'General',
-            'brand' => [
+                'solution_type' => $product->solutions
+                    ->where('service_id', $product->service_id)
+                    ->pluck('title')
+                    ->unique()
+                    ->join(', ') ?: $product->solution_type,
+                'solutions_list' => $product->solutions
+                    ->where('service_id', $product->service_id)
+                    ->unique('title')
+                    ->map(function($s) {
+                        return ['id' => $s->id, 'title' => $s->title, 'slug' => $s->slug];
+                    })->values(),
+                'datasheet_url' => $product->datasheet_url,
+                'description' => $product->description,
+                'category' => $product->categories->pluck('name')->join(', ') ?: ($product->service?->name ?? 'General'),
+                'categories_list' => $product->categories->map(function($c) {
+                    return ['id' => $c->id, 'name' => $c->name, 'slug' => $c->slug];
+                })->values(),
+                'brand' => [
                 'name' => $product->brand->name,
                 'logo' => $product->brand->logo,
                 'slug' => $product->brand->slug,
+                'config' => $product->brand->landing_config,
             ],
             'tags' => $product->tags ?? [],
             'specification' => $product->specs,
             'specification_text' => $product->specification_text,
-            'features' => $product->features ?? [], // Features is now a Repeater (Array of Objects), so we pass it directly.
-            // If legacy data exists (KeyValue format), the frontend might need to handle it or we migrate it.
-            // For now, assuming new data will be Repeater format. If it's an array of objects, passing directly is fine.
-            // If it's the old KeyValue object {"Key": "Value"}, we might want to normalize it, but let's assume valid data for now.
+            'features' => $product->features ?? [],
             'features_text' => $product->features_text,
             'related_products' => $relatedProducts,
             'link_accommerce' => $product->link_accommerce,

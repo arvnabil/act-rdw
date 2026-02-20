@@ -88,52 +88,60 @@ class ActivePublicRouteDetector
         ];
 
         foreach ($models as $config) {
-            $config['class']::query()
-                ->where(function ($q) {
-                    if (in_array('status', $q->getModel()->getFillable())) {
-                        $q->where('status', 'published');
-                    }
-                })
-                ->with('seo')
-                ->get()
-                ->each(function ($model) use ($config, &$detectedPaths, &$results, $includeNoindex) {
-                    $slug = $model->slug;
-                    $isHomepage = isset($model->is_homepage) && $model->is_homepage;
+            try {
+                $modelInstance = new $config['class'];
+                $table = $modelInstance->getTable();
+                $hasStatus = \Illuminate\Support\Facades\Schema::hasColumn($table, 'status');
 
-                    if (!$slug && !$isHomepage) return;
-
-                    // Normalize slug for homepage
-                    $checkKey = $isHomepage ? '/' : $slug;
-
-                    if ($detectedPaths->contains($checkKey)) return;
-
-                    // Check NOINDEX
-                    if (!$includeNoindex && ($model->seo && $model->seo->noindex)) return;
-
-                    try {
-                        if ($isHomepage) {
-                            $url = url('/');
-                        } elseif (Route::has('dynamic.resolve')) {
-                            $url = route('dynamic.resolve', ['slug' => $slug]);
-                        } else {
-                            return;
+                $config['class']::query()
+                    ->where(function ($q) use ($hasStatus) {
+                        if ($hasStatus) {
+                            $q->where('status', 'published');
                         }
+                    })
+                    ->with('seo')
+                    ->get()
+                    ->each(function ($model) use ($config, &$detectedPaths, &$results, $includeNoindex) {
+                        try {
+                            $slug = $model->slug;
+                            // ... existing logic ...
+                            $isHomepage = isset($model->is_homepage) && $model->is_homepage;
 
-                        $results->push([
-                            'id' => $model->id,
-                            'url' => $url,
-                            'model' => class_basename($model),
-                            'priority' => $isHomepage ? 1.0 : $config['priority'],
-                            'changefreq' => $isHomepage ? 'daily' : $config['freq'],
-                            'updated_at' => $model->updated_at,
-                            'is_noindex' => (bool) ($model->seo->noindex ?? false),
-                            'seo_score' => (int) ($model->seo->seo_score ?? 0),
-                            'canonical_url' => $model->seo->canonical_url ?? null,
-                        ]);
-                        $detectedPaths->push($checkKey);
-                    } catch (\Exception $e) {
-                    }
-                });
+                            if (!$slug && !$isHomepage) return;
+                            
+                            // ... check logic ...
+                            $checkKey = $isHomepage ? '/' : $slug;
+                            if ($detectedPaths->contains($checkKey)) return;
+                            if (!$includeNoindex && ($model->seo && $model->seo->noindex)) return;
+
+                            if ($isHomepage) {
+                                $url = url('/');
+                            } elseif (Route::has('dynamic.resolve')) {
+                                $url = route('dynamic.resolve', ['slug' => $slug]);
+                            } else {
+                                return;
+                            }
+
+                            $results->push([
+                                'id' => $model->id,
+                                'url' => $url,
+                                'model' => class_basename($model),
+                                'priority' => $isHomepage ? 1.0 : $config['priority'],
+                                'changefreq' => $isHomepage ? 'daily' : $config['freq'],
+                                'updated_at' => $model->updated_at,
+                                'is_noindex' => (bool) ($model->seo->noindex ?? false),
+                                'seo_score' => (int) ($model->seo->seo_score ?? 0),
+                                'canonical_url' => $model->seo->canonical_url ?? null,
+                            ]);
+                            $detectedPaths->push($checkKey);
+                        } catch (\Exception $e) {
+                            // Ignore individual record failures
+                        }
+                    });
+            } catch (\Exception $e) {
+                // Ignore model-level failures (e.g. table missing)
+                continue; 
+            }
         }
     }
 

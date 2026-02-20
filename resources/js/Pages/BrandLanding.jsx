@@ -150,7 +150,10 @@ const BrandLanding = ({
     const hero = resolveBrandSection(
         "hero",
         defaults.hero,
-        brand.landing_config?.hero,
+        { 
+            ...brand.landing_config?.hero, 
+            awards: brand.landing_config?.awards 
+        },
     );
 
     const solutions = resolveBrandSection(

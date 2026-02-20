@@ -171,7 +171,7 @@ export default function ServiceListSection({ services, getImageUrl, has_more, ct
                                         <div className="service-card-img-wrapper">
                                             <Link href={`/services/${service.slug}`}>
                                                 <img
-                                                    src={resolveImage(service.thumbnail)}
+                                                    src={resolveImage(service.thumbnail || service.featured_image)}
                                                     alt={service.name}
                                                     className="service-card-img"
                                                 />

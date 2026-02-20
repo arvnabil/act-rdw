@@ -68,7 +68,9 @@ class SeoHealthChart extends ChartWidget
             'App\\Models\\Page' => 'Pages',
             'App\\Models\\News' => 'News',
             'App\\Models\\Project' => 'Projects',
-            'App\\Models\\Product' => 'Products',
+            'Modules\\Core\\Models\\Product' => 'Products',
+            'Modules\\ServiceSolutions\\Models\\Service' => 'Services',
+            'Modules\\Core\\Models\\Brand' => 'Brands',
         ];
     }
 }

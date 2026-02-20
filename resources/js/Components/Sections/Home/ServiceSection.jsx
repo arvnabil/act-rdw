@@ -157,7 +157,7 @@ export default function ServiceSection({
                                     className="service-list background-image"
                                     style={{
                                         backgroundImage: `url(${getImageUrl(
-                                            service.thumbnail,
+                                            service.thumbnail || service.featured_image,
                                         )})`,
                                     }}
                                 >

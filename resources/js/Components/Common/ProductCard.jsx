@@ -78,9 +78,11 @@ export default function ProductCard({ product, className = "" }) {
                                 letterSpacing: "1px",
                             }}
                         >
-                            {product.category?.name ||
-                                product.service?.name ||
-                                "General"}
+                            {product.categories?.length > 0
+                                ? product.categories.map((c) => c.name).join(", ")
+                                : (typeof product.category === 'string' ? product.category : product.category?.name) ||
+                                  product.service?.name ||
+                                  "General"}
                         </span>
                     </div>
 
