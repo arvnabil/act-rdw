@@ -1,0 +1,1 @@
+const t=(t,s="/assets/default.png")=>{if(!t)return s;if(t.startsWith("http")||t.startsWith("/assets")||t.startsWith("/storage"))return t;const r=t.startsWith("/")?t.substring(1):t;return"/storage/".concat(r)};export{t as g};
