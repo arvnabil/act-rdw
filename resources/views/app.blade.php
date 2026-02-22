@@ -69,8 +69,7 @@
 
     <!-- End of Qontak Webchat Script -->
 
-    @routes
-    @routes
+    @routes('public')
     @viteReactRefresh
     @vite(['resources/css/app.css', 'resources/js/app.jsx'])
     @inertiaHead
@@ -82,13 +81,9 @@
 
 
 <body>
-    @php
-        $gtmIdBody = \App\Models\Setting::where('key', 'seo_gtm_id')->value('value');
-    @endphp
-
-    @if ($gtmIdBody)
+    @if ($gtmId)
         <!-- Google Tag Manager (noscript) -->
-        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ $gtmIdBody }}" height="0"
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ $gtmId }}" height="0"
                 width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <!-- End Google Tag Manager (noscript) -->
     @endif

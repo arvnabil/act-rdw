@@ -64,6 +64,14 @@ class PageSection extends Model
             $decoded['images'] = $newImages;
         }
 
+        // Auto-parse SEO links in content/description fields
+        $contentFields = ['content', 'description', 'text', 'body'];
+        foreach ($contentFields as $field) {
+            if (isset($decoded[$field]) && is_string($decoded[$field])) {
+                $decoded[$field] = \App\Helpers\SeoHelper::parse_links($decoded[$field]);
+            }
+        }
+
         return $decoded;
     }
 }

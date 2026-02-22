@@ -38,4 +38,9 @@ class Project extends Model
         'download_brochures' => 'array',
         'tags' => 'array',
     ];
+
+    public function getContentAttribute($value)
+    {
+        return \App\Helpers\SeoHelper::parse_links($value);
+    }
 }

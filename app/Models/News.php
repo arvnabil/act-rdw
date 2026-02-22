@@ -21,6 +21,11 @@ class News extends Model
         'published_at' => 'datetime',
     ];
 
+    public function getContentAttribute($value)
+    {
+        return \App\Helpers\SeoHelper::parse_links($value);
+    }
+
     public function categories()
     {
         return $this->belongsToMany(NewsCategory::class, 'news_category_post');
