@@ -11,14 +11,10 @@ return [
     | and cleaner source code.
     |
     */
-    'groups' => [
-        'public' => [
-            'except' => [
-                'filament.*',
-                'admin.*',
-                'ignition.*',
-                'sanctum.*',
-            ],
-        ],
+    'except' => [
+        'filament.*',
+        'admin.*',
+        'ignition.*',
+        'sanctum.*',
     ],
 ];

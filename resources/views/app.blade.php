@@ -69,7 +69,7 @@
 
     <!-- End of Qontak Webchat Script -->
 
-    @routes('public')
+    @routes
     @viteReactRefresh
     @vite(['resources/css/app.css', 'resources/js/app.jsx'])
     @inertiaHead
