@@ -48,6 +48,9 @@ class ProjectImporter extends Importer
             ImportColumn::make('is_featured')
                 ->boolean()
                 ->example(false),
+            ImportColumn::make('thumbnail')
+                ->label('Thumbnail (URL or path)')
+                ->fillRecordUsing(fn() => null),
             // SEO Columns
             ImportColumn::make('seo_title')
                 ->label('SEO Title')
@@ -134,6 +137,69 @@ class ProjectImporter extends Importer
             ['seoable_id' => $this->record->id, 'seoable_type' => get_class($this->record)],
             $seoData
         );
+
+        // Handle Thumbnail Auto-Download from URL or Local Fallback
+        if (isset($this->data['thumbnail'])) {
+            $thumbnailPath = trim($this->data['thumbnail']);
+            
+            if (empty($thumbnailPath) || strtoupper($thumbnailPath) === 'DELETE') {
+                $this->record->update(['thumbnail' => null]);
+            } else {
+                $contents = null;
+                $sourceType = 'unknown';
+
+                // Level 1: Check if it's a URL
+                if (str_starts_with($thumbnailPath, 'http')) {
+                    // Check if it's already a local URL
+                    $localPath = \App\Helpers\ImageHelper::getLocalPathFromUrl($thumbnailPath);
+                    if ($localPath) {
+                        \Log::info("ProjectImporter: Detected local URL '{$thumbnailPath}', skipping download and using existing file: {$localPath}");
+                        $this->record->update(['thumbnail' => $localPath]);
+                        $contents = null; // Skip further processing
+                    } else {
+                        \Log::info("ProjectImporter: Detected external URL '{$thumbnailPath}', starting migration to local storage.");
+                        try {
+                            // Robust URL handling: encode spaces
+                            $cleanUrl = str_replace(' ', '%20', $thumbnailPath);
+                            
+                            $response = \Illuminate\Support\Facades\Http::withoutVerifying()
+                                ->withHeaders([
+                                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+                                    'Accept' => 'image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
+                                ])
+                                ->timeout(60)
+                                ->retry(3, 1000)
+                                ->get($cleanUrl);
+
+                            \Log::info("ProjectImporter: Download response status: " . $response->status());
+
+                            if ($response->successful()) {
+                                $contents = $response->body();
+                                $sourceType = 'URL';
+                                \Log::info("ProjectImporter: Download successful, size: " . strlen($contents) . " bytes");
+                            } else {
+                                \Log::warning("ProjectImporter: URL download failed for {$thumbnailPath}. Status: " . $response->status());
+                            }
+                        } catch (\Throwable $e) {
+                             \Log::warning("ProjectImporter: URL download failed for {$thumbnailPath}. Error: " . $e->getMessage());
+                        }
+                    }
+                }
+
+                if ($contents) {
+                    try {
+                        $targetPathWithoutExt = 'projects/' . $this->record->slug . '/' . $this->record->slug . '-' . time();
+                        $newPath = \App\Helpers\ImageHelper::processAndConvert($contents, $targetPathWithoutExt);
+                        
+                        if ($newPath) {
+                            $this->record->update(['thumbnail' => $newPath]);
+                        }
+                    } catch (\Throwable $e) {
+                        \Log::warning("Project Image Processing failed: " . $e->getMessage());
+                    }
+                }
+            }
+        }
     }
 
     public static function getCompletedNotificationBody(Import $import): string

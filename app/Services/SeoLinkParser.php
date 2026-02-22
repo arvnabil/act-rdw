@@ -27,6 +27,29 @@ class SeoLinkParser
         return (new self($html))->execute();
     }
 
+    public static function getRelAttribute(?string $url): string
+    {
+        if (empty($url) || Str::startsWith($url, ['#', 'mailto:', 'tel:', '/', './', '../'])) {
+            return 'noopener noreferrer';
+        }
+
+        $appHost = parse_url(config('app.url'), PHP_URL_HOST) ?? '';
+        $host = parse_url($url, PHP_URL_HOST);
+
+        if (!$host || $host === $appHost) {
+            return 'noopener noreferrer';
+        }
+
+        $instance = new self('');
+        $rel = ['noopener', 'noreferrer'];
+
+        if (!$instance->isWhitelisted($host)) {
+            $rel[] = 'nofollow';
+        }
+
+        return implode(' ', $rel);
+    }
+
     protected function execute(): string
     {
         if (!Str::contains($this->content, '<a')) {

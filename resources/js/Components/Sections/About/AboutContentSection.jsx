@@ -300,7 +300,7 @@ export default function AboutContentSection({
                                     cta_label: `Kontak Kami About ${button_text !== 'Kontak Kami' ? button_text : ''}`.trim()
                                 })}
                                 target="_blank"
-                                rel="noopener"
+                                rel="noopener noreferrer"
                                 className="th-btn style3 th-radius th-icon"
                             >
                                 {button_text} <i className="fa-brands fa-whatsapp ms-2"></i>

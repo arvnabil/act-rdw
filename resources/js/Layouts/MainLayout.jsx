@@ -300,7 +300,7 @@ export default function MainLayout({ children }) {
                     Batalkan Preloader
                 </button>
                 <div className="preloader-inner">
-                    <img src="/assets/img/logo-icon3.svg" alt="img" />
+                    <img src="/assets/img/logo-icon3.svg" alt="ACTiV Logo Icon" />
                 </div>
             </div>
 
@@ -416,7 +416,7 @@ export default function MainLayout({ children }) {
                                 <div className="icon d-flex justify-content-center align-items-center">
                                     <img
                                         src="/assets/img/icon/phone.svg"
-                                        alt="img"
+                                        alt="Phone Icon"
                                     />
                                 </div>
                                 <div className="details">
@@ -442,7 +442,7 @@ export default function MainLayout({ children }) {
                                 <div className="icon d-flex justify-content-center align-items-center">
                                     <img
                                         src="/assets/img/icon/envelope.svg"
-                                        alt="img"
+                                        alt="Email Icon"
                                     />
                                 </div>
                                 <div className="details">
@@ -468,7 +468,7 @@ export default function MainLayout({ children }) {
                                 <div className="icon d-flex justify-content-center align-items-center">
                                     <img
                                         src="/assets/img/icon/location-dot.svg"
-                                        alt="img"
+                                        alt="Location Icon"
                                     />
                                 </div>
                                 <div className="details">
@@ -910,13 +910,13 @@ export default function MainLayout({ children }) {
                                             klien kami.
                                         </p>
                                         <div className="th-social">
-                                            <a href="https://www.facebook.com/">
+                                            <a href={settings?.facebook_url || "https://www.facebook.com/"} target="_blank" rel={settings?.facebook_url_rel || "noopener noreferrer"}>
                                                 <i className="fab fa-facebook-f"></i>
                                             </a>
-                                            <a href="https://www.twitter.com/">
+                                            <a href={settings?.twitter_url || "https://www.twitter.com/"} target="_blank" rel={settings?.twitter_url_rel || "noopener noreferrer"}>
                                                 <i className="fab fa-twitter"></i>
                                             </a>
-                                            <a href="https://www.linkedin.com/">
+                                            <a href={settings?.linkedin_url || "https://www.linkedin.com/"} target="_blank" rel={settings?.linkedin_url_rel || "noopener noreferrer"}>
                                                 <i className="fab fa-linkedin-in"></i>
                                             </a>
                                             <a
@@ -925,11 +925,11 @@ export default function MainLayout({ children }) {
                                                     cta_label: 'WhatsApp Footer Social'
                                                 }) || "https://www.whatsapp.com/"}
                                                 target="_blank"
-                                                rel="noopener"
+                                                rel="noopener noreferrer"
                                             >
                                                 <i className="fab fa-whatsapp"></i>
                                             </a>
-                                            <a href="https://instagram.com/">
+                                            <a href={settings?.instagram_url || "https://instagram.com/"} target="_blank" rel={settings?.instagram_url_rel || "noopener noreferrer"}>
                                                 <i className="fab fa-instagram"></i>
                                             </a>
                                         </div>
@@ -995,6 +995,8 @@ export default function MainLayout({ children }) {
                                                             cta_position: 'footer_info',
                                                             cta_label: 'WhatsApp Footer Text'
                                                         })}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
                                                         className="info-box_link"
                                                     >
                                                         WA: (+62) 851-6299-4602
@@ -1047,8 +1049,9 @@ export default function MainLayout({ children }) {
                                                         style={{
                                                             color: "#fff",
                                                         }}
-                                                        href="https://maps.app.goo.gl/td2c6mkExW9zmY7C8"
+                                                        href={settings?.map_url || "https://maps.app.goo.gl/td2c6mkExW9zmY7C8"}
                                                         target="_blank"
+                                                        rel={settings?.map_url_rel || "noopener noreferrer"}
                                                     >
                                                         Infinity Office, Belleza
                                                         BSA 1st Floor Unit 106,

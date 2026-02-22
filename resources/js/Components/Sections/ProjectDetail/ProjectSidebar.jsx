@@ -57,7 +57,7 @@ export default function ProjectSidebar({ project }) {
                         <div className="sidebar-info-content">
                             <span className="sidebar-info-meta">Address:</span>
                             <h4 className="sidebar-info-title">
-                                <a href={project.map_url} target="_blank">
+                                <a href={project.map_url} target="_blank" rel={project.map_url_rel || "noopener noreferrer"}>
                                     {project.address}
                                 </a>
                             </h4>

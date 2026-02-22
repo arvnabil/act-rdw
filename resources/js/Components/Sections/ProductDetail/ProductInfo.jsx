@@ -73,7 +73,7 @@ export default function ProductInfo({ product }) {
                                         Datasheet
                                     </span>
                                     <h4 className="team-info-title">
-                                        <a href={product.datasheet_url}>
+                                        <a href={product.datasheet_url} target="_blank" rel={product.datasheet_rel || "noopener noreferrer"}>
                                             See datasheet
                                         </a>
                                     </h4>
@@ -119,7 +119,7 @@ export default function ProductInfo({ product }) {
                             <a
                                 href={link}
                                 target="_blank"
-                                rel="noopener"
+                                rel="noopener noreferrer"
                                 className="th-btn th-icon"
                             >
                                 Permintaan Harga Terbaik{" "}
@@ -133,7 +133,7 @@ export default function ProductInfo({ product }) {
                         <a
                             href={product.link_accommerce}
                             target="_blank"
-                            rel="noreferrer"
+                            rel={product.link_accommerce_rel || "noopener noreferrer"}
                             className="th-btn th-icon"
                             style={{
                                 backgroundColor: "#0056b3",

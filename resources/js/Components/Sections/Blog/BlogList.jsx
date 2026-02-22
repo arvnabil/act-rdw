@@ -11,7 +11,7 @@ export default function BlogList({ posts }) {
                 >
                     <div className="blog-img">
                         <Link href={post.link}>
-                            <img src={post.image} alt="Blog Image" />
+                            <img src={post.image} alt={post.title} />
                         </Link>
                     </div>
                     <div className="blog-content">

@@ -35,4 +35,19 @@ class Brand extends Model
     {
         return $this->morphOne(\App\Models\SeoMeta::class, 'seoable');
     }
+
+    public function getLandingConfigAttribute($value)
+    {
+        $decoded = is_string($value) ? json_decode($value, true) : $value;
+        if (!is_array($decoded)) {
+            return $decoded ?: [];
+        }
+
+        // Auto-generate rel for cta_url
+        if (isset($decoded['cta_url']) && is_string($decoded['cta_url'])) {
+            $decoded['cta_url_rel'] = \App\Helpers\SeoHelper::get_rel($decoded['cta_url']);
+        }
+
+        return $decoded;
+    }
 }

@@ -181,7 +181,7 @@ export default function ContactSection({
                                                     cta_label: 'WhatsApp Contact Page'
                                                 }) || "#"}
                                                 target="_blank"
-                                                rel="noopener"
+                                                rel="noopener noreferrer"
                                             >
                                                 WA: {whatsapp}
                                             </a>

@@ -67,6 +67,7 @@ export default function ProductShowcase({ product }) {
         value: product.datasheet_url ? null : "Tidak tersedia", 
         icon: "fa-file-pdf", 
         link: product.datasheet_url || null,
+        rel: product.datasheet_rel || "noopener noreferrer",
         isDatasheet: true
     });
 
@@ -189,7 +190,12 @@ export default function ProductShowcase({ product }) {
                                 <div 
                                     key={idx} 
                                     className={`premium-grid-card ${item.link ? 'cursor-pointer' : ''}`}
-                                    onClick={() => item.link && window.open(item.link, '_blank')}
+                                    onClick={() => {
+                                        if (item.link) {
+                                            const win = window.open(item.link, '_blank', 'noopener,noreferrer');
+                                            if (win) win.opener = null;
+                                        }
+                                    }}
                                 >
                                     <span className="premium-card-label">
                                         <i className={`fa-solid ${item.icon} text-success`}></i>
@@ -237,12 +243,12 @@ export default function ProductShowcase({ product }) {
 
                         {/* CTA AREA */}
                         <div className="d-flex flex-wrap gap-3">
-                            <a href={whatsappLink} target="_blank" rel="noopener" className="premium-btn-primary d-flex align-items-center gap-2">
+                            <a href={whatsappLink} target="_blank" rel="noopener noreferrer" className="premium-btn-primary d-flex align-items-center gap-2">
                                 Permintaan Harga Terbaik
                                 <i className="fa-solid fa-paper-plane ms-1"></i>
                             </a>
                             {product.link_accommerce && (
-                                <a href={product.link_accommerce} target="_blank" rel="noopener" className="premium-btn-online d-flex align-items-center gap-2">
+                                <a href={product.link_accommerce} target="_blank" rel={product.link_accommerce_rel || "noopener noreferrer"} className="premium-btn-online d-flex align-items-center gap-2">
                                     Pembelian Online Store
                                     <i className="fa-solid fa-cart-shopping ms-1"></i>
                                 </a>

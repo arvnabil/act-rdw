@@ -15,6 +15,11 @@ class ClientImporter extends Importer
     public static function getColumns(): array
     {
         return [
+            ImportColumn::make('id')
+                ->label('id')
+                ->numeric()
+                ->rules(['nullable', 'integer'])
+                ->example(1),
             ImportColumn::make('name')
                 ->requiredMapping()
                 ->rules(['required', 'max:255'])
@@ -24,7 +29,8 @@ class ClientImporter extends Importer
                 ->rules(['required', 'max:255'])
                 ->example('pt-telkom-indonesia-persero-tbk'),
             ImportColumn::make('logo')
-                ->castStateUsing(fn ($state) => blank($state) ? null : $state)
+                ->label('Logo (URL or path)')
+                ->fillRecordUsing(fn() => null)
                 ->example('clients/telkom-indonesia.png'),
             ImportColumn::make('website_url')
                 ->castStateUsing(fn ($state) => blank($state) ? null : $state)
@@ -98,8 +104,8 @@ class ClientImporter extends Importer
 
     protected function afterSave(): void
     {
-        \Log::info('Importing Client ID: ' . $this->record->id . ' | Slug: ' . $this->record->slug);
-        \Log::info('Raw Data for SEO:', $this->data);
+        \Log::info('ClientImporter: afterSave started for Record Service: ' . $this->record->id);
+        \Log::info('ClientImporter: Record current logo in DB: ' . $this->record->logo);
 
         $seoKeywords = $this->data['seo_keywords'] ?? null;
         $seoKeywords = blank($seoKeywords) ? null : array_map('trim', explode(',', $seoKeywords));
@@ -119,10 +125,68 @@ class ClientImporter extends Importer
             ['seoable_id' => $this->record->id, 'seoable_type' => get_class($this->record)],
             $seoData
         );
+
+        // Handle external logo download
+        $logo = isset($this->data['logo']) ? trim($this->data['logo']) : null;
+        \Log::info('ClientImporter: Logo value from CSV: ' . ($logo ?: 'NULL'));
+
+        if (!blank($logo) && (filter_var($logo, FILTER_VALIDATE_URL) || str_starts_with($logo, 'http'))) {
+            // 1. Check if it's already a local URL
+            $localPath = \App\Helpers\ImageHelper::getLocalPathFromUrl($logo);
+            
+            if ($localPath) {
+                \Log::info("ClientImporter: Detected local URL '{$logo}', skipping download and using existing file: {$localPath}");
+                $this->record->update(['logo' => $localPath]);
+            } else {
+                \Log::info("ClientImporter: Detected external URL '{$logo}', starting migration to local storage.");
+                try {
+                    // Robust URL handling: encode spaces
+                    $cleanUrl = str_replace(' ', '%20', $logo);
+                    
+                    $response = \Illuminate\Support\Facades\Http::withoutVerifying()
+                        ->withHeaders([
+                            'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+                            'Accept' => 'image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
+                        ])
+                        ->timeout(60)
+                        ->retry(3, 1000)
+                        ->get($cleanUrl);
+
+                    \Log::info("ClientImporter: Download response status: " . $response->status());
+
+                    if ($response->successful()) {
+                        $contents = $response->body();
+                        \Log::info("ClientImporter: Download successful, size: " . strlen($contents) . " bytes");
+                        
+                        $filename = \Illuminate\Support\Str::slug($this->record->name ?: 'client') . '-' . time();
+                        $targetPath = 'clients/' . $filename;
+                        
+                        $savedPath = \App\Helpers\ImageHelper::processAndConvert($contents, $targetPath);
+                        if ($savedPath) {
+                            \Log::info("ClientImporter: Image processed and saved to: {$savedPath}");
+                            $this->record->update(['logo' => $savedPath]);
+                            \Log::info("ClientImporter: Record updated with new logo path.");
+                        } else {
+                            \Log::error("ClientImporter: ImageHelper returned NULL after processing.");
+                        }
+                    } else {
+                        \Log::warning('ClientImporter: URL download failed. Status: ' . $response->status() . ' URL: ' . $logo);
+                    }
+                } catch (\Throwable $e) {
+                    \Log::error('ClientImporter: Failed to download/process logo: ' . $e->getMessage());
+                }
+            }
+        } else {
+            \Log::info("ClientImporter: Logo is either blank or NOT a URL. Skipping download.");
+        }
     }
 
     public function resolveRecord(): Client
     {
+        if ($this->data['id'] ?? null) {
+            return Client::findOrNew($this->data['id']);
+        }
+
         return Client::firstOrNew([
             'slug' => $this->data['slug'],
         ]);

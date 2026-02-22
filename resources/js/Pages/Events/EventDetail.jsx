@@ -315,7 +315,7 @@ export default function EventDetail({ event }) {
                                                                 speaker.linkedin_link
                                                             }
                                                             target="_blank"
-                                                            rel="noreferrer"
+                                                            rel={speaker.linkedin_rel || "noopener noreferrer"}
                                                             className="rounded-circle d-flex align-items-center justify-content-center text-muted hover-theme"
                                                             style={{
                                                                 width: "32px",
@@ -335,7 +335,7 @@ export default function EventDetail({ event }) {
                                                                 speaker.instagram_link
                                                             }
                                                             target="_blank"
-                                                            rel="noreferrer"
+                                                            rel={speaker.instagram_rel || "noopener noreferrer"}
                                                             className="rounded-circle d-flex align-items-center justify-content-center text-muted hover-theme"
                                                             style={{
                                                                 width: "32px",
@@ -355,7 +355,7 @@ export default function EventDetail({ event }) {
                                                                 speaker.tiktok_link
                                                             }
                                                             target="_blank"
-                                                            rel="noreferrer"
+                                                            rel={speaker.tiktok_rel || "noopener noreferrer"}
                                                             className="rounded-circle d-flex align-items-center justify-content-center text-muted hover-theme"
                                                             style={{
                                                                 width: "32px",

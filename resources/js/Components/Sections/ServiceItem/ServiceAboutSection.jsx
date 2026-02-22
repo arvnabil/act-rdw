@@ -59,6 +59,7 @@ export default function ServiceAboutSection({ item, getImageUrl, waLink }) {
                                     <a
                                         href={waLink}
                                         target="_blank"
+                                        rel="noopener noreferrer"
                                         className="th-btn black-btn th-radius th-icon w-100 w-sm-auto"
                                     >
                                         Konsultasi Sekarang{" "}

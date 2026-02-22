@@ -133,6 +133,7 @@ export default function Certificate({ auth, certificates }) {
                                                     <a
                                                         href={cert.file_path}
                                                         target="_blank"
+                                                        rel="noopener noreferrer"
                                                         download
                                                         className="th-btn w-100 rounded-pill fw-bold border-2 d-flex align-items-center justify-content-center"
                                                         style={{

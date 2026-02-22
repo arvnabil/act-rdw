@@ -12,6 +12,7 @@ export default function AboutSection({
     button_text,
     button_url,
     button_whatsapp,
+    button_url_rel,
     show_button = true, // Default to true if not provided
 }) {
     // Defaults
@@ -79,12 +80,12 @@ export default function AboutSection({
                             <div className="row gy-4">
                                 <div className="col-xl-6 col-md-6 col-12">
                                     <div className="img1 reveal mb-0">
-                                        <img src={imgs[0]} alt="About" />
+                                        <img src={imgs[0]} alt="Tentang ACTiV (PT Alfa Cipta Teknologi Virtual)" />
                                     </div>
                                 </div>
                                 <div className="col-xl-6 col-md-6 col-12">
                                     <div className="img2 reveal mb-0">
-                                        <img src={imgs[1]} alt="About" />
+                                        <img src={imgs[1]} alt="Tentang ACTiV (PT Alfa Cipta Teknologi Virtual)" />
                                     </div>
                                 </div>
                             </div>
@@ -93,7 +94,7 @@ export default function AboutSection({
                     <div className="col-xl-6 col-lg-6">
                         <div className="img-box8 ms-xl-5">
                             <div className="img3 reveal">
-                                <img src={imgs[2]} alt="About" />
+                                <img src={imgs[2]} alt="Tentang ACTiV (PT Alfa Cipta Teknologi Virtual)" />
                             </div>
                             <div className="about-item-wrap">
                                 {feats.map((feat, i) => (
@@ -103,7 +104,7 @@ export default function AboutSection({
                                         key={i}
                                     >
                                         <div className="about-item_img d-flex justify-content-center align-items-center">
-                                            <img src={feat.icon} alt="" />
+                                            <img src={feat.icon} alt={feat.title} />
                                         </div>
                                         <div className="about-item_centent">
                                             <h5 className="box-title">
@@ -121,14 +122,25 @@ export default function AboutSection({
                                     className="mt-35 wow fadeInUp"
                                     data-wow-delay=".5s"
                                 >
-                                    <Link
-                                        href={button_whatsapp ? getWhatsAppLink(button_whatsapp, { cta_position: 'about_home', cta_label: `About Section ${btnText}` }) : btnUrl}
-                                        className="th-btn th-radius th-icon"
-                                        target={button_whatsapp ? "_blank" : undefined}
-                                    >
-                                        {btnText}{" "}
-                                        <i className={button_whatsapp ? "fa-brands fa-whatsapp ms-2" : "fa-light fa-arrow-right-long"}></i>
-                                    </Link>
+                                    {button_whatsapp || (button_url && (button_url.startsWith('http') || button_url_rel?.includes('nofollow'))) ? (
+                                        <a
+                                            href={button_whatsapp ? getWhatsAppLink(button_whatsapp, { cta_position: 'about_home', cta_label: `About Section ${btnText}` }) : btnUrl}
+                                            className="th-btn th-radius th-icon"
+                                            target="_blank"
+                                            rel={button_whatsapp ? "noopener noreferrer" : (button_url_rel || "noopener noreferrer")}
+                                        >
+                                            {btnText}{" "}
+                                            <i className={button_whatsapp ? "fa-brands fa-whatsapp ms-2" : "fa-light fa-arrow-right-long"}></i>
+                                        </a>
+                                    ) : (
+                                        <Link
+                                            href={btnUrl}
+                                            className="th-btn th-radius th-icon"
+                                        >
+                                            {btnText}{" "}
+                                            <i className="fa-light fa-arrow-right-long"></i>
+                                        </Link>
+                                    )}
                                 </div>
                             )}
                         </div>

@@ -4,7 +4,7 @@ import Breadcrumb from "@/Components/Common/Breadcrumb";
 import ClientListSection from "@/Components/Sections/Clients/ClientListSection";
 import Seo from "@/Components/Common/Seo";
 
-export default function Clients({ clients, categories, seo }) {
+export default function Clients({ clients, categories, filters, seo }) {
     return (
         <MainLayout>
             <Seo seo={seo} />
@@ -13,7 +13,12 @@ export default function Clients({ clients, categories, seo }) {
                 items={[{ label: "Home", link: "/" }, { label: "Clients" }]}
             />
 
-            <ClientListSection clients={clients} categories={categories} />
+            <ClientListSection 
+                clients={clients.data} 
+                pagination={clients.links}
+                categories={categories} 
+                filters={filters}
+            />
         </MainLayout>
     );
 }

@@ -112,7 +112,7 @@ export default function EventRoom({
                                     <a
                                         href={event.meeting_link}
                                         target="_blank"
-                                        rel="noreferrer"
+                                        rel={event.meeting_link_rel || "noopener noreferrer"}
                                         className="btn th-btn th-radius px-5"
                                     >
                                         <i className="fa-solid fa-external-link-alt me-2"></i>{" "}

@@ -116,7 +116,10 @@ class DynamicResolverController extends Controller
             $project->thumbnail = $project->thumbnail ? "/storage/" . $project->thumbnail : null;
 
             return Inertia::render('Projects/Detail', [
-                'project' => $project,
+                'project' => array_merge($project->toArray(), [
+                    'thumbnail' => $project->thumbnail,
+                    'map_url_rel' => \App\Helpers\SeoHelper::get_rel($project->map_url)
+                ]),
                 'seo' => SeoResolver::for($project),
             ]);
         }

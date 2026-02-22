@@ -14,6 +14,7 @@ export default function WhyChooseUsSection({
     button_text,
     button_url,
     button_whatsapp,
+    button_url_rel,
     builderMode,
 }) {
     // Defaults
@@ -89,7 +90,7 @@ export default function WhyChooseUsSection({
                                         key={i}
                                     >
                                         <div className="about-item_img d-flex justify-content-center align-items-center">
-                                            <img src={feat.icon} alt="" />
+                                            <img src={feat.icon} alt={feat.title} />
                                         </div>
                                         <div className="about-item_centent">
                                             <h5 className="box-title">
@@ -107,14 +108,25 @@ export default function WhyChooseUsSection({
                                     className={`mt-35 mb-2 ${wow("wow fadeInUp")}`}
                                     data-wow-delay=".5s"
                                 >
-                                    <Link
-                                        href={button_whatsapp ? getWhatsAppLink(button_whatsapp, { cta_position: 'why_choose_us', cta_label: `WCU Section ${btnText}` }) : btnUrl}
-                                        className="th-btn th-radius th-icon"
-                                        target={button_whatsapp ? "_blank" : undefined}
-                                    >
-                                        {btnText}{" "}
-                                        <i className={button_whatsapp ? "fa-brands fa-whatsapp ms-2" : "fa-light fa-arrow-right-long"}></i>
-                                    </Link>
+                                    {button_whatsapp || (button_url && (button_url.startsWith('http') || button_url_rel?.includes('nofollow'))) ? (
+                                        <a
+                                            href={button_whatsapp ? getWhatsAppLink(button_whatsapp, { cta_position: 'why_choose_us', cta_label: `WCU Section ${btnText}` }) : btnUrl}
+                                            className="th-btn th-radius th-icon"
+                                            target="_blank"
+                                            rel={button_whatsapp ? "noopener noreferrer" : (button_url_rel || "noopener noreferrer")}
+                                        >
+                                            {btnText}{" "}
+                                            <i className={button_whatsapp ? "fa-brands fa-whatsapp ms-2" : "fa-light fa-arrow-right-long"}></i>
+                                        </a>
+                                    ) : (
+                                        <Link
+                                            href={btnUrl}
+                                            className="th-btn th-radius th-icon"
+                                        >
+                                            {btnText}{" "}
+                                            <i className="fa-light fa-arrow-right-long"></i>
+                                        </Link>
+                                    )}
                                 </div>
                             )}
                         </div>
@@ -122,10 +134,10 @@ export default function WhyChooseUsSection({
                     <div className="col-xl-6">
                         <div className="img-box4 ab5-imgbox space-bottom text-end">
                             <div className="img1 reveal">
-                                <img src={imgs[0]} alt="About" />
+                                <img src={imgs[0]} alt="Tentang ACTiV (PT Alfa Cipta Teknologi Virtual)" />
                             </div>
                             <div className="img2">
-                                <img src={imgs[1]} alt="About" />
+                                <img src={imgs[1]} alt="Tentang ACTiV (PT Alfa Cipta Teknologi Virtual)" />
                                 <a
                                     href={vidUrl}
                                     className="play-btn popup-video"

@@ -1,21 +1,23 @@
-import React, { useState, useMemo } from "react";
-import { Link } from "@inertiajs/react";
+import React, { useState } from "react";
+import { Link, router } from "@inertiajs/react";
+import ProductPagination from "@/Components/Sections/Products/ProductPagination";
 
-export default function ClientListSection({ clients = [], categories = [] }) {
-    const [selectedCategory, setSelectedCategory] = useState("All Clients");
-    const [filters, setFilters] = useState({
-        featured: false,
-    });
+export default function ClientListSection({ 
+    clients = [], 
+    categories = [], 
+    pagination = [], 
+    filters = {} 
+}) {
+    const [selectedCategory, setSelectedCategory] = useState(filters.category || "All Clients");
 
-    const filteredClients = useMemo(() => {
-        return clients.filter((client) => {
-            const matchesCategory =
-                selectedCategory === "All Clients" ||
-                (client.categories && client.categories.includes(selectedCategory));
-            const matchesFeatured = !filters.featured || client.is_featured;
-            return matchesCategory && matchesFeatured;
+    const handleCategoryClick = (categoryName) => {
+        setSelectedCategory(categoryName);
+        router.get(route('clients'), { category: categoryName }, {
+            preserveScroll: true,
+            preserveState: true,
+            only: ['clients', 'filters']
         });
-    }, [clients, selectedCategory, filters]);
+    };
 
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -97,10 +99,7 @@ export default function ClientListSection({ clients = [], categories = [] }) {
                                         style={{ zIndex: 1000, animationDuration: '0.3s' }}>
                                         <div className="p-2 d-flex flex-column gap-1">
                                             <button
-                                                onClick={() => {
-                                                    setSelectedCategory("All Clients");
-                                                    setIsDropdownOpen(false);
-                                                }}
+                                                onClick={() => handleCategoryClick("All Clients")}
                                                 className={`d-flex align-items-center justify-content-between px-3 py-2.5 rounded-3 border-0 transition-all ${selectedCategory === "All Clients" ? "bg-light text-success fw-bold" : "bg-transparent text-secondary"
                                                     }`}
                                                 style={{ textAlign: 'left', fontSize: '13.5px' }}
@@ -112,10 +111,7 @@ export default function ClientListSection({ clients = [], categories = [] }) {
                                             {categories.map((cat) => (
                                                 <button
                                                     key={cat.name}
-                                                    onClick={() => {
-                                                        setSelectedCategory(cat.name);
-                                                        setIsDropdownOpen(false);
-                                                    }}
+                                                    onClick={() => handleCategoryClick(cat.name)}
                                                     className={`d-flex align-items-center justify-content-between px-3 py-2.5 rounded-3 border-0 transition-all ${selectedCategory === cat.name ? "bg-light text-success fw-bold" : "bg-transparent text-secondary"
                                                         }`}
                                                     style={{ textAlign: 'left', fontSize: '13.5px' }}
@@ -136,7 +132,7 @@ export default function ClientListSection({ clients = [], categories = [] }) {
                                 <h3 className="widget_title mb-4" style={{ fontSize: '18px', fontWeight: '700', color: '#0F172A', letterSpacing: '-0.01em' }}>Categories</h3>
                                 <div className="d-flex flex-column gap-1">
                                     <button
-                                        onClick={() => setSelectedCategory("All Clients")}
+                                        onClick={() => handleCategoryClick("All Clients")}
                                         className={`category-btn d-flex align-items-center justify-content-between px-3 py-2.5 rounded-3 border-0 shadow-sm ${selectedCategory === "All Clients" ? "active font-bold" : "bg-white text-secondary hover-bg-light"
                                             }`}
                                         style={{ textAlign: 'left', fontSize: '13px' }}
@@ -151,7 +147,7 @@ export default function ClientListSection({ clients = [], categories = [] }) {
                                     {categories.map((cat) => (
                                         <button
                                             key={cat.name}
-                                            onClick={() => setSelectedCategory(cat.name)}
+                                            onClick={() => handleCategoryClick(cat.name)}
                                             className={`category-btn d-flex align-items-center justify-content-between px-3 py-2.5 rounded-3 border-0 shadow-sm ${selectedCategory === cat.name ? "active font-bold" : "bg-white text-secondary hover-bg-light"
                                                 }`}
                                             style={{ textAlign: 'left', fontSize: '13px' }}
@@ -177,19 +173,19 @@ export default function ClientListSection({ clients = [], categories = [] }) {
                                     {selectedCategory}
                                 </h2>
                                 <p className="text-secondary mt-1 mb-0" style={{ fontSize: '13.5px' }}>
-                                    Showing {filteredClients.length} trusted clients
+                                    Showing {clients.length} trusted clients
                                 </p>
                             </div>
                         </div>
 
                         <div className="row gy-4 gx-3">
-                            {filteredClients.map((client, idx) => (
+                            {clients.map((client, idx) => (
                                 <div key={client.id} className="col-sm-6 col-md-4 col-xl-3 fade-in-up" style={{ animationDelay: `${idx * 0.1}s` }}>
                                     <div className="partner-card bg-white border shadow-sm overflow-hidden position-relative" style={{ height: '100%', borderRadius: '14px' }}>
                                         <a
                                             href={client.website_url || "#"}
                                             target="_blank"
-                                            rel="noopener noreferrer"
+                                            rel={client.website_rel || "noopener noreferrer"}
                                             className="d-block text-decoration-none"
                                             onClick={(e) => !client.website_url && e.preventDefault()}
                                         >
@@ -222,7 +218,11 @@ export default function ClientListSection({ clients = [], categories = [] }) {
                             ))}
                         </div>
 
-                        {filteredClients.length === 0 && (
+                        {pagination && pagination.length > 3 && (
+                            <ProductPagination links={pagination} />
+                        )}
+
+                        {clients.length === 0 && (
                             <div className="bg-white rounded-4 p-5 text-center shadow-sm mt-4 border border-dashed">
                                 <div className="bg-light rounded-circle d-inline-flex p-4 mb-4">
                                     <i className="fa-light fa-search text-secondary" style={{ fontSize: '32px' }}></i>

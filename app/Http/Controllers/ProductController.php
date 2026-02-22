@@ -124,6 +124,7 @@ class ProductController extends Controller
                         return ['id' => $s->id, 'title' => $s->title, 'slug' => $s->slug];
                     })->values(),
                 'datasheet_url' => $product->datasheet_url,
+                'datasheet_rel' => \App\Helpers\SeoHelper::get_rel($product->datasheet_url),
                 'description' => $product->description,
                 'category' => $product->categories->pluck('name')->join(', ') ?: ($product->service?->name ?? 'General'),
                 'categories_list' => $product->categories->map(function($c) {
@@ -142,6 +143,7 @@ class ProductController extends Controller
             'features_text' => $product->features_text,
             'related_products' => $relatedProducts,
             'link_accommerce' => $product->link_accommerce,
+            'link_accommerce_rel' => \App\Helpers\SeoHelper::get_rel($product->link_accommerce),
             'whatsapp_note' => $product->whatsapp_note,
         ];
 

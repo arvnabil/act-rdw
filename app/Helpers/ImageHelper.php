@@ -13,6 +13,8 @@ class ImageHelper
      */
     public static function processAndConvert(string $contents, string $targetPathWithoutExtension, string $disk = 'public'): ?string
     {
+        Log::debug("ImageHelper: Starting processAndConvert for target: {$targetPathWithoutExtension}");
+
         if (empty($contents)) {
             Log::warning("ImageHelper: Zero-length content provided.");
             return null;
@@ -21,6 +23,22 @@ class ImageHelper
         try {
             $imagick = new \Imagick();
             $imagick->readImageBlob($contents);
+            Log::debug("ImageHelper: Image blob read successfully.");
+
+            // Auto-orient
+            $orientation = $imagick->getImageOrientation();
+            if ($orientation !== \Imagick::ORIENTATION_TOPLEFT) {
+                Log::info("ImageHelper: Auto-orienting image from orientation: {$orientation}");
+                switch($orientation) {
+                    case \Imagick::ORIENTATION_BOTTOMRIGHT: $imagick->rotateimage("#000", 180); break;
+                    case \Imagick::ORIENTATION_RIGHTTOP: $imagick->rotateimage("#000", 90); break;
+                    case \Imagick::ORIENTATION_LEFTBOTTOM: $imagick->rotateimage("#000", -90); break;
+                }
+                $imagick->setImageOrientation(\Imagick::ORIENTATION_TOPLEFT);
+                Log::debug("ImageHelper: Image auto-oriented.");
+            } else {
+                Log::debug("ImageHelper: Image already in TOPLEFT orientation, no auto-orientation needed.");
+            }
 
             // 1. Identify format
             $originalFormat = strtolower($imagick->getImageFormat());
@@ -34,11 +52,13 @@ class ImageHelper
                 if (!empty($formats)) {
                     $imagick->setImageFormat('webp');
                     $imagick->setImageCompressionQuality(80);
+                    Log::debug("ImageHelper: Set image format to WebP with quality 80.");
                     
                     // Handle Alpha Channel for WebP
                     if (in_array($originalFormat, ['png', 'gif', 'webp', 'avif'])) {
                         $imagick->setImageAlphaChannel(\Imagick::ALPHACHANNEL_ACTIVATE);
                         $imagick->setBackgroundColor(new \ImagickPixel('transparent'));
+                        Log::debug("ImageHelper: Activated alpha channel and set background to transparent for WebP conversion.");
                     }
                     
                     $finalExtension = 'webp';
@@ -98,5 +118,76 @@ class ImageHelper
                 return null;
             }
         }
+    }
+
+    /**
+     * Extracts a local relative path from a full URL if it belongs to the current application.
+     * Returns the relative path IF the file exists on the local disk AND the domain matches APP_URL.
+     * Returns null for external domains (forcing a download).
+     */
+    public static function getLocalPathFromUrl(?string $url): ?string
+    {
+        if (empty($url)) {
+            return null;
+        }
+
+        // 1. If it's already a relative path that exists in storage, return it
+        if (!str_starts_with($url, 'http')) {
+            $cleanPath = ltrim($url, '/');
+            // Remove 'storage/' prefix if it's there
+            if (str_starts_with($cleanPath, 'storage/')) {
+                $cleanPath = substr($cleanPath, 8);
+            }
+            if (\Illuminate\Support\Facades\Storage::disk('public')->exists($cleanPath)) {
+                Log::debug("ImageHelper: Path '{$url}' identified as direct local storage path.");
+                return $cleanPath;
+            }
+            return null;
+        }
+
+        $appUrl = rtrim(config('app.url'), '/');
+        $storageUrl = rtrim(\Illuminate\Support\Facades\Storage::url('/'), '/');
+        
+        // Normalize URLs for comparison
+        $urlParts = parse_url($url);
+        $appParts = parse_url($appUrl);
+        
+        $urlHost = strtolower($urlParts['host'] ?? '');
+        $appHost = strtolower($appParts['host'] ?? '');
+
+        // STRICT DOMAIN CHECK: If hosts don't match, it's EXTERNAL
+        if (empty($urlHost) || $urlHost !== $appHost) {
+            Log::info("ImageHelper: URL '{$url}' host '{$urlHost}' does NOT match app host '{$appHost}'. Identified as EXTERNAL.");
+            return null;
+        }
+
+        Log::info("ImageHelper: URL '{$url}' host matches app host '{$appHost}'. Identified as INTERNAL.");
+
+        $path = $urlParts['path'] ?? '';
+        
+        // If storageUrl is absolute (contains http), check it
+        if (str_starts_with($storageUrl, 'http')) {
+            $storageParts = parse_url($storageUrl);
+            $storagePath = rtrim($storageParts['path'] ?? '', '/');
+            
+            if (!empty($storagePath) && str_starts_with($path, $storagePath)) {
+                $relativePath = ltrim(substr($path, strlen($storagePath)), '/');
+                if (\Illuminate\Support\Facades\Storage::disk('public')->exists($relativePath)) {
+                    return $relativePath;
+                }
+            }
+        } else {
+            // storageUrl is relative like '/storage/'
+            $storagePath = rtrim($storageUrl, '/');
+            if (!empty($storagePath) && str_starts_with($path, $storagePath)) {
+                $relativePath = ltrim(substr($path, strlen($storagePath)), '/');
+                if (\Illuminate\Support\Facades\Storage::disk('public')->exists($relativePath)) {
+                    return $relativePath;
+                }
+            }
+        }
+        
+        Log::warning("ImageHelper: URL '{$url}' identified as INTERNAL but file not found in public storage.");
+        return null;
     }
 }

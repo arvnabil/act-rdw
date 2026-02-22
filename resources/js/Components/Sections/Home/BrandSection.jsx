@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "@inertiajs/react";
 
 export default function BrandSection({
     brands,
@@ -8,6 +9,7 @@ export default function BrandSection({
     show_button = true,
     button_text = "Lihat Semua Partner",
     button_url = "/partners",
+    button_url_rel,
 }) {
     // Normalize show_button to boolean
     const shouldShowButton =
@@ -55,10 +57,13 @@ export default function BrandSection({
                         {list.map((brand, index) => (
                             <div className="swiper-slide" key={index}>
                                 <div className="brand-box">
-                                    <a
-                                        href="#"
-                                        target="_blank"
-                                        rel="noreferrer"
+                                    <Link
+                                        href={brand.slug ? `/${brand.slug}` : "#"}
+                                        onClick={(e) => {
+                                            if (!brand.slug) {
+                                                e.preventDefault();
+                                            }
+                                        }}
                                     >
                                         <img
                                             className="original"
@@ -70,7 +75,7 @@ export default function BrandSection({
                                             src={brand.image}
                                             alt={brand.name || "Brand Logo"}
                                         />
-                                    </a>
+                                    </Link>
                                 </div>
                             </div>
                         ))}
@@ -80,13 +85,25 @@ export default function BrandSection({
             {shouldShowButton && (
                 <div className="text-center mt-5">
                     <div className="d-inline-block">
-                        <a
-                            href={button_url}
-                            className="th-btn th-radius th-icon"
-                        >
-                            {button_text}{" "}
-                            <i className="fa-light fa-arrow-right-long"></i>
-                        </a>
+                        {button_url && (button_url.startsWith('http') || button_url_rel?.includes('nofollow')) ? (
+                            <a
+                                href={button_url}
+                                className="th-btn th-radius th-icon"
+                                target="_blank"
+                                rel={button_url_rel || "noopener noreferrer"}
+                            >
+                                {button_text}{" "}
+                                <i className="fa-light fa-arrow-right-long"></i>
+                            </a>
+                        ) : (
+                            <Link
+                                href={button_url}
+                                className="th-btn th-radius th-icon"
+                            >
+                                {button_text}{" "}
+                                <i className="fa-light fa-arrow-right-long"></i>
+                            </Link>
+                        )}
                     </div>
                 </div>
             )}

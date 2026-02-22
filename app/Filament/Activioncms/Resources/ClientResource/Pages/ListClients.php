@@ -14,6 +14,8 @@ class ListClients extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+            Actions\ExportAction::make()
+                ->exporter(\App\Filament\Exports\ClientExporter::class),
             Actions\ImportAction::make()
                 ->importer(\App\Filament\Imports\ClientImporter::class)
                 ->modalDescription(fn () => new \Illuminate\Support\HtmlString('Download example CSV: <a href="#" wire:click.prevent="mountAction(\'downloadExample\')">Click here</a>')),

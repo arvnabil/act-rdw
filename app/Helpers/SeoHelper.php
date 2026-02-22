@@ -18,4 +18,12 @@ class SeoHelper
 
         return SeoLinkParser::parse($html);
     }
+
+    /**
+     * Get the correct rel attribute for a single URL based on SEO rules and whitelist.
+     */
+    public static function get_rel(?string $url): string
+    {
+        return SeoLinkParser::getRelAttribute($url);
+    }
 }

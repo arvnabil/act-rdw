@@ -72,6 +72,13 @@ class PageSection extends Model
             }
         }
 
+        // Auto-generate rel for URL fields
+        foreach ($decoded as $key => $value) {
+            if (is_string($value) && (str_ends_with($key, '_url') || $key === 'link')) {
+                $decoded[$key . '_rel'] = \App\Helpers\SeoHelper::get_rel($value);
+            }
+        }
+
         return $decoded;
     }
 }

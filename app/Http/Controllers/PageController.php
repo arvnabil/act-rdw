@@ -58,6 +58,7 @@ class PageController extends Controller
                         return [
                             'name' => $c->name,
                             'image' => $c->logo ? "/storage/{$c->logo}" : null,
+                            'website_url' => $c->website_url,
                         ];
                     });
             }

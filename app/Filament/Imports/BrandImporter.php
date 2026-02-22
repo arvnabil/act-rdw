@@ -25,7 +25,7 @@ class BrandImporter extends Importer
                 ->example('brand-slug'),
             ImportColumn::make('image')
                 ->label('Logo')
-                ->castStateUsing(fn ($state) => blank($state) ? null : $state)
+                ->fillRecordUsing(fn() => null)
                 ->example('brands/featured.jpg'),
             ImportColumn::make('website_url')
                 ->label('Website URL')
@@ -172,6 +172,61 @@ class BrandImporter extends Importer
             ['seoable_id' => $this->record->id, 'seoable_type' => get_class($this->record)],
             $seoData
         );
+
+        // Handle external logo download
+        $logo = $this->data['image'] ?? null;
+        \Log::info('BrandImporter: afterSave started for Record: ' . $this->record->id);
+        \Log::info('BrandImporter: Logo value from CSV: ' . ($logo ?: 'NULL'));
+
+        if (!blank($logo) && (filter_var($logo, FILTER_VALIDATE_URL) || str_starts_with($logo, 'http'))) {
+            // 1. Check if it's already a local URL
+            $localPath = \App\Helpers\ImageHelper::getLocalPathFromUrl($logo);
+            
+            if ($localPath) {
+                \Log::info("BrandImporter: Detected local URL, using existing file: {$localPath}");
+                $this->record->update(['image' => $localPath]);
+            } else {
+                \Log::info("BrandImporter: Detected external URL, starting download: {$logo}");
+                try {
+                    // Robust URL handling: encode spaces
+                    $cleanUrl = str_replace(' ', '%20', $logo);
+                    
+                    $response = \Illuminate\Support\Facades\Http::withoutVerifying()
+                        ->withHeaders([
+                            'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+                            'Accept' => 'image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
+                        ])
+                        ->timeout(60)
+                        ->retry(3, 1000)
+                        ->get($cleanUrl);
+
+                    \Log::info("BrandImporter: Download response status: " . $response->status());
+
+                    if ($response->successful()) {
+                        $contents = $response->body();
+                        \Log::info("BrandImporter: Download successful, size: " . strlen($contents) . " bytes");
+                        
+                        $filename = \Illuminate\Support\Str::slug($this->record->name ?: 'brand') . '-' . time();
+                        $targetPath = 'brands/' . $filename;
+                        
+                        $savedPath = \App\Helpers\ImageHelper::processAndConvert($contents, $targetPath);
+                        if ($savedPath) {
+                            \Log::info("BrandImporter: Image processed and saved to: {$savedPath}");
+                            $this->record->update(['image' => $savedPath]);
+                            \Log::info("BrandImporter: Record updated with new logo path.");
+                        } else {
+                            \Log::error("BrandImporter: ImageHelper returned NULL after processing.");
+                        }
+                    } else {
+                        \Log::warning('BrandImporter: URL download failed. Status: ' . $response->status() . ' URL: ' . $logo);
+                    }
+                } catch (\Throwable $e) {
+                    \Log::error('BrandImporter: Failed to download/process logo: ' . $e->getMessage());
+                }
+            }
+        } else {
+            \Log::info("BrandImporter: Logo is either blank or NOT a URL. Skipping download.");
+        }
     }
 
     public static function getCompletedNotificationBody(Import $import): string

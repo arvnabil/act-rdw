@@ -54,7 +54,14 @@ class HandleInertiaRequests extends Middleware
                 'primary' => $menuResolver->resolve('primary'),
                 'footer' => $menuResolver->resolve('footer'),
             ],
-            'settings' => \App\Models\Setting::pluck('value', 'key')->toArray(),
+            'settings' => collect(\App\Models\Setting::pluck('value', 'key')->toArray())
+                ->mapWithKeys(function ($value, $key) {
+                    $data = [$key => $value];
+                    if (str_ends_with($key, '_url') || $key === 'header_button_url') {
+                        $data[$key . '_rel'] = \App\Helpers\SeoHelper::get_rel($value);
+                    }
+                    return $data;
+                })->toArray(),
         ]);
     }
 }

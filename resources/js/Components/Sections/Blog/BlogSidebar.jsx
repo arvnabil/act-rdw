@@ -92,7 +92,7 @@ export default function BlogSidebar({
                                     <Link href={rPost.link}>
                                         <img
                                             src={rPost.image}
-                                            alt="Blog Image"
+                                            alt={rPost.title}
                                         />
                                     </Link>
                                 </div>

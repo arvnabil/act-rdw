@@ -123,8 +123,11 @@ class EventController extends Controller
                     'role' => $speaker['role'],
                     'image' => isset($speaker['image']) ? '/storage/' . $speaker['image'] : null,
                     'linkedin_link' => $speaker['linkedin_link'] ?? null,
+                    'linkedin_rel' => \App\Helpers\SeoHelper::get_rel($speaker['linkedin_link'] ?? null),
                     'instagram_link' => $speaker['instagram_link'] ?? null,
+                    'instagram_rel' => \App\Helpers\SeoHelper::get_rel($speaker['instagram_link'] ?? null),
                     'tiktok_link' => $speaker['tiktok_link'] ?? null,
+                    'tiktok_rel' => \App\Helpers\SeoHelper::get_rel($speaker['tiktok_link'] ?? null),
                 ];
             }),
             'documentations' => $event->documentations->map(function ($doc) {

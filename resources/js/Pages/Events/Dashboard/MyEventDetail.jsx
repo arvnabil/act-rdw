@@ -383,6 +383,8 @@ export default function MyEventDetail({
                                                 "events.ticket.download",
                                                 ticket.code
                                             )}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
                                             className="th-btn sm rounded-pill"
                                         >
                                             <i className="fa-solid fa-download me-2"></i>
@@ -564,6 +566,7 @@ export default function MyEventDetail({
                                                     <a
                                                         href={`/storage/${certificate.file_path}`}
                                                         target="_blank"
+                                                        rel="noopener noreferrer"
                                                         download
                                                         className="th-btn style3 th-radius"
                                                     >
@@ -641,7 +644,7 @@ export default function MyEventDetail({
                                         `Halo Admin, saya ingin bertanya mengenai event "${event.title}"`
                                     )}`}
                                     target="_blank"
-                                    rel="noreferrer"
+                                    rel="noopener noreferrer"
                                     className="th-btn th-radius style8 w-100"
                                 >
                                     <i className="fa-brands fa-whatsapp me-2"></i>

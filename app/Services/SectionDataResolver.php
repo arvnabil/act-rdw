@@ -221,7 +221,7 @@ class SectionDataResolver
         // Dynamic Query
         if (Schema::hasTable('brands')) {
              $dbBrands = DB::table('brands')
-                ->select('image', 'name')
+                ->select('image', 'name', 'website_url', 'slug')
                 // ->where('is_active', true) // Assuming is_active column exists? verify later.
                 ->limit($limit)
                 ->get()
@@ -235,7 +235,9 @@ class SectionDataResolver
                             }
                             return "/storage/{$path}";
                         })($b->image) ?? "/assets/default.png",
-                        'name' => $b->name
+                        'name' => $b->name,
+                        'website_url' => $b->website_url ?? null,
+                        'slug' => $b->slug ?? null
                     ];
                 })
                 ->toArray();
@@ -278,7 +280,7 @@ class SectionDataResolver
                             return "/storage/{$path}";
                         })($c->logo) ?? "/assets/default.png",
                         'name' => $c->name,
-                        'url' => $c->website_url ?? '#'
+                        'website_url' => $c->website_url ?? null
                     ];
                 })
                 ->toArray();

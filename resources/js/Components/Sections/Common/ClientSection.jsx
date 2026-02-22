@@ -5,9 +5,10 @@ export default function ClientSection({
     clients,
     title,
     subtitle,
-    show_button,
+    show_button = true, // Default to true if not provided
     button_text,
     button_url,
+    button_url_rel,
 }) {
     const defaultClients = [
         { image: null },
@@ -69,11 +70,15 @@ export default function ClientSection({
                                             style={{ minHeight: "100px" }}
                                         >
                                             <a
-                                                href="#"
+                                                href={brand.website_url || "#"}
+                                                target={brand.website_url ? "_blank" : undefined}
+                                                rel={brand.website_url ? "noopener noreferrer" : undefined}
                                                 className="d-flex justify-content-center align-items-center w-100 h-100"
-                                                onClick={(e) =>
-                                                    e.preventDefault()
-                                                }
+                                                onClick={(e) => {
+                                                    if (!brand.website_url) {
+                                                        e.preventDefault();
+                                                    }
+                                                }}
                                             >
                                                 <img
                                                     className="original"
@@ -120,9 +125,20 @@ export default function ClientSection({
 
                 {shouldShowButton && (
                     <div className="text-center mt-3">
-                        <Link href={btnUrl} className="th-btn th-radius">
-                            {btnText}
-                        </Link>
+                        {button_url && (button_url.startsWith('http') || button_url_rel?.includes('nofollow')) ? (
+                            <a
+                                href={btnUrl}
+                                className="th-btn th-radius"
+                                target="_blank"
+                                rel={button_url_rel || "noopener noreferrer"}
+                            >
+                                {btnText}
+                            </a>
+                        ) : (
+                            <Link href={btnUrl} className="th-btn th-radius">
+                                {btnText}
+                            </Link>
+                        )}
                     </div>
                 )}
             </div>

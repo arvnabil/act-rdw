@@ -118,7 +118,7 @@ export default function BrandHeroSection({
                                                 <a
                                                     href={waLink}
                                                     target="_blank"
-                                                    rel="noopener"
+                                                    rel="noopener noreferrer"
                                                     className="th-btn style3 th-radius th-icon px-4"
                                                 >
                                                     {config?.cta_label || "Contact Sales"}{" "}
@@ -130,6 +130,8 @@ export default function BrandHeroSection({
                                         return (
                                             <a
                                                 href={config?.cta_url || "#products"}
+                                                target={config?.cta_url?.startsWith('http') ? "_blank" : "_self"}
+                                                rel={config?.cta_url_rel || (config?.cta_url?.startsWith('http') ? "noopener noreferrer" : undefined)}
                                                 className="th-btn style3 th-radius th-icon px-4"
                                             >
                                                 {config?.cta_label || "Contact Sales"}{" "}

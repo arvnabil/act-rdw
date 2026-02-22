@@ -12,7 +12,7 @@ export default function BlogDetailContent({ post }) {
     return (
         <div className="th-blog blog-single">
             <div className="blog-img">
-                <img src={post.thumbnail || post.image} alt="Blog Image" />
+                <img src={post.thumbnail || post.image} alt={post.title} />
             </div>
             <div className="blog-content">
                 <div className="blog-meta">

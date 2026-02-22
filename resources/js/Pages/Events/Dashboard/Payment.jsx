@@ -141,7 +141,7 @@ export default function Payment({ auth, payments }) {
                                                     ).toLocaleString("id-ID")}`
                                                 )}`}
                                                 target="_blank"
-                                                rel="noreferrer"
+                                                rel="noopener noreferrer"
                                                 className="th-btn btn-sm btn-primary text-white rounded-pill px-3 d-inline-flex align-items-center gap-1"
                                                 title="Confirm via WhatsApp"
                                                 style={{
