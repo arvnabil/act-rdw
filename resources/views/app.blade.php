@@ -7,6 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    {{-- Prevent Indexing on Staging --}}
+    @if (str_contains(request()->getHost(), 'staging'))
+        <meta name="robots" content="noindex, nofollow">
+    @endif
+
     @php
         $settings = \App\Models\Setting::whereIn('key', ['seo_gtm_id', 'seo_ga4_id', 'seo_gsc_verification', 'seo_favicon'])->pluck(
             'value',
