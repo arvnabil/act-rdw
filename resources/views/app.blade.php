@@ -72,6 +72,17 @@
         </script>
     @endif
 
+
+    <!-- Start of Qontak Webchat Script -->
+    <script>
+        const qchatInit = document.createElement('script');
+        qchatInit.src = "https://webchat.qontak.com/qchatInitialize.js";
+        const qchatWidget = document.createElement('script');
+        qchatWidget.src = "https://webchat.qontak.com/js/app.js";
+        document.head.prepend(qchatInit);
+        document.head.prepend(qchatWidget);
+        qchatInit.onload = function () {qchatInitialize({ id: '0f0c18dc-53e5-4efa-bb2f-d0fca4f40cc8', code: 'bzuTnIhEXwWufy2oRg6YBw' })};
+    </script>
     <!-- End of Qontak Webchat Script -->
 
     @routes

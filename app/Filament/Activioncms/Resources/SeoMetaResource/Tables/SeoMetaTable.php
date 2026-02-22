@@ -20,7 +20,8 @@ class SeoMetaTable
                 TextColumn::make('seoable_type')
                     ->label('Type')
                     ->formatStateUsing(fn (string $state): string => class_basename($state))
-                    ->badge(),
+                    ->badge()
+                    ->sortable(),
                 TextColumn::make('seoable.title')
                     ->label('Page Title')
                     ->state(fn (?SeoMeta $record) => $record?->seoable?->title ?? $record?->seoable?->name ?? 'Untitled')
