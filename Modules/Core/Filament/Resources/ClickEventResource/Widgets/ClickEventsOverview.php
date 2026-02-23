@@ -12,7 +12,7 @@ class ClickEventsOverview extends BaseWidget
     {
         $humanTotal = AnalyticsClickEvent::where('is_bot', false)->count();
         $converted = AnalyticsClickEvent::where('is_converted', true)->count();
-        $revenue = AnalyticsClickEvent::where('is_converted', true)->sum('deal_value');
+        $botTotal = AnalyticsClickEvent::where('is_bot', true)->count();
         $conversionRate = $humanTotal > 0 ? ($converted / $humanTotal) * 100 : 0;
 
         return [
@@ -26,10 +26,10 @@ class ClickEventsOverview extends BaseWidget
                 ->descriptionIcon('heroicon-m-check-badge')
                 ->color('success'),
 
-            Stat::make('Total Revenue', 'IDR ' . number_format($revenue, 0, ',', '.'))
-                ->description('Sum of deal values from conversions')
-                ->descriptionIcon('heroicon-m-banknotes')
-                ->color('success'),
+            Stat::make('Total Bot Detection', number_format($botTotal))
+                ->description('Identified automated/bot traffic')
+                ->descriptionIcon('heroicon-m-shield-check')
+                ->color('warning'),
                 
             Stat::make('WA & Calls', AnalyticsClickEvent::whereIn('event_type', ['whatsapp', 'call'])->count())
                 ->description('Direct contact interactions')

@@ -106,7 +106,7 @@ export default function BrandHeroSection({
                                         const isWaUrl = config?.cta_url?.includes('wa.me') || config?.cta_url?.includes('api.whatsapp.com');
                                         const waLink = (config?.cta_whatsapp || isWaUrl) ? getWhatsAppLink(config.cta_whatsapp || config.cta_url, {
                                             cta_position: `brand_hero_${brand.slug}`,
-                                            cta_label: config.cta_label || "Contact Sales",
+                                            cta_label: `Inquiry Brand: ${brand.name}`,
                                             message: config.cta_whatsapp_message,
                                             entity_type: 'brand',
                                             entity_id: brand.id,

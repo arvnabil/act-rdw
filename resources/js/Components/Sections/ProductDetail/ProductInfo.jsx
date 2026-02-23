@@ -109,7 +109,7 @@ export default function ProductInfo({ product }) {
                         const link = getWhatsAppLink(settings?.whatsapp_number, {
                             message: message,
                             cta_position: 'product_detail',
-                            cta_label: 'Permintaan Harga Terbaik',
+                            cta_label: `Permintaan: ${product.name}`,
                             entity_type: 'product',
                             entity_id: product.id,
                             entity_slug: product.slug

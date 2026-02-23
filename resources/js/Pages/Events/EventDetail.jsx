@@ -735,7 +735,7 @@ export default function EventDetail({ event }) {
                                                         href={getWhatsAppLink(event.organizer_phone, {
                                                             message: `Halo, saya ingin konfirmasi pendaftaran event:\n\n*${event.title}*\nHarga: ${Number(event.price) === 0 ? "Gratis" : new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(event.price)}\nStatus: Pending Payment`,
                                                             cta_position: 'event_detail',
-                                                            cta_label: 'Confirm Payment WA',
+                                                            cta_label: `Confirmation: ${event.title}`,
                                                             entity_type: 'event',
                                                             entity_id: event.id,
                                                             entity_slug: event.slug
@@ -960,23 +960,14 @@ export default function EventDetail({ event }) {
                                         </div>
                                     </div>
                                     <a
-                                        href={`https://wa.me/${event.organizer_phone
-                                            }?text=${encodeURIComponent(
-                                                `Halo, saya ingin bertanya/konfirmasi event:\n\n*${event.title
-                                                }*\nHarga: ${Number(event.price) === 0
-                                                    ? "Gratis"
-                                                    : new Intl.NumberFormat(
-                                                        "id-ID",
-                                                        {
-                                                            style: "currency",
-                                                            currency: "IDR",
-                                                            minimumFractionDigits: 0,
-                                                        }
-                                                    ).format(event.price)
-                                                }\nStatus: ${event.registration_status ||
-                                                "Belum Terdaftar"
-                                                }`
-                                            )}`}
+                                        href={getWhatsAppLink(event.organizer_phone, {
+                                            message: `Halo, saya ingin bertanya/konfirmasi event:\n\n*${event.title}*\nHarga: ${Number(event.price) === 0 ? "Gratis" : new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(event.price)}\nStatus: ${event.registration_status || "Belum Terdaftar"}`,
+                                            cta_position: 'event_detail_organizer',
+                                            cta_label: `Inquiry Event: ${event.title}`,
+                                            entity_type: 'event',
+                                            entity_id: event.id,
+                                            entity_slug: event.slug
+                                        })}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="th-btn style4 w-100"

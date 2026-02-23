@@ -124,7 +124,7 @@ export default function ProjectSidebar({ project }) {
                         const link = getWhatsAppLink(settings?.whatsapp_number, {
                             message: message,
                             cta_position: 'project_sidebar',
-                            cta_label: 'WhatsApp Project Banner',
+                            cta_label: `CTA Proyek: ${project.title}`,
                             entity_type: 'project',
                             entity_id: project.id,
                             entity_slug: project.slug

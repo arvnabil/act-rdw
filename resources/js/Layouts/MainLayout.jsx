@@ -345,7 +345,7 @@ export default function MainLayout({ children }) {
                                 <a
                                     href={getWhatsAppLink(settings?.whatsapp_number, {
                                         cta_position: 'header_social',
-                                        cta_label: 'WhatsApp Top Social'
+                                        cta_label: 'Header Social'
                                     }) || "https://www.whatsapp.com/"}
                                     target="_blank"
                                     rel="noopener"
@@ -602,7 +602,7 @@ export default function MainLayout({ children }) {
                                             <a
                                                 href={getWhatsAppLink(settings?.whatsapp_number, {
                                                     cta_position: 'mobile_menu',
-                                                    cta_label: settings?.header_button_text || 'Hubungi Kami Mobile',
+                                                    cta_label: 'Header Mobile',
                                                     ...staticParams
                                                 })}
                                                 target="_blank"
@@ -856,7 +856,7 @@ export default function MainLayout({ children }) {
                                                     <a
                                                         href={getWhatsAppLink(settings?.whatsapp_number, {
                                                             cta_position: 'header',
-                                                            cta_label: settings?.header_button_text || 'Hubungi Kami Header',
+                                                            cta_label: 'Header Desktop',
                                                             ...staticParams
                                                         })}
                                                         target="_blank"
@@ -929,7 +929,7 @@ export default function MainLayout({ children }) {
                                             <a
                                                 href={getWhatsAppLink(settings?.whatsapp_number, {
                                                     cta_position: 'footer_social',
-                                                    cta_label: 'WhatsApp Footer Social'
+                                                    cta_label: 'Footer Social'
                                                 }) || "https://www.whatsapp.com/"}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
@@ -1000,7 +1000,7 @@ export default function MainLayout({ children }) {
                                                         }}
                                                         href={getWhatsAppLink(settings?.whatsapp_number || '6285162994602', {
                                                             cta_position: 'footer_info',
-                                                            cta_label: 'WhatsApp Footer Text'
+                                                            cta_label: 'Footer Support'
                                                         })}
                                                         target="_blank"
                                                         rel="noopener noreferrer"

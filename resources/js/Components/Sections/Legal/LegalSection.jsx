@@ -245,7 +245,9 @@ export default function LegalSection({
                                 <a 
                                     href={getWhatsAppLink(settings?.whatsapp_number, {
                                         cta_position: 'legal_footer',
-                                        cta_label: 'Hubungi Kami Legal'
+                                        cta_label: `Inquiry Legal: ${title}`,
+                                        entity_type: 'legal',
+                                        entity_slug: title.toLowerCase().replace(/\s+/g, '-')
                                     }) || "#"} 
                                     target="_blank"
                                     rel="noopener noreferrer"

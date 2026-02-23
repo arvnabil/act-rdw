@@ -170,6 +170,7 @@ export default function SliderSection({ slides, elementId = "heroSlide2" }) {
                                                             message: targetMessage,
                                                             cta_position: 'hero_slider',
                                                             cta_label: `Slider: ${btn.text}`,
+                                                            entity_type: 'slider',
                                                             ...targetOptions
                                                         });
 

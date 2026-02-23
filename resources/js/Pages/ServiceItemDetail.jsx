@@ -12,7 +12,7 @@ const ServiceItemDetail = ({ item }) => {
     const waLink = getWhatsAppLink(settings?.whatsapp_number || "62811400262", {
         message: item.wa_message || `I am interested in ${item.title}`,
         cta_position: 'service_detail',
-        cta_label: 'Service About Section WA',
+        cta_label: `CTA Layanan: ${item.title}`,
         entity_type: item.entity_type || 'service',
         entity_id: item.id,
         entity_slug: item.slug || item.id

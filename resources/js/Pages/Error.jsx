@@ -22,8 +22,10 @@ export default function Error({ status }) {
 
     const waLink = getWhatsAppLink(settings?.whatsapp_number || "6285162994602", {
         cta_position: `error_page_${status}`,
-        cta_label: 'Hubungi Kami (Error Page)',
-        message: `Halo ACTiV, saya menemukan kendala ${status} di halaman ${window.location.href}. Mohon bantuannya.`
+        cta_label: 'Error Support Inquiry',
+        message: `Halo ACTiV, saya menemukan kendala ${status} di halaman ${window.location.href}. Mohon bantuannya.`,
+        entity_type: 'global',
+        entity_slug: `error-${status}`
     });
 
     return (

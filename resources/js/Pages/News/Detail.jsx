@@ -35,6 +35,7 @@ export default function BlogDetail({ post, recentPosts, categories, tags, seo })
 
                         <div className="col-xxl-4 col-lg-5">
                             <BlogSidebar
+                                post={post}
                                 categories={categories}
                                 recentPosts={recentPosts}
                                 tags={tags}

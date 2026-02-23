@@ -19,9 +19,15 @@ class WhatsAppAnalyticsTable
                     ->sortable()
                     ->label('Time'),
                 Tables\Columns\TextColumn::make('event_label')
+                    ->label('Label / Product Name')
                     ->searchable()
-                    ->default('-')
-                    ->toggleable(),
+                    ->sortable()
+                    ->default('-'),
+                Tables\Columns\TextColumn::make('entity_slug')
+                    ->label('Entity ID/Slug')
+                    ->searchable()
+                    ->toggleable()
+                    ->default('-'),
                 Tables\Columns\TextColumn::make('click_count')
                     ->label('Clicks')
                     ->numeric()

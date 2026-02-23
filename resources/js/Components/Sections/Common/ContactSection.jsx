@@ -178,7 +178,8 @@ export default function ContactSection({
                                             <a
                                                 href={getWhatsAppLink(whatsapp, {
                                                     cta_position: 'contact_section',
-                                                    cta_label: 'WhatsApp Contact Page'
+                                                    cta_label: 'General Inquiry',
+                                                    entity_type: 'contact'
                                                 }) || "#"}
                                                 target="_blank"
                                                 rel="noopener noreferrer"

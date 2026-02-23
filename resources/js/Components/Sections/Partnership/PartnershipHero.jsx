@@ -15,7 +15,9 @@ export default function PartnershipHero({
     const waLink = getWhatsAppLink(settings?.whatsapp_number || "6285162994602", {
         message: `Halo ACTiV, saya tertarik untuk mengajukan kemitraan strategis. Mohon informasi lebih lanjut mengenai prosedurnya.`,
         cta_position: 'partnership_hero',
-        cta_label: 'Ajukan Kemitraan'
+        cta_label: 'Ajukan Kemitraan',
+        entity_type: 'partnership',
+        entity_slug: 'kemitraan'
     });
 
     return (

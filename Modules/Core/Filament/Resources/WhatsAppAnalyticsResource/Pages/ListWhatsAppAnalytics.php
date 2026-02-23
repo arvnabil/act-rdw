@@ -20,6 +20,7 @@ class ListWhatsAppAnalytics extends ListRecords
     {
         return [
             WhatsAppAnalyticsResource\Widgets\AnalyticsOverview::class,
+            WhatsAppAnalyticsResource\Widgets\TopWhatsAppEntitiesTable::class,
         ];
     }
 }

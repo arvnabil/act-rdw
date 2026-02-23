@@ -110,7 +110,11 @@ export default function WhyChooseUsSection({
                                 >
                                     {button_whatsapp || (button_url && (button_url.startsWith('http') || button_url_rel?.includes('nofollow'))) ? (
                                         <a
-                                            href={button_whatsapp ? getWhatsAppLink(button_whatsapp, { cta_position: 'why_choose_us', cta_label: `WCU Section ${btnText}` }) : btnUrl}
+                                            href={button_whatsapp ? getWhatsAppLink(button_whatsapp, { 
+                                                cta_position: 'why_choose_us', 
+                                                cta_label: 'Consultation Inquiry',
+                                                entity_type: 'global'
+                                            }) : btnUrl}
                                             className="th-btn th-radius th-icon"
                                             target="_blank"
                                             rel={button_whatsapp ? "noopener noreferrer" : (button_url_rel || "noopener noreferrer")}

@@ -81,6 +81,7 @@ class BrandController extends Controller
                 $categoryName = $product->categories->first()?->name ?? 'General';
                 
                 return (object) [
+                    'id' => $product->id,
                     'name' => $product->name,
                     'image_path' => $product->image_path ?? '/assets/default.png', // Fallback
                     'price' => $product->price ?? 0,

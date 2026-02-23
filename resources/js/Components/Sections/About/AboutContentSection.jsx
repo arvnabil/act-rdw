@@ -297,7 +297,9 @@ export default function AboutContentSection({
                             <a
                                 href={getWhatsAppLink(button_whatsapp || settings?.whatsapp_number || "6285162994602", {
                                     cta_position: 'about_section',
-                                    cta_label: `Kontak Kami About ${button_text !== 'Kontak Kami' ? button_text : ''}`.trim()
+                                    cta_label: 'About Page Inquiry',
+                                    entity_type: 'page',
+                                    entity_slug: 'tentang-kami'
                                 })}
                                 target="_blank"
                                 rel="noopener noreferrer"

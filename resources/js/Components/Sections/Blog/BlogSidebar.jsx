@@ -6,7 +6,7 @@ export default function BlogSidebar({
     categories = [],
     recentPosts = [],
     tags = [],
-    filters = {},
+    post = null,
 }) {
     const [searchTerm, setSearchTerm] = useState(filters.search || "");
 
@@ -152,11 +152,14 @@ export default function BlogSidebar({
 
                     {(() => {
                         const { settings } = usePage().props;
-                        const message = "Halo, saya butuh bantuan terkait layanan Anda.";
+                        const message = post ? `Halo, saya butuh bantuan terkait artikel: ${post.title}` : "Halo, saya butuh bantuan terkait layanan Anda.";
                         const link = getWhatsAppLink(settings?.whatsapp_number, {
                             message: message,
                             cta_position: 'blog_sidebar',
-                            cta_label: 'WhatsApp Blog Banner'
+                            cta_label: post ? `CTA Blog: ${post.title}` : 'CTA Blog Support',
+                            entity_type: 'news',
+                            entity_id: post?.id,
+                            entity_slug: post?.slug
                         }) || "/contact";
                         const target = link.startsWith("http") ? "_blank" : "_self";
 

@@ -108,7 +108,10 @@ class ProductController extends Controller
 
         // Transform product for the view
         $productData = [
+            'id' => $product->id,
+            'slug' => $product->slug,
             'name' => $product->name,
+            'cta_label' => "CTA Produk: {$product->name}",
             'image' => $product->image_path ? "/storage/" . $product->image_path : null,
             'image_path' => $product->image_path,
             'breadcrumb_image' => $product->thumbnail_path ? "/storage/" . $product->thumbnail_path : ($product->image_path ? "/storage/" . $product->image_path : null),
