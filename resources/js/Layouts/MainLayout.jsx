@@ -1108,17 +1108,17 @@ export default function MainLayout({ children }) {
                                 <div className="footer-links">
                                     <ul>
                                         <li>
-                                            <Link href="/contact">
+                                            <Link href="/syarat-ketentuan">
                                                 Syarat & Ketentuan
                                             </Link>
                                         </li>
                                         <li>
-                                            <Link href="/contact">
+                                            <Link href="/kemitraan">
                                                 Kemitraan
                                             </Link>
                                         </li>
                                         <li>
-                                            <Link href="/contact">
+                                            <Link href="/kebijakan-privasi">
                                                 Kebijakan Privasi
                                             </Link>
                                         </li>
