@@ -98,7 +98,9 @@ class DynamicResolverController extends Controller
             // Prepare post data with resolved image paths
             $postData = $news->toArray();
             $postData['image'] = $resolvePath($news->thumbnail);
-            $postData['thumbnail'] = $postData['image']; // For BlogDetailContent compatibility
+            $postData['thumbnail'] = $postData['image']; 
+            $postData['content'] = \App\Helpers\SanitizerHelper::sanitizeHtml($news->content);
+            $postData['excerpt'] = \App\Helpers\SanitizerHelper::sanitizeHtml($news->excerpt);
 
             return Inertia::render('News/Detail', [
                 'post' => $postData,
@@ -118,6 +120,7 @@ class DynamicResolverController extends Controller
             return Inertia::render('Projects/Detail', [
                 'project' => array_merge($project->toArray(), [
                     'thumbnail' => $project->thumbnail,
+                    'content' => \App\Helpers\SanitizerHelper::sanitizeHtml($project->content),
                     'map_url_rel' => \App\Helpers\SeoHelper::get_rel($project->map_url)
                 ]),
                 'seo' => SeoResolver::for($project),

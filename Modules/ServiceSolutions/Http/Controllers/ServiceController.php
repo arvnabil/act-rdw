@@ -33,8 +33,8 @@ class ServiceController extends Controller
                 'title' => $service->name,
                 'hero_subtitle' => $service->hero_subtitle,
                 'grid_title' => $service->grid_title,
-                'content' => $service->content, 
-                'excerpt' => $service->excerpt, 
+                'content' => \App\Helpers\SanitizerHelper::sanitizeHtml($service->content), 
+                'excerpt' => \App\Helpers\SanitizerHelper::sanitizeHtml($service->excerpt), 
                 'featured_image' => $service->featured_image ?? $service->thumbnail, 
                 'thumbnail' => $service->thumbnail,
                 'filters' => $service->categories->map(fn ($cat) => [
@@ -44,7 +44,7 @@ class ServiceController extends Controller
                 'rooms' => $service->solutions->map(fn ($sol) => [
                     'id' => $sol->slug,
                     'title' => $sol->title,
-                    'description' => $sol->description,
+                    'description' => \App\Helpers\SanitizerHelper::sanitizeHtml($sol->description),
                     'image' => $sol->thumbnail,
                     'category' => $sol->categories->pluck('value')->join(' ')
                 ])

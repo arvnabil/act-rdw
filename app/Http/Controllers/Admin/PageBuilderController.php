@@ -200,10 +200,14 @@ class PageBuilderController extends Controller
      */
     public function upload(Request $request)
     {
+        $request->validate([
+            'file' => 'required|file|image|mimes:jpeg,png,jpg,webp|max:5120', // Max 5MB, images only
+        ]);
+
         if ($request->hasFile('file')) {
             $file = $request->file('file');
             
-            // Use SEO-friendly naming and WebP conversion via UploadHelper
+            // Double check extension/mime via UploadHelper
             $fullPath = \App\Helpers\UploadHelper::getSluggedFilename($file, 'page');
             $directory = dirname($fullPath);
             $filename = basename($fullPath);

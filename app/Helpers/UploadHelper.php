@@ -40,6 +40,13 @@ class UploadHelper
         $filename = Str::slug($finalBase);
         
         // 4. Force WebP Extension
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+        $originalExtension = strtolower($file->getClientOriginalExtension());
+        
+        if (!in_array($originalExtension, $allowedExtensions)) {
+             throw new \Exception("Unsupported file extension: {$originalExtension}");
+        }
+
         $extension = 'webp';
         
         // 5. WebP Conversion Logic (GD)
@@ -49,24 +56,30 @@ class UploadHelper
             $image = null;
 
             if (str_contains($mimeType, 'jpeg') || str_contains($mimeType, 'jpg')) {
-                $image = imagecreatefromjpeg($tempPath);
+                $image = @imagecreatefromjpeg($tempPath);
             } elseif (str_contains($mimeType, 'png')) {
-                $image = imagecreatefrompng($tempPath);
-                // Keep transparency
-                imagepalettetotruecolor($image);
-                imagealphablending($image, true);
-                imagesavealpha($image, true);
+                $image = @imagecreatefrompng($tempPath);
+                if ($image) {
+                    // Keep transparency
+                    imagepalettetotruecolor($image);
+                    imagealphablending($image, true);
+                    imagesavealpha($image, true);
+                }
+            } elseif (str_contains($mimeType, 'webp')) {
+                 $image = @imagecreatefromwebp($tempPath);
             }
 
             if ($image) {
                 // Save converted image back to the same temp path but as webp format
-                // Note: We use the same path to let Filament handle the final move
                 imagewebp($image, $tempPath, 80); // quality 80
                 imagedestroy($image);
+            } else {
+                 // If image creation failed despite mime check (corrupt or forge), reject
+                 throw new \Exception("Failed to process image file. Invalid image content.");
             }
         } catch (\Exception $e) {
-            // If conversion fails, fallback to original extension
-            $extension = $file->getClientOriginalExtension();
+            // Re-throw security violations, only fallback for non-critical conversion issues if necessary (but here we want to be strict)
+            throw $e;
         }
         
         $basePath = $directory . '/' . $filename . '.' . $extension;
