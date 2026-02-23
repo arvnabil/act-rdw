@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('slug')->unique();
             $table->text('excerpt')->nullable();
             $table->longText('content')->nullable();
-            $table->string('thumbnail')->nullable();
+            $table->text('thumbnail')->nullable();
             $table->string('status')->default('draft'); // draft, published
             $table->timestamp('published_at')->nullable();
             $table->timestamps();

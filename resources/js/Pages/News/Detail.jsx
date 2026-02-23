@@ -14,6 +14,7 @@ export default function BlogDetail({ post, recentPosts, categories, tags, seo })
 
             <Breadcrumb
                 title={post.title}
+                bgImage={post.image}
                 items={[
                     { label: "Home", link: "/" },
                     { label: "News", link: "/news" },

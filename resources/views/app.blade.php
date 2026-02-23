@@ -13,7 +13,10 @@
     @endif
 
     @php
-        $settings = \App\Models\Setting::whereIn('key', ['seo_gtm_id', 'seo_ga4_id', 'seo_gsc_verification', 'seo_favicon'])->pluck(
+        $settings = \App\Models\Setting::whereIn('key', [
+            'seo_gtm_id', 'seo_ga4_id', 'seo_gsc_verification', 'seo_favicon',
+            'recaptcha_site_key'
+        ])->pluck(
             'value',
             'key',
         );
@@ -21,7 +24,12 @@
         $ga4Id = $settings['seo_ga4_id'] ?? null;
         $gscCode = $settings['seo_gsc_verification'] ?? null;
         $favicon = $settings['seo_favicon'] ?? null;
+        $recaptchaKey = $settings['recaptcha_site_key'] ?? config('services.recaptcha.key');
     @endphp
+
+    @if ($recaptchaKey)
+        <script src="https://www.google.com/recaptcha/api.js?render={{ $recaptchaKey }}"></script>
+    @endif
 
     @if ($favicon)
         <link rel="shortcut icon" href="{{ asset('storage/' . $favicon) }}" type="image/x-icon" />
@@ -91,6 +99,7 @@
     @inertiaHead
 
     @if (isset($seoManager))
+        {!! $seoManager->renderMeta() !!}
         {!! $seoManager->render() !!}
     @endif
 </head>

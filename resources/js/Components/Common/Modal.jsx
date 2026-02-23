@@ -114,6 +114,12 @@ const Modal = ({
                     from { opacity: 0; transform: translate3d(0, 40px, 0); }
                     to { opacity: 1; transform: translate3d(0, 0, 0); }
                 }
+                @media (max-width: 767px) {
+                    .modal-content {
+                        padding: 30px 20px !important;
+                        border-radius: 16px !important;
+                    }
+                }
             `}</style>
         </div>
     );

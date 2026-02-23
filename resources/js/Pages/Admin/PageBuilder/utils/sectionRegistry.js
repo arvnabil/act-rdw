@@ -10,6 +10,9 @@ import AboutContentSection from "@/Components/Sections/About/AboutContentSection
 import VisionMissionSection from "@/Components/Sections/About/VisionMissionSection";
 import TestimonialSection from "@/Components/Sections/Common/TestimonialSection";
 import ContactSection from "@/Components/Sections/Common/ContactSection";
+import LegalSection from "@/Components/Sections/Legal/LegalSection";
+import PartnershipHero from "@/Components/Sections/Partnership/PartnershipHero";
+import PartnershipSection from "@/Components/Sections/Partnership/PartnershipSection";
 
 import BuilderServiceListSection from "@/Components/Sections/Builder/ServiceListSection";
 import ServiceSolutionSection from "@/Components/Sections/Builder/ServiceSolutionSection";
@@ -873,4 +876,128 @@ export const sectionRegistry = {
             btn_url: "/contact",
         },
     },
+// Legal and Partnership Sections
+    legal_section: {
+        id: "legal_section",
+        label: "Legal Content (TOC & Accordions)",
+        icon: "fa-regular fa-gavel",
+        component: LegalSection,
+        schema: [
+            { name: "title", type: "text", label: "Page Title" },
+            { name: "subtitle", type: "text", label: "Subtitle" },
+            { name: "last_updated", type: "text", label: "Last Updated Date" },
+            { name: "contact_email", type: "text", label: "Contact Email" },
+            {
+                name: "sections",
+                type: "repeater",
+                label: "Content Sections",
+                schema: [
+                    { name: "title", type: "text", label: "Section Title" },
+                    { name: "slug", type: "text", label: "ID/Slug (for TOC)" },
+                    { name: "icon", type: "text", label: "Icon Class" },
+                    { name: "content", type: "textarea", label: "Main Content (HTML Support)" },
+                    { name: "callout", type: "textarea", label: "Callout/Notes" },
+                    {
+                        name: "items",
+                        type: "repeater",
+                        label: "Accordion Items (Optional)",
+                        schema: [
+                            { name: "title", type: "text", label: "Item Title" },
+                            { name: "content", type: "textarea", label: "Item Content" },
+                        ]
+                    }
+                ]
+            }
+        ],
+        defaultConfig: {
+            title: "Syarat & Ketentuan",
+            subtitle: "Hukum & Legalitas",
+            last_updated: "1 Januari 2026",
+            contact_email: "sales@activ.co.id",
+            sections: []
+        }
+    },
+    partnership_hero: {
+        id: "partnership_hero",
+        label: "Partnership Hero",
+        icon: "fa-regular fa-rocket",
+        component: PartnershipHero,
+        schema: [
+            { name: "subtitle", type: "text", label: "Subtitle" },
+            { name: "title", type: "text", label: "Title" },
+            { name: "description", type: "textarea", label: "Description" },
+            { name: "bg_image", type: "image", label: "Background Image" },
+            { name: "button_text", type: "text", label: "Button Text" },
+            { name: "button_url", type: "text", label: "Button URL" },
+            {
+                name: "use_whatsapp",
+                type: "select",
+                label: "Use WhatsApp Link?",
+                options: [
+                    { label: "Yes", value: true },
+                    { label: "No", value: false },
+                ],
+            },
+        ],
+        defaultConfig: {
+            title: "Bangun Kemitraan Strategis Bersama ACTiV",
+            subtitle: "Kolaborasi Tanpa Batas",
+            description: "Bergabunglah dengan ekosistem teknologi terdepan.",
+            bg_image: "/assets/img/hero/hero_bg_3_1.png",
+            button_text: "Ajukan Kemitraan",
+            button_url: "/contact",
+            use_whatsapp: true
+        }
+    },
+    partnership_details: {
+        id: "partnership_details",
+        label: "Partnership Details (Accommerce)",
+        icon: "fa-regular fa-handshake-angle",
+        component: PartnershipSection,
+        schema: [
+            { name: "subtitle", type: "text", label: "Section Subtitle" },
+            { name: "title", type: "text", label: "Section Title" },
+            { name: "description", type: "textarea", label: "Intro Description" },
+            // Accommerce Card
+            { name: "partner_logo", type: "image", label: "Partner Logo" },
+            { name: "partner_title", type: "text", label: "Partner Title" },
+            { name: "partner_description", type: "textarea", label: "Partner Description (HTML)" },
+            { name: "partner_button_text", type: "text", label: "Partner Button Text" },
+            { name: "partner_button_url", type: "text", label: "Partner Button URL" },
+            // Features
+            { name: "feature_title", type: "text", label: "Features Title" },
+            {
+                name: "features",
+                type: "repeater",
+                label: "Feature Items",
+                schema: [
+                    { name: "title", type: "text", label: "Title" },
+                    { name: "text", type: "textarea", label: "Description" },
+                    { name: "icon", type: "text", label: "Icon Class" },
+                ]
+            },
+            // Steps
+            { name: "step_title", type: "text", label: "Steps Title" },
+            {
+                name: "steps",
+                type: "repeater",
+                label: "Partnership Steps",
+                schema: [
+                    { name: "title", type: "text", label: "Step Title" },
+                    { name: "description", type: "textarea", label: "Step Description" },
+                ]
+            }
+        ],
+        defaultConfig: {
+            title: "Bagian dari Ekosistem Digital ACTiV",
+            subtitle: "Ekosistem Terintegrasi",
+            description: "Sebagai bagian dari transformasi digital ACTiV...",
+            partner_logo: "/assets/img/partners/accommerceid.webp",
+            partner_title: "Accommerce.id",
+            feature_title: "Keunggulan Platform",
+            features: [],
+            step_title: "Alur Kemitraan",
+            steps: []
+        }
+    }
 };

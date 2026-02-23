@@ -13,6 +13,7 @@ export default function ProductDetail({ product, seo }) {
 
             <Breadcrumb
                 title={product.name}
+                bgImage={product.breadcrumb_image}
                 items={[
                     { label: "Home", link: "/" },
                     { label: "Products", link: "/products" },

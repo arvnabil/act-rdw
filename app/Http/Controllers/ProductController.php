@@ -111,6 +111,7 @@ class ProductController extends Controller
             'name' => $product->name,
             'image' => $product->image_path ? "/storage/" . $product->image_path : null,
             'image_path' => $product->image_path,
+            'breadcrumb_image' => $product->thumbnail_path ? "/storage/" . $product->thumbnail_path : ($product->image_path ? "/storage/" . $product->image_path : null),
             'sku' => $product->sku,
                 'solution_type' => $product->solutions
                     ->where('service_id', $product->service_id)

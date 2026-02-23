@@ -153,6 +153,7 @@ class ProductForm
                                     Section::make('Image')
                                         ->schema([
                                             FileUpload::make('image_path')
+                                                ->label('Product Main Image')
                                                 ->image()
                                                 ->disk('public')
                                                 ->visibility('public')
@@ -163,6 +164,19 @@ class ProductForm
                                                 ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
                                                     $slug = $get('slug') ?: 'temp';
                                                     return \App\Helpers\UploadHelper::getSluggedFilename($file, 'products/' . $slug);
+                                                }),
+                                            FileUpload::make('thumbnail_path')
+                                                ->label('Thumbnail / Breadcrumb Image')
+                                                ->image()
+                                                ->disk('public')
+                                                ->visibility('public')
+                                                ->maxSize(2048)
+                                                ->downloadable()
+                                                ->openable()
+                                                ->helperText('Digunakan untuk background breadcrumb. Jika kosong, akan menggunakan gambar utama. Ukuran maks: 2MB.')
+                                                ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
+                                                    $slug = $get('slug') ?: 'temp';
+                                                    return \App\Helpers\UploadHelper::getSluggedFilename($file, 'products/' . $slug . '/breadcrumb');
                                                 }),
                                         ]),
                                             Section::make('Status')

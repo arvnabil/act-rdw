@@ -37,7 +37,6 @@ class ProjectForm
                                                 ->afterStateUpdated(fn (string $operation, $state, $set) => $operation === 'create' ? $set('slug', Str::slug($state)) : null),
 
                                             TextInput::make('slug')
-                                                ->disabled()
                                                 ->dehydrated()
                                                 ->required()
                                                 ->unique(Project::class, 'slug', ignoreRecord: true),

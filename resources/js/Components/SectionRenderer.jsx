@@ -14,6 +14,10 @@ import BuilderServiceListSection from "./Sections/Builder/ServiceListSection";
 import ServiceSolutionSection from "./Sections/Builder/ServiceSolutionSection";
 import BuilderServiceCtaSection from "./Sections/Builder/ServiceCtaSection";
 
+import LegalSection from "./Sections/Legal/LegalSection";
+import PartnershipHero from "./Sections/Partnership/PartnershipHero";
+import PartnershipSection from "./Sections/Partnership/PartnershipSection";
+
 // Legacy Components for Migration
 import AboutContentSection from "./Sections/About/AboutContentSection";
 import VisionMissionSection from "./Sections/About/VisionMissionSection";
@@ -42,6 +46,11 @@ const SECTIONS = {
     service_clients: ClientSection,
     service_solution: ServiceSolutionSection,
     service_cta: BuilderServiceCtaSection,
+
+    // Legal & Partnership Sections
+    legal_section: LegalSection,
+    partnership_hero: PartnershipHero,
+    partnership_details: PartnershipSection,
 
     // Legacy Mappings (Static Sections)
     about_content: AboutContentSection,

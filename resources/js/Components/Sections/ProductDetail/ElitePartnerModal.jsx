@@ -31,17 +31,17 @@ const ElitePartnerModal = ({ show, onClose, config = {}, awards = [], brandName 
 
     return (
         <>
-            <Modal show={show} onClose={onClose} maxWidth="700px">
+        <Modal show={show} onClose={onClose} maxWidth="550px">
                 <div className="elite-partner-modal-content">
-                    <div className="text-center mb-4">
-                        <div className="d-inline-flex align-items-center justify-content-center bg-success-subtle text-success rounded-circle mb-3" style={{ width: '64px', height: '64px' }}>
-                            <i className="fa-solid fa-certificate fa-2xl"></i>
+                    <div className="text-center mb-3">
+                        <div className="d-inline-flex align-items-center justify-content-center bg-success-subtle text-success rounded-circle mb-2" style={{ width: '48px', height: '48px' }}>
+                            <i className="fa-solid fa-certificate fa-xl"></i>
                         </div>
-                        <h2 className="fw-bold text-dark mb-2">{title}</h2>
-                        <p className="text-muted mb-0">{subtitle}</p>
+                        <h3 className="fw-bold text-dark mb-1" style={{ fontSize: '1.5rem' }}>{title}</h3>
+                        <p className="text-muted small mb-0">{subtitle}</p>
                     </div>
 
-                    <div className="mb-4 text-secondary" style={{ fontSize: '0.95rem', lineHeight: '1.6' }}>
+                    <div className="mb-3 text-secondary" style={{ fontSize: '0.875rem', lineHeight: '1.5' }}>
                         {config.modal_description ? (
                             <div dangerouslySetInnerHTML={{ __html: description }} />
                         ) : (
@@ -62,8 +62,8 @@ const ElitePartnerModal = ({ show, onClose, config = {}, awards = [], brandName 
                         )}
                     </div>
 
-                    <div className="bg-light p-4 rounded-4 mb-4">
-                        <h5 className="fw-bold text-dark mb-3">As an official partner, ACTiV guarantees:</h5>
+                    <div className="bg-light p-3 rounded-4 mb-3">
+                        <h6 className="fw-bold text-dark mb-2" style={{ fontSize: '0.9rem' }}>As an official partner, ACTiV guarantees:</h6>
                         <div className="row g-3">
                             {displayGuarantees.map((item, i) => (
                                 <div key={i} className="col-6 d-flex align-items-center gap-2">
@@ -75,7 +75,7 @@ const ElitePartnerModal = ({ show, onClose, config = {}, awards = [], brandName 
                     </div>
 
                     <div className="awards-section">
-                        <h6 className="text-muted text-uppercase fw-bold mb-3" style={{ fontSize: '0.75rem', letterSpacing: '0.05em' }}>Recent Awards & Recognition</h6>
+                        <h6 className="text-muted text-uppercase fw-bold mb-2" style={{ fontSize: '0.65rem', letterSpacing: '0.05em' }}>Recent Awards & Recognition</h6>
                         <div className="premium-scroll-x d-md-flex gap-3 justify-content-center flex-wrap">
                             {displayAwards.map((award) => (
                                 <img
@@ -139,6 +139,19 @@ const ElitePartnerModal = ({ show, onClose, config = {}, awards = [], brandName 
                 @keyframes fadeIn {
                     from { opacity: 0; }
                     to { opacity: 1; }
+                }
+                .award-thumb {
+                    width: 80px;
+                    height: 80px;
+                    object-fit: contain;
+                    padding: 10px;
+                    border-radius: 12px;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                }
+                .award-thumb:hover {
+                    transform: translateY(-3px);
+                    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
                 }
             `}</style>
         </>

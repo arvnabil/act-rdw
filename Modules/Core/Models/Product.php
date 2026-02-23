@@ -13,12 +13,12 @@ class Product extends Model
 {
     use HasFactory, HasSeoMeta, HasImageCleanup;
 
-    protected $cleanupFields = ['image_path', 'datasheet_url'];
+    protected $cleanupFields = ['image_path', 'thumbnail_path', 'datasheet_url'];
     protected $richEditorCleanupFields = ['description', 'specification_text', 'features_text'];
 
     protected $fillable = [
         'service_id', 'brand_id', 'name', 'slug',
-        'description', 'image_path', 'sku', 'solution_type',
+        'description', 'image_path', 'thumbnail_path', 'sku', 'solution_type',
         'datasheet_url', 'tags', 'specs', 'specification_text',
         'features', 'features_text', 'is_active', 'is_featured', 'is_new',
         'price', 'link_accommerce', 'whatsapp_note'

@@ -13,6 +13,7 @@ export default function ProjectDetail({ project, seo }) {
 
             <Breadcrumb
                 title={project.title}
+                bgImage={project.thumbnail}
                 items={[
                     { label: "Home", link: "/" },
                     { label: "Projects", link: "/projects" },

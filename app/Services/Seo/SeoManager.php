@@ -9,6 +9,7 @@ use App\Services\Seo\Schemas\WebsiteSchema;
 class SeoManager
 {
     protected array $schemas = [];
+    protected array $meta = [];
     protected ?OrganizationSchema $organization = null;
     protected ?WebsiteSchema $website = null;
     protected string $appName = 'ACTiV';
@@ -78,6 +79,17 @@ class SeoManager
         return !empty($this->schemas);
     }
 
+    public function setMeta(array $meta): self
+    {
+        $this->meta = $meta;
+        return $this;
+    }
+
+    public function getMeta(): array
+    {
+        return $this->meta;
+    }
+
     public function getGraph(): array
     {
         $graph = [];
@@ -102,6 +114,22 @@ class SeoManager
         ];
 
         return '<script type="application/ld+json">' . json_encode($output, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) . '</script>';
+    }
+
+    public function renderMeta(): string
+    {
+        $html = [];
+        foreach ($this->meta as $m) {
+            if (isset($m['property'])) {
+                $html[] = sprintf('<meta property="%s" content="%s">', $m['property'], e($m['content']));
+            } elseif (isset($m['name'])) {
+                $html[] = sprintf('<meta name="%s" content="%s">', $m['name'], e($m['content']));
+            } elseif (isset($m['rel'])) {
+                $html[] = sprintf('<link rel="%s" href="%s">', $m['rel'], e($m['href']));
+            }
+        }
+
+        return implode("\n    ", $html);
     }
 
 

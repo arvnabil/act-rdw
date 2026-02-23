@@ -37,6 +37,11 @@ class SeoViewComposer
             $this->processStatic($props);
         }
 
+        // 3. Sync Meta Tags for SSR (Social Crawlers)
+        if (isset($props['seo']['meta'])) {
+            $this->seoManager->setMeta($props['seo']['meta']);
+        }
+
         $view->with('seoManager', $this->seoManager);
     }
 

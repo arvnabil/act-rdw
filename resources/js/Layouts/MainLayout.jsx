@@ -105,6 +105,13 @@ export default function MainLayout({ children }) {
         }
     };
 
+    const scrollToTop = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth",
+        });
+    };
+
     const isExternalUrl = (url) => {
         if (!url) return false;
         return url.startsWith("http://") || url.startsWith("https://");
@@ -1130,7 +1137,11 @@ export default function MainLayout({ children }) {
                 </div>
             </footer>
 
-            <div className="scroll-top">
+            <div 
+                className={`scroll-top ${isScrolled ? "show" : ""}`}
+                onClick={scrollToTop}
+                style={{ cursor: "pointer" }}
+            >
                 <svg
                     className="progress-circle svg-content"
                     width="100%"

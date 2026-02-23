@@ -39,6 +39,17 @@
     line-height: 1.25 !important;
 }
 
+/* Dynamic Content Image Styling */
+.has-typography img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: block;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+}
+
 @media (max-width: 1399px) {
     .hero-style2 .hero-title {
         font-size: 48px !important;
