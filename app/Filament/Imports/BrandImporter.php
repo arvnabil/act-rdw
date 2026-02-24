@@ -189,7 +189,6 @@ class BrandImporter extends Importer
             'seo_description' => 'description',
             'og_title' => 'og_title',
             'og_description' => 'og_description',
-            'og_image' => 'og_image',
             'canonical_url' => 'canonical_url',
         ];
 
@@ -212,6 +211,16 @@ class BrandImporter extends Importer
             $seoData['keywords'] = $existingSeo->keywords;
         } else {
             $seoData['keywords'] = null;
+        }
+
+        // OG Image: resolve URL/path properly
+        $csvOgImage = $this->data['og_image'] ?? null;
+        if (!blank($csvOgImage)) {
+            $seoData['og_image'] = \App\Helpers\ImageHelper::resolveImageFromUrl($csvOgImage, 'seo/og', $this->record->slug);
+        } elseif ($existingSeo) {
+            $seoData['og_image'] = $existingSeo->og_image;
+        } else {
+            $seoData['og_image'] = null;
         }
 
         // Noindex

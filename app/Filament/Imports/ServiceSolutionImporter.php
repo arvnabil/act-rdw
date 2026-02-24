@@ -122,7 +122,7 @@ class ServiceSolutionImporter extends Importer
                 'keywords' => $data['seo_keywords'] ?? null,
                 'og_title' => $data['og_title'] ?? null,
                 'og_description' => $data['og_description'] ?? null,
-                'og_image' => $data['og_image'] ?? $record->thumbnail,
+                'og_image' => \App\Helpers\ImageHelper::resolveImageFromUrl($data['og_image'] ?? null, 'seo/og', $record->slug, $record->thumbnail),
                 'canonical_url' => $data['canonical_url'] ?? null,
                 'noindex' => $data['noindex'] ?? false,
             ];

@@ -190,4 +190,72 @@ class ImageHelper
         Log::warning("ImageHelper: URL '{$url}' identified as INTERNAL but file not found in public storage.");
         return null;
     }
+
+    /**
+     * Resolves an image URL/path from import data into a relative storage path.
+     * 
+     * Logic:
+     * - If blank: returns $fallback
+     * - If local URL (same domain): extracts relative path
+     * - If external URL: downloads, converts to WebP, saves to $targetDir
+     * - If relative path: returns as-is
+     *
+     * @param string|null $value     The image value from CSV (URL, path, or blank)
+     * @param string      $targetDir Target directory for saving downloaded images (e.g. 'seo/og')
+     * @param string      $slug      Slug for naming the file
+     * @param string|null $fallback  Fallback value if $value is blank
+     * @return string|null           Relative storage path or null
+     */
+    public static function resolveImageFromUrl(?string $value, string $targetDir, string $slug, ?string $fallback = null): ?string
+    {
+        if (blank($value)) {
+            return $fallback;
+        }
+
+        // Not a URL — treat as relative path
+        if (!filter_var($value, FILTER_VALIDATE_URL) && !str_starts_with($value, 'http')) {
+            return $value;
+        }
+
+        // Check if it's a local URL
+        $localPath = self::getLocalPathFromUrl($value);
+        if ($localPath) {
+            Log::info("resolveImageFromUrl: Local URL resolved to: {$localPath}");
+            return $localPath;
+        }
+
+        // External URL — download and convert
+        Log::info("resolveImageFromUrl: Downloading external URL: {$value}");
+        try {
+            $cleanUrl = str_replace(' ', '%20', $value);
+
+            $response = \Illuminate\Support\Facades\Http::withoutVerifying()
+                ->withHeaders([
+                    'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+                    'Accept' => 'image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
+                ])
+                ->timeout(30)
+                ->retry(2, 1000)
+                ->get($cleanUrl);
+
+            if ($response->successful()) {
+                $contents = $response->body();
+                $filename = \Illuminate\Support\Str::slug($slug ?: 'image') . '-' . time();
+                $targetPath = rtrim($targetDir, '/') . '/' . $filename;
+
+                $savedPath = self::processAndConvert($contents, $targetPath);
+                if ($savedPath) {
+                    Log::info("resolveImageFromUrl: Saved to: {$savedPath}");
+                    return $savedPath;
+                }
+            } else {
+                Log::warning("resolveImageFromUrl: Download failed. Status: " . $response->status());
+            }
+        } catch (\Throwable $e) {
+            Log::error("resolveImageFromUrl: Error: " . $e->getMessage());
+        }
+
+        // If download failed, return fallback
+        return $fallback;
+    }
 }
