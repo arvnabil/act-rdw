@@ -121,10 +121,9 @@ class ServiceSolutionImporter extends Importer
                 'description' => $data['seo_description'] ?? Str::limit(strip_tags($record->description), 160),
                 'keywords' => $data['seo_keywords'] ?? null,
                 'og_title' => $data['og_title'] ?? null,
-                'og_description' => $data['og_description'] ?? null,
-                'og_image' => \App\Helpers\ImageHelper::resolveImageFromUrl($data['og_image'] ?? null, 'seo/og', $record->slug, $record->thumbnail),
-                'canonical_url' => $data['canonical_url'] ?? null,
-                'noindex' => $data['noindex'] ?? false,
+                'og_description' => Str::limit($data['og_description'] ?? null, 1000, ''),
+                'og_image' => \App\Helpers\ImageHelper::resolveImageFromUrl($data['og_image'] ?? null, 'seo/og', $record->slug, $record->seo?->og_image ?: $record->thumbnail),
+                'canonical_url' => Str::limit($data['canonical_url'] ?? null, 1000, ''),               'noindex' => $data['noindex'] ?? false,
             ];
 
             $record->seo()->updateOrCreate(

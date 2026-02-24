@@ -213,15 +213,13 @@ class BrandImporter extends Importer
             $seoData['keywords'] = null;
         }
 
-        // OG Image: resolve URL/path properly
-        $csvOgImage = $this->data['og_image'] ?? null;
-        if (!blank($csvOgImage)) {
-            $seoData['og_image'] = \App\Helpers\ImageHelper::resolveImageFromUrl($csvOgImage, 'seo/og', $this->record->slug);
-        } elseif ($existingSeo) {
-            $seoData['og_image'] = $existingSeo->og_image;
-        } else {
-            $seoData['og_image'] = null;
-        }
+        // OG Image: resolve URL/path properly with fallback to existing og_image or Brand image
+        $seoData['og_image'] = \App\Helpers\ImageHelper::resolveImageFromUrl(
+            $this->data['og_image'] ?? null, 
+            'seo/og', 
+            $this->record->slug, 
+            $existingSeo?->og_image ?: $this->record->image
+        );
 
         // Noindex
         $csvNoindex = $this->data['noindex'] ?? null;

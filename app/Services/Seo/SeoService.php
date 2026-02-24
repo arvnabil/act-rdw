@@ -7,6 +7,10 @@ use App\Models\News;
 use App\Models\Project;
 use App\Models\Page;
 use Modules\ServiceSolutions\Models\Service;
+use Modules\ServiceSolutions\Models\ServiceSolution;
+use Modules\Core\Models\Product;
+use Modules\Core\Models\Brand;
+use App\Models\Client;
 use Illuminate\Support\Str;
 
 class SeoService
@@ -72,8 +76,32 @@ class SeoService
 
     protected function resolveImage(Model $model): ?string
     {
-        $path = $model->seo?->og_image ?? $model->thumbnail ?? $model->featured_image ?? $model->image_path;
-        return $path ? asset('storage/' . $path) : asset('assets/img/logo/logo.png');
+        // 1. Priority: Manual SEO og_image
+        $path = $model->seo?->og_image;
+
+        // 2. Fallbacks based on Model type
+        if (!$path) {
+            $path = match(true) {
+                $model instanceof Product         => $model->image_path,
+                $model instanceof Client          => $model->logo,
+                $model instanceof Brand           => $model->image ?: $model->logo_path,
+                $model instanceof News            => $model->thumbnail,
+                $model instanceof Project         => $model->thumbnail,
+                $model instanceof Service         => $model->thumbnail ?: $model->featured_image,
+                $model instanceof ServiceSolution => $model->thumbnail,
+                $model instanceof Page            => $model->breadcrumb_image,
+                default                           => $model->thumbnail ?? $model->featured_image ?? $model->image_path
+            };
+        }
+
+        // 3. Absolute URL resolution or Global Default
+        if ($path) {
+            return asset('storage/' . $path);
+        }
+
+        // 4. Global fallback to site logo or branding
+        $defaultOg = \App\Models\Setting::get('seo_default_og_image');
+        return $defaultOg ? asset('storage/' . $defaultOg) : asset('assets/img/logo/logo.png');
     }
 
     protected function resolveType(Model $model): string

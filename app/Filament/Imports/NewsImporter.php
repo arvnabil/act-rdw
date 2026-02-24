@@ -249,7 +249,7 @@ class NewsImporter extends Importer
                 'keywords' => $seoKeys,
                 'og_title' => Str::limit($data['og_title'] ?? null, 500, ''),
                 'og_description' => Str::limit($data['og_description'] ?? null, 1000, ''),
-                'og_image' => \App\Helpers\ImageHelper::resolveImageFromUrl($data['og_image'] ?? null, 'seo/og', $record->slug, $record->thumbnail),
+                'og_image' => \App\Helpers\ImageHelper::resolveImageFromUrl($data['og_image'] ?? null, 'seo/og', $record->slug, $record->seo?->og_image ?: $record->thumbnail),
                 'canonical_url' => Str::limit($data['canonical_url'] ?? null, 1000, ''),
                 'noindex' => (bool) ($data['noindex'] ?? false),
             ];

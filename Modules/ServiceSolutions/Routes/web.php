@@ -68,7 +68,8 @@ Route::middleware(['web'])->group(function () {
                 'thumbnail' => $solution->thumbnail,
                 'show_showcase' => $solution->show_showcase,
                 'wa_message' => $solution->wa_message
-            ]
+            ],
+            'seo' => \App\Services\SeoResolver::for($solution)
         ]);
     })->name('services.item.detail');
 });

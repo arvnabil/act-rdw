@@ -128,7 +128,7 @@ class ProjectImporter extends Importer
             'keywords' => $seoKeywords,
             'og_title' => blank($this->data['og_title'] ?? null) ? null : $this->data['og_title'],
             'og_description' => blank($this->data['og_description'] ?? null) ? null : $this->data['og_description'],
-            'og_image' => \App\Helpers\ImageHelper::resolveImageFromUrl($this->data['og_image'] ?? null, 'seo/og', $this->record->slug),
+            'og_image' => \App\Helpers\ImageHelper::resolveImageFromUrl($this->data['og_image'] ?? null, 'seo/og', $this->record->slug, $this->record->seo?->og_image ?: $this->record->thumbnail),
             'canonical_url' => blank($this->data['canonical_url'] ?? null) ? null : $this->data['canonical_url'],
             'noindex' => blank($this->data['noindex'] ?? null) ? false : (bool) $this->data['noindex'],
         ];
