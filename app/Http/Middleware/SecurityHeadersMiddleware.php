@@ -24,12 +24,12 @@ class SecurityHeadersMiddleware
         $response->headers->set('Referrer-Policy', 'no-referrer-when-downgrade');
         $response->headers->set('Content-Security-Policy', implode('; ', [
             "default-src 'self'",
-            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com https://www.googletagmanager.com https://webchat.qontak.com https://static.cloudflareinsights.com",
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com https://www.googletagmanager.com https://webchat.qontak.com https://static.cloudflareinsights.com https://translate.google.com https://translate.googleapis.com",
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://webchat.qontak.com",
             "font-src 'self' https://fonts.gstatic.com data:",
             "img-src 'self' data: https:",
-            "frame-src 'self' https://www.google.com",
-            "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://webchat.qontak.com https://static.cloudflareinsights.com",
+            "frame-src 'self' https://www.google.com https://webchat.qontak.com",
+            "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://webchat.qontak.com https://static.cloudflareinsights.com https://translate.googleapis.com",
         ]));
 
         return $response;
