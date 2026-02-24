@@ -1135,6 +1135,17 @@ export default function MainLayout({ children }) {
                                     Copyright © 2025 <Link href="/">ACTiV</Link>
                                     . Seluruh hak cipta dilindungi undang-undang.
                                 </p>
+                                <p className="copyright-text" style={{ fontSize: '11px', opacity: 0.7, marginTop: '4px' }}>
+                                    Situs ini dilindungi oleh reCAPTCHA dan{' '}
+                                    <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>
+                                        Kebijakan Privasi
+                                    </a>{' '}
+                                    serta{' '}
+                                    <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" style={{ color: 'inherit', textDecoration: 'underline' }}>
+                                        Ketentuan Layanan
+                                    </a>{' '}
+                                    Google berlaku.
+                                </p>
                             </div>
                             <div className="col-lg-6 text-lg-end text-center">
                                 <div className="footer-links">
