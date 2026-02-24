@@ -4508,14 +4508,14 @@ Last Update: 20-07-2025
 
 .scroll-top {
     position: fixed;
-    right: 90px;
+    right: 150px;
     bottom: 30px;
     height: 50px;
     width: 50px;
     cursor: pointer;
     display: block;
     border-radius: 50px;
-    z-index: 10000;
+    z-index: 9999999;
     opacity: 1;
     visibility: hidden;
     -webkit-transform: translateY(45px);
