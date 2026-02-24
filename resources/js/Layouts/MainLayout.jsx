@@ -208,6 +208,10 @@ export default function MainLayout({ children }) {
                 #google_translate_element2 { display: none !important; }
                 .skiptranslate { display: none !important; }
                 body { top: 0px !important; }
+                .goog-te-banner-frame { display: none !important; }
+                iframe.goog-te-banner-frame { display: none !important; }
+                body > .skiptranslate { display: none !important; height: 0 !important; overflow: hidden !important; }
+                iframe[name="votingFrame"] { display: none !important; }
 
                 .gt_switcher_wrapper {
                     display: inline-block;
