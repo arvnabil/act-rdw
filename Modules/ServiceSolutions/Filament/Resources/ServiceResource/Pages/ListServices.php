@@ -14,6 +14,15 @@ class ListServices extends ListRecords
     {
         return [
             Actions\CreateAction::make(),
+            Actions\ExportAction::make('exportServices')
+                ->label('Export Service')
+                ->exporter(\App\Filament\Exports\ServiceExporter::class),
+            Actions\ExportAction::make('exportSolutions')
+                ->label('Export Solutions')
+                ->exporter(\App\Filament\Exports\ServiceSolutionExporter::class),
+            Actions\ExportAction::make('exportCategories')
+                ->label('Export Categories')
+                ->exporter(\App\Filament\Exports\ServiceCategoryExporter::class),
             Actions\ImportAction::make()
                 ->importer(\App\Filament\Imports\ServiceImporter::class)
                 ->modalDescription(fn () => new \Illuminate\Support\HtmlString('Download example CSV: <a href="#" wire:click.prevent="mountAction(\'downloadExample\')">Click here</a>')),
