@@ -295,6 +295,24 @@ export default function MainLayout({ children }) {
 
                 /* Hide reCAPTCHA v3 badge - it blocks scroll-to-top button clicks */
                 .grecaptcha-badge { visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; }
+
+                /* Fix Qontak webchat iframe blocking scroll-to-top button */
+                #qontak-webchat-widget {
+                    pointer-events: none !important;
+                    width: 80px !important;
+                    height: 80px !important;
+                    bottom: 15px !important;
+                    right: 15px !important;
+                }
+                #qontak-webchat-widget.expanded,
+                #qontak-webchat-widget:hover {
+                    pointer-events: auto !important;
+                    width: 400px !important;
+                    height: 600px !important;
+                }
+
+                /* Ensure scroll-top button stays above other widgets */
+                .scroll-top { pointer-events: auto !important; z-index: 9999999 !important; }
             `}
             </style>
 
