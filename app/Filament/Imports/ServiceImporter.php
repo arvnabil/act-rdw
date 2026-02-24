@@ -52,6 +52,9 @@ class ServiceImporter extends Importer
             ImportColumn::make('og_description')
                 ->label('OG Description')
                 ->fillRecordUsing(fn ($record) => null),
+            ImportColumn::make('og_image')
+                ->label('OG Image')
+                ->fillRecordUsing(fn ($record) => null),
             ImportColumn::make('canonical_url')
                 ->label('Canonical URL')
                 ->fillRecordUsing(fn ($record) => null),
@@ -82,6 +85,7 @@ class ServiceImporter extends Importer
                 'keywords' => $data['seo_keywords'] ?? null,
                 'og_title' => $data['og_title'] ?? null,
                 'og_description' => $data['og_description'] ?? null,
+                'og_image' => \App\Helpers\ImageHelper::resolveImageFromUrl($data['og_image'] ?? null, 'seo/og', $record->slug),
                 'canonical_url' => $data['canonical_url'] ?? null,
                 'noindex' => $data['noindex'] ?? false,
             ];

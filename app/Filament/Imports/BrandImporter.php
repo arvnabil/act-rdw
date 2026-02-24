@@ -25,7 +25,7 @@ class BrandImporter extends Importer
                 ->rules(['required', 'max:255'])
                 ->example('brand-slug'),
             ImportColumn::make('image')
-                ->label('Logo')
+                ->label('image')
                 ->fillRecordUsing(fn() => null)
                 ->example('https://example.com/logo.png'),
             ImportColumn::make('website_url')

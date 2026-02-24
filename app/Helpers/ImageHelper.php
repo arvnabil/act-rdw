@@ -208,7 +208,9 @@ class ImageHelper
      */
     public static function resolveImageFromUrl(?string $value, string $targetDir, string $slug, ?string $fallback = null): ?string
     {
+        Log::debug("--- resolveImageFromUrl START --- Value: [{$value}] | Target: [{$targetDir}] | Slug: [{$slug}] | Fallback: [{$fallback}]");
         if (blank($value)) {
+            Log::debug("resolveImageFromUrl: Value is blank. Returning fallback: " . ($fallback ?: 'NULL'));
             return $fallback;
         }
 

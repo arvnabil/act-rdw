@@ -322,6 +322,8 @@ class ProductImporter extends Importer
 
         // 3. Handle SEO Metadata
         $seoKeys = !empty($data['seo_keywords']) ? array_map('trim', explode(',', $data['seo_keywords'])) : null;
+        \Illuminate\Support\Facades\Log::debug("ProductImporter Debug: data[og_image] is '" . ($data['og_image'] ?? 'NOT SET') . "' | record->image_path is '" . ($record->image_path ?? 'NULL') . "'");
+
         $seoData = [
             'title' => Str::limit($data['seo_title'] ?? $record->name, 500, ''),
             'description' => Str::limit($data['seo_description'] ?? Str::limit(strip_tags($record->description), 160, ''), 1000, ''),

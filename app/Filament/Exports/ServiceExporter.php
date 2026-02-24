@@ -33,6 +33,11 @@ class ServiceExporter extends Exporter
                     : null),
             ExportColumn::make('seo.og_title')->label('og_title'),
             ExportColumn::make('seo.og_description')->label('og_description'),
+            ExportColumn::make('og_image')
+                ->label('OG Image')
+                ->state(fn (Service $record): ?string => $record->seo?->og_image
+                    ? asset(\Illuminate\Support\Facades\Storage::url($record->seo->og_image))
+                    : null),
             ExportColumn::make('seo.canonical_url')->label('canonical_url'),
             ExportColumn::make('noindex')
                 ->label('noindex')
