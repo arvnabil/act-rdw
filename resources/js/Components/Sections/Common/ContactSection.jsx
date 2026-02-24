@@ -12,7 +12,7 @@ export default function ContactSection({
     email = "sales@activ.co.id",
     address_office = "Infinity Office, Belleza BSA 1st Floor Unit 106, Jl. Letjen Soepeno, Keb. Lama Jakarta Selatan 12210",
     address_representative = "Ruko Golden Boulevard Blok S 28, Jl Pahlawan Seribu, BSD City, Kec. , Tangerang, 15119, Kota Tangerang Selatan, Banten 15119",
-    map_embed_url = "https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d9894.100972827648!2d106.66287000000001!3d-6.276524!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69fb227ca11a57%3A0x1d99e2c09955d44d!2sPT%20Alfa%20Cipta%20Teknologi%20Virtual%20(ACTiV)!5e1!3m2!1sid!2sid!4v1765353648986!5m2!1sid!2sid",
+    map_embed_url = "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3965.9026871556857!2d106.66287039999999!3d-6.2765239!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69fb227ca11a57%3A0x1d99e2c09955d44d!2sPT%20Alfa%20Cipta%20Teknologi%20Virtual%20(ACTiV)!5e0!3m2!1sid!2sid!4v1771903984369!5m2!1sid!2sid",
     enable_recaptcha = true,
     form_fields = [],
     id, // Section ID from DB
