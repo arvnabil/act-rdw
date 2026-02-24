@@ -22,7 +22,15 @@ class SecurityHeadersMiddleware
         $response->headers->set('X-Content-Type-Options', 'nosniff');
         $response->headers->set('X-XSS-Protection', '1; mode=block');
         $response->headers->set('Referrer-Policy', 'no-referrer-when-downgrade');
-        $response->headers->set('Content-Security-Policy', "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; frame-src 'self' https://www.google.com;");
+        $response->headers->set('Content-Security-Policy', implode('; ', [
+            "default-src 'self'",
+            "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.google.com https://www.gstatic.com https://www.googletagmanager.com https://webchat.qontak.com https://static.cloudflareinsights.com",
+            "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://webchat.qontak.com",
+            "font-src 'self' https://fonts.gstatic.com data:",
+            "img-src 'self' data: https:",
+            "frame-src 'self' https://www.google.com",
+            "connect-src 'self' https://www.google-analytics.com https://www.googletagmanager.com https://webchat.qontak.com https://static.cloudflareinsights.com",
+        ]));
 
         return $response;
     }

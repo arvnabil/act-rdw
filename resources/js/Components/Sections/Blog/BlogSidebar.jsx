@@ -8,12 +8,13 @@ export default function BlogSidebar({
     tags = [],
     post = null,
 }) {
-    const [searchTerm, setSearchTerm] = useState(filters.search || "");
+    const { filters = {} } = usePage().props;
+    const [searchTerm, setSearchTerm] = useState(filters?.search || "");
 
     const handleSearch = (e) => {
         e.preventDefault();
         if (searchTerm) {
-            router.get('/search', { q: searchTerm });
+            router.get("/search", { q: searchTerm });
         }
     };
 
@@ -47,22 +48,24 @@ export default function BlogSidebar({
                                 {cat.posts_count > 0 && (
                                     <span
                                         style={{
-                                            position: 'absolute',
-                                            right: '55px',
-                                            top: '50%',
-                                            transform: 'translateY(-50%)',
-                                            backgroundColor: 'rgba(0, 172, 193, 0.1)',
-                                            color: '#00ACC1',
-                                            padding: '2px 12px',
-                                            borderRadius: '50px',
-                                            fontSize: '13px',
-                                            fontWeight: '700',
-                                            border: '1px solid rgba(0, 172, 193, 0.2)',
-                                            boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
-                                            lineHeight: '1',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center'
+                                            position: "absolute",
+                                            right: "55px",
+                                            top: "50%",
+                                            transform: "translateY(-50%)",
+                                            backgroundColor:
+                                                "rgba(0, 172, 193, 0.1)",
+                                            color: "#00ACC1",
+                                            padding: "2px 12px",
+                                            borderRadius: "50px",
+                                            fontSize: "13px",
+                                            fontWeight: "700",
+                                            border: "1px solid rgba(0, 172, 193, 0.2)",
+                                            boxShadow:
+                                                "0 2px 4px rgba(0,0,0,0.05)",
+                                            lineHeight: "1",
+                                            display: "flex",
+                                            alignItems: "center",
+                                            justifyContent: "center",
                                         }}
                                     >
                                         {cat.posts_count}
@@ -152,16 +155,23 @@ export default function BlogSidebar({
 
                     {(() => {
                         const { settings } = usePage().props;
-                        const message = post ? `Halo, saya butuh bantuan terkait artikel: ${post.title}` : "Halo, saya butuh bantuan terkait layanan Anda.";
-                        const link = getWhatsAppLink(settings?.whatsapp_number, {
-                            message: message,
-                            cta_position: 'blog_sidebar',
-                            cta_label: post ? `CTA Blog: ${post.title}` : 'CTA Blog Support',
-                            entity_type: 'news',
-                            entity_id: post?.id,
-                            entity_slug: post?.slug
-                        }) || "/contact";
-                        const target = link.startsWith("http") ? "_blank" : "_self";
+                        const message = post
+                            ? `Halo, saya butuh bantuan terkait artikel: ${post.title}`
+                            : "Halo, saya butuh bantuan terkait layanan Anda.";
+                        const link =
+                            getWhatsAppLink(settings?.whatsapp_number, {
+                                message: message,
+                                cta_position: "blog_sidebar",
+                                cta_label: post
+                                    ? `CTA Blog: ${post.title}`
+                                    : "CTA Blog Support",
+                                entity_type: "news",
+                                entity_id: post?.id,
+                                entity_slug: post?.slug,
+                            }) || "/contact";
+                        const target = link.startsWith("http")
+                            ? "_blank"
+                            : "_self";
 
                         return (
                             <a

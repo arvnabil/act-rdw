@@ -521,16 +521,16 @@
       "_whatsapp-gb3w1RlL.js"
     ]
   },
-  "_BlogSidebar-C3vizXLP.js": {
-    "file": "assets/BlogSidebar-C3vizXLP.js",
+  "_BlogSidebar-QumGSAS3.js": {
+    "file": "assets/BlogSidebar-QumGSAS3.js",
     "name": "BlogSidebar",
     "imports": [
       "_vendor-react-4Vn9sn_1.js",
       "_whatsapp-gb3w1RlL.js"
     ]
   },
-  "_BlogSidebar-legacy-tdwEaSso.js": {
-    "file": "assets/BlogSidebar-legacy-tdwEaSso.js",
+  "_BlogSidebar-legacy-YfeFXLVs.js": {
+    "file": "assets/BlogSidebar-legacy-YfeFXLVs.js",
     "name": "BlogSidebar",
     "imports": [
       "_vendor-react-legacy-CkBIcGHD.js",
@@ -2250,7 +2250,7 @@
     ]
   },
   "resources/js/Pages/News/Detail-legacy.jsx": {
-    "file": "assets/Detail-legacy-CYz0EMuS.js",
+    "file": "assets/Detail-legacy-BkqQSWfP.js",
     "name": "Detail",
     "src": "resources/js/Pages/News/Detail-legacy.jsx",
     "isDynamicEntry": true,
@@ -2259,7 +2259,7 @@
       "_MainLayout-legacy-Db-J8L2O.js",
       "_Breadcrumb-legacy-KHbISF3Q.js",
       "_Seo-legacy-Cwd3dsOD.js",
-      "_BlogSidebar-legacy-tdwEaSso.js",
+      "_BlogSidebar-legacy-YfeFXLVs.js",
       "_vendor-legacy--ufps1ow.js",
       "_vendor-ui-legacy-CzK8Yr7m.js",
       "_vendor-animation-legacy-BWgBFhLZ.js",
@@ -2269,7 +2269,7 @@
     ]
   },
   "resources/js/Pages/News/Detail.jsx": {
-    "file": "assets/Detail-C5PXUaPD.js",
+    "file": "assets/Detail-0LFMpXB0.js",
     "name": "Detail",
     "src": "resources/js/Pages/News/Detail.jsx",
     "isDynamicEntry": true,
@@ -2278,7 +2278,7 @@
       "_MainLayout-Bdqu5UDK.js",
       "_Breadcrumb-CYabxAI-.js",
       "_Seo-5RY6jlCB.js",
-      "_BlogSidebar-C3vizXLP.js",
+      "_BlogSidebar-QumGSAS3.js",
       "_vendor-DNXOrmte.js",
       "_vendor-ui-TqGN4ckB.js",
       "_vendor-animation-CPskncXY.js",
@@ -2288,7 +2288,7 @@
     ]
   },
   "resources/js/Pages/News/Index-legacy.jsx": {
-    "file": "assets/Index-legacy-1HClXA6Y.js",
+    "file": "assets/Index-legacy-DZFHcVS_.js",
     "name": "Index",
     "src": "resources/js/Pages/News/Index-legacy.jsx",
     "isDynamicEntry": true,
@@ -2296,7 +2296,7 @@
       "_vendor-react-legacy-CkBIcGHD.js",
       "_MainLayout-legacy-Db-J8L2O.js",
       "_Breadcrumb-legacy-KHbISF3Q.js",
-      "_BlogSidebar-legacy-tdwEaSso.js",
+      "_BlogSidebar-legacy-YfeFXLVs.js",
       "_vendor-legacy--ufps1ow.js",
       "_vendor-ui-legacy-CzK8Yr7m.js",
       "_vendor-animation-legacy-BWgBFhLZ.js",
@@ -2306,7 +2306,7 @@
     ]
   },
   "resources/js/Pages/News/Index.jsx": {
-    "file": "assets/Index-DSLGeo7O.js",
+    "file": "assets/Index-MZAmWjYY.js",
     "name": "Index",
     "src": "resources/js/Pages/News/Index.jsx",
     "isDynamicEntry": true,
@@ -2314,7 +2314,7 @@
       "_vendor-react-4Vn9sn_1.js",
       "_MainLayout-Bdqu5UDK.js",
       "_Breadcrumb-CYabxAI-.js",
-      "_BlogSidebar-C3vizXLP.js",
+      "_BlogSidebar-QumGSAS3.js",
       "_vendor-DNXOrmte.js",
       "_vendor-ui-TqGN4ckB.js",
       "_vendor-animation-CPskncXY.js",
@@ -2791,7 +2791,7 @@
     ]
   },
   "resources/js/app-legacy.jsx": {
-    "file": "assets/app-legacy-BGYwTAZR.js",
+    "file": "assets/app-legacy-D01PP4AV.js",
     "name": "app",
     "src": "resources/js/app-legacy.jsx",
     "isEntry": true,
@@ -2872,7 +2872,7 @@
     ]
   },
   "resources/js/app.jsx": {
-    "file": "assets/app-ChOGsbdR.js",
+    "file": "assets/app-v5Z4CrME.js",
     "name": "app",
     "src": "resources/js/app.jsx",
     "isEntry": true,
