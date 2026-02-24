@@ -180,7 +180,7 @@ export default function ProductShowcase({ product }) {
                         <header className="mb-4">
                             <h1 className="premium-info-title">{product.name}</h1>
                             <p className="premium-info-subtitle">
-                                {product.short_description || "Professional Wireless Business Headset"}
+                                {product.subtitle || product.name}
                             </p>
                         </header>
 

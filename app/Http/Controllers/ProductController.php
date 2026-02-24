@@ -111,6 +111,7 @@ class ProductController extends Controller
             'id' => $product->id,
             'slug' => $product->slug,
             'name' => $product->name,
+            'subtitle' => $product->seo?->description,
             'cta_label' => "CTA Produk: {$product->name}",
             'image' => $product->image_path ? "/storage/" . $product->image_path : null,
             'image_path' => $product->image_path,
