@@ -6,6 +6,7 @@ use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
 use Illuminate\Support\Number;
+use Illuminate\Support\Facades\Storage;
 use Modules\Core\Models\Brand;
 
 class BrandImporter extends Importer
@@ -26,21 +27,21 @@ class BrandImporter extends Importer
             ImportColumn::make('image')
                 ->label('Logo')
                 ->fillRecordUsing(fn() => null)
-                ->example('brands/featured.jpg'),
+                ->example('https://example.com/logo.png'),
             ImportColumn::make('website_url')
                 ->label('Website URL')
-                ->castStateUsing(fn ($state) => blank($state) ? null : $state)
+                ->fillRecordUsing(fn() => null)
                 ->example('https://brand.com'),
             ImportColumn::make('desc')
                 ->label('Description')
-                ->castStateUsing(fn ($state) => blank($state) ? null : $state),
+                ->fillRecordUsing(fn() => null),
             ImportColumn::make('category')
                 ->label('Category')
-                ->castStateUsing(fn ($state) => blank($state) ? null : $state)
+                ->fillRecordUsing(fn() => null)
                 ->example('Technology, Security'),
             ImportColumn::make('is_featured')
                 ->label('Is Featured')
-                ->boolean()
+                ->fillRecordUsing(fn() => null)
                 ->example(false),
             
             // Hero Configuration (Virtual Columns)
@@ -122,8 +123,24 @@ class BrandImporter extends Importer
 
     protected function beforeSave(): void
     {
-        // Default is_featured if blank
-        if (blank($this->data['is_featured'] ?? null)) {
+        $isNew = !$this->record->exists;
+
+        // For text fields: only update if CSV value is not blank
+        // If blank, preserve existing DB value (for updates) or leave null (for new records)
+        $textFields = ['website_url', 'desc', 'category'];
+        foreach ($textFields as $field) {
+            $csvValue = $this->data[$field] ?? null;
+            if (!blank($csvValue)) {
+                $this->record->{$field} = $csvValue;
+            }
+            // If blank: don't touch existing value on update, leave null on create
+        }
+
+        // is_featured: only update if provided, default false for new records
+        $csvFeatured = $this->data['is_featured'] ?? null;
+        if (!blank($csvFeatured)) {
+            $this->record->is_featured = filter_var($csvFeatured, FILTER_VALIDATE_BOOLEAN);
+        } elseif ($isNew) {
             $this->record->is_featured = false;
         }
     }
@@ -132,17 +149,24 @@ class BrandImporter extends Importer
     {
         \Log::info('Importing Brand ID: ' . $this->record->id . ' | Slug: ' . $this->record->slug);
 
-        // Update Landing Config (Hero)
+        // Update Landing Config (Hero) - only update fields that have data
         $landingConfig = $this->record->landing_config ?? [];
         $hero = $landingConfig['hero'] ?? [];
 
-        // Manual mapping from CSV to Hero Config
-        if (isset($this->data['hero_eyebrow'])) $hero['eyebrow'] = $this->data['hero_eyebrow'];
-        if (isset($this->data['hero_title'])) $hero['title'] = $this->data['hero_title'];
-        if (isset($this->data['hero_subtitle'])) $hero['subtitle'] = $this->data['hero_subtitle'];
-        if (isset($this->data['hero_desc'])) $hero['desc'] = $this->data['hero_desc'];
-        if (isset($this->data['hero_cta_label'])) $hero['cta_label'] = $this->data['hero_cta_label'];
-        if (isset($this->data['hero_cta_url'])) $hero['cta_url'] = $this->data['hero_cta_url'];
+        $heroFields = [
+            'hero_eyebrow' => 'eyebrow',
+            'hero_title' => 'title',
+            'hero_subtitle' => 'subtitle',
+            'hero_desc' => 'desc',
+            'hero_cta_label' => 'cta_label',
+            'hero_cta_url' => 'cta_url',
+        ];
+
+        foreach ($heroFields as $csvKey => $heroKey) {
+            if (!blank($this->data[$csvKey] ?? null)) {
+                $hero[$heroKey] = $this->data[$csvKey];
+            }
+        }
         
         // Ensure enabled is true if any hero data is provided
         if (!empty(array_filter($hero))) {
@@ -153,79 +177,143 @@ class BrandImporter extends Importer
         $this->record->landing_config = $landingConfig;
         $this->record->save();
 
-        // SEO Update
+        // SEO Update - only update non-blank fields, preserve existing for blank ones
+        $existingSeo = $this->record->seo;
+
         $seoKeywords = $this->data['seo_keywords'] ?? null;
         $seoKeywords = blank($seoKeywords) ? null : array_map('trim', explode(',', $seoKeywords));
 
-        $seoData = [
-            'title' => blank($this->data['seo_title'] ?? null) ? null : $this->data['seo_title'],
-            'description' => blank($this->data['seo_description'] ?? null) ? null : $this->data['seo_description'],
-            'keywords' => $seoKeywords,
-            'og_title' => blank($this->data['og_title'] ?? null) ? null : $this->data['og_title'],
-            'og_description' => blank($this->data['og_description'] ?? null) ? null : $this->data['og_description'],
-            'og_image' => blank($this->data['og_image'] ?? null) ? null : $this->data['og_image'],
-            'canonical_url' => blank($this->data['canonical_url'] ?? null) ? null : $this->data['canonical_url'],
-            'noindex' => blank($this->data['noindex'] ?? null) ? false : (bool) $this->data['noindex'],
+        $seoData = [];
+        $seoFieldMap = [
+            'seo_title' => 'title',
+            'seo_description' => 'description',
+            'og_title' => 'og_title',
+            'og_description' => 'og_description',
+            'og_image' => 'og_image',
+            'canonical_url' => 'canonical_url',
         ];
+
+        foreach ($seoFieldMap as $csvKey => $dbKey) {
+            $csvValue = $this->data[$csvKey] ?? null;
+            if (!blank($csvValue)) {
+                $seoData[$dbKey] = $csvValue;
+            } elseif ($existingSeo) {
+                // Preserve existing value
+                $seoData[$dbKey] = $existingSeo->{$dbKey};
+            } else {
+                $seoData[$dbKey] = null;
+            }
+        }
+
+        // Keywords: special handling (array)
+        if (!blank($seoKeywords)) {
+            $seoData['keywords'] = $seoKeywords;
+        } elseif ($existingSeo) {
+            $seoData['keywords'] = $existingSeo->keywords;
+        } else {
+            $seoData['keywords'] = null;
+        }
+
+        // Noindex
+        $csvNoindex = $this->data['noindex'] ?? null;
+        if (!blank($csvNoindex)) {
+            $seoData['noindex'] = filter_var($csvNoindex, FILTER_VALIDATE_BOOLEAN);
+        } elseif ($existingSeo) {
+            $seoData['noindex'] = $existingSeo->noindex;
+        } else {
+            $seoData['noindex'] = false;
+        }
 
         $this->record->seo()->updateOrCreate(
             ['seoable_id' => $this->record->id, 'seoable_type' => get_class($this->record)],
             $seoData
         );
 
-        // Handle external logo download
+        // Handle image/logo
         $logo = $this->data['image'] ?? null;
-        \Log::info('BrandImporter: afterSave started for Record: ' . $this->record->id);
+        \Log::info('BrandImporter: afterSave for Record: ' . $this->record->id);
         \Log::info('BrandImporter: Logo value from CSV: ' . ($logo ?: 'NULL'));
 
-        if (!blank($logo) && (filter_var($logo, FILTER_VALIDATE_URL) || str_starts_with($logo, 'http'))) {
-            // 1. Check if it's already a local URL
+        // If image field is blank in CSV, skip entirely (preserve existing)
+        if (blank($logo)) {
+            \Log::info('BrandImporter: Image field is blank, preserving existing image.');
+            return;
+        }
+
+        // Check if it's a URL
+        if (filter_var($logo, FILTER_VALIDATE_URL) || str_starts_with($logo, 'http')) {
+            // 1. Check if it's already a local URL pointing to our storage
             $localPath = \App\Helpers\ImageHelper::getLocalPathFromUrl($logo);
             
             if ($localPath) {
-                \Log::info("BrandImporter: Detected local URL, using existing file: {$localPath}");
+                // If local path is same as current image, skip
+                if ($this->record->image === $localPath) {
+                    \Log::info('BrandImporter: Image unchanged, skipping. Path: ' . $localPath);
+                    return;
+                }
+                \Log::info("BrandImporter: Local URL detected, using: {$localPath}");
                 $this->record->update(['image' => $localPath]);
             } else {
-                \Log::info("BrandImporter: Detected external URL, starting download: {$logo}");
+                // 2. Check if existing image URL matches the CSV URL (no re-download needed)
+                $existingImageUrl = $this->record->image
+                    ? asset(Storage::url($this->record->image))
+                    : null;
+
+                if ($existingImageUrl && $existingImageUrl === $logo) {
+                    \Log::info('BrandImporter: External URL matches existing image, skipping download.');
+                    return;
+                }
+
+                // 3. Different URL - download and replace
+                \Log::info("BrandImporter: New external URL, downloading: {$logo}");
                 try {
-                    // Robust URL handling: encode spaces
                     $cleanUrl = str_replace(' ', '%20', $logo);
                     
                     $response = \Illuminate\Support\Facades\Http::withoutVerifying()
                         ->withHeaders([
-                            'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+                            'User-Agent' => 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
                             'Accept' => 'image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8'
                         ])
                         ->timeout(60)
                         ->retry(3, 1000)
                         ->get($cleanUrl);
 
-                    \Log::info("BrandImporter: Download response status: " . $response->status());
-
                     if ($response->successful()) {
                         $contents = $response->body();
-                        \Log::info("BrandImporter: Download successful, size: " . strlen($contents) . " bytes");
+                        \Log::info('BrandImporter: Downloaded ' . strlen($contents) . ' bytes');
                         
+                        // Delete old image if exists
+                        if ($this->record->image && Storage::disk('public')->exists($this->record->image)) {
+                            Storage::disk('public')->delete($this->record->image);
+                            \Log::info('BrandImporter: Deleted old image: ' . $this->record->image);
+                        }
+
                         $filename = \Illuminate\Support\Str::slug($this->record->name ?: 'brand') . '-' . time();
                         $targetPath = 'brands/' . $filename;
                         
                         $savedPath = \App\Helpers\ImageHelper::processAndConvert($contents, $targetPath);
                         if ($savedPath) {
-                            \Log::info("BrandImporter: Image processed and saved to: {$savedPath}");
+                            \Log::info('BrandImporter: New image saved: ' . $savedPath);
                             $this->record->update(['image' => $savedPath]);
-                            \Log::info("BrandImporter: Record updated with new logo path.");
                         } else {
-                            \Log::error("BrandImporter: ImageHelper returned NULL after processing.");
+                            \Log::error('BrandImporter: ImageHelper returned NULL after processing.');
                         }
                     } else {
-                        \Log::warning('BrandImporter: URL download failed. Status: ' . $response->status() . ' URL: ' . $logo);
+                        \Log::warning('BrandImporter: Download failed. Status: ' . $response->status());
                     }
                 } catch (\Throwable $e) {
-                    \Log::error('BrandImporter: Failed to download/process logo: ' . $e->getMessage());
+                    \Log::error('BrandImporter: Failed to download logo: ' . $e->getMessage());
                 }
             }
         } else {
-            \Log::info("BrandImporter: Logo is either blank or NOT a URL. Skipping download.");
+            // Non-URL value (e.g. local path like "brands/logo.webp")
+            // Only update if different from existing
+            if ($this->record->image !== $logo) {
+                \Log::info('BrandImporter: Updating image path to: ' . $logo);
+                $this->record->update(['image' => $logo]);
+            } else {
+                \Log::info('BrandImporter: Image path unchanged, skipping.');
+            }
         }
     }
 
