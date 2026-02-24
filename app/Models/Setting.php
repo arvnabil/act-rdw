@@ -12,6 +12,11 @@ class Setting extends Model
 
     protected $guarded = [];
 
+    public static function getValue(string $key, $default = null)
+    {
+        return static::where('key', $key)->value('value') ?? $default;
+    }
+
     public function getCleanupFields(): array
     {
         $imageKeys = ['seo_favicon', 'seo_default_og_image'];

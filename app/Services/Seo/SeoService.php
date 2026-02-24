@@ -100,7 +100,7 @@ class SeoService
         }
 
         // 4. Global fallback to site logo or branding
-        $defaultOg = \App\Models\Setting::get('seo_default_og_image');
+        $defaultOg = \App\Models\Setting::getValue('seo_default_og_image');
         return $defaultOg ? asset('storage/' . $defaultOg) : asset('assets/img/logo/logo.png');
     }
 
