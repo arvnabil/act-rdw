@@ -135,6 +135,8 @@ class ServiceSolutionRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
+                \Filament\Actions\ExportAction::make()
+                    ->exporter(\App\Filament\Exports\ServiceSolutionExporter::class),
                 \Filament\Actions\ImportAction::make()
                     ->importer(\App\Filament\Imports\ServiceSolutionImporter::class)
                     ->modalDescription(fn () => new \Illuminate\Support\HtmlString('Download example CSV: <a href="#" wire:click.prevent="mountAction(\'downloadExample\')">Click here</a>')),
