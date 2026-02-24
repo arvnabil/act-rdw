@@ -292,6 +292,9 @@ export default function MainLayout({ children }) {
                 /* Hide Google Translate top bar & tooltips */
                 #goog-gt-tt, .goog-te-balloon-frame { display: none !important; }
                 .goog-text-highlight { background-color: transparent !important; box-shadow: none !important; }
+
+                /* Hide reCAPTCHA v3 badge - it blocks scroll-to-top button clicks */
+                .grecaptcha-badge { visibility: hidden !important; opacity: 0 !important; pointer-events: none !important; }
             `}
             </style>
 
