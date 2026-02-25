@@ -57,7 +57,7 @@ export default function Products({
                 solution: newSolution,
                 category: newCategory,
             },
-            { preserveState: true },
+            { preserveState: true, preserveScroll: true },
         );
     };
 
@@ -73,7 +73,7 @@ export default function Products({
                 solution: selectedSolution,
                 category: selectedCategory,
             },
-            { preserveState: true },
+            { preserveState: true, preserveScroll: true },
         );
     };
 
@@ -90,7 +90,7 @@ export default function Products({
                 solution: selectedSolution,
                 category: selectedCategory,
             },
-            { preserveState: true },
+            { preserveState: true, preserveScroll: true },
         );
     };
 
@@ -115,7 +115,7 @@ export default function Products({
                     solution: selectedSolution,
                     category: selectedCategory,
                 },
-                { preserveState: true },
+                { preserveState: true, preserveScroll: true },
             );
         } else {
             handleFilterChange(key, "");
@@ -128,7 +128,7 @@ export default function Products({
         setSelectedBrand("");
         setSelectedSolution("");
         setSelectedCategory("");
-        router.get("/products", { orderby }, { preserveState: true });
+        router.get("/products", { orderby }, { preserveState: true, preserveScroll: true });
     };
 
     return (
