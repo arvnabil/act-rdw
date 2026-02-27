@@ -201,6 +201,8 @@ class ProductForm
                                 ->relationship('seo')
                                 ->schema(SeoForm::schema())
                         ]),
+                    Tab::make('Breadcrumb')
+                        ->schema(\App\Filament\Activioncms\Schemas\BreadcrumbForm::schema('products')),
                 ])
                 ->columnSpanFull()
         ];

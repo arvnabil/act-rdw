@@ -10,6 +10,7 @@ import AboutContentSection from "@/Components/Sections/About/AboutContentSection
 import VisionMissionSection from "@/Components/Sections/About/VisionMissionSection";
 import TestimonialSection from "@/Components/Sections/Common/TestimonialSection";
 import ContactSection from "@/Components/Sections/Common/ContactSection";
+import FaqSection from "@/Components/Sections/Builder/FaqSection";
 import LegalSection from "@/Components/Sections/Legal/LegalSection";
 import PartnershipHero from "@/Components/Sections/Partnership/PartnershipHero";
 import PartnershipSection from "@/Components/Sections/Partnership/PartnershipSection";
@@ -999,5 +1000,35 @@ export const sectionRegistry = {
             step_title: "Alur Kemitraan",
             steps: []
         }
+    },
+    // 11. FAQ Section
+    faq: {
+        id: "faq",
+        label: "FAQ / Accordion",
+        icon: "fa-regular fa-question-circle",
+        component: FaqSection,
+        schema: [
+            { name: "title", type: "text", label: "Title" },
+            { name: "subtitle", type: "text", label: "Subtitle" },
+            {
+                name: "items",
+                type: "repeater",
+                label: "FAQ Items",
+                schema: [
+                    { name: "question", type: "text", label: "Question" },
+                    { name: "answer", type: "textarea", label: "Answer" },
+                ],
+            },
+        ],
+        defaultConfig: {
+            title: "Frequently Asked Questions",
+            subtitle: "FAQ",
+            items: [
+                {
+                    question: "Apa itu ACTiV (PT Alfa Cipta Teknologi Virtual)?",
+                    answer: "ACTiV adalah penyedia solusi TIK dan Pendidikan terkemuka di Indonesia, yang mengkhususkan diri dalam penjualan dan penyewaan perangkat keras, perangkat lunak, serta aksesori teknologi.",
+                },
+            ],
+        },
     }
 };

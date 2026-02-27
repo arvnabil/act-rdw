@@ -75,10 +75,15 @@ class ProjectController extends Controller
             'years_experience' => date('Y') - 1999, // Assuming started in 1999 or adjust as needed
         ];
 
+        $page = \App\Models\Page::where('slug', 'projects')->first();
+
         return Inertia::render('Projects/Index', [
             'projects' => $projects,
             'filters' => $filters,
             'stats' => $stats,
+            'page_title' => $page?->title ?? 'Our Projects',
+            'breadcrumb_image' => $page?->breadcrumb_image,
+            'show_breadcrumb' => $page?->show_breadcrumb ?? true,
             'queryParams' => request()->all(['search', 'industry', 'brand', 'solution']),
             'seo' => SeoResolver::staticPage('Projects', 'Explore our premium ICT solutions and successful project implementations.'),
         ]);

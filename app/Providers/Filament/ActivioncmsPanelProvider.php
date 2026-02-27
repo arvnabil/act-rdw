@@ -64,6 +64,16 @@ class ActivioncmsPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
             ])
+            ->navigationGroups([
+                'Dashboard',
+                'Analytics',
+                'Seo Management',
+                'Site Management',
+                'Core',
+                'Event Manage Data',
+                'Event Management',
+                'Settings',
+            ])
             ->renderHook(
                 'panels::body.end',
                 fn () => \Illuminate\Support\Facades\Blade::render("@viteReactRefresh\n@vite(['resources/js/filament-serp.jsx'])")

@@ -24,7 +24,7 @@ class IndexCoverage extends Page implements HasTable
     use InteractsWithTable;
 
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-chart-bar';
-    protected static string | \UnitEnum | null $navigationGroup = 'SEO';
+    protected static string | \UnitEnum | null $navigationGroup = 'Seo Management';
     protected static ?string $navigationLabel = 'Index Coverage';
     protected static ?string $title = 'SEO Index Coverage';
     protected static ?int $navigationSort = 2;

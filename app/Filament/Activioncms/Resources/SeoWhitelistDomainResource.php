@@ -16,7 +16,7 @@ class SeoWhitelistDomainResource extends Resource
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-shield-check';
 
-    protected static string | \UnitEnum | null $navigationGroup = 'SEO Management';
+    protected static string | \UnitEnum | null $navigationGroup = 'Seo Management';
 
     protected static ?string $navigationLabel = 'Whitelist Domains';
 

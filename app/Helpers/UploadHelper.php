@@ -40,11 +40,24 @@ class UploadHelper
         $filename = Str::slug($finalBase);
         
         // 4. Force WebP Extension
-        $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp'];
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'webp', 'svg'];
         $originalExtension = strtolower($file->getClientOriginalExtension());
         
         if (!in_array($originalExtension, $allowedExtensions)) {
-             throw new \Exception("Unsupported file extension: {$originalExtension}");
+             throw \Illuminate\Validation\ValidationException::withMessages([
+                 $property ?? 'file' => "File extension '{$originalExtension}' tidak didukung. Harap gunakan: " . implode(', ', $allowedExtensions) . "."
+             ]);
+        }
+
+        if ($originalExtension === 'svg') {
+            $basePath = $directory . '/' . $filename . '.svg';
+            $finalPath = $basePath;
+            $counter = 1;
+            while (Storage::disk('public')->exists($finalPath)) {
+                $finalPath = $directory . '/' . $filename . '-(' . $counter . ').svg';
+                $counter++;
+            }
+            return $finalPath;
         }
 
         $extension = 'webp';
@@ -75,7 +88,9 @@ class UploadHelper
                 imagedestroy($image);
             } else {
                  // If image creation failed despite mime check (corrupt or forge), reject
-                 throw new \Exception("Failed to process image file. Invalid image content.");
+                 throw \Illuminate\Validation\ValidationException::withMessages([
+                     $property ?? 'file' => "File gambar tidak valid atau korup (Gagal memproses WebP)."
+                 ]);
             }
         } catch (\Exception $e) {
             // Re-throw security violations, only fallback for non-critical conversion issues if necessary (but here we want to be strict)

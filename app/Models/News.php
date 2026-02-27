@@ -12,13 +12,14 @@ class News extends Model
 {
     use HasFactory, HasSeoMeta, HasImageCleanup;
 
-    protected $cleanupFields = ['thumbnail'];
+    protected $cleanupFields = ['featured_image', 'breadcrumb_image'];
     protected $richEditorCleanupFields = ['content'];
 
     protected $guarded = ['id'];
 
     protected $casts = [
         'published_at' => 'datetime',
+        'show_breadcrumb' => 'boolean',
     ];
 
     public function getContentAttribute($value)

@@ -12,19 +12,21 @@ const ServiceDetail = ({ service, seo }) => {
         <MainLayout>
             <Seo seo={seo} />
 
-            <Breadcrumb
-                title={service.title}
-                subtitle={
-                    service.hero_subtitle ||
-                    "Professional Solutions for Your Business"
-                }
-                bgImage={service.featured_image} // Pass dynamic hero image if supported
-                items={[
-                    { label: "Home", link: "/" },
-                    { label: "Services", link: "/services" },
-                    { label: service.title },
-                ]}
-            />
+            {service.show_breadcrumb && (
+                <Breadcrumb
+                    title={service.name}
+                    items={[
+                        { label: "Home", link: "/" },
+                        { label: "Services", link: "/services" },
+                        { label: service.name },
+                    ]}
+                    bgImage={
+                        service.breadcrumb_image ||
+                        service.featured_image ||
+                        service.thumbnail
+                    }
+                />
+            )}
 
             <div className="case-area space-bottom space-top">
                 <div className="container">

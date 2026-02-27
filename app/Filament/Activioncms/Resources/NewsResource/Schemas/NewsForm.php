@@ -139,6 +139,8 @@ class NewsForm
                                 ->relationship('seo')
                                 ->schema(SeoForm::schema())
                         ]),
+                    Tabs\Tab::make('Breadcrumb')
+                        ->schema(\App\Filament\Activioncms\Schemas\BreadcrumbForm::schema('news')),
                 ])->columnSpanFull()
         ];
     }

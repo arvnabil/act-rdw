@@ -27,46 +27,80 @@ class MenuSeeder extends Seeder
         // 2. Create Footer Menu
         Menu::where('location', 'footer')->delete();
         $footerMenu = Menu::create([
-            'name' => 'Footer "Useful Link"',
+            'name' => 'Footer Menu',
             'location' => 'footer',
             'is_active' => true,
         ]);
 
         $this->createFooterItems($footerMenu);
+
+        // 3. Create Top Header Menu
+        Menu::where('location', 'top_header')->delete();
+        $topHeaderMenu = Menu::create([
+            'name' => 'Top Header Navigation',
+            'location' => 'top_header',
+            'is_active' => true,
+        ]);
+
+        $this->createTopHeaderItems($topHeaderMenu);
+    }
+
+    private function createTopHeaderItems(Menu $menu)
+    {
+        $items = [
+            [
+                'title' => 'FAQ',
+                'type' => 'custom',
+                'url' => '/faq',
+                'visibility' => 'all',
+            ],
+            [
+                'title' => 'Masuk Event',
+                'type' => 'custom',
+                'url' => '/events/auth/login',
+                'visibility' => 'guest',
+            ],
+            [
+                'title' => 'Dasbor Event',
+                'type' => 'custom',
+                'url' => '/events/dashboard',
+                'visibility' => 'auth',
+            ],
+        ];
+
+        $this->seedItems($menu, $items);
     }
 
     private function createPrimaryItems(Menu $menu)
     {
         $items = [
             [
-                'title' => 'Home',
+                'title' => 'Beranda',
                 'type' => 'page',
-                'url' => null, // Dynamic Page Resolution
-                'page_slug' => 'home', // Assuming you have a page with this slug, or use '/' mapping
+                'page_slug' => 'home',
             ],
             [
-                'title' => 'Our Services',
+                'title' => 'Layanan',
                 'type' => 'page',
-                // 'url' => '/services', // Can be page or custom
                 'page_slug' => 'services',
             ],
             [
-                'title' => 'About Us',
+                'title' => 'Tentang Kami',
                 'type' => 'page',
-                'page_slug' => 'about-us', // Check your seeded pages
+                'page_slug' => 'about-us',
             ],
             [
-                'title' => 'Our Partners',
+                'title' => 'Mitra',
                 'type' => 'custom',
                 'url' => '/partners',
             ],
             [
-                'title' => 'Products',
+                'title' => 'Produk',
                 'type' => 'custom',
                 'url' => '/products',
             ],
             [
-                'title' => 'Projects',
+                'title' => 'Proyek',
                 'type' => 'page',
                 'page_slug' => 'projects',
             ],
@@ -76,18 +110,18 @@ class MenuSeeder extends Seeder
                 'url' => '#',
                 'children' => [
                    [
-                       'title' => 'Shop',
+                       'title' => 'Toko',
                        'type' => 'custom',
                        'url' => 'https://accommerce.id',
                        'target' => '_blank',
                    ],
                    [
-                       'title' => 'Events',
+                       'title' => 'Event',
                        'type' => 'custom',
                        'url' => '/events',
                    ],
                    [
-                       'title' => 'News',
+                       'title' => 'Berita',
                        'type' => 'page',
                        'page_slug' => 'news',
                    ],
@@ -102,27 +136,27 @@ class MenuSeeder extends Seeder
     {
         $items = [
             [
-                'title' => 'Home',
+                'title' => 'Beranda',
                 'type' => 'page',
                 'page_slug' => 'home',
             ],
             [
-                'title' => 'About us',
+                'title' => 'Tentang Kami',
                 'type' => 'page',
                 'page_slug' => 'about-us',
             ],
             [
-                'title' => 'Our Service', // Matches UI text
+                'title' => 'Layanan Kami',
                 'type' => 'page',
                 'page_slug' => 'services',
             ],
             [
-                'title' => 'Terms of Service',
+                'title' => 'Syarat Layanan',
                 'type' => 'custom',
-                'url' => '/contact', // Matches UI link
+                'url' => '/contact',
             ],
             [
-                'title' => 'News & Media',
+                'title' => 'Berita & Media',
                 'type' => 'page',
                 'page_slug' => 'news',
             ],
@@ -137,15 +171,13 @@ class MenuSeeder extends Seeder
             $pageId = null;
             $url = $item['url'] ?? null;
 
-            // Try to resolve Page ID if type is 'page'
             if ($item['type'] === 'page' && isset($item['page_slug'])) {
                 $page = Page::where('slug', $item['page_slug'])->first();
                 if ($page) {
                     $pageId = $page->id;
                 } else {
-                    // Fallback if page doesn't exist yet, make it custom
                     $item['type'] = 'custom';
-                    $url = $url ?? ('/' . $item['page_slug']); // Simple fallback
+                    $url = $url ?? ('/' . $item['page_slug']);
                 }
             }
 
@@ -158,6 +190,7 @@ class MenuSeeder extends Seeder
                 'page_id' => $pageId,
                 'order' => $index + 1,
                 'target' => $item['target'] ?? '_self',
+                'visibility' => $item['visibility'] ?? 'all',
             ]);
 
             if (isset($item['children'])) {

@@ -111,6 +111,8 @@ class ServiceForm
                                 ->relationship('seo')
                                 ->schema(SeoForm::schema())
                         ]),
+                    Tab::make('Breadcrumb')
+                        ->schema(\App\Filament\Activioncms\Schemas\BreadcrumbForm::schema('services')),
                 ])->columnSpanFull()
         ];
     }

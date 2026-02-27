@@ -9,7 +9,7 @@ class MenuResolver
     /**
      * Resolve menu structure for frontend by location.
      */
-    public function resolve(string $location): array
+    public function resolve(string $location, $user = null): array
     {
         $menu = Menu::where('location', $location)
             ->where('is_active', true)
@@ -25,12 +25,37 @@ class MenuResolver
             return [];
         }
 
-        return $menu->items->map(function ($item) {
-            return $this->formatItem($item);
-        })->toArray();
+        return $menu->items
+            ->filter(function ($item) use ($user) {
+                return $this->shouldShow($item, $user);
+            })
+            ->map(function ($item) use ($user) {
+                return $this->formatItem($item, $user);
+            })
+            ->values()
+            ->toArray();
     }
 
-    protected function formatItem($item)
+    protected function shouldShow($item, $user): bool
+    {
+        $visibility = $item->visibility ?? 'all';
+
+        if ($visibility === 'all') {
+            return true;
+        }
+
+        if ($visibility === 'auth') {
+            return $user !== null;
+        }
+
+        if ($visibility === 'guest') {
+            return $user === null;
+        }
+
+        return true;
+    }
+
+    protected function formatItem($item, $user = null)
     {
         $url = $item->type === 'page' && $item->page
             ? ($item->page->is_homepage ? '/' : '/' . $item->page->slug)
@@ -40,9 +65,16 @@ class MenuResolver
             'title' => $item->title,
             'url' => $url ?? '#',
             'target' => $item->target,
-            'children' => $item->children->map(function ($child) {
-                return $this->formatItem($child);
-            })->toArray(),
+            'visibility' => $item->visibility ?? 'all',
+            'children' => $item->children
+                ->filter(function ($child) use ($user) {
+                    return $this->shouldShow($child, $user);
+                })
+                ->map(function ($child) use ($user) {
+                    return $this->formatItem($child, $user);
+                })
+                ->values()
+                ->toArray(),
         ];
     }
 }

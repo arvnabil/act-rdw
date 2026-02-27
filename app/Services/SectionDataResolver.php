@@ -15,6 +15,19 @@ class SectionDataResolver
     | This file is the bridge between Database Config and Frontend Props.
     | Changing keys here will BREAK the Frontend.
     */
+    protected function resolvePath($path)
+    {
+        if (!$path) return null;
+        if (str_starts_with($path, 'http')) return $path;
+        if (str_starts_with($path, 'assets') || str_starts_with($path, '/assets')) {
+            return str_starts_with($path, '/') ? $path : "/{$path}";
+        }
+        if (str_starts_with($path, 'storage') || str_starts_with($path, '/storage')) {
+            return str_starts_with($path, '/') ? $path : "/{$path}";
+        }
+        return "/storage/{$path}";
+    }
+
     public function resolve(PageSection $section): array
     {
         $key = $section->section_key;
@@ -38,7 +51,7 @@ class SectionDataResolver
             'news' => $this->resolveNews($config),
 
             // Legacy About Sections (Pass-through config)
-            'about_content' => $config,
+            'about_content' => $this->resolveAbout($config),
             'vision_mission' => $config,
             'testimonial' => $config,
             'contact' => $this->resolveContact($config),
@@ -79,18 +92,27 @@ class SectionDataResolver
 
     protected function resolveAbout(array $config): array
     {
-        return [
+        // Resolve images
+        $images = collect($config['images'] ?? [])->map(function ($img) {
+            return $this->resolvePath($img);
+        })->toArray();
+
+        // Resolve features icons
+        $features = collect($config['features'] ?? [])->map(function ($f) {
+            if (isset($f['icon'])) {
+                $f['icon'] = $this->resolvePath($f['icon']);
+            }
+            return $f;
+        })->toArray();
+
+        return array_merge($config, [
+            'images' => $images,
+            'features' => $features,
+            // Ensure common defaults are explicitly set if missing to avoid nulls
             'title' => $config['title'] ?? null,
             'subtitle' => $config['subtitle'] ?? null,
             'description' => $config['description'] ?? null,
-            'images' => $config['images'] ?? [],
-            'features' => $config['features'] ?? [],
-            'button_text' => $config['button_text'] ?? null,
-            'button_url' => $config['button_url'] ?? null,
-            'button_whatsapp' => $config['button_whatsapp'] ?? null,
-            'show_button' => $config['show_button'] ?? true,
-            'variant' => $config['variant'] ?? 'default',
-        ];
+        ]);
     }
 
     protected function resolveServices(array $config): array
@@ -129,21 +151,11 @@ class SectionDataResolver
 
         // 3. Process Paths & Icons (Smart Logic)
         $services = $services->map(function($s) {
-            // Smart Path helper
-            $resolvePath = function($path) {
-                if (!$path) return null;
-                if (str_starts_with($path, 'http')) return $path;
-                if (str_starts_with($path, 'assets') || str_starts_with($path, '/assets')) {
-                    return str_starts_with($path, '/') ? $path : "/{$path}";
-                }
-                return "/storage/{$path}";
-            };
-
-            $s->thumbnail = $resolvePath($s->thumbnail);
-            $s->featured_image = $resolvePath($s->featured_image ?? null);
+            $s->thumbnail = $this->resolvePath($s->thumbnail);
+            $s->featured_image = $this->resolvePath($s->featured_image ?? null);
 
             // Icon handling: Use processed icon path OR default asset
-            $s->icon = $resolvePath($s->icon) ?? '/assets/img/icon/service_1_1.svg';
+            $s->icon = $this->resolvePath($s->icon) ?? '/assets/img/icon/service_1_1.svg';
 
             return $s;
         });
@@ -160,18 +172,23 @@ class SectionDataResolver
 
     protected function resolveWhyChooseUs(array $config): array
     {
-        return [
-            'title' => $config['title'] ?? null,
-            'subtitle' => $config['subtitle'] ?? null,
-            'description' => $config['description'] ?? null,
-            'features' => $config['features'] ?? [],
-            'images' => $config['images'] ?? [],
-            'video_url' => $config['video_url'] ?? null,
-            'show_button' => $config['show_button'] ?? true,
-            'button_text' => $config['button_text'] ?? 'Pelajari Selengkapnya',
-            'button_url' => $config['button_url'] ?? '/about',
-            'button_whatsapp' => $config['button_whatsapp'] ?? null,
-        ];
+        // Resolve images
+        $images = collect($config['images'] ?? [])->map(function ($img) {
+            return $this->resolvePath($img);
+        })->toArray();
+
+        // Resolve features icons
+        $features = collect($config['features'] ?? [])->map(function ($f) {
+            if (isset($f['icon'])) {
+                $f['icon'] = $this->resolvePath($f['icon']);
+            }
+            return $f;
+        })->toArray();
+
+        return array_merge($config, [
+            'images' => $images,
+            'features' => $features,
+        ]);
     }
 
     protected function resolveProjects(array $config): array
@@ -221,11 +238,11 @@ class SectionDataResolver
         // Dynamic Query
         if (Schema::hasTable('brands')) {
              $dbBrands = DB::table('brands')
-                ->select('image', 'name', 'website_url', 'slug')
-                // ->where('is_active', true) // Assuming is_active column exists? verify later.
+                ->select('image', 'thumbnail', 'name', 'website_url', 'slug')
                 ->limit($limit)
                 ->get()
                 ->map(function($b) {
+                    $logoPath = $b->thumbnail ?? $b->image;
                     return [
                         'image' => (function($path) {
                             if (!$path) return null;
@@ -234,7 +251,7 @@ class SectionDataResolver
                                 return str_starts_with($path, '/') ? $path : "/{$path}";
                             }
                             return "/storage/{$path}";
-                        })($b->image) ?? "/assets/default.png",
+                        })($logoPath) ?? "/assets/default.png",
                         'name' => $b->name,
                         'website_url' => $b->website_url ?? null,
                         'slug' => $b->slug ?? null

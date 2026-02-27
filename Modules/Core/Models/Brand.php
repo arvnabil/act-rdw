@@ -11,14 +11,15 @@ class Brand extends Model
 {
     use HasFactory, HasImageCleanup;
 
-    protected $cleanupFields = ['image', 'thumbnail', 'logo_path', 'landing_config'];
+    protected $cleanupFields = ['image', 'breadcrumb_image', 'thumbnail', 'logo_path', 'landing_config'];
 
-    protected $fillable = ['name', 'slug', 'logo_path', 'website_url', 'image', 'thumbnail', 'desc', 'category', 'is_featured', 'landing_config'];
+    protected $fillable = ['name', 'slug', 'logo_path', 'website_url', 'image', 'breadcrumb_image', 'thumbnail', 'desc', 'category', 'is_featured', 'show_breadcrumb', 'landing_config'];
 
 
     protected $casts = [
         'landing_config' => 'array',
         'is_featured' => 'boolean',
+        'show_breadcrumb' => 'boolean',
     ];
 
     public function products()

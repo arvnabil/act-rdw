@@ -51,8 +51,9 @@ class HandleInertiaRequests extends Middleware
                 'warning' => fn () => $request->session()->get('warning'),
             ],
             'menus' => [
-                'primary' => $menuResolver->resolve('primary'),
-                'footer' => $menuResolver->resolve('footer'),
+                'primary' => $menuResolver->resolve('primary', $request->user()),
+                'footer' => $menuResolver->resolve('footer', $request->user()),
+                'top_header' => $menuResolver->resolve('top_header', $request->user()),
             ],
             'settings' => collect(\App\Models\Setting::pluck('value', 'key')->toArray())
                 ->mapWithKeys(function ($value, $key) {

@@ -12,15 +12,17 @@ export default function BlogDetail({ post, recentPosts, categories, tags, seo })
         <MainLayout>
             <Seo seo={seo} />
 
-            <Breadcrumb
-                title={post.title}
-                bgImage={post.image}
-                items={[
-                    { label: "Home", link: "/" },
-                    { label: "News", link: "/news" },
-                    { label: post.title },
-                ]}
-            />
+            {post.show_breadcrumb && (
+                <Breadcrumb
+                    title={post.title}
+                    bgImage={post.breadcrumb_image || post.image}
+                    items={[
+                        { label: "Home", link: "/" },
+                        { label: "News", link: "/news" },
+                        { label: post.title },
+                    ]}
+                />
+            )}
 
             <section className="th-blog-wrapper blog-details space-top space-extra-bottom">
                 <div className="container">

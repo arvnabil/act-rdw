@@ -112,6 +112,8 @@ class ServiceSolutionRelationManager extends RelationManager
                                     ->relationship('seo')
                                     ->schema(\App\Filament\Activioncms\Resources\SeoMetaResource\Schemas\SeoForm::schema())
                             ]),
+                        Tab::make('Breadcrumb')
+                            ->schema(\App\Filament\Activioncms\Schemas\BreadcrumbForm::schema('services/solutions')),
                     ])->columnSpanFull(),
             ]);
     }

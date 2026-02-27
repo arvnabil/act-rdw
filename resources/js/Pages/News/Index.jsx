@@ -12,6 +12,9 @@ export default function Blog({
     filters,
     activeCategory,
     activeTag,
+    breadcrumb_image,
+    show_breadcrumb = true,
+    page_title,
 }) {
     const pageTitle = activeCategory
         ? `Category: ${activeCategory.name}`
@@ -25,15 +28,16 @@ export default function Blog({
         <MainLayout>
             <Head title={pageTitle} />
 
-            <Breadcrumb
-                title={pageTitle}
-                items={[
-                    { label: "Home", link: "/" },
-                    { label: "News", link: "/news" },
-                    ...(activeCategory ? [{ label: activeCategory.name }] : []),
-                    ...(activeTag ? [{ label: activeTag.name }] : []),
-                ]}
-            />
+            {show_breadcrumb && (
+                <Breadcrumb
+                    title={page_title || "Latest News"}
+                    items={[
+                        { label: "Home", link: "/" },
+                        { label: page_title || "News" },
+                    ]}
+                    bgImage={breadcrumb_image}
+                />
+            )}
 
             <section className="th-blog-wrapper space-top space-extra-bottom">
                 <div className="container">

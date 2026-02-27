@@ -12,7 +12,10 @@ Route::get('/login', function () {
 Route::get('/search', [\App\Http\Controllers\SearchController::class, 'index'])->name('search');
 
 Route::get('/about', function () {
+    $page = \App\Models\Page::where('slug', 'about')->first();
     return Inertia::render('About', [
+        'breadcrumb_image' => $page?->breadcrumb_image,
+        'show_breadcrumb' => $page?->show_breadcrumb ?? true,
         'seo' => \App\Services\SeoResolver::staticPage('About Us', 'Akses cepat ke fitur-fitur penting sistem, termasuk dasbor untuk gambaran umum operasional.')
     ]);
 })->name('about');
@@ -26,7 +29,11 @@ Route::get('/wa', [\App\Http\Controllers\WhatsAppController::class, 'redirect'])
 // Services routes are now handled by Modules/ServiceSolutions
 
 Route::get('/projects', function () {
-    return Inertia::render('Projects');
+    $page = \App\Models\Page::where('slug', 'projects')->first();
+    return Inertia::render('Projects', [
+        'breadcrumb_image' => $page?->breadcrumb_image,
+        'show_breadcrumb' => $page?->show_breadcrumb ?? true,
+    ]);
 })->name('projects');
 
 Route::get('/partners', function () {
@@ -60,7 +67,7 @@ Route::get('/partners', function () {
             'id' => $b->id,
             'name' => $b->name,
             'slug' => $b->slug,
-            'image' => $resolvePath($b->image ?? $b->logo_path),
+            'image' => $resolvePath($b->thumbnail ?? $b->logo_path ?? $b->image),
             'website_url' => $b->website_url,
             'categories' => $cats, // Changed from 'category' to 'categories'
             'is_featured' => (bool)$b->is_featured
@@ -85,9 +92,12 @@ Route::get('/partners', function () {
         ];
     })->values();
 
+    $page = \App\Models\Page::where('slug', 'partners')->first();
     return Inertia::render('Partners', [
         'brands' => $brands,
         'categories' => $categories,
+        'breadcrumb_image' => $page?->breadcrumb_image,
+        'show_breadcrumb' => $page?->show_breadcrumb ?? true,
         'seo' => \App\Services\SeoResolver::staticPage('Our Partners', 'Discover our authorized partners and brands.')
     ]);
 })->name('partners');
@@ -166,13 +176,17 @@ Route::get('/clients', function () {
         ];
     })->values();
 
+    $page = \App\Models\Page::where('slug', 'clients')->first();
     return Inertia::render('Clients', [
         'clients' => $clients,
         'categories' => $categories,
         'filters' => [
             'category' => $category
         ],
-        'seo' => \App\Services\SeoResolver::staticPage('Our Clients', 'Trusted by leading companies across industries.')
+        'page_title' => $page?->title ?? 'Our Clients',
+        'breadcrumb_image' => $page?->breadcrumb_image,
+        'show_breadcrumb' => $page?->show_breadcrumb ?? true,
+        'seo' => \App\Services\SeoResolver::staticPage('Our Clients', 'Our trusted clients across various industries.')
     ]);
 })->name('clients');
 

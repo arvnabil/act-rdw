@@ -166,6 +166,8 @@ class ProjectForm
                                 ->relationship('seo')
                                 ->schema(SeoForm::schema())
                         ]),
+                    Tabs\Tab::make('Breadcrumb')
+                        ->schema(\App\Filament\Activioncms\Schemas\BreadcrumbForm::schema('projects')),
                 ])->columnSpanFull()
         ];
     }

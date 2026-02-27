@@ -8,7 +8,7 @@ import ProjectSkeleton from "@/Components/Sections/Projects/ProjectSkeleton";
 import ProjectToolbar from "@/Components/Sections/Projects/ProjectToolbar";
 import ProjectFilterSidebar from "@/Components/Sections/Projects/ProjectFilterSidebar";
 
-export default function Projects({ projects, filters, stats, queryParams }) {
+export default function Projects({ projects, filters, stats, queryParams, breadcrumb_image, show_breadcrumb = true, page_title }) {
     const [search, setSearch] = useState(queryParams.search || "");
     const [industry, setIndustry] = useState(queryParams.industry || "");
     const [brand, setBrand] = useState(queryParams.brand || "");
@@ -89,10 +89,16 @@ export default function Projects({ projects, filters, stats, queryParams }) {
         <MainLayout>
             <Head title="Our Projects - ACTiV System Integrator" />
 
-            <Breadcrumb
-                title="Our Projects Portfolios"
-                items={[{ label: "Home", link: "/" }, { label: "Projects" }]}
-            />
+            {show_breadcrumb && (
+                <Breadcrumb
+                    title={page_title || "Portofolio Kami"}
+                    items={[
+                        { label: "Home", link: "/" },
+                        { label: page_title || "Projects" },
+                    ]}
+                    bgImage={breadcrumb_image}
+                />
+            )}
 
             {/* Content Area matching Product Style */}
             <section className="space-extra-bottom space">

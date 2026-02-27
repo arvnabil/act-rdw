@@ -25,6 +25,12 @@ export default function PageBuilder({
         canRedo,
     } = useHistory(initialSections || [], 50);
 
+    const [pageSettings, setPageSettings] = useState({
+        status: page.status || "draft",
+        show_breadcrumb: page.show_breadcrumb ?? true,
+        breadcrumb_image: page.breadcrumb_image || null,
+    });
+
     const [selectedSectionId, setSelectedSectionId] = useState(null);
     const [isSaving, setIsSaving] = useState(false);
 
@@ -32,6 +38,15 @@ export default function PageBuilder({
     const [leftSidebarOpen, setLeftSidebarOpen] = useState(true);
     const [rightSidebarOpen, setRightSidebarOpen] = useState(true);
     const [previewDevice, setPreviewDevice] = useState("desktop"); // desktop, tablet, mobile
+
+    // Keep pageSettings synced with page prop if it changes (less likely but good for consistency)
+    useEffect(() => {
+        setPageSettings({
+            status: page.status || "draft",
+            show_breadcrumb: page.show_breadcrumb ?? true,
+            breadcrumb_image: page.breadcrumb_image || null,
+        });
+    }, [page]);
 
     // Selected Section Object
     const selectedSection =
@@ -96,6 +111,7 @@ export default function PageBuilder({
         router.post(
             `/admin/page-builder/${page.id}/save`,
             {
+                ...pageSettings,
                 sections: sections.map((s, index) => ({
                     id: String(s.id).startsWith("new-") ? null : s.id,
                     section_key: s.section_key,
@@ -132,7 +148,7 @@ export default function PageBuilder({
                 },
             },
         );
-    }, [page.id, sections]);
+    }, [page.id, sections, pageSettings]);
 
     // Keyboard Shortcuts
     useEffect(() => {
@@ -197,6 +213,13 @@ export default function PageBuilder({
                     onRemove={handleRemoveSection}
                     isOpen={leftSidebarOpen}
                     onToggle={() => setLeftSidebarOpen(!leftSidebarOpen)}
+                    pageSettings={pageSettings}
+                    onUpdateSettings={(newSettings) =>
+                        setPageSettings((prev) => ({
+                            ...prev,
+                            ...newSettings,
+                        }))
+                    }
                 />
 
                 {/* Canvas Area - Scrollable */}

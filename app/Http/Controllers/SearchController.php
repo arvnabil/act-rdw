@@ -103,9 +103,13 @@ class SearchController extends Controller
             if ($projects->isNotEmpty()) $groupedResults['Projects'] = $projects;
         }
 
+        $page = \App\Models\Page::where('slug', 'search')->first();
+
         return Inertia::render('Search', [
             'groupedResults' => $groupedResults,
             'query' => $query,
+            'breadcrumb_image' => $page?->breadcrumb_image,
+            'show_breadcrumb' => $page?->show_breadcrumb ?? true,
             'seo' => SeoResolver::staticPage('Search Results', "Results for: {$query}")
         ]);
     }

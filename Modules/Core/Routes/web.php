@@ -27,7 +27,7 @@ Route::get('/products/{slug}', [App\Http\Controllers\ProductController::class, '
 
 // Configurator API for Modal
 Route::get('/configurator/product-details/{id}', function ($id) {
-    return Product::with(['brand', 'service'])->findOrFail($id);
+    return Product::with(['brand', 'service'])->where('is_active', true)->findOrFail($id);
 });
 
 // Brand Product List Page

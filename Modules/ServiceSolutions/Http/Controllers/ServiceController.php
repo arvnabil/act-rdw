@@ -41,6 +41,8 @@ class ServiceController extends Controller
                     'label' => $cat->label,
                     'value' => $cat->value
                 ]),
+                'breadcrumb_image' => $service->breadcrumb_image,
+                'show_breadcrumb' => $service->show_breadcrumb,
                 'rooms' => $service->solutions->map(fn ($sol) => [
                     'id' => $sol->slug,
                     'title' => $sol->title,

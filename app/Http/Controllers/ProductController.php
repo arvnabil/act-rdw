@@ -61,12 +61,17 @@ class ProductController extends Controller
         $brands = \Modules\Core\Models\Brand::orderBy('name')->get(['id', 'name']);
         $solutions = \Modules\ServiceSolutions\Models\ServiceSolution::orderBy('title')->get(['id', 'title']);
         $categories = \Modules\Core\Models\ProductCategory::where('is_active', true)->orderBy('name')->get(['id', 'name']);
+        
+        $page = \App\Models\Page::where('slug', 'products')->first();
 
         return Inertia::render('Products', [
             'products' => $products,
             'brands' => $brands,
             'solutions' => $solutions,
             'categories' => $categories,
+            'page_title' => $page?->title ?? 'All Products',
+            'breadcrumb_image' => $page?->breadcrumb_image,
+            'show_breadcrumb' => $page?->show_breadcrumb ?? true,
             'filters' => $request->only(['search', 'orderby', 'brand', 'solution', 'category']),
             'seo' => \App\Services\SeoResolver::staticPage('Products', 'Browse our wide range of technology solutions from top brands.')
         ]);
@@ -85,6 +90,7 @@ class ProductController extends Controller
         // Get related products from the same service or brand
         $relatedProducts = Product::with(['brand', 'service', 'categories'])
             ->where('service_id', $product->service_id)
+            ->where('is_active', true)
             ->where('id', '!=', $product->id)
             ->limit(4)
             ->get()

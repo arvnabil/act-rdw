@@ -4,7 +4,7 @@ import MainLayout from "@/Layouts/MainLayout";
 import Breadcrumb from "@/Components/Common/Breadcrumb";
 import EmptyState from "@/Components/Common/EmptyState";
 
-export default function Search({ groupedResults, query }) {
+export default function Search({ groupedResults, query, breadcrumb_image, show_breadcrumb = true }) {
     const handleSearch = (e) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
@@ -20,13 +20,16 @@ export default function Search({ groupedResults, query }) {
         <MainLayout>
             <Head title={`Search Results for: ${query}`} />
 
-            <Breadcrumb
-                title="Search Results"
-                items={[
-                    { label: "Home", link: "/" },
-                    { label: "Search" },
-                ]}
-            />
+            {show_breadcrumb && (
+                <Breadcrumb
+                    title="Search Results"
+                    items={[
+                        { label: "Home", link: "/" },
+                        { label: "Search" },
+                    ]}
+                    bgImage={breadcrumb_image}
+                />
+            )}
 
             <section className="space-top space-extra-bottom">
                 <div className="container">

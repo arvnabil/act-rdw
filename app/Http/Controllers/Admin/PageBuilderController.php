@@ -96,6 +96,11 @@ class PageBuilderController extends Controller
             // Config can be array (legacy/local) or string (JSON stringified to avoid max_input_vars)
             'sections.*.config' => 'nullable',
             'sections.*.is_active' => 'boolean',
+            
+            // Page level settings
+            'status' => 'nullable|string|in:draft,published',
+            'show_breadcrumb' => 'nullable|boolean',
+            'breadcrumb_image' => 'nullable|string',
         ]);
 
         $sections = $request->input('sections');
@@ -105,7 +110,21 @@ class PageBuilderController extends Controller
             'raw_ids' => collect($sections)->pluck('id')->toArray()
         ]);
 
-        DB::transaction(function () use ($page, $sections) {
+        DB::transaction(function () use ($page, $sections, $request) {
+            // Update Page level settings if provided
+            $pageData = [];
+            if ($request->has('status')) $pageData['status'] = $request->status;
+            if ($request->has('show_breadcrumb')) $pageData['show_breadcrumb'] = $request->show_breadcrumb;
+            if ($request->has('breadcrumb_image')) {
+                // Ensure we remove /storage/ prefix before saving to DB if it's there
+                $path = $request->breadcrumb_image;
+                $path = str_replace('/storage/', '', $path);
+                $pageData['breadcrumb_image'] = $path;
+            }
+
+            if (!empty($pageData)) {
+                $page->update($pageData);
+            }
             // 1. Identify IDs present in the payload (existing sections)
             // Filter out nulls and 'new-' prefix
             $incomingIds = collect($sections)

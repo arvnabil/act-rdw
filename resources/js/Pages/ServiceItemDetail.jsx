@@ -58,20 +58,22 @@ const ServiceItemDetail = ({ item }) => {
         <MainLayout>
             <Head title={item.title} />
 
-            <Breadcrumb
-                title={item.title}
-                subtitle={`${item.parent_title} Solution`}
-                bgImage={item.thumbnail}
-                items={[
-                    { label: "Home", link: "/" },
-                    { label: "Services", link: "/services" },
-                    {
-                        label: item.parent_title,
-                        link: `/services/${item.parent_service}`,
-                    },
-                    { label: item.title },
-                ]}
-            />
+            {item.show_breadcrumb && (
+                <Breadcrumb
+                    title={item.title}
+                    subtitle={`${item.parent_title} Solution`}
+                    bgImage={item.breadcrumb_image || item.thumbnail}
+                    items={[
+                        { label: "Home", link: "/" },
+                        { label: "Services", link: "/services" },
+                        {
+                            label: item.parent_title,
+                            link: `/services/${item.parent_service}`,
+                        },
+                        { label: item.title },
+                    ]}
+                />
+            )}
 
             <ServiceAboutSection
                 item={item}

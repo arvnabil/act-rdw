@@ -3,6 +3,7 @@ import { Link, usePage, router } from "@inertiajs/react";
 import { useTemplateInit } from "@/hooks/useTemplateInit";
 import Toast from "@/Components/Common/Toast";
 import { getWhatsAppLink } from "@/Utils/whatsapp";
+import { getImageUrl } from "@/Utils/image";
 
 export default function MainLayout({ children }) {
     useTemplateInit();
@@ -313,6 +314,12 @@ export default function MainLayout({ children }) {
 
                 /* Ensure scroll-top button stays above other widgets */
                 .scroll-top { pointer-events: auto !important; z-index: 9999999 !important; }
+
+                @media (max-width: 991px) {
+                    .header-logo {
+                        margin-left: 10px !important;
+                    }
+                }
             `}
             </style>
 
@@ -332,186 +339,7 @@ export default function MainLayout({ children }) {
                     Batalkan Preloader
                 </button>
                 <div className="preloader-inner">
-                    <img src="/assets/img/logo-icon3.svg" alt="ACTiV Logo Icon" />
-                </div>
-            </div>
-
-            <div className="sidemenu-wrapper sidemenu-info">
-                <div className="sidemenu-content">
-                    <button className="closeButton sideMenuCls">
-                        <i className="far fa-times"></i>
-                    </button>
-                    <div className="widget">
-                        <div className="th-widget-about">
-                            <div className="about-logo">
-                                <Link href="/">
-                                    <img
-                                        src="/assets/img/logo2.svg"
-                                        alt="ACTiV"
-                                    />
-                                </Link>
-                            </div>
-                            <p className="about-text">
-                                Akses cepat ke fitur-fitur penting sistem,
-                                termasuk dasbor untuk gambaran umum operasional,
-                                pengaturan jaringan untuk mengelola konektivitas,
-                                dan log sistem untuk melacak aktivitas.
-                            </p>
-                            <div className="th-social">
-                                <a href="https://www.facebook.com/">
-                                    <i className="fab fa-facebook-f"></i>
-                                </a>
-                                <a href="https://www.twitter.com/">
-                                    <i className="fab fa-twitter"></i>
-                                </a>
-                                <a href="https://www.linkedin.com/">
-                                    <i className="fab fa-linkedin-in"></i>
-                                </a>
-                                <a
-                                    href={getWhatsAppLink(settings?.whatsapp_number, {
-                                        cta_position: 'header_social',
-                                        cta_label: 'Header Social'
-                                    }) || "https://www.whatsapp.com/"}
-                                    target="_blank"
-                                    rel="noopener"
-                                >
-                                    <i className="fab fa-whatsapp"></i>
-                                </a>
-                                <a href="https://instagram.com/">
-                                    <i className="fab fa-instagram"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="widget">
-                        <h3 className="widget_title">Postingan Terbaru</h3>
-
-                        <div className="recent-post-wrap">
-                            <div className="recent-post d-flex align-items-center">
-                                <div className="media-img">
-                                    <Link href="/news">
-                                        <img
-                                            src="/assets/img/blog/recent-post-1-1.jpg"
-                                            alt="Blog Image"
-                                        />
-                                    </Link>
-                                </div>
-                                <div className="media-body">
-                                    <div className="recent-post-meta">
-                                        <Link href="/news">
-                                            <i className="far fa-calendar"></i>
-                                            24 Jun , 2025
-                                        </Link>
-                                    </div>
-                                    <h4 className="post-title">
-                                        <Link
-                                            className="text-inherit"
-                                            href="/blog"
-                                        >
-                                            Where Vision Meets Concrete Reality
-                                        </Link>
-                                    </h4>
-                                </div>
-                            </div>
-                            <div className="recent-post d-flex align-items-center">
-                                <div className="media-img">
-                                    <Link href="/news">
-                                        <img
-                                            src="/assets/img/blog/recent-post-1-2.jpg"
-                                            alt="Blog Image"
-                                        />
-                                    </Link>
-                                </div>
-                                <div className="media-body">
-                                    <div className="recent-post-meta">
-                                        <Link href="/news">
-                                            <i className="far fa-calendar"></i>
-                                            22 Jun , 2025
-                                        </Link>
-                                    </div>
-                                    <h4 className="post-title">
-                                        <Link
-                                            className="text-inherit"
-                                            href="/blog"
-                                        >
-                                            Raising the Bar in Construction.
-                                        </Link>
-                                    </h4>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="widget">
-                        <h3 className="widget_title">Hubungi Kami</h3>
-                        <div className="th-widget-contact">
-                            <div className="info-box_text">
-                                <div className="icon d-flex justify-content-center align-items-center">
-                                    <img
-                                        src="/assets/img/icon/phone.svg"
-                                        alt="Phone Icon"
-                                    />
-                                </div>
-                                <div className="details">
-                                    <p>
-                                        <a
-                                            href="tel:+01234567890"
-                                            className="info-box_link"
-                                        >
-                                            +01 234 567 890
-                                        </a>
-                                    </p>
-                                    <p>
-                                        <a
-                                            href="tel:+09876543210"
-                                            className="info-box_link"
-                                        >
-                                            +09 876 543 210
-                                        </a>
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="info-box_text">
-                                <div className="icon d-flex justify-content-center align-items-center">
-                                    <img
-                                        src="/assets/img/icon/envelope.svg"
-                                        alt="Email Icon"
-                                    />
-                                </div>
-                                <div className="details">
-                                    <p>
-                                        <a
-                                            href="mailto:mailinfo00@activ.com"
-                                            className="info-box_link"
-                                        >
-                                            mailinfo00@activ.com
-                                        </a>
-                                    </p>
-                                    <p>
-                                        <a
-                                            href="mailto:support24@activ.com"
-                                            className="info-box_link"
-                                        >
-                                            support24@activ.com
-                                        </a>
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="info-box_text">
-                                <div className="icon d-flex justify-content-center align-items-center">
-                                    <img
-                                        src="/assets/img/icon/location-dot.svg"
-                                        alt="Location Icon"
-                                    />
-                                </div>
-                                <div className="details">
-                                    <p>
-                                        789 Inner Lane, Holy park, California,
-                                        USA
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <img src={getImageUrl(settings?.site_logo_preloader, "/assets/img/logo-icon3.svg")} alt="ACTiV Logo Icon" />
                 </div>
             </div>
 
@@ -537,9 +365,13 @@ export default function MainLayout({ children }) {
                     <button className="th-menu-toggle">
                         <i className="fal fa-times"></i>
                     </button>
-                    <div className="mobile-logo">
-                        <Link href="/">
-                            <img src="/assets/img/logo2.svg" alt="ACTiV" />
+                    <div className="mobile-logo" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '40px 10px' }}>
+                        <Link href="/" style={{ display: 'inline-block' }}>
+                            <img 
+                                src={getImageUrl(settings?.site_logo_icon, "/assets/img/logo2.svg")} 
+                                alt="ACTiV" 
+                                style={{ maxHeight: '50px', width: 'auto', display: 'block', margin: '0 auto' }}
+                            />
                         </Link>
                     </div>
                     <div className="th-mobile-menu allow-natural-scroll">
@@ -592,22 +424,18 @@ export default function MainLayout({ children }) {
                         <div className="mobile-header-info mt-30 text-center">
                             <div className="header-links justify-content-center">
                                 <ul>
-                                    <li>
-                                        <Link href="/faq">FAQ</Link>
-                                    </li>
-                                    {auth?.user ? (
-                                        <li>
-                                            <Link href="/events/dashboard">
-                                                Dasbor Event
+                                    {menus?.top_header?.map((item, index) => (
+                                        <li key={index}>
+                                            <Link 
+                                                href={item.url} 
+                                                target={item.target || "_self"}
+                                                rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
+                                                onClick={closeMobileMenu}
+                                            >
+                                                {item.title}
                                             </Link>
                                         </li>
-                                    ) : (
-                                        <li>
-                                            <Link href="/events/auth/login">
-                                                Masuk Event
-                                            </Link>
-                                        </li>
-                                    )}
+                                    ))}
                                 </ul>
                             </div>
                             {settings?.header_button_visible !== '0' && (() => {
@@ -633,6 +461,7 @@ export default function MainLayout({ children }) {
                                                 target="_blank"
                                                 rel="noopener"
                                                 className="th-btn th-radius th-icon"
+                                                style={{ whiteSpace: 'nowrap' }}
                                             >
                                                 {settings?.header_button_text || 'Hubungi Kami'}{" "}
                                                 <i className="fa-light fa-arrow-right-long"></i>
@@ -646,6 +475,7 @@ export default function MainLayout({ children }) {
                                         <Link
                                             href={btnUrl || "/contact"}
                                             className="th-btn th-radius th-icon"
+                                            style={{ whiteSpace: 'nowrap' }}
                                         >
                                             {settings?.header_button_text || 'Hubungi Kami'}{" "}
                                             <i className="fa-light fa-arrow-right-long"></i>
@@ -669,18 +499,17 @@ export default function MainLayout({ children }) {
                                             <i className="fa-brands fa-instagram"></i>
                                             <span>
                                                 <a
-                                                    href="https://www.instagram.com/activ_teknologi/"
+                                                    href={settings?.instagram_url || "https://www.instagram.com/activ_teknologi/"}
                                                     target="__BLANK"
                                                 >
-                                                    @activ_teknologi
+                                                    {settings?.instagram_username || "@activ_teknologi"}
                                                 </a>
                                             </span>
                                         </li>
                                         <li className="d-none d-xl-inline-block">
                                             <i className="fa-regular fa-clock"></i>
                                             <span>
-                                                Senin - Jumat: 8.30 am - 05.30
-                                                pm
+                                                {settings?.office_hours || "Senin - Jumat: 8.30 am - 05.30 pm"}
                                             </span>
                                         </li>
                                     </ul>
@@ -690,21 +519,17 @@ export default function MainLayout({ children }) {
                                 <div className="header-right">
                                     <div className="header-links">
                                         <ul className="d-flex align-items-center">
-                                            <li>
-                                                <Link href="/faq">FAQ</Link>
-                                            </li>
-                                            <li className="mx-2">|</li>
-                                            <li>
-                                                {auth?.user ? (
-                                                    <Link href="/events/dashboard">
-                                                        Dasbor Event
+                                            {menus?.top_header?.map((item, index) => (
+                                                <li key={index}>
+                                                    <Link 
+                                                        href={item.url} 
+                                                        target={item.target || "_self"}
+                                                        rel={item.target === "_blank" ? "noopener noreferrer" : undefined}
+                                                    >
+                                                        {item.title}
                                                     </Link>
-                                                ) : (
-                                                    <Link href="/events/auth/login">
-                                                        Masuk Event
-                                                    </Link>
-                                                )}
-                                            </li>
+                                                </li>
+                                            ))}
                                             <li className="ms-3 d-none d-xl-inline-block">
                                                 <div className={`gt_switcher_wrapper notranslate ${isScrolled ? 'gt_sticky' : ''}`}>
                                                     <div className="gt_switcher">
@@ -781,7 +606,7 @@ export default function MainLayout({ children }) {
                                     <div className="header-logo">
                                         <Link href="/">
                                             <img
-                                                src="/assets/img/logo2.svg"
+                                                src={getImageUrl(settings?.site_logo_header, "/assets/img/logo2.svg")}
                                                 alt="ACTiV"
                                             />
                                         </Link>
@@ -856,10 +681,10 @@ export default function MainLayout({ children }) {
                                     </div>
                                 </div>
                                 <div className="col-xl-2 col-xxl-3 col-auto d-none d-lg-block">
-                                    <div className="header-button">
+                                    <div className="header-button d-flex align-items-center justify-content-end gap-2">
                                         <button
                                             type="button"
-                                            className="icon-btn searchBoxToggler d-flex justify-content-center align-items-center"
+                                            className="icon-btn searchBoxToggler d-flex justify-content-center align-items-center flex-shrink-0"
                                         >
                                             <img
                                                 src="/assets/img/icon/search.svg"
@@ -886,7 +711,8 @@ export default function MainLayout({ children }) {
                                                         })}
                                                         target="_blank"
                                                         rel="noopener"
-                                                        className="th-btn th-radius th-icon"
+                                                        className="th-btn th-radius th-icon flex-shrink-0"
+                                                        style={{ whiteSpace: 'nowrap' }}
                                                     >
                                                         {settings?.header_button_text || 'Hubungi Kami'}{" "}
                                                         <i className="fa-light fa-arrow-right-long"></i>
@@ -897,7 +723,8 @@ export default function MainLayout({ children }) {
                                             return (
                                                 <Link
                                                     href={btnUrl || "/abouts"}
-                                                    className="th-btn th-radius th-icon"
+                                                    className="th-btn th-radius th-icon flex-shrink-0"
+                                                    style={{ whiteSpace: 'nowrap' }}
                                                 >
                                                     {settings?.header_button_text || 'Hubungi Kami'}{" "}
                                                     <i className="fa-light fa-arrow-right-long"></i>
@@ -931,7 +758,7 @@ export default function MainLayout({ children }) {
                                         <div className="about-logo">
                                             <Link href="/">
                                                 <img
-                                                    src="/assets/img/logo3.svg"
+                                                    src={getImageUrl(settings?.site_logo_footer, "/assets/img/logo3.svg")}
                                                     alt="ACTiV"
                                                 />
                                             </Link>
@@ -942,15 +769,31 @@ export default function MainLayout({ children }) {
                                             klien kami.
                                         </p>
                                         <div className="th-social">
-                                            <a href={settings?.facebook_url || "https://www.facebook.com/"} target="_blank" rel={settings?.facebook_url_rel || "noopener noreferrer"}>
-                                                <i className="fab fa-facebook-f"></i>
-                                            </a>
-                                            <a href={settings?.twitter_url || "https://www.twitter.com/"} target="_blank" rel={settings?.twitter_url_rel || "noopener noreferrer"}>
-                                                <i className="fab fa-twitter"></i>
-                                            </a>
-                                            <a href={settings?.linkedin_url || "https://www.linkedin.com/"} target="_blank" rel={settings?.linkedin_url_rel || "noopener noreferrer"}>
-                                                <i className="fab fa-linkedin-in"></i>
-                                            </a>
+                                            {settings?.facebook_url && (
+                                                <a href={settings.facebook_url} target="_blank" rel={settings.facebook_url_rel || "noopener noreferrer"}>
+                                                    <i className="fab fa-facebook-f"></i>
+                                                </a>
+                                            )}
+                                            {settings?.twitter_url && (
+                                                <a href={settings.twitter_url} target="_blank" rel={settings.twitter_url_rel || "noopener noreferrer"}>
+                                                    <i className="fab fa-twitter"></i>
+                                                </a>
+                                            )}
+                                            {settings?.linkedin_url && (
+                                                <a href={settings.linkedin_url} target="_blank" rel={settings.linkedin_url_rel || "noopener noreferrer"}>
+                                                    <i className="fab fa-linkedin-in"></i>
+                                                </a>
+                                            )}
+                                            {settings?.instagram_url && (
+                                                <a href={settings.instagram_url} target="_blank" rel={settings.instagram_url_rel || "noopener noreferrer"}>
+                                                    <i className="fab fa-instagram"></i>
+                                                </a>
+                                            )}
+                                            {settings?.youtube_url && (
+                                                <a href={settings.youtube_url} target="_blank" rel={settings.youtube_url_rel || "noopener noreferrer"}>
+                                                    <i className="fab fa-youtube"></i>
+                                                </a>
+                                            )}
                                             <a
                                                 href={getWhatsAppLink(settings?.whatsapp_number, {
                                                     cta_position: 'footer_social',
@@ -960,9 +803,6 @@ export default function MainLayout({ children }) {
                                                 rel="noopener noreferrer"
                                             >
                                                 <i className="fab fa-whatsapp"></i>
-                                            </a>
-                                            <a href={settings?.instagram_url || "https://instagram.com/"} target="_blank" rel={settings?.instagram_url_rel || "noopener noreferrer"}>
-                                                <i className="fab fa-instagram"></i>
                                             </a>
                                         </div>
                                     </div>

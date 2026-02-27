@@ -14,7 +14,7 @@ class Service extends Model
 {
     use HasFactory, HasSeoMeta, HasImageCleanup;
 
-    protected $cleanupFields = ['featured_image', 'thumbnail', 'icon'];
+    protected $cleanupFields = ['featured_image', 'breadcrumb_image', 'thumbnail', 'icon'];
     protected $richEditorCleanupFields = ['content'];
 
     protected $fillable = [
@@ -26,6 +26,8 @@ class Service extends Model
         'featured_image',
         'thumbnail',
         'icon',
+        'breadcrumb_image',
+        'show_breadcrumb',
         'hero_subtitle',
         'grid_title',
         'sort_order'

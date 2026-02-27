@@ -13,7 +13,7 @@ class Product extends Model
 {
     use HasFactory, HasSeoMeta, HasImageCleanup;
 
-    protected $cleanupFields = ['image_path', 'thumbnail_path', 'datasheet_url'];
+    protected $cleanupFields = ['image_path', 'thumbnail_path', 'breadcrumb_image', 'datasheet_url'];
     protected $richEditorCleanupFields = ['description', 'specification_text', 'features_text'];
 
     protected $fillable = [
@@ -21,6 +21,7 @@ class Product extends Model
         'description', 'image_path', 'thumbnail_path', 'sku', 'solution_type',
         'datasheet_url', 'tags', 'specs', 'specification_text',
         'features', 'features_text', 'is_active', 'is_featured', 'is_new',
+        'breadcrumb_image', 'show_breadcrumb',
         'price', 'link_accommerce', 'whatsapp_note'
     ];
 
@@ -31,6 +32,7 @@ class Product extends Model
         'is_active' => 'boolean',
         'is_featured' => 'boolean',
         'is_new' => 'boolean',
+        'show_breadcrumb' => 'boolean',
     ];
 
     public function service()

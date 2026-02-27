@@ -27,6 +27,7 @@ class MenuForm
                                 ->options([
                                     'primary' => 'Primary Menu',
                                     'footer' => 'Footer Menu',
+                                    'top_header' => 'Top Header Menu',
                                 ])
                                 ->required()
                                 ->unique(ignoreRecord: true),
@@ -68,6 +69,16 @@ class MenuForm
                                         ])
                                         ->default('_self'),
 
+                                    Select::make('visibility')
+                                        ->label('Visibility')
+                                        ->options([
+                                            'all' => 'All Users',
+                                            'guest' => 'Guests Only',
+                                            'auth' => 'Authenticated Users Only',
+                                        ])
+                                        ->default('all')
+                                        ->required(),
+
                                     // Children nesting
                                     Repeater::make('children')
                                         ->relationship()
@@ -88,6 +99,16 @@ class MenuForm
                                             Select::make('target')
                                                 ->options(['_self' => 'Same', '_blank' => 'New'])
                                                 ->default('_self'),
+
+                                            Select::make('visibility')
+                                                ->label('Visibility')
+                                                ->options([
+                                                    'all' => 'All',
+                                                    'guest' => 'Guests',
+                                                    'auth' => 'Auth',
+                                                ])
+                                                ->default('all')
+                                                ->required(),
                                         ])
                                         ->orderColumn('order')
                                         ->collapsible()

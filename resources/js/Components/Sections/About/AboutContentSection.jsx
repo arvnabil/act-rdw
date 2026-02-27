@@ -30,6 +30,28 @@ export default function AboutContentSection({
     button_whatsapp = null,
     isBuilder = false, // Boolean to detect builder mode
 }) {
+    // Robust fallbacks for null/empty props
+    const t = title || "Bridging Technology and Education for a Better Future.";
+    const st = subtitle || "About ACTiV";
+    const desc = description || "ACTiV (PT Alfa Cipta Teknologi Virtual) is a premier provider of ICT and Educational solutions, specializing in hardware, software, and accessory rentals and sales. With over six years of industry experience and strategic partnerships with multinational brands, we deliver comprehensive, tailored technology solutions to empower our clients' success.";
+    const feats = features && features.length > 0 ? features : [
+        {
+            title: "Expert Team",
+            description: "Our team consists of seasoned professionals with deep expertise in ICT and education sectors.",
+            icon: "/assets/img/icon/guide.svg",
+        },
+        {
+            title: "Certified Partnerships",
+            description: "We hold official partnerships with leading global brands, ensuring authentic products and certified technical support.",
+            icon: "/assets/img/icon/policy.svg",
+        },
+        {
+            title: "Dedicated Support",
+            description: "Our responsive support system operates across multiple channels to provide timely resolutions and ensure business continuity.",
+            icon: "/assets/img/icon/support.svg",
+        },
+    ];
+
     const { settings } = usePage().props;
     // Helper to get image URL safely
     const getImage = (index, fallback) => {
@@ -275,12 +297,12 @@ export default function AboutContentSection({
 
                     {/* Right: Content */}
                     <div className="about-content-box wow fadeInRight">
-                        <div className="custom-sub-title">{subtitle}</div>
-                        <h2 className="custom-title">{title}</h2>
-                        <p className="custom-desc">{description}</p>
+                        {st && <div className="custom-sub-title">{st}</div>}
+                        <h2 className="custom-title">{t}</h2>
+                        {desc && <div className="custom-desc" dangerouslySetInnerHTML={{ __html: desc }} />}
 
                         <div className="clean-feature-list">
-                            {features.map((feature, index) => (
+                            {feats.map((feature, index) => (
                                 <div key={index} className="clean-feature-item">
                                     <div className="clean-feature-icon">
                                         {renderIcon(feature.icon)}

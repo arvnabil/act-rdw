@@ -16,7 +16,9 @@ export default function AboutSection({
     show_button = true, // Default to true if not provided
 }) {
     // Defaults
-    const t = title || "Menjembatani Teknologi dan Pendidikan untuk Masa Depan yang Lebih Baik.";
+    const t =
+        title ||
+        "Menjembatani Teknologi dan Pendidikan untuk Masa Depan yang Lebih Baik.";
     const st = subtitle || "Siapa Kami";
     const desc =
         description ||
@@ -35,26 +37,26 @@ export default function AboutSection({
         images && images.length > 0
             ? images.map((i) => i.url || i)
             : [
-                "/assets/img/normal/about_7_1.jpg",
-                "/assets/img/normal/about_7_2.jpg",
-                "/assets/img/normal/about_7_3.jpg",
-            ];
+                  "/assets/img/normal/about_7_1.jpg",
+                  "/assets/img/normal/about_7_2.jpg",
+                  "/assets/img/normal/about_7_3.jpg",
+              ];
 
     const feats =
         features && features.length > 0
             ? features
             : [
-                {
-                    title: "Penyediaan Produk TIK & Pendidikan",
-                    text: "Penyedia resmi perangkat keras dan lunak yang disesuaikan untuk pendidikan dan infrastruktur TIK.",
-                    icon: "/assets/img/icon/shield.svg",
-                },
-                {
-                    title: "Layanan Solusi & Pengembangan Kustom",
-                    text: "Solusi teknis ahli dan pengembangan perangkat lunak kustom yang disesuaikan dengan kebutuhan spesifik Anda.",
-                    icon: "/assets/img/icon/shield.svg",
-                },
-            ];
+                  {
+                      title: "Penyediaan Produk TIK & Pendidikan",
+                      text: "Penyedia resmi perangkat keras dan lunak yang disesuaikan untuk pendidikan dan infrastruktur TIK.",
+                      icon: "/assets/img/icon/shield.svg",
+                  },
+                  {
+                      title: "Layanan Solusi & Pengembangan Kustom",
+                      text: "Solusi teknis ahli dan pengembangan perangkat lunak kustom yang disesuaikan dengan kebutuhan spesifik Anda.",
+                      icon: "/assets/img/icon/shield.svg",
+                  },
+              ];
 
     return (
         <div
@@ -70,22 +72,27 @@ export default function AboutSection({
                             align="title-area mb-20"
                             mb="mb-20"
                         />
-                        <p
+                        <div
                             className="sec-text mb-60 wow fadeInUp"
                             data-wow-delay=".2s"
-                        >
-                            {desc}
-                        </p>
+                            dangerouslySetInnerHTML={{ __html: desc }}
+                        />
                         <div className="img-box8">
                             <div className="row gy-4">
                                 <div className="col-xl-6 col-md-6 col-12">
                                     <div className="img1 reveal mb-0">
-                                        <img src={imgs[0]} alt="Tentang ACTiV (PT Alfa Cipta Teknologi Virtual)" />
+                                        <img
+                                            src={imgs[0]}
+                                            alt="Tentang ACTiV (PT Alfa Cipta Teknologi Virtual)"
+                                        />
                                     </div>
                                 </div>
                                 <div className="col-xl-6 col-md-6 col-12">
                                     <div className="img2 reveal mb-0">
-                                        <img src={imgs[1]} alt="Tentang ACTiV (PT Alfa Cipta Teknologi Virtual)" />
+                                        <img
+                                            src={imgs[1]}
+                                            alt="Tentang ACTiV (PT Alfa Cipta Teknologi Virtual)"
+                                        />
                                     </div>
                                 </div>
                             </div>
@@ -94,7 +101,10 @@ export default function AboutSection({
                     <div className="col-xl-6 col-lg-6">
                         <div className="img-box8 ms-xl-5">
                             <div className="img3 reveal">
-                                <img src={imgs[2]} alt="Tentang ACTiV (PT Alfa Cipta Teknologi Virtual)" />
+                                <img
+                                    src={imgs[2]}
+                                    alt="Tentang ACTiV (PT Alfa Cipta Teknologi Virtual)"
+                                />
                             </div>
                             <div className="about-item-wrap">
                                 {feats.map((feat, i) => (
@@ -104,14 +114,17 @@ export default function AboutSection({
                                         key={i}
                                     >
                                         <div className="about-item_img d-flex justify-content-center align-items-center">
-                                            <img src={feat.icon} alt={feat.title} />
+                                            <img
+                                                src={feat.icon}
+                                                alt={feat.title}
+                                            />
                                         </div>
                                         <div className="about-item_centent">
                                             <h5 className="box-title">
                                                 {feat.title}
                                             </h5>
                                             <p className="about-item_text">
-                                                {feat.text}
+                                                {feat.description || feat.text}
                                             </p>
                                         </div>
                                     </div>
@@ -122,15 +135,42 @@ export default function AboutSection({
                                     className="mt-35 wow fadeInUp"
                                     data-wow-delay=".5s"
                                 >
-                                    {button_whatsapp || (button_url && (button_url.startsWith('http') || button_url_rel?.includes('nofollow'))) ? (
+                                    {button_whatsapp ||
+                                    (button_url &&
+                                        (button_url.startsWith("http") ||
+                                            button_url_rel?.includes(
+                                                "nofollow",
+                                            ))) ? (
                                         <a
-                                            href={button_whatsapp ? getWhatsAppLink(button_whatsapp, { cta_position: 'about_home', cta_label: `About Section ${btnText}` }) : btnUrl}
+                                            href={
+                                                button_whatsapp
+                                                    ? getWhatsAppLink(
+                                                          button_whatsapp,
+                                                          {
+                                                              cta_position:
+                                                                  "about_home",
+                                                              cta_label: `About Section ${btnText}`,
+                                                          },
+                                                      )
+                                                    : btnUrl
+                                            }
                                             className="th-btn th-radius th-icon"
                                             target="_blank"
-                                            rel={button_whatsapp ? "noopener noreferrer" : (button_url_rel || "noopener noreferrer")}
+                                            rel={
+                                                button_whatsapp
+                                                    ? "noopener noreferrer"
+                                                    : button_url_rel ||
+                                                      "noopener noreferrer"
+                                            }
                                         >
                                             {btnText}{" "}
-                                            <i className={button_whatsapp ? "fa-brands fa-whatsapp ms-2" : "fa-light fa-arrow-right-long"}></i>
+                                            <i
+                                                className={
+                                                    button_whatsapp
+                                                        ? "fa-brands fa-whatsapp ms-2"
+                                                        : "fa-light fa-arrow-right-long"
+                                                }
+                                            ></i>
                                         </a>
                                     ) : (
                                         <Link
@@ -147,6 +187,6 @@ export default function AboutSection({
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     );
 }

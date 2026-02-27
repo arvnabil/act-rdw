@@ -19,7 +19,7 @@ class Setting extends Model
 
     public function getCleanupFields(): array
     {
-        $imageKeys = ['seo_favicon', 'seo_default_og_image'];
+        $imageKeys = ['seo_favicon', 'seo_default_og_image', 'site_logo_header', 'site_logo_footer', 'site_logo_icon'];
 
         if (in_array($this->key, $imageKeys)) {
             return ['value'];

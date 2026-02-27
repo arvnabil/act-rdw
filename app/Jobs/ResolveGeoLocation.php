@@ -29,18 +29,23 @@ class ResolveGeoLocation implements ShouldQueue
         }
 
         try {
-            $response = \Illuminate\Support\Facades\Http::get("http://ip-api.com/json/{$this->event->ip_address}");
+            $token = \Illuminate\Support\Facades\DB::table('settings')->where('key', 'ipinfo_token')->value('value');
+            $url = "https://ipinfo.io/{$this->event->ip_address}/json";
+            
+            if ($token) {
+                $url .= "?token={$token}";
+            }
+
+            $response = \Illuminate\Support\Facades\Http::get($url);
             
             if ($response->successful()) {
                 $data = $response->json();
                 
-                if ($data['status'] === 'success') {
-                    $this->event->update([
-                        'city'    => $data['city'] ?? null,
-                        'region'  => $data['regionName'] ?? null,
-                        'country' => $data['country'] ?? null,
-                    ]);
-                }
+                $this->event->update([
+                    'city'    => $data['city'] ?? null,
+                    'region'  => $data['region'] ?? null,
+                    'country' => $data['country'] ?? null,
+                ]);
             }
         } catch (\Exception $e) {
             \Illuminate\Support\Facades\Log::error("GeoIP Error: " . $e->getMessage());

@@ -13,6 +13,7 @@ import ClientSection from "./Sections/Builder/ClientSection";
 import BuilderServiceListSection from "./Sections/Builder/ServiceListSection";
 import ServiceSolutionSection from "./Sections/Builder/ServiceSolutionSection";
 import BuilderServiceCtaSection from "./Sections/Builder/ServiceCtaSection";
+import FaqSection from "./Sections/Builder/FaqSection";
 
 import LegalSection from "./Sections/Legal/LegalSection";
 import PartnershipHero from "./Sections/Partnership/PartnershipHero";
@@ -40,6 +41,7 @@ const SECTIONS = {
     news: NewsSection,
     why_choose_us: WhyChooseUsSection,
     cta: ClientSection,
+    faq: FaqSection,
 
     // Services Page Sections
     service_list: BuilderServiceListSection,

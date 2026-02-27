@@ -51,7 +51,7 @@ const BrandLanding = ({
 
     // Brand Landing Configuration (Visual Styles)
     const landingStyles = brand.landing_config?.hero || {};
-    const heroBgImage = landingStyles.background_image || brand.image;
+    const heroBgImage = brand.image;
     const heroBgColor = landingStyles.background_color || "#0B1422"; // Dark Navy default
 
 
@@ -191,7 +191,7 @@ const BrandLanding = ({
             <Seo seo={seo} />
 
             {/* Hero Section */}
-            {hero.enabled && hero.safe && (
+            {brand.show_breadcrumb && hero.enabled && hero.safe && (
                 <BrandHeroSection
                     brand={brand}
                     bgImage={heroBgImage}

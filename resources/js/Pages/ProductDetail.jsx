@@ -11,19 +11,25 @@ export default function ProductDetail({ product, seo }) {
         <MainLayout>
             <Seo seo={seo} />
 
-            <Breadcrumb
-                title={product.name}
-                bgImage={product.breadcrumb_image}
-                items={[
-                    { label: "Home", link: "/" },
-                    { label: "Products", link: "/products" },
-                    {
-                        label: product.brand.name,
-                        link: `/${product.brand.slug}/products`,
-                    },
-                    { label: product.name },
-                ]}
-            />
+            {product.show_breadcrumb && (
+                <Breadcrumb
+                    title={product.name}
+                    bgImage={
+                        product.breadcrumb_image ||
+                        product.thumbnail_path ||
+                        product.image_path
+                    }
+                    items={[
+                        { label: "Home", link: "/" },
+                        { label: "Products", link: "/products" },
+                        {
+                            label: product.brand.name,
+                            link: `/${product.brand.slug}/products`,
+                        },
+                        { label: product.name },
+                    ]}
+                />
+            )}
 
             {/* Product Details Area */}
             <section className="product-details space-extra-bottom space-top">

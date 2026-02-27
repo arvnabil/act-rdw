@@ -31,6 +31,10 @@ class AppServiceProvider extends ServiceProvider
             'news'             => \App\Models\News::class,
             'project'          => \App\Models\Project::class,
             'page'             => \App\Models\Page::class,
+            'slider'           => \App\Models\Page::class, // Fallback for slider clicks
+            'global'           => \App\Models\Page::class, // Fallback for global sections
+            'contact'          => \App\Models\Page::class, // Fallback for contact clicks
+            'partnership'      => \App\Models\Page::class, // Fallback for partnership clicks
         ]);
 
         view()->composer('app', \App\View\Composers\SeoViewComposer::class);

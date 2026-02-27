@@ -92,6 +92,8 @@ class NewsController extends Controller
                 ];
             });
 
+        $page = \App\Models\Page::where('slug', 'news')->first();
+
         return Inertia::render('News/Index', [
             'posts' => $posts,
             'categories' => $categories,
@@ -100,6 +102,9 @@ class NewsController extends Controller
             'filters' => request()->only(['search']),
             'activeCategory' => $activeCategory,
             'activeTag' => $activeTag,
+            'page_title' => $page?->title ?? 'Latest News',
+            'breadcrumb_image' => $page?->breadcrumb_image,
+            'show_breadcrumb' => $page?->show_breadcrumb ?? true,
             'seo' => SeoResolver::staticPage($pageTitle, 'Latest news and updates from ACTiV'),
         ]);
     }

@@ -31,35 +31,39 @@ class BrandForm
                             TextInput::make('slug')
                                 ->required()
                                 ->unique(ignoreRecord: true),
-                            FileUpload::make('image')
-                                ->label('Background Image (Banner)')
-                                ->image()
-                                ->disk('public')
-                                ->visibility('public')
-                                ->maxSize(2048)
-                                ->downloadable()
-                                ->openable()
-                                ->helperText('Nama file akan otomatis disesuaikan (Contoh: nama-brand.png). Ukuran maks: 2MB.')
-                                ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
-                                    $slug = $get('slug') ?: 'temp';
-                                    return UploadHelper::getSluggedFilename($file, 'brands/' . $slug);
-                                })
-                                ->imageEditor(),
                             FileUpload::make('thumbnail')
-                                ->label('Thumbnail (Square)')
+                                ->label('Brand Logo (Square)')
                                 ->image()
                                 ->disk('public')
                                 ->visibility('public')
                                 ->maxSize(1024)
                                 ->downloadable()
                                 ->openable()
-                                ->helperText('Thumbnail untuk kartu brand. Ukuran maks: 1MB.')
+                                ->helperText('Logo brand (rasio 1:1). Ukuran maks: 1MB.')
                                 ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
                                     $slug = $get('slug') ?: 'temp';
-                                    return UploadHelper::getSluggedFilename($file, 'brands/' . $slug . '/thumb');
+                                    return UploadHelper::getSluggedFilename($file, 'brands/' . $slug . '/logo');
                                 })
                                 ->imageEditor()
                                 ->imageEditorAspectRatios(['1:1']),
+                            FileUpload::make('image')
+                                ->label('Hero Banner (Landscape)')
+                                ->image()
+                                ->disk('public')
+                                ->visibility('public')
+                                ->maxSize(2048)
+                                ->downloadable()
+                                ->openable()
+                                ->helperText('Banner utama untuk landing page dan breadcrumb. Ukuran maks: 2MB.')
+                                ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
+                                    $slug = $get('slug') ?: 'temp';
+                                    return UploadHelper::getSluggedFilename($file, 'brands/' . $slug . '/banner');
+                                })
+                                ->imageEditor(),
+                            Toggle::make('show_breadcrumb')
+                                ->label('Show Hero Section')
+                                ->helperText('Tampilkan atau sembunyikan bagian Hero/Banner di halaman brand.')
+                                ->default(true),
                             Textarea::make('desc')
                                 ->label('Description')
                                 ->columnSpanFull(),
@@ -111,20 +115,7 @@ class BrandForm
                                         ->label('CTA WhatsApp Default Message')
                                         ->placeholder('Halo ACTiV, saya ingin bertanya...')
                                         ->columnSpanFull(),
-                                    FileUpload::make('background_image')
-                                        ->label('Hero Background Image')
-                                        ->image()
-                                        ->disk('public')
-                                        ->maxSize(2048)
-                                        ->downloadable()
-                                        ->openable()
-                                        ->helperText('Nama file akan otomatis disesuaikan (Contoh: nama-brand-hero.png). Ukuran maks: 2MB.')
-                                        ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file, Get $get): string {
-                                            $slug = $get('../../slug') ?: 'temp';
-                                            return UploadHelper::getSluggedFilename($file, 'brands/' . $slug . '/hero');
-                                        })
-                                        ->imageEditor()
-                                        ->columnSpanFull(),
+
                                 ])->columns(2)->statePath('landing_config.hero'),
                             Section::make('Service Solutions')
                                 ->schema([
@@ -212,6 +203,7 @@ class BrandForm
                                 ->relationship('seo')
                                 ->schema(\App\Filament\Activioncms\Resources\SeoMetaResource\Schemas\SeoForm::schema())
                         ]),
+
                     Tabs\Tab::make('Partner Verification')
                         ->schema([
                             Section::make('Partner Modal Configuration')

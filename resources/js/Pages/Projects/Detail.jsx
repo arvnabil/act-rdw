@@ -11,15 +11,17 @@ export default function ProjectDetail({ project, seo }) {
         <MainLayout>
             <Seo seo={seo} />
 
-            <Breadcrumb
-                title={project.title}
-                bgImage={project.thumbnail}
-                items={[
-                    { label: "Home", link: "/" },
-                    { label: "Projects", link: "/projects" },
-                    { label: project.title },
-                ]}
-            />
+            {project.show_breadcrumb && (
+                <Breadcrumb
+                    title={project.title}
+                    bgImage={project.breadcrumb_image || project.thumbnail}
+                    items={[
+                        { label: "Home", link: "/" },
+                        { label: "Projects", link: "/projects" },
+                        { label: project.title },
+                    ]}
+                />
+            )}
 
             <section className="space">
                 <div className="container">

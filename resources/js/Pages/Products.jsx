@@ -15,6 +15,9 @@ export default function Products({
     solutions,
     categories,
     seo,
+    breadcrumb_image,
+    show_breadcrumb = true,
+    page_title,
 }) {
     // State for View Mode (Grid vs List)
     const [viewMode, setViewMode] = useState("grid"); // 'grid' or 'list'
@@ -135,13 +138,16 @@ export default function Products({
         <MainLayout>
             <Seo seo={seo} />
 
-            <Breadcrumb
-                title="All Products"
-                items={[
-                    { label: "Home", link: "/" },
-                    { label: "All Products" },
-                ]}
-            />
+            {show_breadcrumb && (
+                <Breadcrumb
+                    title={page_title || "All Products"}
+                    items={[
+                        { label: "Home", link: "/" },
+                        { label: page_title || "All Products" },
+                    ]}
+                    bgImage={breadcrumb_image}
+                />
+            )}
 
             {/* Product Area */}
             <section className="space-extra-bottom space">

@@ -60,18 +60,21 @@ const BrandProductList = ({
         <MainLayout>
             <Seo seo={seo} />
 
-            <Breadcrumb
-                title={heroContent.title}
-                subtitle={`${brand.name} Products`}
-                items={[
-                    { label: "Home", link: "/" },
-                    {
-                        label: brand.name,
-                        link: `/${brand.slug || brand.name.toLowerCase()}`,
-                    },
-                    { label: "Products" },
-                ]}
-            />
+            {brand.show_breadcrumb && (
+                <Breadcrumb
+                    title={heroContent.title}
+                    subtitle={`${brand.name} Products`}
+                    bgImage={brand.breadcrumb_image}
+                    items={[
+                        { label: "Home", link: "/" },
+                        {
+                            label: brand.name,
+                            link: `/${brand.slug || brand.name.toLowerCase()}`,
+                        },
+                        { label: "Products" },
+                    ]}
+                />
+            )}
 
             <section className="space-extra-bottom space">
                 <div className="container">

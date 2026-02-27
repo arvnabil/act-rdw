@@ -13,7 +13,7 @@ class ServiceSolution extends Model
     use \App\Traits\HasSeoMeta;
     use \App\Traits\HasImageCleanup;
 
-    protected $cleanupFields = ['thumbnail', 'features', 'showcase'];
+    protected $cleanupFields = ['thumbnail', 'breadcrumb_image', 'features', 'showcase'];
 
     protected $fillable = [
         'service_id',
@@ -22,6 +22,8 @@ class ServiceSolution extends Model
         'subtitle',
         'description',
         'thumbnail',
+        'breadcrumb_image',
+        'show_breadcrumb',
         'features',
         'showcase',
         'wa_message',

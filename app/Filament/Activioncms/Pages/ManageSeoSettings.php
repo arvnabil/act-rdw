@@ -18,7 +18,7 @@ class ManageSeoSettings extends Page implements HasForms
     use InteractsWithForms;
 
     protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-globe-alt';
-    protected static string | \UnitEnum | null $navigationGroup = 'Settings';
+    protected static string | \UnitEnum | null $navigationGroup = 'Seo Management';
     protected static ?string $navigationLabel = 'Global SEO';
     protected static ?string $title = 'Global SEO Settings';
     protected string $view = 'filament.activioncms.pages.manage-seo-settings';

@@ -8,15 +8,21 @@ import AboutContentSection from "@/Components/Sections/About/AboutContentSection
 import VisionMissionSection from "@/Components/Sections/About/VisionMissionSection";
 import Seo from "@/Components/Common/Seo";
 
-export default function About({ seo }) {
+export default function About({ seo, breadcrumb_image, show_breadcrumb = true }) {
     return (
         <MainLayout>
             <Seo seo={seo} />
 
-            <Breadcrumb
-                title="About Us"
-                items={[{ label: "Home", link: "/" }, { label: "About Us" }]}
-            />
+            {show_breadcrumb && (
+                <Breadcrumb
+                    title="Tentang Kami"
+                    items={[
+                        { label: "Home", link: "/" },
+                        { label: "About" },
+                    ]}
+                    bgImage={breadcrumb_image}
+                />
+            )}
 
             {/* About Area */}
             <AboutContentSection />

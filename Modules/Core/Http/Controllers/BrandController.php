@@ -100,6 +100,8 @@ class BrandController extends Controller
             'products' => $products,
             'categories' => $categories,
             'relatedServices' => $groupedServices,
+            'breadcrumb_image' => $brand->breadcrumb_image,
+            'show_breadcrumb' => $brand->show_breadcrumb,
             'seo' => $seo
         ]);
     }

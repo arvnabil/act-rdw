@@ -43,6 +43,7 @@ class DynamicResolverController extends Controller
                     'title' => $page->title,
                     'slug' => $page->slug,
                     'show_breadcrumb' => $page->show_breadcrumb,
+                    'breadcrumb_image' => $page->breadcrumb_image,
                     // Add other necessary fields
                 ],
                 'sections' => $sections,
@@ -101,6 +102,8 @@ class DynamicResolverController extends Controller
             $postData['thumbnail'] = $postData['image']; 
             $postData['content'] = \App\Helpers\SanitizerHelper::sanitizeHtml($news->content);
             $postData['excerpt'] = \App\Helpers\SanitizerHelper::sanitizeHtml($news->excerpt);
+            $postData['breadcrumb_image'] = $news->breadcrumb_image;
+            $postData['show_breadcrumb'] = $news->show_breadcrumb;
 
             return Inertia::render('News/Detail', [
                 'post' => $postData,
@@ -120,6 +123,8 @@ class DynamicResolverController extends Controller
             return Inertia::render('Projects/Detail', [
                 'project' => array_merge($project->toArray(), [
                     'thumbnail' => $project->thumbnail,
+                    'breadcrumb_image' => $project->breadcrumb_image,
+                    'show_breadcrumb' => $project->show_breadcrumb,
                     'content' => \App\Helpers\SanitizerHelper::sanitizeHtml($project->content),
                     'map_url_rel' => \App\Helpers\SeoHelper::get_rel($project->map_url)
                 ]),
