@@ -59,4 +59,4 @@ Route::get('/{brandSlug}/products', [\Modules\ProductCatalog\Http\Controllers\Br
 Route::get('/', [\Modules\CMS\Http\Controllers\PageController::class, 'resolveHomepage'])->name('home');
 Route::get('/{slug}', [\Modules\CMS\Http\Controllers\DynamicResolverController::class, 'resolve'])
     ->name('dynamic.resolve')
-    ->where('slug', '^(?!events|services|products|configurator|admin|nova|api|storage|build|assets|favicon).*$');
+    ->where('slug', '^(?!events|services|products|configurator|activioncms|admin|nova|api|storage|build|assets|favicon).*$');
