@@ -302,8 +302,9 @@ export default function MainLayout({ children }) {
                     pointer-events: none !important;
                     width: 80px !important;
                     height: 80px !important;
-                    bottom: 15px !important;
+                    bottom: 95px !important;
                     right: 15px !important;
+                    z-index: 10000000 !important;
                 }
                 #qontak-webchat-widget.expanded,
                 #qontak-webchat-widget:hover {
@@ -312,7 +313,7 @@ export default function MainLayout({ children }) {
                     height: 600px !important;
                 }
 
-                /* Ensure scroll-top button stays above other widgets */
+                /* Ensure scroll-top button stays below Qontak but above other content */
                 .scroll-top { pointer-events: auto !important; z-index: 9999999 !important; }
 
                 @media (max-width: 991px) {
