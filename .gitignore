@@ -21,3 +21,7 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
+/public/bio
+/public/datasheet
+/public/staging
+/public/ads.txt
