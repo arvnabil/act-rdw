@@ -18,7 +18,7 @@ export default function WorkShowcaseSection({
             className="case-area3 position-relative overflow-hidden space-bottom"
             id="project-showcase"
         >
-            <div className="container th-container">
+            <div className="container">
                 <SectionTitle
                     subTitle="Proyek"
                     title={config?.title || "Portofolio Proyek Kami"}

@@ -2,7 +2,7 @@ import React from "react";
 import { Head, Link } from "@inertiajs/react";
 import MainLayout from "@/Layouts/MainLayout";
 import Breadcrumb from "@/Components/Common/Breadcrumb";
-export default function Events({ upcomingEvents, pastEvents }) {
+export default function Events({ upcomingEvents, pastEvents, brands }) {
     console.log("Events Page Loaded", { upcomingEvents, pastEvents });
     return (
         <MainLayout>
@@ -525,7 +525,7 @@ export default function Events({ upcomingEvents, pastEvents }) {
                                     event di ACTiV Event.
                                 </p>
                                 <Link
-                                    href="#"
+                                    href="/partners"
                                     className="th-btn style5 th-radius shadow-sm border-0"
                                 >
                                     {" "}
@@ -535,22 +535,14 @@ export default function Events({ upcomingEvents, pastEvents }) {
                             </div>
                             <div className="col-lg-7">
                                 <div className="row g-3">
-                                    {[
-                                        { name: "Logitech", img: "logi.jpg" },
-                                        { name: "Zoom", img: "zoom.jpg" },
-                                        {
-                                            name: "Microsoft Teams",
-                                            img: "microsoft-teams.jpg",
-                                        },
-                                        { name: "Yealink", img: "yealink.jpg" },
-                                    ].map((partner, index) => (
+                                    {brands.length > 0 ? brands.map((partner, index) => (
                                         <div className="col-md-6" key={index}>
                                             <div
                                                 className="bg-white rounded-3 p-3 d-flex align-items-center justify-content-center h-100 shadow-sm"
                                                 style={{ minHeight: "100px" }}
                                             >
                                                 <img
-                                                    src={`/assets/img/partners/${partner.img}`}
+                                                    src={partner.image}
                                                     alt={partner.name}
                                                     className="img-fluid"
                                                     style={{
@@ -560,7 +552,12 @@ export default function Events({ upcomingEvents, pastEvents }) {
                                                 />
                                             </div>
                                         </div>
-                                    ))}
+                                    )) : (
+                                        // Fallback if no brands in DB
+                                        <div className="col-12 text-center text-white opacity-50">
+                                            No brand data found
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>

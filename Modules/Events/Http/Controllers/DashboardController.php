@@ -73,7 +73,7 @@ class DashboardController extends Controller
                     'status' => $registration->status,
                     'slug' => $registration->event->slug,
                     'meeting_link' => $registration->status === 'approved' ? $registration->event->meeting_link : null,
-                    'meeting_link_rel' => \App\Helpers\SeoHelper::get_rel($registration->event->meeting_link),
+                    'meeting_link_rel' => \Modules\SEO\Helpers\SeoHelper::get_rel($registration->event->meeting_link),
                 ];
             });
 
@@ -146,7 +146,7 @@ class DashboardController extends Controller
                 'title' => $event->title,
                 'description' => $event->description,
                 'meeting_link' => $event->meeting_link,
-                'meeting_link_rel' => \App\Helpers\SeoHelper::get_rel($event->meeting_link),
+                'meeting_link_rel' => \Modules\SEO\Helpers\SeoHelper::get_rel($event->meeting_link),
                 'is_certificate_available' => $event->is_certificate_available,
                 'has_certificate_template' => \Modules\Events\Models\EventCertificate::where('event_id', $event->id)->exists(),
                 'schedule' => $event->schedule,

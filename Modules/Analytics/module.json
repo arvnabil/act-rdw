@@ -1,0 +1,9 @@
+{
+    "name": "Analytics",
+    "alias": "analytics",
+    "description": "Click Analytics & WhatsApp Tracking Module",
+    "keywords": [],
+    "priority": 0,
+    "providers": ["Modules\\Analytics\\Providers\\AnalyticsServiceProvider"],
+    "files": []
+}

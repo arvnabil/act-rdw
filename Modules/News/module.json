@@ -1,0 +1,9 @@
+{
+    "name": "News",
+    "alias": "news",
+    "description": "News & Blog Management Module",
+    "keywords": [],
+    "priority": 0,
+    "providers": ["Modules\\News\\Providers\\NewsServiceProvider"],
+    "files": []
+}

@@ -1,0 +1,9 @@
+{
+    "name": "SEO",
+    "alias": "seo",
+    "description": "SEO Management Module",
+    "keywords": [],
+    "priority": 0,
+    "providers": ["Modules\\SEO\\Providers\\SEOServiceProvider"],
+    "files": []
+}

@@ -61,10 +61,10 @@ export default function BrandHeroSection({
                 ></div>
 
                 <div
-                    className="container th-container position-relative px-lg-5"
+                    className="container position-relative"
                     style={{ zIndex: 1 }}
                 >
-                    <div className="row align-items-center gy-5 gx-lg-5">
+                    <div className="row align-items-center gy-5">
                         <div className={config?.awards?.length > 0 ? "col-lg-6" : "col-lg-12 text-center"}>
                             <div className="hero-content wow fadeInUp text-center text-lg-start">
                                 <span
@@ -225,7 +225,7 @@ export default function BrandHeroSection({
                 className="brand-subnav py-3"
                 style={{ backgroundColor: "#1DA2C0" }}
             >
-                <div className="container th-container">
+                <div className="container">
                     <div className="d-flex justify-content-center gap-4 flex-wrap">
                         {(() => {
                             const navItems = [];

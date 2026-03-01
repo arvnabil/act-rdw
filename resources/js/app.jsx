@@ -6,7 +6,10 @@ import "../css/app.css";
 import "../css/tailwind-output.css";
 import "./bootstrap";
 
+const appName = import.meta.env.VITE_APP_NAME || "ACTiV";
+
 createInertiaApp({
+    title: (title) => (title ? `${title} - ${appName}` : appName),
     resolve: (name) => {
         const pages = import.meta.glob([
             "./Pages/**/*.jsx",

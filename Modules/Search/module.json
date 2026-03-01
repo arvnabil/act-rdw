@@ -1,0 +1,9 @@
+{
+    "name": "Search",
+    "alias": "search",
+    "description": "Global Search Module",
+    "keywords": [],
+    "priority": 0,
+    "providers": ["Modules\\Search\\Providers\\SearchServiceProvider"],
+    "files": []
+}

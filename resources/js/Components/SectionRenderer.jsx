@@ -14,6 +14,7 @@ import BuilderServiceListSection from "./Sections/Builder/ServiceListSection";
 import ServiceSolutionSection from "./Sections/Builder/ServiceSolutionSection";
 import BuilderServiceCtaSection from "./Sections/Builder/ServiceCtaSection";
 import FaqSection from "./Sections/Builder/FaqSection";
+import PartnerListSection from "./Sections/Partners/PartnerListSection";
 
 import LegalSection from "./Sections/Legal/LegalSection";
 import PartnershipHero from "./Sections/Partnership/PartnershipHero";
@@ -38,6 +39,7 @@ const SECTIONS = {
     projects: ProjectSection,
     brands: BrandSection,
     brand_partners: BrandSection, // Fix: Match database key
+    partner_list: PartnerListSection,
     news: NewsSection,
     why_choose_us: WhyChooseUsSection,
     cta: ClientSection,

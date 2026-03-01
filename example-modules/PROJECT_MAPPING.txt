@@ -1,0 +1,48 @@
+🗺️ Project Mapping (Deep Level)
+contoh-modul/
+├── app/                        # Inti aplikasi (Core Laravel)
+│   ├── Filament/               # Konfigurasi Admin Panel Utama
+│   │   └── Pages/              # Halaman dashboard custom
+│   ├── Http/Controllers/       # Handler Request global
+│   │   └── Controller.php      # Base controller aplikasi
+│   ├── Models/                 # Model database inti
+│   │   └── User.php            # Manajemen data pengguna & autentikasi
+│   ├── Providers/              # Service Providers (Bootstrapping)
+│   │   ├── AppServiceProvider.php
+│   │   └── Filament/           # Konfigurasi spesifik panel Filament
+│   └── Services/               # Logika Bisnis Inti
+│       └── ModuleService.php   # Manajemen sistem modular
+├── Modules/                    # Fitur & Modul Aplikasi (Modular Architecture)
+│   ├── Blog/                   # Modul Konten & Berita
+│   │   ├── Filament/Resources/ # Admin CRUD untuk Artikel
+│   │   │   └── PostResource.php# Logic backend buat input berita
+│   │   ├── Models/             # Definisi Tabel Blog
+│   │   │   └── Post.php        # Model database buat konten
+│   │   └── Database/Migrations/# Skema database tabel blog
+│   ├── Midtrans/               # Integrasi Payment Gateway
+│   │   ├── Http/Controllers/   # Handler transaksi & callback
+│   │   │   └── MidtransController.php # Logika pembayaran otomatis
+│   │   └── Config/             # API Key & setting Midtrans
+│   ├── Pos/                    # Sistem Kasir (Point of Sale)
+│   │   ├── Filament/Resources/ # Management Produk & Transaksi
+│   │   └── Models/             # Logika stok & penjualan
+│   ├── AuditLog/               # Sistem Tracking Aktivitas
+│   │   └── Observers/          # Automasi pencatatan log (Create/Update/Delete)
+│   └── [12+ Modul Lainnya]     # Donation, Restaurant, CRM, dll.
+├── config/                     # Seluruh file konfigurasi (.php)
+│   ├── app.php                 # Setting timezone, locale, & providers
+│   ├── database.php            # Koneksi MySQL/PostgreSQL
+│   └── filament.php            # Custom branding & theme dashboard
+├── database/                   # Database global (non-module)
+│   ├── migrations/             # Tabel User, Password Reset, dll.
+│   └── seeders/                # Data awal sistem (Admin user)
+├── public/                     # Direktori yang diakses publik (Web Server)
+│   ├── index.php               # Entry point utama aplikasi
+│   └── build/                  # Aset hasil kompilasi (Vite)
+├── resources/                  # Source code frontend (Uncompiled)
+│   ├── css/ & js/              # Styling & Scripting
+│   └── views/                  # Template Blade global
+├── routes/                     # Definisi URL
+│   ├── web.php                 # Rute halaman utama
+│   └── api.php                 # Rute integrasi pihak ketiga
+└── storage/                    # Media upload & Log aplikasi

@@ -69,7 +69,7 @@ export default function WhyChooseUsSection({
             <div className="container">
                 <div className="row">
                     <div className="col-xl-6">
-                        <div className="ab5-wrapp mt-40">
+                        <div className="mt-40">
                             <SectionTitle
                                 align="title-area"
                                 subTitle={st}

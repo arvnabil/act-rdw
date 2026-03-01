@@ -490,7 +490,7 @@ export default function MainLayout({ children }) {
 
             <header className="th-header header-layout1 header-layout2">
                 <div className="header-top">
-                    <div className="container th-container">
+                    <div className="container">
                         <div className="row justify-content-center justify-content-xl-between align-items-center">
                             <div className="col-auto d-none d-xl-block">
                                 <div className="header-links">
@@ -600,7 +600,7 @@ export default function MainLayout({ children }) {
                         className="menu-area"
                         data-bg-src="/assets/img/bg/line-pattern.png"
                     >
-                        <div className="container th-container">
+                        <div className="container">
                             <div className="row align-items-center justify-content-between">
                                 <div className="col-xl-2 col-xxl-2 col-auto">
                                     <div className="header-logo">

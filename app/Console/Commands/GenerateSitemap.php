@@ -5,12 +5,12 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
-use App\Models\Page;
-use App\Models\News;
-use App\Models\Project;
-use Modules\Core\Models\Brand;
-use Modules\ServiceSolutions\Models\Service;
-use Modules\ServiceSolutions\Models\Product; // Adjust namespace if needed
+use Modules\CMS\Models\Page;
+use Modules\News\Models\News;
+use Modules\Projects\Models\Project;
+use Modules\ProductCatalog\Models\Brand;
+use Modules\Services\Models\Service;
+use Modules\Services\Models\Product; // Adjust namespace if needed
 use Carbon\Carbon;
 
 class GenerateSitemap extends Command

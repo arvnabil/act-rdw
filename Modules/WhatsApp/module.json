@@ -1,0 +1,9 @@
+{
+    "name": "WhatsApp",
+    "alias": "whatsapp",
+    "description": "WhatsApp Integration & Redirect Module",
+    "keywords": [],
+    "priority": 0,
+    "providers": ["Modules\\WhatsApp\\Providers\\WhatsAppServiceProvider"],
+    "files": []
+}

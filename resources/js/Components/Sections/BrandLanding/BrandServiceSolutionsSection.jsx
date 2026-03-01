@@ -40,7 +40,7 @@ export default function BrandServiceSolutionsSection({
                         }}
                     ></div>
                     <div
-                        className="container th-container position-relative"
+                        className="container position-relative"
                         style={{ zIndex: 2 }}
                     >
                         <div className="row justify-content-center">

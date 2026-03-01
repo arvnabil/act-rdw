@@ -58,7 +58,8 @@ export default function AboutContentSection({
         if (images && images[index]) {
             const img = images[index];
             if (typeof img === "string") return img;
-            return img?.image || fallback;
+            // Prioritize 'url' (modern standard) then 'image' (legacy)
+            return img?.url || img?.image || fallback;
         }
         return fallback;
     };

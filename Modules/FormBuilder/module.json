@@ -1,0 +1,9 @@
+{
+    "name": "FormBuilder",
+    "alias": "formbuilder",
+    "description": "Form Builder & Submission Module",
+    "keywords": [],
+    "priority": 0,
+    "providers": ["Modules\\FormBuilder\\Providers\\FormBuilderServiceProvider"],
+    "files": []
+}

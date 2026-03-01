@@ -1,0 +1,28 @@
+<?php
+
+namespace Modules\Services\Filament\Resources\ServiceResource\Pages;
+
+use Filament\Actions;
+use Filament\Resources\Pages\ListRecords;
+use Modules\Services\Filament\Resources\ServiceResource;
+
+class ListServices extends ListRecords
+{
+    protected static string $resource = ServiceResource::class;
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\CreateAction::make(),
+            Actions\ExportAction::make()
+                ->exporter(\Modules\Services\Filament\Exports\ServiceExporter::class),
+            \Filament\Actions\ImportAction::make('import_services')
+                ->importer(\Modules\Services\Filament\Imports\ServiceImporter::class)
+                ->modalDescription(fn () => new \Illuminate\Support\HtmlString('Download example CSV: <a href="#" wire:click.prevent="mountAction(\'downloadExample\')">Click here</a>')),
+            Actions\Action::make('downloadExample')
+                ->label('Download Example CSV')
+                ->hidden()
+                ->action(fn () => response()->download(public_path('examples/service-import.csv'))),
+        ];
+    }
+}

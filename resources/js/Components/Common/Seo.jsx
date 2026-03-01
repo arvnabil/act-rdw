@@ -15,11 +15,14 @@ export default function Seo({ seo }) {
     // JSON-LD handling
     const jsonLd = seo.json_ld || seo.jsonLd;
 
+    const appName = "ACTiV"; // Could also be passed as prop or from env if available in client
+    const fullTitle = tags.title ? `${tags.title} - ${appName}` : appName;
+
     return (
         <Head>
             {/* Primary Meta Tags */}
-            <title>{tags.title}</title>
-            <meta name="title" content={tags.title} />
+            <title>{fullTitle}</title>
+            <meta name="title" content={fullTitle} />
             <meta name="description" content={tags.description} />
             {tags.keywords && <meta name="keywords" content={tags.keywords} />}
             <link rel="canonical" href={tags.canonical_url} />

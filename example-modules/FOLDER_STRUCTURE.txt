@@ -1,0 +1,104 @@
+STRUKTUR FOLDER MAPPING
+
+Dokumen ini memberikan pemetaan detail struktur folder dan file dalam modul Proyek ini dibangun menggunakan Laravel dengan arsitektur modular dan Filament PHP sebagai panel admin.
+
+=======================================================================
+AKAR PROYEK (PROJECT ROOT)
+========================================================================
+
+- .editorconfig: Konfigurasi standar editor teks.
+- .env.example: Template file konfigurasi lingkungan (environment).
+- .gitattributes & .gitignore: Konfigurasi Git.
+- .gitlab-ci.yml: Konfigurasi Continuous Integration (CI) untuk GitLab.
+- artisan: Command-line interface Laravel.
+- composer.json & composer.lock: Manajemen dependensi PHP (PHP packages).
+- package.json & package-lock.json: Manajemen dependensi JavaScript (NPM packages).
+- phpunit.xml: Konfigurasi pengujian unit (unit testing).
+- README.md: Dokumentasi utama proyek.
+- vite.config.js: Konfigurasi Vite untuk build aset frontend.
+
+========================================================================
+FOLDER UTAMA LARAVEL
+========================================================================
+
+--- app/ ---
+Berisi logika inti aplikasi.
+- Filament/: Konfigurasi dan resource Filament global.
+- Http/: Controller dan Middleware.
+- Models/: Model database inti.
+- Providers/: Service Providers aplikasi.
+- Services/: Logika bisnis tambahan.
+
+--- bootstrap/ ---
+File untuk proses inisialisasi framework.
+- app.php: Inisialisasi aplikasi.
+- cache/: File cache untuk performa.
+
+--- config/ ---
+File konfigurasi aplikasi.
+- app.php: Konfigurasi umum aplikasi.
+- auth.php: Konfigurasi autentikasi.
+- database.php: Konfigurasi koneksi database.
+- filament.php: Konfigurasi panel admin Filament.
+- logging.php, mail.php, session.php, dll.
+
+--- database/ ---
+Berisi migrasi dan seeder database inti.
+- factories/: Kamus data untuk testing.
+- migrations/: Skema tabel database.
+- seeders/: Data awal untuk database.
+
+--- public/ ---
+Entry point publik untuk web server.
+- index.php: File utama yang diakses web server.
+- build/: Aset yang sudah dikompilasi (CSS/JS).
+- storage/: Link simbolis ke folder storage.
+
+--- resources/ ---
+Aset sumber yang belum dikompilasi.
+- css/: File CSS (Tailwind/Sass).
+- js/: File JavaScript.
+- views/: Template Blade PHP.
+
+--- routes/ ---
+Definisi rute URL.
+- web.php: Rute web utama.
+- api.php: Rute API.
+
+--- storage/ ---
+Penyimpanan file log, cache, dan upload user.
+
+--- tests/ ---
+Automated tests.
+
+========================================================================
+FOLDER MODULES
+========================================================================
+
+Folder ini menggunakan paket nwidart/laravel-modules. Setiap folder di sini adalah fitur mandiri.
+
+Struktur Umum Modul:
+Hampir setiap modul memiliki struktur berikut:
+- Database/: Migrasi, Seeders, dan Factories khusus modul.
+- Filament/: Resource, Pages, dan Widgets khusus modul untuk panel admin.
+- Models/: Model database khusus modul.
+- resources/: View dan aset khusus modul.
+- [ModuleName]ServiceProvider.php: Registrasi modul ke dalam sistem Laravel.
+
+Daftar Modul:
+1.  AuditLog: Mencatat riwayat aktivitas pengguna.
+2.  Blog: Manajemen postingan berita dan artikel.
+3.  BookingFutsal: Sistem pemesanan lapangan futsal.
+4.  CariKos: Sistem pencarian dan manajemen tempat kos.
+5.  Donation: Manajemen kampanye donasi.
+6.  DynamicForm: Pembuat formulir dinamis.
+7.  GuruLes: Manajemen kursus privat/les.
+8.  Invitation: Sistem undangan digital.
+9.  Maps: Integrasi peta dan lokasi.
+10. MembershipGym: Manajemen anggota pusat kebugaran.
+11. Midtrans: Integrasi gateway pembayaran Midtrans.
+12. POS: Sistem Point of Sale (Kasir).
+13. Restaurant: Manajemen menu dan pemesanan restoran.
+14. TryoutOnline: Platform ujian/tryout daring.
+15. Tutorial: Manajemen konten tutorial/panduan.
+16. Xendit: Integrasi gateway pembayaran Xendit.

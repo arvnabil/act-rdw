@@ -21,7 +21,7 @@ $formData = [
 ];
 
 // Create temporary model for calculation
-$tempModel = new \App\Models\SeoMeta($formData);
+$tempModel = new \Modules\SEO\Models\SeoMeta($formData);
 $calculation = \App\Services\Seo\SeoScoreCalculator::calculate($tempModel);
 $currentScore = $calculation['score'];
 $checks = $calculation['checks'];

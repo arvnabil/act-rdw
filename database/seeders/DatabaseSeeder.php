@@ -26,14 +26,10 @@ class DatabaseSeeder extends Seeder
             ]
         );
 
-        $this->call([
-            PageSeeder::class,
-            ServicesPageSeeder::class,
-            MenuSeeder::class,
-            SettingSeeder::class,
-        ]);
+        // Legacy root seeders have been migrated to their respective modules
+        // and will be executed by the auto-discovery loop below.
 
-        // $this->call(\Modules\ServiceSolutions\Database\Seeders\ProductConfiguratorSeeder::class);
+        // $this->call(\Modules\Services\Database\Seeders\ProductConfiguratorSeeder::class);
 
         // Auto-discover and run Module seeders
         $modules = glob(base_path('Modules/*'), GLOB_ONLYDIR);

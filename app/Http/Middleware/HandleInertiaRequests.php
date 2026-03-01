@@ -39,7 +39,7 @@ class HandleInertiaRequests extends Middleware
         //     ...parent::share($request),
         //     //
         // ];
-        $menuResolver = app(\App\Services\MenuResolver::class);
+        $menuResolver = app(\Modules\Menu\Services\MenuResolver::class);
 
         return array_merge(parent::share($request), [
             'auth' => [
@@ -55,11 +55,11 @@ class HandleInertiaRequests extends Middleware
                 'footer' => $menuResolver->resolve('footer', $request->user()),
                 'top_header' => $menuResolver->resolve('top_header', $request->user()),
             ],
-            'settings' => collect(\App\Models\Setting::pluck('value', 'key')->toArray())
+            'settings' => collect(\Modules\Settings\Models\Setting::pluck('value', 'key')->toArray())
                 ->mapWithKeys(function ($value, $key) {
                     $data = [$key => $value];
                     if (str_ends_with($key, '_url') || $key === 'header_button_url') {
-                        $data[$key . '_rel'] = \App\Helpers\SeoHelper::get_rel($value);
+                        $data[$key . '_rel'] = \Modules\SEO\Helpers\SeoHelper::get_rel($value);
                     }
                     return $data;
                 })->toArray(),

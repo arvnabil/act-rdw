@@ -1,0 +1,9 @@
+{
+    "name": "CMS",
+    "alias": "cms",
+    "description": "Content Management System Module",
+    "keywords": [],
+    "priority": 0,
+    "providers": ["Modules\\CMS\\Providers\\CMSServiceProvider"],
+    "files": []
+}

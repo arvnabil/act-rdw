@@ -1,9 +1,0 @@
-{
-    "name": "Core",
-    "alias": "core",
-    "description": "Core Module for shared entities",
-    "keywords": [],
-    "priority": 0,
-    "providers": ["Modules\\Core\\Providers\\CoreServiceProvider"],
-    "files": []
-}

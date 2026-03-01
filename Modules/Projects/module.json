@@ -1,0 +1,9 @@
+{
+    "name": "Projects",
+    "alias": "projects",
+    "description": "Projects Portfolio Module",
+    "keywords": [],
+    "priority": 0,
+    "providers": ["Modules\\Projects\\Providers\\ProjectsServiceProvider"],
+    "files": []
+}

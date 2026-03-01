@@ -3,7 +3,7 @@ import { Link } from "@inertiajs/react";
 import { getImageUrl } from "@/Utils/image";
 
 export default function Breadcrumb({ title, items, bgImage }) {
-    const resolvedBgImage = getImageUrl(bgImage, "/assets/img/foto-dok-logitech-1.png");
+    const resolvedBgImage = getImageUrl(bgImage, "/assets/img/bg/default-breadcumb-bg.jpg");
 
     return (
         <div className="breadcumb-area">
@@ -16,7 +16,7 @@ export default function Breadcrumb({ title, items, bgImage }) {
                     backgroundSize: "cover",
                 }}
             >
-                <div className="container th-container">
+                <div className="container">
                     <div className="breadcumb-content">
                         <h1 className="breadcumb-title">{title}</h1>
                         <ul className="breadcumb-menu">

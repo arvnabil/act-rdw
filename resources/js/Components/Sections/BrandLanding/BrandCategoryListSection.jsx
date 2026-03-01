@@ -21,7 +21,7 @@ export default function BrandCategoryListSection({
                 <img src="/assets/img/shape/circle_1.png" alt="shape" style={{ opacity: "0.05" }} />
             </div>
 
-            <div className="container th-container">
+            <div className="container">
                 <div className="title-area text-center mb-50">
                     <span className="sub-title text-theme">Kategori Produk</span>
                     <h2 className="sec-title text-capitalize">Jelajahi Solusi Anda</h2>

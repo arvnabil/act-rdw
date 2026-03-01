@@ -3,16 +3,16 @@
 namespace App\View\Composers;
 
 use Illuminate\View\View;
-use App\Models\Setting;
-use App\Services\Seo\SeoManager;
-use App\Services\Seo\SeoService;
-use App\Services\Seo\Schemas\WebPageSchema;
-use App\Services\Seo\Schemas\ArticleSchema;
-use App\Services\Seo\Schemas\BreadcrumbSchema;
-use App\Services\Seo\Schemas\ServiceSchema;
-use App\Services\Seo\Schemas\FaqSchema;
-use App\Services\Seo\Schemas\LocalBusinessSchema;
-use App\Services\Seo\Schemas\ReviewSchema;
+use Modules\Settings\Models\Setting;
+use Modules\SEO\Services\Seo\SeoManager;
+use Modules\SEO\Services\Seo\SeoService;
+use Modules\SEO\Services\Seo\Schemas\WebPageSchema;
+use Modules\SEO\Services\Seo\Schemas\ArticleSchema;
+use Modules\SEO\Services\Seo\Schemas\BreadcrumbSchema;
+use Modules\SEO\Services\Seo\Schemas\ServiceSchema;
+use Modules\SEO\Services\Seo\Schemas\FaqSchema;
+use Modules\SEO\Services\Seo\Schemas\LocalBusinessSchema;
+use Modules\SEO\Services\Seo\Schemas\ReviewSchema;
 use Illuminate\Database\Eloquent\Model;
 
 class SeoViewComposer

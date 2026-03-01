@@ -13,7 +13,7 @@
     @endif
 
     @php
-        $settings = \App\Models\Setting::whereIn('key', [
+        $settings = \Modules\Settings\Models\Setting::whereIn('key', [
             'seo_gtm_id', 'seo_ga4_id', 'seo_gsc_verification', 'seo_favicon',
             'recaptcha_site_key'
         ])->pluck(

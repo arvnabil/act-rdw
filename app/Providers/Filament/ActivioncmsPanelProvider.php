@@ -34,18 +34,30 @@ class ActivioncmsPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->discoverResources(in: app_path('Filament/Activioncms/Resources'), for: 'App\Filament\Activioncms\Resources')
+            ->discoverResources(in: base_path('Modules/CMS/Filament/Resources'), for: 'Modules\\CMS\\Filament\\Resources')
             ->discoverResources(in: base_path('Modules/Events/Filament/Resources'), for: 'Modules\\Events\\Filament\\Resources')
-            ->discoverResources(in: base_path('Modules/ServiceSolutions/Filament/Resources'), for: 'Modules\\ServiceSolutions\\Filament\\Resources')
-            ->discoverResources(in: base_path('Modules/Core/Filament/Resources'), for: 'Modules\\Core\\Filament\\Resources')
+            ->discoverResources(in: base_path('Modules/Services/Filament/Resources'), for: 'Modules\\Services\\Filament\\Resources')
+            ->discoverResources(in: base_path('Modules/ProductCatalog/Filament/Resources'), for: 'Modules\\ProductCatalog\\Filament\\Resources')
+            ->discoverResources(in: base_path('Modules/Analytics/Filament/Resources'), for: 'Modules\\Analytics\\Filament\\Resources')
+            ->discoverResources(in: base_path('Modules/Settings/Filament/Resources'), for: 'Modules\\Settings\\Filament\\Resources')
+            ->discoverResources(in: base_path('Modules/SEO/Filament/Resources'), for: 'Modules\\SEO\\Filament\\Resources')
+            ->discoverResources(in: base_path('Modules/Menu/Filament/Resources'), for: 'Modules\\Menu\\Filament\\Resources')
+            ->discoverResources(in: base_path('Modules/FormBuilder/Filament/Resources'), for: 'Modules\\FormBuilder\\Filament\\Resources')
+            ->discoverResources(in: base_path('Modules/News/Filament/Resources'), for: 'Modules\\News\\Filament\\Resources')
+            ->discoverResources(in: base_path('Modules/Projects/Filament/Resources'), for: 'Modules\\Projects\\Filament\\Resources')
+            ->discoverResources(in: base_path('Modules/Clients/Filament/Resources'), for: 'Modules\\Clients\\Filament\\Resources')
+            ->discoverPages(in: base_path('Modules/CMS/Filament/Pages'), for: 'Modules\\CMS\\Filament\\Pages')
             ->discoverPages(in: app_path('Filament/Activioncms/Pages'), for: 'App\Filament\Activioncms\Pages')
             ->discoverPages(in: base_path('Modules/Events/Filament/Pages'), for: 'Modules\\Events\\Filament\\Pages')
+            ->discoverPages(in: base_path('Modules/SEO/Filament/Pages'), for: 'Modules\\SEO\\Filament\\Pages')
             ->pages([
                 Dashboard::class,
                 EventDashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Activioncms/Widgets'), for: 'App\Filament\Activioncms\Widgets')
-            ->discoverWidgets(in: base_path('Modules/Events/Filament/Widgets'), for: 'Modules\\Events\\Filament\\Widgets')
+            ->discoverWidgets(in: base_path('Modules/Events/Filament/Widgets'), for: 'Modules\Events\Filament\Widgets')
+            ->discoverWidgets(in: base_path('Modules/Analytics/Filament/Widgets'), for: 'Modules\\Analytics\\Filament\\Widgets')
+            ->discoverWidgets(in: base_path('Modules/SEO/Filament/Widgets'), for: 'Modules\\SEO\\Filament\\Widgets')
+            ->discoverWidgets(in: base_path('Modules/FormBuilder/Filament/Widgets'), for: 'Modules\\FormBuilder\\Filament\\Widgets')
             ->widgets([
                 AccountWidget::class,
                 FilamentInfoWidget::class,
@@ -67,9 +79,15 @@ class ActivioncmsPanelProvider extends PanelProvider
             ->navigationGroups([
                 'Dashboard',
                 'Analytics',
+                'Product Catalog',
+                'Service Management',
+                'Project Management',
+                'Client Management',
+                'News Management',
+                'Form Management',
+                'Menu Management',
                 'Seo Management',
                 'Site Management',
-                'Core',
                 'Event Manage Data',
                 'Event Management',
                 'Settings',
@@ -85,7 +103,7 @@ class ActivioncmsPanelProvider extends PanelProvider
         try {
             // Only try to fetch settings if the application is not running in CLI (unless it's a specific command we want)
             // Or better, just catch the exception if the table doesn't exist yet.
-            $settings = \App\Models\Setting::whereIn('key', [
+            $settings = \Modules\Settings\Models\Setting::whereIn('key', [
                 'seo_ga4_property_id',
                 'seo_ga4_service_account_json'
             ])->pluck('value', 'key');

@@ -26,8 +26,8 @@ export default function PartnerVerificationSection({
 
     return (
         <section className="partner-verification-section space-top space-bottom bg-light overflow-hidden">
-            <div className="container th-container">
-                <div className="row align-items-center g-5">
+            <div className="container">
+                <div className="row align-items-center">
                     {/* Left Column: Content */}
                     <div className="col-lg-6">
                         <div className="title-area text-start mb-40">

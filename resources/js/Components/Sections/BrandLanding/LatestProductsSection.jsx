@@ -18,7 +18,7 @@ export default function LatestProductsSection({
             className="space-top space-extra-bottom bg-white"
             id="latest-products"
         >
-            <div className="container th-container">
+            <div className="container">
                 <SectionTitle
                     subTitle="New Release"
                     title={config?.title || "Latest Innovation"}

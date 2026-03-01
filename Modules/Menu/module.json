@@ -1,0 +1,9 @@
+{
+    "name": "Menu",
+    "alias": "menu",
+    "description": "Menu & Navigation Module",
+    "keywords": [],
+    "priority": 0,
+    "providers": ["Modules\\Menu\\Providers\\MenuServiceProvider"],
+    "files": []
+}

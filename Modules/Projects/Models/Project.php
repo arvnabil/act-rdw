@@ -1,0 +1,47 @@
+<?php
+
+namespace Modules\Projects\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+use Modules\SEO\Traits\HasSeoMeta;
+use App\Traits\HasImageCleanup;
+
+class Project extends Model
+{
+    use HasFactory, HasSeoMeta, HasImageCleanup;
+
+    public function author()
+    {
+        return $this->belongsTo(\App\Models\User::class, 'user_id');
+    }
+
+    public function brands()
+    {
+        return $this->belongsToMany(\Modules\ProductCatalog\Models\Brand::class, 'project_brand');
+    }
+
+    public function solutions()
+    {
+        return $this->belongsToMany(\Modules\Services\Models\ServiceSolution::class, 'project_service_solution');
+    }
+
+    protected $cleanupFields = ['thumbnail', 'breadcrumb_image', 'download_brochures'];
+    protected $richEditorCleanupFields = ['content'];
+
+    protected $guarded = ['id'];
+
+    protected $casts = [
+        'published_at' => 'datetime',
+        'project_date' => 'date',
+        'download_brochures' => 'array',
+        'tags' => 'array',
+        'show_breadcrumb' => 'boolean',
+    ];
+
+    public function getContentAttribute($value)
+    {
+        return \Modules\SEO\Helpers\SeoHelper::parse_links($value);
+    }
+}

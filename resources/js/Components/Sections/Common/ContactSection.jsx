@@ -212,7 +212,7 @@ export default function ContactSection({
                                             <strong>Office :</strong>{" "}
                                             {address_office} <br />
                                             <strong>
-                                                Representative Office :
+                                                General Office :
                                             </strong>{" "}
                                             {address_representative}
                                         </p>
