@@ -7,6 +7,14 @@ import RelatedProducts from "@/Components/Sections/ProductDetail/RelatedProducts
 import Seo from "@/Components/Common/Seo";
 
 export default function ProductDetail({ product, seo }) {
+    const getImageUrl = (path) => {
+        if (!path) return "";
+        if (path.startsWith("http") || path.startsWith("/assets")) {
+            return path;
+        }
+        return `/storage/${path}`;
+    };
+
     return (
         <MainLayout>
             <Seo seo={seo} />
@@ -14,11 +22,7 @@ export default function ProductDetail({ product, seo }) {
             {product.show_breadcrumb && (
                 <Breadcrumb
                     title={product.name}
-                    bgImage={
-                        product.breadcrumb_image ||
-                        product.thumbnail_path ||
-                        product.image_path
-                    }
+                    bgImage={getImageUrl(product.breadcrumb_image)}
                     items={[
                         { label: "Home", link: "/" },
                         { label: "Products", link: "/products" },
