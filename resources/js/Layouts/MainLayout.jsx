@@ -300,7 +300,6 @@ export default function MainLayout({ children }) {
                 /* Fix Qontak webchat position and z-index */
                 #qontak-webchat-widget {
                     bottom: 55px !important;
-                    right: 15px !important;
                 }
 
                 /* Ensure scroll-top button stays below Qontak but above other content */
