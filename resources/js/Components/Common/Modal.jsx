@@ -56,6 +56,15 @@ const Modal = ({
             onClick={(e) => {
                 if (e.target === e.currentTarget) onClose();
             }}
+            onWheel={(e) => {
+                // If scrolling on the overlay (background), pass the scroll to the main window
+                if (e.target === e.currentTarget) {
+                    window.scrollBy({
+                        top: e.deltaY,
+                        behavior: 'auto' // 'auto' is faster and more responsive for wheel passthrough
+                    });
+                }
+            }}
         >
             <div
                 className="modal-content position-relative"
