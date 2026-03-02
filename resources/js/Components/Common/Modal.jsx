@@ -63,6 +63,8 @@ const Modal = ({
                 style={{
                     backgroundColor: "#fff",
                     maxWidth: maxWidth,
+                    maxHeight: "calc(100vh - 40px)",
+                    overflowY: "auto",
                     width: "100%",
                     boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
                     animation: "fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
