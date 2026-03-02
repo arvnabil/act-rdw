@@ -94,7 +94,15 @@ class ActivioncmsPanelProvider extends PanelProvider
             ])
             ->renderHook(
                 'panels::body.end',
-                fn () => \Illuminate\Support\Facades\Blade::render("@viteReactRefresh\n@vite(['resources/js/filament-serp.jsx'])")
+                fn () => \Illuminate\Support\Facades\Blade::render("
+                    @viteReactRefresh
+                    @vite(['resources/js/filament-serp.jsx'])
+                    <style>
+                        .fi-wi-chart-filter {
+                            min-width: 120px !important;
+                        }
+                    </style>
+                ")
             );
     }
 
