@@ -46,15 +46,15 @@ const Modal = ({
                 backgroundColor: "rgba(0,0,0,0.6)",
                 zIndex: zIndex,
                 display: "flex",
-                alignItems: "center",
+                alignItems: "flex-start", // Start from top to allow scrolling
                 justifyContent: "center",
                 backdropFilter: "blur(8px)",
-                WebkitBackdropFilter: "blur(8px)", // Safari support
+                WebkitBackdropFilter: "blur(8px)",
                 transition: "all 0.3s ease-in-out",
-                padding: "20px",
+                padding: "20px", // Fixed margin on all sides
+                overflowY: "auto", // Scroll the overlay
             }}
             onClick={(e) => {
-                // Close if clicking the overlay (background)
                 if (e.target === e.currentTarget) onClose();
             }}
         >
@@ -63,9 +63,8 @@ const Modal = ({
                 style={{
                     backgroundColor: "#fff",
                     maxWidth: maxWidth,
-                    maxHeight: "calc(100vh - 40px)",
-                    overflowY: "auto",
                     width: "100%",
+                    margin: "auto", // Modern flex centering (centers when small, scrolls from top when large)
                     boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
                     animation: "fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
                     padding: "40px",
