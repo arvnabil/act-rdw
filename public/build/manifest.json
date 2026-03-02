@@ -398,14 +398,14 @@
     ]
   },
   "Modules/Events/Resources/assets/js/Pages/Events/EventDetail-legacy.jsx": {
-    "file": "assets/EventDetail-legacy-C9abIH8B.js",
+    "file": "assets/EventDetail-legacy-B9e_Kd-a.js",
     "name": "EventDetail",
     "src": "Modules/Events/Resources/assets/js/Pages/Events/EventDetail-legacy.jsx",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-react-legacy-DVQLmF1Z.js",
       "_MainLayout-legacy-B3TKT6RA.js",
-      "_Modal-legacy-CRcgzjz3.js",
+      "_Modal-legacy-BJTTz_4-.js",
       "_Toast-legacy-DXEX6J-l.js",
       "_vendor-legacy-DQct_AN7.js",
       "_vendor-ui-legacy-L_OiQj5j.js",
@@ -414,14 +414,14 @@
     ]
   },
   "Modules/Events/Resources/assets/js/Pages/Events/EventDetail.jsx": {
-    "file": "assets/EventDetail-CqTb653C.js",
+    "file": "assets/EventDetail-WLXeGJ_l.js",
     "name": "EventDetail",
     "src": "Modules/Events/Resources/assets/js/Pages/Events/EventDetail.jsx",
     "isDynamicEntry": true,
     "imports": [
       "_vendor-react-IvnjtfYb.js",
       "_MainLayout-CB2YFw2X.js",
-      "_Modal-Cyqrj9Sv.js",
+      "_Modal-XE0hBtMG.js",
       "_Toast-C7Nbz34X.js",
       "_vendor-B5oFazRF.js",
       "_vendor-ui-xRKCwjRD.js",
@@ -569,20 +569,20 @@
       "_ProductPagination-legacy-D8gmjjAI.js"
     ]
   },
-  "_ConfiguratorSubmitModal-CSSeONC_.js": {
-    "file": "assets/ConfiguratorSubmitModal-CSSeONC_.js",
+  "_ConfiguratorSubmitModal-BHqd23iB.js": {
+    "file": "assets/ConfiguratorSubmitModal-BHqd23iB.js",
     "name": "ConfiguratorSubmitModal",
     "imports": [
       "_vendor-react-IvnjtfYb.js",
-      "_Modal-Cyqrj9Sv.js"
+      "_Modal-XE0hBtMG.js"
     ]
   },
-  "_ConfiguratorSubmitModal-legacy-eZFm0LYq.js": {
-    "file": "assets/ConfiguratorSubmitModal-legacy-eZFm0LYq.js",
+  "_ConfiguratorSubmitModal-legacy-CJBccbJz.js": {
+    "file": "assets/ConfiguratorSubmitModal-legacy-CJBccbJz.js",
     "name": "ConfiguratorSubmitModal",
     "imports": [
       "_vendor-react-legacy-DVQLmF1Z.js",
-      "_Modal-legacy-CRcgzjz3.js"
+      "_Modal-legacy-BJTTz_4-.js"
     ]
   },
   "_ContactSection-CbDfET9O.js": {
@@ -669,15 +669,15 @@
       "_image-legacy-DDW5Y8Pl.js"
     ]
   },
-  "_Modal-Cyqrj9Sv.js": {
-    "file": "assets/Modal-Cyqrj9Sv.js",
+  "_Modal-XE0hBtMG.js": {
+    "file": "assets/Modal-XE0hBtMG.js",
     "name": "Modal",
     "imports": [
       "_vendor-react-IvnjtfYb.js"
     ]
   },
-  "_Modal-legacy-CRcgzjz3.js": {
-    "file": "assets/Modal-legacy-CRcgzjz3.js",
+  "_Modal-legacy-BJTTz_4-.js": {
+    "file": "assets/Modal-legacy-BJTTz_4-.js",
     "name": "Modal",
     "imports": [
       "_vendor-react-legacy-DVQLmF1Z.js"
@@ -1426,7 +1426,7 @@
     ]
   },
   "resources/js/Pages/Configurator/DynamicConfigurator-legacy.jsx": {
-    "file": "assets/DynamicConfigurator-legacy-Wj42EYN4.js",
+    "file": "assets/DynamicConfigurator-legacy-F57bFrl2.js",
     "name": "DynamicConfigurator",
     "src": "resources/js/Pages/Configurator/DynamicConfigurator-legacy.jsx",
     "isDynamicEntry": true,
@@ -1435,16 +1435,16 @@
       "_MainLayout-legacy-B3TKT6RA.js",
       "_Breadcrumb-legacy-pzj17JyI.js",
       "_Toast-legacy-DXEX6J-l.js",
-      "_ConfiguratorSubmitModal-legacy-eZFm0LYq.js",
+      "_ConfiguratorSubmitModal-legacy-CJBccbJz.js",
       "_vendor-legacy-DQct_AN7.js",
       "_vendor-ui-legacy-L_OiQj5j.js",
       "_vendor-animation-legacy-BWgBFhLZ.js",
       "_image-legacy-DDW5Y8Pl.js",
-      "_Modal-legacy-CRcgzjz3.js"
+      "_Modal-legacy-BJTTz_4-.js"
     ]
   },
   "resources/js/Pages/Configurator/DynamicConfigurator.jsx": {
-    "file": "assets/DynamicConfigurator-BlXUq1dE.js",
+    "file": "assets/DynamicConfigurator-Dn5wKUdw.js",
     "name": "DynamicConfigurator",
     "src": "resources/js/Pages/Configurator/DynamicConfigurator.jsx",
     "isDynamicEntry": true,
@@ -1453,16 +1453,16 @@
       "_MainLayout-CB2YFw2X.js",
       "_Breadcrumb-BNOR4w5m.js",
       "_Toast-C7Nbz34X.js",
-      "_ConfiguratorSubmitModal-CSSeONC_.js",
+      "_ConfiguratorSubmitModal-BHqd23iB.js",
       "_vendor-B5oFazRF.js",
       "_vendor-ui-xRKCwjRD.js",
       "_vendor-animation-CPskncXY.js",
       "_image-DfGskSXb.js",
-      "_Modal-Cyqrj9Sv.js"
+      "_Modal-XE0hBtMG.js"
     ]
   },
   "resources/js/Pages/Configurator/RoomConfigurator-legacy.jsx": {
-    "file": "assets/RoomConfigurator-legacy-CvmkyQnf.js",
+    "file": "assets/RoomConfigurator-legacy-BQSg0IYh.js",
     "name": "RoomConfigurator",
     "src": "resources/js/Pages/Configurator/RoomConfigurator-legacy.jsx",
     "isDynamicEntry": true,
@@ -1471,17 +1471,17 @@
       "_MainLayout-legacy-B3TKT6RA.js",
       "_Breadcrumb-legacy-pzj17JyI.js",
       "_Toast-legacy-DXEX6J-l.js",
-      "_ConfiguratorSubmitModal-legacy-eZFm0LYq.js",
+      "_ConfiguratorSubmitModal-legacy-CJBccbJz.js",
       "_WizardNavigation-legacy-DxmVRms2.js",
       "_vendor-legacy-DQct_AN7.js",
       "_vendor-ui-legacy-L_OiQj5j.js",
       "_vendor-animation-legacy-BWgBFhLZ.js",
       "_image-legacy-DDW5Y8Pl.js",
-      "_Modal-legacy-CRcgzjz3.js"
+      "_Modal-legacy-BJTTz_4-.js"
     ]
   },
   "resources/js/Pages/Configurator/RoomConfigurator.jsx": {
-    "file": "assets/RoomConfigurator-Bpw1Olv2.js",
+    "file": "assets/RoomConfigurator-CUT49nRC.js",
     "name": "RoomConfigurator",
     "src": "resources/js/Pages/Configurator/RoomConfigurator.jsx",
     "isDynamicEntry": true,
@@ -1490,17 +1490,17 @@
       "_MainLayout-CB2YFw2X.js",
       "_Breadcrumb-BNOR4w5m.js",
       "_Toast-C7Nbz34X.js",
-      "_ConfiguratorSubmitModal-CSSeONC_.js",
+      "_ConfiguratorSubmitModal-BHqd23iB.js",
       "_WizardNavigation-s1H4B4j5.js",
       "_vendor-B5oFazRF.js",
       "_vendor-ui-xRKCwjRD.js",
       "_vendor-animation-CPskncXY.js",
       "_image-DfGskSXb.js",
-      "_Modal-Cyqrj9Sv.js"
+      "_Modal-XE0hBtMG.js"
     ]
   },
   "resources/js/Pages/Configurator/ServerConfigurator-legacy.jsx": {
-    "file": "assets/ServerConfigurator-legacy-DYW2YOU4.js",
+    "file": "assets/ServerConfigurator-legacy-CHeHuPTw.js",
     "name": "ServerConfigurator",
     "src": "resources/js/Pages/Configurator/ServerConfigurator-legacy.jsx",
     "isDynamicEntry": true,
@@ -1508,18 +1508,18 @@
       "_vendor-react-legacy-DVQLmF1Z.js",
       "_MainLayout-legacy-B3TKT6RA.js",
       "_Breadcrumb-legacy-pzj17JyI.js",
-      "_ConfiguratorSubmitModal-legacy-eZFm0LYq.js",
+      "_ConfiguratorSubmitModal-legacy-CJBccbJz.js",
       "_WizardNavigation-legacy-DxmVRms2.js",
       "_vendor-legacy-DQct_AN7.js",
       "_vendor-ui-legacy-L_OiQj5j.js",
       "_vendor-animation-legacy-BWgBFhLZ.js",
       "_Toast-legacy-DXEX6J-l.js",
       "_image-legacy-DDW5Y8Pl.js",
-      "_Modal-legacy-CRcgzjz3.js"
+      "_Modal-legacy-BJTTz_4-.js"
     ]
   },
   "resources/js/Pages/Configurator/ServerConfigurator.jsx": {
-    "file": "assets/ServerConfigurator-BQxK_5KD.js",
+    "file": "assets/ServerConfigurator-DWdtbmhm.js",
     "name": "ServerConfigurator",
     "src": "resources/js/Pages/Configurator/ServerConfigurator.jsx",
     "isDynamicEntry": true,
@@ -1527,18 +1527,18 @@
       "_vendor-react-IvnjtfYb.js",
       "_MainLayout-CB2YFw2X.js",
       "_Breadcrumb-BNOR4w5m.js",
-      "_ConfiguratorSubmitModal-CSSeONC_.js",
+      "_ConfiguratorSubmitModal-BHqd23iB.js",
       "_WizardNavigation-s1H4B4j5.js",
       "_vendor-B5oFazRF.js",
       "_vendor-ui-xRKCwjRD.js",
       "_vendor-animation-CPskncXY.js",
       "_Toast-C7Nbz34X.js",
       "_image-DfGskSXb.js",
-      "_Modal-Cyqrj9Sv.js"
+      "_Modal-XE0hBtMG.js"
     ]
   },
   "resources/js/Pages/Configurator/SurveillanceConfigurator-legacy.jsx": {
-    "file": "assets/SurveillanceConfigurator-legacy-UMhKahZs.js",
+    "file": "assets/SurveillanceConfigurator-legacy-CwvA4ms3.js",
     "name": "SurveillanceConfigurator",
     "src": "resources/js/Pages/Configurator/SurveillanceConfigurator-legacy.jsx",
     "isDynamicEntry": true,
@@ -1546,18 +1546,18 @@
       "_vendor-react-legacy-DVQLmF1Z.js",
       "_MainLayout-legacy-B3TKT6RA.js",
       "_Breadcrumb-legacy-pzj17JyI.js",
-      "_ConfiguratorSubmitModal-legacy-eZFm0LYq.js",
+      "_ConfiguratorSubmitModal-legacy-CJBccbJz.js",
       "_WizardNavigation-legacy-DxmVRms2.js",
       "_vendor-legacy-DQct_AN7.js",
       "_vendor-ui-legacy-L_OiQj5j.js",
       "_vendor-animation-legacy-BWgBFhLZ.js",
       "_Toast-legacy-DXEX6J-l.js",
       "_image-legacy-DDW5Y8Pl.js",
-      "_Modal-legacy-CRcgzjz3.js"
+      "_Modal-legacy-BJTTz_4-.js"
     ]
   },
   "resources/js/Pages/Configurator/SurveillanceConfigurator.jsx": {
-    "file": "assets/SurveillanceConfigurator-_2Sgu47g.js",
+    "file": "assets/SurveillanceConfigurator-Dp_XpA0T.js",
     "name": "SurveillanceConfigurator",
     "src": "resources/js/Pages/Configurator/SurveillanceConfigurator.jsx",
     "isDynamicEntry": true,
@@ -1565,14 +1565,14 @@
       "_vendor-react-IvnjtfYb.js",
       "_MainLayout-CB2YFw2X.js",
       "_Breadcrumb-BNOR4w5m.js",
-      "_ConfiguratorSubmitModal-CSSeONC_.js",
+      "_ConfiguratorSubmitModal-BHqd23iB.js",
       "_WizardNavigation-s1H4B4j5.js",
       "_vendor-B5oFazRF.js",
       "_vendor-ui-xRKCwjRD.js",
       "_vendor-animation-CPskncXY.js",
       "_Toast-C7Nbz34X.js",
       "_image-DfGskSXb.js",
-      "_Modal-Cyqrj9Sv.js"
+      "_Modal-XE0hBtMG.js"
     ]
   },
   "resources/js/Pages/DynamicPage-legacy.jsx": {
@@ -2048,7 +2048,7 @@
     ]
   },
   "resources/js/Pages/Events/EventDetail-legacy.jsx": {
-    "file": "assets/EventDetail-legacy-BLcBrJZT.js",
+    "file": "assets/EventDetail-legacy-DE-MXnGo.js",
     "name": "EventDetail",
     "src": "resources/js/Pages/Events/EventDetail-legacy.jsx",
     "isDynamicEntry": true,
@@ -2056,7 +2056,7 @@
       "_vendor-react-legacy-DVQLmF1Z.js",
       "_image-legacy-DDW5Y8Pl.js",
       "_MainLayout-legacy-B3TKT6RA.js",
-      "_Modal-legacy-CRcgzjz3.js",
+      "_Modal-legacy-BJTTz_4-.js",
       "_Toast-legacy-DXEX6J-l.js",
       "_vendor-legacy-DQct_AN7.js",
       "_vendor-ui-legacy-L_OiQj5j.js",
@@ -2064,7 +2064,7 @@
     ]
   },
   "resources/js/Pages/Events/EventDetail.jsx": {
-    "file": "assets/EventDetail-m5U9G0-0.js",
+    "file": "assets/EventDetail-dc0EMw15.js",
     "name": "EventDetail",
     "src": "resources/js/Pages/Events/EventDetail.jsx",
     "isDynamicEntry": true,
@@ -2072,7 +2072,7 @@
       "_vendor-react-IvnjtfYb.js",
       "_image-DfGskSXb.js",
       "_MainLayout-CB2YFw2X.js",
-      "_Modal-Cyqrj9Sv.js",
+      "_Modal-XE0hBtMG.js",
       "_Toast-C7Nbz34X.js",
       "_vendor-B5oFazRF.js",
       "_vendor-ui-xRKCwjRD.js",
@@ -2352,7 +2352,7 @@
     ]
   },
   "resources/js/Pages/Products/Detail-legacy.jsx": {
-    "file": "assets/Detail-legacy-202aGJyN.js",
+    "file": "assets/Detail-legacy-ycyNCBYU.js",
     "name": "Detail",
     "src": "resources/js/Pages/Products/Detail-legacy.jsx",
     "isDynamicEntry": true,
@@ -2361,7 +2361,7 @@
       "_MainLayout-legacy-B3TKT6RA.js",
       "_Breadcrumb-legacy-pzj17JyI.js",
       "_image-legacy-DDW5Y8Pl.js",
-      "_Modal-legacy-CRcgzjz3.js",
+      "_Modal-legacy-BJTTz_4-.js",
       "_vendor-animation-legacy-BWgBFhLZ.js",
       "_ProductCard-legacy-cg6JBRHk.js",
       "_Seo-legacy-B1JEl8JG.js",
@@ -2371,7 +2371,7 @@
     ]
   },
   "resources/js/Pages/Products/Detail.jsx": {
-    "file": "assets/Detail-CQgeC5wT.js",
+    "file": "assets/Detail-vQ4SuWr4.js",
     "name": "Detail",
     "src": "resources/js/Pages/Products/Detail.jsx",
     "isDynamicEntry": true,
@@ -2380,7 +2380,7 @@
       "_MainLayout-CB2YFw2X.js",
       "_Breadcrumb-BNOR4w5m.js",
       "_image-DfGskSXb.js",
-      "_Modal-Cyqrj9Sv.js",
+      "_Modal-XE0hBtMG.js",
       "_vendor-animation-CPskncXY.js",
       "_ProductCard-BQ_Oa0o-.js",
       "_Seo-DF-oQ8TF.js",
@@ -2759,7 +2759,7 @@
     ]
   },
   "resources/js/app-legacy.jsx": {
-    "file": "assets/app-legacy-D830pdVY.js",
+    "file": "assets/app-legacy-DlDOBngy.js",
     "name": "app",
     "src": "resources/js/app-legacy.jsx",
     "isEntry": true,
@@ -2840,7 +2840,7 @@
     ]
   },
   "resources/js/app.jsx": {
-    "file": "assets/app-B_n9J64H.js",
+    "file": "assets/app-DsCLsw4p.js",
     "name": "app",
     "src": "resources/js/app.jsx",
     "isEntry": true,
