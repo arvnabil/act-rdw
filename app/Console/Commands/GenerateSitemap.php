@@ -32,7 +32,7 @@ class GenerateSitemap extends Command
     /**
      * Execute the console command.
      */
-    public function handle(\App\Services\ActivePublicRouteDetector $detector)
+    public function handle(\Modules\SEO\Services\ActivePublicRouteDetector $detector)
     {
         $this->info('Starting Sitemap Generation...');
         $startTime = microtime(true);
@@ -55,7 +55,7 @@ class GenerateSitemap extends Command
         $sitemap->writeToFile($path);
 
         // Rebuild SEO monitoring data
-        app(\App\Services\SeoMonitoringService::class)->sync();
+        app(\Modules\SEO\Services\SeoMonitoringService::class)->sync();
 
         $duration = round(microtime(true) - $startTime, 2);
         $this->info("Sitemap generated successfully at {$path} in {$duration}s.");
