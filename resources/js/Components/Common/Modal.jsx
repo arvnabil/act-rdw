@@ -45,13 +45,13 @@ const Modal = ({
                 height: "100%",
                 backgroundColor: "rgba(0,0,0,0.6)",
                 zIndex: zIndex,
-                display: "grid", // Switch to grid for better centering + overflow handling
-                placeItems: "center", // Base centering
-                padding: "20px", // Fixed margin on all sides (gap)
-                overflowY: "auto", // Allow scrolling the overlay
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
                 backdropFilter: "blur(8px)",
                 WebkitBackdropFilter: "blur(8px)",
                 transition: "all 0.3s ease-in-out",
+                padding: "20px", // Fixed margin on all sides
             }}
             onClick={(e) => {
                 if (e.target === e.currentTarget) onClose();
@@ -63,12 +63,14 @@ const Modal = ({
                     backgroundColor: "#fff",
                     maxWidth: maxWidth,
                     width: "100%",
-                    margin: "auto", // Grid child with margin auto handles centering and overflow perfectly
+                    maxHeight: "100%", // Constrain to overlay height (reflects padding)
+                    display: "flex",
+                    flexDirection: "column",
                     boxShadow: "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
                     animation: "fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-                    padding: "40px",
                     borderRadius: "20px",
                     position: "relative",
+                    overflow: "hidden", // Clip the internal scroll
                 }}
             >
                 {/* Close Button */}
@@ -104,8 +106,16 @@ const Modal = ({
                     <i className="fa-solid fa-xmark"></i>
                 </button>
 
-                {/* Content */}
-                {children}
+                {/* Internal Scrollable Content Wrapper */}
+                <div
+                    style={{
+                        padding: "40px",
+                        overflowY: "auto",
+                        width: "100%",
+                    }}
+                >
+                    {children}
+                </div>
             </div>
 
             {/* Animation Style */}
