@@ -51,7 +51,7 @@ const Modal = ({
                 backdropFilter: "blur(8px)",
                 WebkitBackdropFilter: "blur(8px)",
                 transition: "all 0.3s ease-in-out",
-                padding: "20px", // Fixed margin on all sides
+                padding: "12px", // Fixed margin on all sides
             }}
             onClick={(e) => {
                 if (e.target === e.currentTarget) onClose();
@@ -118,7 +118,6 @@ const Modal = ({
                 {/* Internal Scrollable Content Wrapper */}
                 <div
                     style={{
-                        padding: "40px",
                         overflowY: "auto",
                         width: "100%",
                     }}
