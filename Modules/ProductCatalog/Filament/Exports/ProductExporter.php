@@ -79,9 +79,11 @@ class ProductExporter extends Exporter
             ExportColumn::make('seo.description')->label('seo_description'),
             ExportColumn::make('seo.keywords')
                 ->label('seo_keywords')
-                ->state(fn (Product $record): ?string => $record->seo?->keywords
-                    ? implode(', ', $record->seo->keywords)
-                    : null),
+                ->state(function (Product $record): ?string {
+                    $keywords = $record->seo?->keywords;
+                    if (empty($keywords)) return null;
+                    return is_array($keywords) ? implode(', ', $keywords) : $keywords;
+                }),
             ExportColumn::make('seo.og_title')->label('og_title'),
             ExportColumn::make('seo.og_description')->label('og_description'),
             ExportColumn::make('og_image')
