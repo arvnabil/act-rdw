@@ -96,7 +96,7 @@ export default function MainLayout({ children }) {
 
     const closeMobileMenu = (e) => {
         // If the click is on the expander icon (+) or a '#' link, don't close the menu
-        if (e && (e.target.classList.contains("th-mean-expand") || e.currentTarget.getAttribute("href") === "#")) {
+        if (e && (e.target.classList.contains("th-mean-expand") || e.currentTarget.getAttribute("href") === "#" || e.currentTarget.getAttribute("href") === "javascript:void(0)")) {
             return;
         }
 
@@ -140,12 +140,13 @@ export default function MainLayout({ children }) {
             const liClass = hasChildren ? "menu-item-has-children" : "";
 
             const isExternal = isExternalUrl(item.url) || item.target === "_blank";
+            const isVoid = item.url === "#" || !item.url;
 
             return (
                 <li key={index} className={liClass}>
-                    {isExternal ? (
+                    {isExternal || isVoid ? (
                         <a
-                            href={item.url || "#"}
+                            href={isVoid ? "javascript:void(0)" : item.url}
                             target={item.target || "_self"}
                             onClick={closeMobileMenu}
                             rel={item.target === "_blank" ? "noopener" : ""}
@@ -154,7 +155,7 @@ export default function MainLayout({ children }) {
                         </a>
                     ) : (
                         <Link
-                            href={item.url || "#"}
+                            href={item.url}
                             target={item.target || "_self"}
                             onClick={closeMobileMenu}
                         >
@@ -176,11 +177,12 @@ export default function MainLayout({ children }) {
     const renderFooterLinks = (items) => {
         return items.map((item, index) => {
             const isExternal = isExternalUrl(item.url) || item.target === "_blank";
+            const isVoid = item.url === "#" || !item.url;
             return (
                 <li key={index}>
-                    {isExternal ? (
+                    {isExternal || isVoid ? (
                         <a
-                            href={item.url || "#"}
+                            href={isVoid ? "javascript:void(0)" : item.url}
                             style={{ color: "#fff" }}
                             target={item.target || "_self"}
                             rel={item.target === "_blank" ? "noopener" : ""}
@@ -189,7 +191,7 @@ export default function MainLayout({ children }) {
                         </a>
                     ) : (
                         <Link
-                            href={item.url || "#"}
+                            href={item.url}
                             style={{ color: "#fff" }}
                             target={item.target || "_self"}
                         >
