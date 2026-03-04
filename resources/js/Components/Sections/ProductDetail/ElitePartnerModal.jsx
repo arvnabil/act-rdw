@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Modal from "@/Components/Common/Modal";
 
-const ElitePartnerModal = ({ show, onClose, config = {}, awards = [], brandName = "Logitech" }) => {
+const ElitePartnerModal = ({ show, onClose, config = {}, awards = [], brandName = "Logitech", zIndex = "1055" }) => {
     const [selectedImage, setSelectedImage] = useState(null);
 
     const title = config.modal_title || `Authorized ${brandName} Partner`;
@@ -31,7 +31,7 @@ const ElitePartnerModal = ({ show, onClose, config = {}, awards = [], brandName 
 
     return (
         <>
-        <Modal show={show} onClose={onClose} maxWidth="550px">
+        <Modal show={show} onClose={onClose} maxWidth="550px" zIndex={zIndex}>
                 <div className="elite-partner-modal-content">
                     <div className="text-center mb-3">
                         <div className="d-inline-flex align-items-center justify-content-center bg-success-subtle text-success rounded-circle mb-2" style={{ width: '48px', height: '48px' }}>
@@ -106,7 +106,7 @@ const ElitePartnerModal = ({ show, onClose, config = {}, awards = [], brandName 
                         position: 'fixed',
                         top: 0, left: 0, width: '100%', height: '100%',
                         backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                        zIndex: 2000,
+                        zIndex: 10010,
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
