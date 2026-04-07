@@ -12,6 +12,14 @@ class ClickEventsOverview extends BaseWidget
 {
     use InteractsWithPageTable;
 
+    public ?array $tableColumnSearches = [];
+    public ?array $tableFilters = [];
+
+    protected function getTablePage(): string
+    {
+        return \Modules\Analytics\Filament\Resources\ClickEventResource\Pages\ListClickEvents::class;
+    }
+
     protected function getStats(): array
     {
         $filters = (array) $this->tableFilters;
