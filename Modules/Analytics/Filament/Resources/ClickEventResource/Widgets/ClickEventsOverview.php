@@ -14,7 +14,7 @@ class ClickEventsOverview extends BaseWidget
 
     protected function getStats(): array
     {
-        $filters = $this->tableFilters ?? [];
+        $filters = (array) $this->tableFilters;
         
         // Base query for stats
         $query = AnalyticsClickEvent::query();
@@ -77,7 +77,7 @@ class ClickEventsOverview extends BaseWidget
         ];
     }
 
-    protected function getChartData(bool $isToday, array $filters): array
+    protected function getChartData(bool $isToday, ?array $filters = []): array
     {
         // Simple sparkline data
         // For production, we'd do a more complex grouping query
