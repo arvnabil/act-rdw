@@ -14,7 +14,7 @@ class ClickEventsOverview extends BaseWidget
 
     protected function getStats(): array
     {
-        $filters = $this->tableFilters;
+        $filters = $this->tableFilters ?? [];
         
         // Base query for stats
         $query = AnalyticsClickEvent::query();
