@@ -124,7 +124,17 @@ class ClickEventTable
                     ->icon('heroicon-o-document-arrow-down')
                     ->color('success')
                     ->action(function ($livewire) {
+                        // Increase memory limit for large datasets
+                        ini_set('memory_limit', '512M');
+                        set_time_limit(300);
+
                         $records = $livewire->getFilteredTableQuery()->get();
+                        
+                        // Limit records if it's still too large for the environment
+                        if ($records->count() > 1500) {
+                            $records = $records->take(1500);
+                        }
+
                         $dateRange = [
                             'from' => $records->min('created_at'),
                             'to' => $records->max('created_at'),

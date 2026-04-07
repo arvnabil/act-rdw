@@ -359,6 +359,7 @@ class DashboardController extends Controller
             'qr_code' => $qrCode,
         ];
 
+        ini_set('memory_limit', '256M');
         $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('events::ticket.pdf', $data);
         $pdf->setPaper('a4', 'landscape');
 

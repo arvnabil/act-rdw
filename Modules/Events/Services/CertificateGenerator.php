@@ -51,6 +51,9 @@ class CertificateGenerator
         }, $layout);
 
         // 3. Render HTML (Blade View)
+        ini_set('memory_limit', '512M');
+        set_time_limit(300);
+        
         $pdf = Pdf::loadView('events::certificate.pdf_template', [
             'layout' => $processedLayout,
             'background' => $background,
