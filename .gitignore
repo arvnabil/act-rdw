@@ -28,3 +28,4 @@ Thumbs.db
 /public/ads.txt
 /public/sitemap.xml
 /storage/gcp-service-account.json
+*.Identifier

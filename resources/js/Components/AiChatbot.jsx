@@ -480,6 +480,12 @@ export default function AiChatbot() {
                     setSessionId(null);
                 }
             } catch (err) {
+                // Handle session expiration
+                if (err.response && (err.response.status === 403 || (err.response.data && err.response.data.status === 'expired'))) {
+                    localStorage.removeItem('vion_session_id');
+                    setSessionId(null);
+                    setMessages([]);
+                }
                 console.error('Failed to fetch chat history');
             }
         };

@@ -196,6 +196,20 @@ class ChatbotController extends Controller
     public function getHistory(Request $request)
     {
         $sessionId = $request->query('session_id');
+        $session = ChatSession::find($sessionId);
+
+        if (!$session) {
+            return response()->json(['messages' => []]);
+        }
+
+        // Cek apakah sesi sudah lebih dari 24 jam (Expire)
+        if ($session->created_at->diffInHours(now()) >= 24) {
+            return response()->json([
+                'status' => 'expired',
+                'messages' => [],
+                'error' => 'Sesi Anda telah berakhir. Silakan isi data kembali.'
+            ], 403);
+        }
 
         $messages = ChatMessage::where('session_id', $sessionId)
             ->orderBy('created_at', 'asc')

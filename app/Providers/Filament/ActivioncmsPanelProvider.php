@@ -46,6 +46,7 @@ class ActivioncmsPanelProvider extends PanelProvider
             ->discoverResources(in: base_path('Modules/News/Filament/Resources'), for: 'Modules\\News\\Filament\\Resources')
             ->discoverResources(in: base_path('Modules/Projects/Filament/Resources'), for: 'Modules\\Projects\\Filament\\Resources')
             ->discoverResources(in: base_path('Modules/Clients/Filament/Resources'), for: 'Modules\\Clients\\Filament\\Resources')
+            ->discoverResources(in: base_path('Modules/AI/Filament/Resources'), for: 'Modules\\AI\\Filament\\Resources')
             ->discoverPages(in: base_path('Modules/CMS/Filament/Pages'), for: 'Modules\\CMS\\Filament\\Pages')
             ->discoverPages(in: app_path('Filament/Activioncms/Pages'), for: 'App\Filament\Activioncms\Pages')
             ->discoverPages(in: base_path('Modules/Events/Filament/Pages'), for: 'Modules\\Events\\Filament\\Pages')
