@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 
 const aiAgent = {
-    name: 'VION by ACTiV Assistant',
+    name: 'Vion Assistant',
     role: 'ICT Solutions Consultant',
     avatar: '/images/vion.png',
     headerAvatar: '/images/avatar-vion.png',
@@ -15,36 +15,99 @@ const WA_NUMBER = '6281280944719';
 
 const formatMarkdown = (text) => {
     if (!text) return '';
-    const lines = text.split('\n');
+    
+    // Pre-processing:
+    // 1. Fix cases where list numbers are joined to the previous sentence (e.g., "...consideration: 1.")
+    let processedText = text.replace(/([.!?])\s*(\d+\.)/g, '$1\n$2');
+    
+    // 2. handle horizontal rules
+    processedText = processedText.replace(/^---$/gm, '<hr />');
+    
+    const lines = processedText.split('\n');
     return lines.map((line, i) => {
-        if (!line.trim()) return <div key={i} style={{ height: '8px' }} />;
+        if (!line.trim()) return <div key={i} style={{ height: '12px' }} />;
         
+        // Handle Horizontal Rule
+        if (line === '<hr />') return <hr key={i} style={{ border: 'none', borderTop: '1px solid rgba(255,255,255,0.1)', margin: '15px 0' }} />;
+
         // Handle Headings
-        if (line.startsWith('### ')) return <h3 key={i} style={{ margin: '10px 0 5px 0', fontSize: '1.1em', fontWeight: 'bold', color: '#fff' }}>{line.slice(4)}</h3>;
-        if (line.startsWith('## ')) return <h2 key={i} style={{ margin: '12px 0 6px 0', fontSize: '1.2em', fontWeight: 'bold', color: '#fff' }}>{line.slice(3)}</h2>;
+        if (line.startsWith('### ')) return <h3 key={i} style={{ margin: '16px 0 8px 0', fontSize: '1.2em', fontWeight: '800', color: '#fff', borderLeft: `4px solid ${aiAgent.color}`, paddingLeft: '10px' }}>{parseInlineFormatting(line.slice(4))}</h3>;
+        if (line.startsWith('#### ')) return <h4 key={i} style={{ margin: '14px 0 6px 0', fontSize: '1.05em', fontWeight: '700', color: '#fff', opacity: 0.9 }}>{parseInlineFormatting(line.slice(5))}</h4>;
+        if (line.startsWith('## ')) return <h2 key={i} style={{ margin: '20px 0 10px 0', fontSize: '1.4em', fontWeight: '800', color: '#fff', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '4px' }}>{parseInlineFormatting(line.slice(3))}</h2>;
         
         // Handle Bullet Lists (* or -)
         if (line.trim().startsWith('* ') || line.trim().startsWith('- ')) {
             const content = line.trim().slice(2);
             return (
-                <div key={i} style={{ display: 'flex', gap: '8px', marginBottom: '4px', paddingLeft: '4px' }}>
-                    <span style={{ color: aiAgent.color }}>•</span>
-                    <span>{parseInlineFormatting(content)}</span>
+                <div key={i} style={{ display: 'flex', gap: '10px', marginBottom: '6px', paddingLeft: '8px' }}>
+                    <span style={{ color: aiAgent.color, fontWeight: 'bold' }}>•</span>
+                    <span style={{ flex: 1 }}>{parseInlineFormatting(content)}</span>
                 </div>
             );
         }
 
-        return <div key={i} style={{ marginBottom: '4px' }}>{parseInlineFormatting(line)}</div>;
+        // Handle Numbered Lists (1. )
+        const numberedListMatch = line.trim().match(/^(\d+)\.\s+(.*)/);
+        if (numberedListMatch) {
+            return (
+                <div key={i} style={{ display: 'flex', gap: '10px', marginBottom: '6px', paddingLeft: '8px' }}>
+                    <span style={{ color: aiAgent.color, fontWeight: 'bold', fontSize: '0.9em' }}>{numberedListMatch[1]}.</span>
+                    <span style={{ flex: 1 }}>{parseInlineFormatting(numberedListMatch[2])}</span>
+                </div>
+            );
+        }
+
+        return <div key={i} style={{ marginBottom: '8px', opacity: 0.95 }}>{parseInlineFormatting(line)}</div>;
     });
 };
 
 const parseInlineFormatting = (text) => {
-    const parts = text.split(/(\*\*.*?\*\*|\*.*?\*)/g);
-    return parts.map((part, i) => {
-        if (part.startsWith('**') && part.endsWith('**')) return <strong key={i}>{part.slice(2, -2)}</strong>;
-        if (part.startsWith('*') && part.endsWith('*')) return <em key={i}>{part.slice(1, -1)}</em>;
-        return part;
+    if (typeof text !== 'string') return text;
+
+    // Bold-Italic: ***text***
+    let parts = [text];
+    
+    const rules = [
+        { regex: /\*\*\*(.*?)\*\*\*/g, render: (m, p) => <strong key={m}><em>{p}</em></strong> },
+        { regex: /\*\*(.*?)\*\*/g, render: (m, p) => <strong key={m} style={{ color: '#fff', fontWeight: '700' }}>{p}</strong> },
+        { regex: /\*(.*?)\*/g, render: (m, p) => <em key={m}>{p}</em> },
+        { regex: /__(.*?)__/g, render: (m, p) => <u key={m}>{p}</u> },
+        { regex: /`(.*?)`/g, render: (m, p) => <code key={m} style={{ background: 'rgba(255,255,255,0.1)', padding: '2px 4px', borderRadius: '4px', fontSize: '0.9em', fontFamily: 'monospace' }}>{p}</code> },
+    ];
+
+    let result = [text];
+
+    rules.forEach(rule => {
+        let newResult = [];
+        result.forEach(part => {
+            if (typeof part !== 'string') {
+                newResult.push(part);
+                return;
+            }
+            
+            const matches = [...part.matchAll(rule.regex)];
+            if (matches.length === 0) {
+                newResult.push(part);
+                return;
+            }
+
+            let lastIndex = 0;
+            matches.forEach((match, idx) => {
+                if (match.index > lastIndex) {
+                    newResult.push(part.substring(lastIndex, match.index));
+                }
+                newResult.push(rule.render(`${rule.regex.toString()}-${idx}`, match[1]));
+                lastIndex = match.index + match[0].length;
+            });
+            
+            if (lastIndex < part.length) {
+                newResult.push(part.substring(lastIndex));
+            }
+        });
+        result = newResult;
     });
+
+    return result;
 };
 
 
@@ -318,13 +381,20 @@ export default function AiChatbot() {
         };
     }, [isOpen]);
 
+    // Improved Scroll to bottom
     useEffect(() => { 
-        if (messages.length > 0 && !isLoading) {
-            lastMessageRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }); 
-        } else {
-            messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        if (messages.length > 0) {
+            // Jika sedang loading (AI sedang mengetik), scroll ke paling bawah (end ref)
+            if (isLoading) {
+                messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                // Jika tidak sedang loading, scroll ke pesan terakhir
+                // Gunakan 'instant' jika baru buka atau muat history agar tidak pusing melihat animasi scroll panjang
+                const scrollBehavior = messages.length <= 2 ? 'smooth' : 'auto';
+                lastMessageRef.current?.scrollIntoView({ behavior: scrollBehavior, block: 'start' }); 
+            }
         }
-    }, [messages, isLoading]);
+    }, [messages, isLoading, isOpen]);
 
     const startChat = (id, data) => {
         setSessionId(id);

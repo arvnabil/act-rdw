@@ -41,7 +41,7 @@ class ChatbotController extends Controller
         ChatMessage::create([
             'session_id' => $session->id,
             'role'       => 'assistant',
-            'content'    => "Halo, Selamat datang **{$request->name}** 👋 saya **VION by ACTiV**, ICT Solutions Consultant. Ada yang bisa saya bantu hari ini?",
+            'content'    => "Halo, Selamat datang **{$request->name}** 👋 saya **Vion**, ICT Solutions Consultant. Ada yang bisa saya bantu hari ini?",
         ]);
 
         return response()->json([
@@ -81,7 +81,7 @@ class ChatbotController extends Controller
 
             // 4. Bangun konteks dengan ID Produk agar AI bisa referensi
             $context = $results->isEmpty()
-                ? 'Tidak ada produk yang relevan ditemukan.'
+                ? 'Tidak ada produk spesifik yang relevan di katalog untuk pertanyaan ini. Gunakan pengetahuan umummu sebagai pakar ICT untuk menjawab secara bijak.'
                 : $results->map(fn($r) => "ID: {$r->product_id} | Info: {$r->content}")->join("\n\n---\n\n");
 
             // 5. Generate respons AI dengan persona yang dipilih
@@ -92,7 +92,7 @@ class ChatbotController extends Controller
 
             // 6. Ekstrak kode produk ID_PRODUK: {id} dari respon
             $recommendedProducts = [];
-            if (preg_match_all('/ID_PRODUK:\s*(\d+)/i', $aiResponse, $matches, PREG_SET_ORDER)) {
+            if (preg_match_all('/(?:ID_PRODUK|ID):\s*(\d+)/i', $aiResponse, $matches, PREG_SET_ORDER)) {
                 foreach ($matches as $match) {
                     $productId = $match[1];
                     $product = \Modules\ProductCatalog\Models\Product::find($productId);
@@ -111,11 +111,7 @@ class ChatbotController extends Controller
             \Log::info('VION Found Products:', ['count' => count($recommendedProducts), 'list' => $recommendedProducts]);
 
             // Bersihkan tag produk dan trigger dari teks agar tidak tampil ke user
-            $cleanResponse = preg_replace('/\(ID_PRODUK:\s*\d+\)/i', '', $aiResponse);
-            $cleanResponse = preg_replace('/ID_PRODUK:\s*\d+/i', '', $cleanResponse);
-            
-            // Hapus semua simbol bintang yang nyasar (baik nempel atau ada spasi)
-            $cleanResponse = preg_replace('/\s*\*\s*/', ' ', $cleanResponse);
+            $cleanResponse = preg_replace('/\(?(?:ID_PRODUK|ID):\s*\d+\)?/i', '', $aiResponse);
             
             // Ubah trigger sales ke format internal
             if (str_contains($cleanResponse, '[HUBUNGI_SALES]')) {

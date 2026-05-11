@@ -159,9 +159,7 @@ class VertexAIDriver implements GeminiDriverInterface
     protected function getOrCreateCache(string $persona): ?string
     {
         $personaData       = $this->personas[$persona] ?? $this->personas['sales'];
-        $systemInstruction = $personaData['prompt'] .
-            "\n\nPERATURAN PENTING: Jawab HANYA berdasarkan katalog produk yang sudah diberikan. " .
-            "Jangan mengarang informasi. Jika tidak relevan, arahkan ke tim kami.";
+        $systemInstruction = $personaData['prompt'];
 
         $cacheKey = self::CACHE_KEY_PREFIX . $persona . '_' . $this->model;
 
@@ -241,10 +239,7 @@ class VertexAIDriver implements GeminiDriverInterface
  else {
             // 🔄 FALLBACK MODE: Send full context (catalog too small to cache / < 32k tokens)
             $personaData       = $this->personas[$persona] ?? $this->personas['sales'];
-            $systemInstruction = $personaData['prompt'] .
-                "\n\nPERATURAN PENTING: Jawab HANYA berdasarkan DATA KONTEKS PRODUK yang diberikan. " .
-                "Jangan mengarang informasi yang tidak ada di konteks. " .
-                "Jika tidak relevan, katakan dengan jujur dan arahkan ke tim kami.";
+            $systemInstruction = $personaData['prompt'];
  
             $fullPrompt = "DATA KONTEKS PRODUK:\n{$context}\n\nPERTANYAAN USER: {$userMessage}";
  

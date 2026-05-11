@@ -30,15 +30,16 @@ class GoogleAIDriver implements GeminiDriverInterface
     {
         $personaData = $this->personas[$persona] ?? $this->personas['sales'];
 
-        $systemInstruction = $personaData['prompt'] .
-            "\n\nPERATURAN PENTING: Jawab HANYA berdasarkan DATA KONTEKS PRODUK yang diberikan. " .
-            "Jangan mengarang informasi yang tidak ada di konteks. " .
-            "Jika tidak relevan, katakan dengan jujur dan arahkan ke tim kami.";
+        $systemInstruction = $personaData['prompt'];
 
-        $fullPrompt = "DATA KONTEKS PRODUK YANG RELEVAN:\n{$context}\n\n" .
+        $fullPrompt = "DATA KONTEKS PRODUK DARI KATALOG (Gunakan jika relevan):\n{$context}\n\n" .
                       "PERTANYAAN USER: {$userMessage}";
 
         $result = Gemini::generativeModel('models/gemini-2.0-flash')
+            ->withConfig(\Gemini\Data\GenerationConfig::parse([
+                'maxOutputTokens' => 1000,
+                'temperature' => 0.7,
+            ]))
             ->withSystemInstruction(\Gemini\Data\Content::parse($systemInstruction))
             ->startChat()
             ->sendMessage($fullPrompt);
