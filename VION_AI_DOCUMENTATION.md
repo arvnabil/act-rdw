@@ -9,7 +9,7 @@ Vion AI adalah asisten chatbot cerdas yang dikembangkan untuk platform ACTiV seb
 ### 1. Hybrid FAQ-AI System
 *   **Instant Response**: Jika tombol dikonfigurasi dengan "Instant Response", Vion akan menjawab detik itu juga tanpa menggunakan API AI (Hemat token & Cepat).
 *   **AI Analysis**: Jika "Instant Response" kosong, Vion akan menggunakan AI (Gemini/OpenAI) untuk menganalisa konteks dan menjawab secara dinamis.
-*   **Improved Formatting**: Chatbot mendukung Markdown tingkat lanjut. List (poin-poin) dan teks tebal akan tampil rapi meskipun AI mengirimkannya dalam format gabungan.
+*   **Improved Formatting**: Chatbot mendukung Markdown tingkat lanjut. List (poin-poin), teks tebal, dan **link interaktif** (diklik langsung) akan tampil rapi.
 
 ### 2. Admin Management (Filament v4)
 *   Kontrol penuh melalui menu **AI Management** di Dashboard Admin.

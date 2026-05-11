@@ -22,7 +22,18 @@
 Homestead.json
 Homestead.yaml
 Thumbs.db
-/public/bio
+
+# cPanel & Server Specifics
+error_log
+public/error_log
+*.sql
+.htaccess
+
+# Other Projects/Backups in public_html
+/staging/
+/wp-backup/
+/bio/
+
 /public/datasheet
 /public/staging
 /public/ads.txt

@@ -194,6 +194,7 @@ const parseInlineFormatting = (text) => {
         { regex: /\*\*(.*?)\*\*/g, render: (m, p) => <strong key={m} style={{ color: '#fff', fontWeight: '700' }}>{p}</strong> },
         { regex: /\*(.*?)\*/g, render: (m, p) => <em key={m}>{p}</em> },
         { regex: /__(.*?)__/g, render: (m, p) => <u key={m}>{p}</u> },
+        { regex: /\[(.*?)\]\((.*?)\)/g, render: (m, label, url) => <a key={m} href={url} target="_blank" rel="noopener noreferrer" style={{ color: '#3b82f6', textDecoration: 'underline', fontWeight: '600' }}>{label}</a> },
         { regex: /`(.*?)`/g, render: (m, p) => <code key={m} style={{ background: 'rgba(255,255,255,0.1)', padding: '2px 4px', borderRadius: '4px', fontSize: '0.9em', fontFamily: 'monospace' }}>{p}</code> },
     ];
 
@@ -218,7 +219,11 @@ const parseInlineFormatting = (text) => {
                 if (match.index > lastIndex) {
                     newResult.push(part.substring(lastIndex, match.index));
                 }
-                newResult.push(rule.render(`${rule.regex.toString()}-${idx}`, match[1]));
+                
+                // Pass all capture groups to render function
+                const args = match.slice(1);
+                newResult.push(rule.render(`${rule.regex.toString()}-${idx}`, ...args));
+                
                 lastIndex = match.index + match[0].length;
             });
             

@@ -32,7 +32,7 @@ class AiChatbotSettingsSeeder extends Seeder
                     [
                         'label' => '📍 Lokasi Kantor',
                         'message' => 'Dimana lokasi kantor ACTiV?',
-                        'instant_response' => "Kantor kami (PT Alfa Cipta Teknologi Virtual) berlokasi di:\n\n**Grand Slipi Tower Lt. 9 Unit O, Jl. S. Parman Kav. 22-24, Jakarta Barat.**\n\nAnda bisa mengunjungi kami menggunakan Google Maps: [Klik di Sini](https://maps.google.com/?q=Grand+Slipi+Tower)",
+                        'instant_response' => "Tentu! Silakan kunjungi Kantor kami (PT Alfa Cipta Teknologi Virtual) berlokasi di:\n\n🏢 Office: **Infinity Office, Belleza BSA 1st Floor Unit 106, Jl. Letjen Soepeno, Kebayoran Lama, Jakarta Selatan 12210**\n\n🏢 General Office: **Ruko Golden Boulevard Blok S 28, BSD City, Tangerang Selatan 15318**\n\nKamu bisa mengunjungi kami menggunakan Google Maps: [Klik di Sini](https://maps.google.com/?q=PT+Alfa+Cipta+Teknologi+Virtual+(ACTiV))\n\nKami tunggu kedatangan Anda!",
                     ],
                     [
                         'label' => '📞 Hubungi Kami',
