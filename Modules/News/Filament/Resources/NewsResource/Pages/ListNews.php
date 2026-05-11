@@ -15,13 +15,7 @@ class ListNews extends ListRecords
         return [
             Actions\CreateAction::make(),
             Actions\ImportAction::make()
-                ->importer(\Modules\News\Filament\Imports\NewsImporter::class)
-                ->file(fn (\Filament\Forms\Components\FileUpload $file) => $file->acceptedFileTypes([
-                    'text/csv', 'text/x-csv', 'application/csv', 'application/x-csv', 
-                    'text/comma-separated-values', 'text/x-comma-separated-values', 
-                    'text/plain', 'application/vnd.ms-excel', 'application/octet-stream',
-                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-                ])),
+                ->importer(\Modules\News\Filament\Imports\NewsImporter::class),
         ];
     }
 }

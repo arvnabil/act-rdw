@@ -503,10 +503,13 @@ export default function AiChatbot({ serverSettings }) {
             if (!sessionId) return;
             try {
                 const { data } = await axios.get(`/api/ai/get-history?session_id=${sessionId}`);
-                if (data.messages && data.messages.length > 0) {
+                if (data.messages) {
                     setMessages(data.messages);
-                    if (data.session) setUserData(data.session); // RESTORE USER DATA!
-                } else {
+                    if (data.session) setUserData(data.session); // PENTING: Pulihkan Nama User
+                }
+                
+                // Jika sesi benar-benar tidak ditemukan (404/Empty) oleh server
+                if (!data.session && (!data.messages || data.messages.length === 0)) {
                     localStorage.removeItem('vion_session_id');
                     setSessionId(null);
                 }

@@ -90,13 +90,20 @@ class ChatbotController extends Controller
             // LOG DIAGNOSA: Lihat jawaban asli AI
             \Log::info('VION Raw Response:', ['text' => $aiResponse]);
 
-            // 6. Ekstrak kode produk ID_PRODUK: {id} dari respon
+            // 6. Ekstrak kode produk (ID atau SKU) dari respon
             $recommendedProducts = [];
-            if (preg_match_all('/(?:ID_PRODUK|ID):\s*(\d+)/i', $aiResponse, $matches, PREG_SET_ORDER)) {
+            // Regex lebih fleksibel: mendukung (ID: kode), ID: kode, SKU: kode, dsb
+            if (preg_match_all('/(?:ID_PRODUK|ID|SKU):\s*([a-zA-Z0-9\-\.]+)/i', $aiResponse, $matches, PREG_SET_ORDER)) {
                 foreach ($matches as $match) {
-                    $productId = $match[1];
-                    $product = \Modules\ProductCatalog\Models\Product::find($productId);
+                    $productIdentifier = trim($match[1], " \t\n\r\0\x0B().");
+                    \Log::info("VION Processing identifier:", ['raw' => $match[1], 'cleaned' => $productIdentifier]);
+                    
+                    $product = \Modules\ProductCatalog\Models\Product::where('sku', $productIdentifier)
+                        ->orWhere('id', $productIdentifier)
+                        ->first();
+                        
                     if ($product) {
+                        \Log::info("VION Product FOUND:", ['id' => $product->id, 'name' => $product->name]);
                         $recommendedProducts[] = [
                             'id' => $product->id,
                             'name' => $product->name,
@@ -104,14 +111,16 @@ class ChatbotController extends Controller
                             'qty' => 1,
                             'link' => url("/products/{$product->slug}")
                         ];
+                    } else {
+                        \Log::warning("VION Product NOT FOUND in DB for identifier: " . $productIdentifier);
                     }
                 }
             }
 
-            \Log::info('VION Found Products:', ['count' => count($recommendedProducts), 'list' => $recommendedProducts]);
+            \Log::info('VION Final Product Count:', ['count' => count($recommendedProducts)]);
 
             // Bersihkan tag produk dan trigger dari teks agar tidak tampil ke user
-            $cleanResponse = preg_replace('/\(?(?:ID_PRODUK|ID):\s*\d+\)?/i', '', $aiResponse);
+            $cleanResponse = preg_replace('/\(?(?:ID_PRODUK|ID|SKU):\s*[a-zA-Z0-9\-\.]+\)?/i', '', $aiResponse);
             
             // Ubah trigger sales ke format internal
             if (str_contains($cleanResponse, '[HUBUNGI_SALES]')) {
@@ -232,6 +241,9 @@ class ChatbotController extends Controller
                 'products' => $m->products,
             ]);
 
-        return response()->json(['messages' => $messages]);
+        return response()->json([
+            'messages' => $messages,
+            'session'  => $session // Kembalikan data sesi agar frontend tahu Nama user
+        ]);
     }
 }
