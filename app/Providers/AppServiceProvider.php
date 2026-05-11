@@ -49,6 +49,29 @@ class AppServiceProvider extends ServiceProvider
         ]);
 
         view()->composer('app', \App\View\Composers\SeoViewComposer::class);
+
+        \Filament\Forms\Components\FileUpload::configureUsing(function (\Filament\Forms\Components\FileUpload $component) {
+            if ($component->getName() === 'file') {
+                $component->acceptedFileTypes(['*']);
+            }
+        });
+
+        // Smart Patch: Disable the acceptedFileTypes method for components named 'file'
+        // to prevent ImportAction from overwriting our '*' configuration.
+        \Filament\Forms\Components\FileUpload::macro('acceptedFileTypes', function ($types) {
+            if ($this->getName() === 'file') {
+                return $this; // Do nothing, keep the '*' from configureUsing
+            }
+            
+            // For other components, we need a way to set the property.
+            // Since we can't call the original method easily, we'll use reflection
+            // only if it's not our target component.
+            $property = new \ReflectionProperty(get_class($this), 'acceptedFileTypes');
+            $property->setAccessible(true);
+            $property->setValue($this, $types);
+
+            return $this;
+        });
     }
 
 }

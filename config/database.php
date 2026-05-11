@@ -98,6 +98,21 @@ return [
             'sslmode' => 'prefer',
         ],
 
+        'pgsql_vector' => [
+            'driver' => 'pgsql',
+            'host' => env('DB_PG_VECTOR_HOST', '127.0.0.1'),
+            'port' => env('DB_PG_VECTOR_PORT', '5432'),
+            'database' => env('DB_PG_VECTOR_DATABASE', 'forge'),
+            'username' => env('DB_PG_VECTOR_USERNAME', 'forge'),
+            'password' => env('DB_PG_VECTOR_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'search_path' => 'public',
+            'sslmode' => 'prefer',
+        ],
+
+
         'sqlsrv' => [
             'driver' => 'sqlsrv',
             'url' => env('DB_URL'),

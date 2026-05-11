@@ -5,6 +5,8 @@ import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import "../css/app.css";
 import "../css/tailwind-output.css";
 import "./bootstrap";
+import AiChatbot from "./Components/AiChatbot";
+
 
 const appName = import.meta.env.VITE_APP_NAME || "ACTiV";
 
@@ -29,6 +31,16 @@ createInertiaApp({
         return resolvePageComponent(pagePath, pages);
     },
     setup({ el, App, props }) {
-        createRoot(el).render(<App {...props} />);
+        const root = createRoot(el);
+        root.render(
+            <React.StrictMode>
+                <App {...props} />
+                <div id="ai-chatbot-root">
+                    <AiChatbot />
+                </div>
+            </React.StrictMode>
+        );
+
     },
 });
+

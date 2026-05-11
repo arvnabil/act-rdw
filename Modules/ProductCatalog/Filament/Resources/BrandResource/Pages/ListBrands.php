@@ -18,7 +18,13 @@ class ListBrands extends ListRecords
                 ->exporter(\Modules\ProductCatalog\Filament\Exports\BrandExporter::class),
             \Filament\Actions\ImportAction::make('import_brands')
                 ->importer(\Modules\ProductCatalog\Filament\Imports\BrandImporter::class)
-                ->modalDescription(fn () => new \Illuminate\Support\HtmlString('Download example CSV: <a href="#" wire:click.prevent="mountAction(\'downloadExample\')">Click here</a>')),
+                ->modalDescription(fn () => new \Illuminate\Support\HtmlString('Download example CSV: <a href="#" wire:click.prevent="mountAction(\'downloadExample\')">Click here</a>'))
+                ->file(fn (\Filament\Forms\Components\FileUpload $file) => $file->acceptedFileTypes([
+                    'text/csv', 'text/x-csv', 'application/csv', 'application/x-csv', 
+                    'text/comma-separated-values', 'text/x-comma-separated-values', 
+                    'text/plain', 'application/vnd.ms-excel', 'application/octet-stream',
+                    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                ])),
             Actions\Action::make('downloadExample')
                 ->label('Download Example CSV')
                 ->hidden()

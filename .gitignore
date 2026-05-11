@@ -27,3 +27,4 @@ Thumbs.db
 /public/staging
 /public/ads.txt
 /public/sitemap.xml
+/storage/gcp-service-account.json

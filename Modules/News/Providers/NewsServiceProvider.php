@@ -17,6 +17,12 @@ class NewsServiceProvider extends ServiceProvider
 
         Route::middleware('web')
             ->group(__DIR__ . '/../Routes/web.php');
+
+        if (file_exists(__DIR__ . '/../Routes/api.php')) {
+            Route::middleware('api')
+                ->prefix('api')
+                ->group(__DIR__ . '/../Routes/api.php');
+        }
     }
 
     public function register()

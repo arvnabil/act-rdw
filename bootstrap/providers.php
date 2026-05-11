@@ -15,6 +15,8 @@ return [
     Modules\Events\Providers\EventsModuleServiceProvider::class,
     Modules\Services\Providers\ServicesServiceProvider::class,
     Modules\Analytics\Providers\AnalyticsServiceProvider::class,
+    Modules\AI\Providers\AIServiceProvider::class,
+
     
     // CMS — MUST BE REGISTERED LAST for catch-all route to work properly
     Modules\CMS\Providers\CMSServiceProvider::class,
