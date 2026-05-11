@@ -463,9 +463,23 @@ export default function AiChatbot() {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [botSettings, setBotSettings] = useState({ welcome_message: '', starter_buttons: [] });
     const messagesEndRef = useRef(null);
     const lastMessageRef = useRef(null);
     const inputRef = useRef(null);
+
+    // Fetch dynamic settings
+    useEffect(() => {
+        const fetchSettings = async () => {
+            try {
+                const { data } = await axios.get('/api/ai/settings');
+                setBotSettings(data);
+            } catch (err) {
+                console.error('Failed to fetch bot settings');
+            }
+        };
+        fetchSettings();
+    }, []);
 
     // Persistence: Load history if session exists
     useEffect(() => {
@@ -525,21 +539,52 @@ export default function AiChatbot() {
         setSessionId(id);
         localStorage.setItem('vion_session_id', id);
         setUserData(data);
+
+        // Add initial welcome message from settings
+        if (botSettings.welcome_message) {
+            const welcome = botSettings.welcome_message.replace(/\[Nama\]/g, data.name);
+            setMessages([{ role: 'assistant', content: welcome }]);
+        }
+    };
+
+    const handleStarterClick = (btn) => {
+        if (btn.instant_response) {
+            // Show user's "click" as a message
+            setMessages(prev => [...prev, { role: 'user', content: btn.label }]);
+            setIsLoading(true);
+            
+            // Show hardcoded response after a small "thinking" delay for realism
+            setTimeout(() => {
+                setMessages(prev => [...prev, { role: 'assistant', content: btn.instant_response }]);
+                setIsLoading(false);
+            }, 600);
+        } else {
+            setInput(btn.message);
+            sendQuickMessage(btn.message);
+        }
+    };
+
+    const sendQuickMessage = async (msg) => {
+        if (isLoading || !sessionId) return;
+        setMessages(prev => [...prev, { role: 'user', content: msg }]);
+        setIsLoading(true);
+        try {
+            const { data } = await axios.post('/api/ai/chat', { message: msg, session_id: sessionId });
+            setMessages(prev => [...prev, { role: 'assistant', content: data.response, products: data.products }]);
+        } catch (err) {
+            setMessages(prev => [...prev, { role: 'assistant', content: 'Maaf, saya sedang mengalami gangguan teknis. 🙏' }]);
+        } finally { setIsLoading(false); }
     };
 
     const sendMessage = async () => {
         if (!input.trim() || isLoading || !sessionId) return;
         const userMessage = input.trim();
         setInput('');
-        setMessages(prev => [...prev, { role: 'user', content: userMessage }]);
-        setIsLoading(true);
-        try {
-            const { data } = await axios.post('/api/ai/chat', { message: userMessage, session_id: sessionId });
-            setMessages(prev => [...prev, { role: 'assistant', content: data.response, products: data.products }]);
-        } catch (err) {
-            setMessages(prev => [...prev, { role: 'assistant', content: 'Maaf, saya sedang mengalami gangguan teknis. 🙏' }]);
-        } finally { setIsLoading(false); }
+        sendQuickMessage(userMessage);
     };
+
+    // Hide everything if the bot is disabled by admin
+    if (botSettings.is_active === false) return null;
 
     return (
         <>
@@ -554,6 +599,9 @@ export default function AiChatbot() {
                 #ai-messages::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.3); }
                 .product-list-container::-webkit-scrollbar { display: none; }
                 .chat-container { overscroll-behavior: contain; }
+                .starter-btn { transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1); }
+                .starter-btn:hover { transform: translateY(-2px); background: rgba(255,255,255,0.15) !important; border-color: rgba(255,255,255,0.3) !important; }
+                .starter-btn:active { transform: translateY(0); scale: 0.98; }
             `}</style>
 
             {isOpen && (
@@ -585,41 +633,53 @@ export default function AiChatbot() {
                         </div>
                     ) : (
                         <>
-                            <div 
-                                id="ai-messages" 
-                                className="chat-container" 
-                                data-lenis-prevent
-                                onWheel={e => e.stopPropagation()}
-                                style={{ 
-                                    flex: 1, 
-                                    overflowY: 'auto', 
-                                    padding: '16px', 
-                                    display: 'flex', 
-                                    flexDirection: 'column', 
-                                    overscrollBehavior: 'contain', 
-                                    height: '100%',
-                                    position: 'relative',
-                                    zIndex: 1
-                                }}
-                            >
-                                {messages.map((msg, i) => (
-                                    <div key={i} ref={i === messages.length - 1 ? lastMessageRef : null}>
+                            <div id="ai-messages" style={{ flex: 1, overflowY: 'auto', padding: '20px', display: 'flex', flexDirection: 'column', overscrollBehavior: 'contain' }}>
+                                {messages.map((msg, idx) => (
+                                    <div key={idx} ref={idx === messages.length - 1 ? lastMessageRef : null}>
                                         <MessageBubble msg={msg} allMessages={messages} />
                                     </div>
                                 ))}
+
+                                {/* Starter Buttons */}
+                                {!isLoading && messages.length === 1 && botSettings.starter_buttons?.length > 0 && (
+                                    <div style={{ 
+                                        display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '4px', paddingLeft: '40px', 
+                                        animation: 'slideUp 0.5s ease 0.3s both' 
+                                    }}>
+                                        {botSettings.starter_buttons.map((btn, i) => (
+                                            <button
+                                                key={i}
+                                                className="starter-btn"
+                                                onClick={() => handleStarterClick(btn)}
+                                                style={{
+                                                    background: 'rgba(255,255,255,0.08)',
+                                                    border: '1px solid rgba(255,255,255,0.15)',
+                                                    borderRadius: '16px',
+                                                    padding: '8px 14px',
+                                                    color: '#fff',
+                                                    fontSize: '12.5px',
+                                                    cursor: 'pointer',
+                                                    fontWeight: '500',
+                                                    outline: 'none'
+                                                }}
+                                            >
+                                                {btn.label}
+                                            </button>
+                                        ))}
+                                    </div>
+                                )}
+
                                 {isLoading && (
-                                    <div style={{ display: 'flex', alignItems: 'flex-end', gap: '8px', marginBottom: '12px' }}>
-                                        <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: `url(${aiAgent.headerAvatar}) center/cover no-repeat, #f1f5f9`, border: '1px solid rgba(0,0,0,0.05)' }} />
-                                        <div style={{ background: 'rgba(30, 41, 59, 0.8)', borderRadius: '18px 18px 18px 4px', border: '1px solid rgba(255,255,255,0.08)', padding: '12px 16px' }}>
-                                            <div style={{ display: 'flex', gap: '4px' }}>
-                                                {[0, 1, 2].map(i => <div key={i} style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#94a3b8', animation: 'typing 1.4s infinite', animationDelay: `${i * 0.2}s` }} />)}
-                                            </div>
+                                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center', paddingLeft: '40px' }}>
+                                        <div style={{ display: 'flex', gap: '4px' }}>
+                                            {[0, 1, 2].map(i => (
+                                                <div key={i} style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#94a3b8', animation: 'typing 1s infinite', animationDelay: `${i * 0.2}s` }} />
+                                            ))}
                                         </div>
                                     </div>
                                 )}
                                 <div ref={messagesEndRef} />
                             </div>
-
 
                             <div style={{ padding: '16px', background: 'rgba(15, 23, 42, 0.5)', borderTop: '1px solid rgba(255,255,255,0.05)', flexShrink: 0 }}>
                                 <div style={{ position: 'relative', display: 'flex', gap: '8px', alignItems: 'flex-end' }}>

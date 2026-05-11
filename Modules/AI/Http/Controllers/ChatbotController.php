@@ -162,6 +162,18 @@ class ChatbotController extends Controller
     }
 
     /**
+     * Get Chatbot settings for frontend
+     */
+    public function settings()
+    {
+        return response()->json([
+            'is_active' => Setting::getValue('vion_is_active', '1') === '1',
+            'welcome_message' => Setting::getValue('vion_welcome_message', 'Halo! Saya Vion, ICT Solutions Consultant Anda. Ada yang bisa saya bantu hari ini?'),
+            'starter_buttons' => json_decode(Setting::getValue('vion_starter_buttons', '[]'), true),
+        ]);
+    }
+
+    /**
      * Return available personas
      */
     public function personas()
