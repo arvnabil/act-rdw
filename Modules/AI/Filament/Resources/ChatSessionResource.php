@@ -24,7 +24,7 @@ class ChatSessionResource extends Resource
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-chat-bubble-left-right';
 
-    protected static string | \UnitEnum | null $navigationGroup = 'Client Management';
+    protected static string | \UnitEnum | null $navigationGroup = 'AI Management';
 
     protected static ?string $label = 'AI Chat Session';
     protected static ?int $navigationSort = 2;

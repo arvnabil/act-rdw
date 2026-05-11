@@ -20,7 +20,10 @@ const formatMarkdown = (text) => {
     // 1. Fix cases where list numbers are joined to the previous sentence (e.g., "...consideration: 1.")
     let processedText = text.replace(/([.!?])\s*(\d+\.)/g, '$1\n$2');
     
-    // 2. handle horizontal rules
+    // 2. Fix cases where bullet points are joined to the previous sentence (e.g., "...Anda: * Solusi")
+    processedText = processedText.replace(/([:!?.])\s*([\*•\-])\s+/g, '$1\n$2 ');
+    
+    // 3. handle horizontal rules
     processedText = processedText.replace(/^---$/gm, '<hr />');
     
     const lines = processedText.split('\n');
@@ -456,30 +459,38 @@ const MessageBubble = ({ msg, allMessages }) => {
 };
 
 
-export default function AiChatbot() {
-    const [isOpen, setIsOpen] = useState(false);
+export default function AiChatbot({ serverSettings }) {
+    const [isOpen, setIsOpen] = useState(() => localStorage.getItem('vion_chat_open') === 'true');
     const [sessionId, setSessionId] = useState(() => localStorage.getItem('vion_session_id'));
     const [userData, setUserData] = useState(null);
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [isLoading, setIsLoading] = useState(false);
-    const [botSettings, setBotSettings] = useState({ welcome_message: '', starter_buttons: [] });
+
+    // Persist window open state
+    useEffect(() => {
+        localStorage.setItem('vion_chat_open', isOpen);
+    }, [isOpen]);
+
+    // Use settings from server (Inertia shared props) for instant load
+    const [botSettings, setBotSettings] = useState(() => {
+        if (serverSettings) {
+            try {
+                return {
+                    welcome_message: serverSettings.vion_welcome_message || '',
+                    starter_buttons: JSON.parse(serverSettings.vion_starter_buttons || '[]'),
+                    is_active: serverSettings.vion_is_active === '1'
+                };
+            } catch (e) {
+                console.error('Failed to parse starter buttons', e);
+            }
+        }
+        return { welcome_message: '', starter_buttons: [], is_active: true };
+    });
+
     const messagesEndRef = useRef(null);
     const lastMessageRef = useRef(null);
     const inputRef = useRef(null);
-
-    // Fetch dynamic settings
-    useEffect(() => {
-        const fetchSettings = async () => {
-            try {
-                const { data } = await axios.get('/api/ai/settings');
-                setBotSettings(data);
-            } catch (err) {
-                console.error('Failed to fetch bot settings');
-            }
-        };
-        fetchSettings();
-    }, []);
 
     // Persistence: Load history if session exists
     useEffect(() => {
@@ -489,6 +500,7 @@ export default function AiChatbot() {
                 const { data } = await axios.get(`/api/ai/get-history?session_id=${sessionId}`);
                 if (data.messages && data.messages.length > 0) {
                     setMessages(data.messages);
+                    if (data.session) setUserData(data.session); // RESTORE USER DATA!
                 } else {
                     localStorage.removeItem('vion_session_id');
                     setSessionId(null);
@@ -547,7 +559,10 @@ export default function AiChatbot() {
         }
     };
 
+    const [showActionsAlways, setShowActionsAlways] = useState(false);
+
     const handleStarterClick = (btn) => {
+        setShowActionsAlways(false); // Hide after selection
         if (btn.instant_response) {
             // Show user's "click" as a message
             setMessages(prev => [...prev, { role: 'user', content: btn.label }]);
@@ -641,10 +656,10 @@ export default function AiChatbot() {
                                 ))}
 
                                 {/* Starter Buttons */}
-                                {!isLoading && messages.length === 1 && botSettings.starter_buttons?.length > 0 && (
+                                {!isLoading && (messages.length === 1 || showActionsAlways) && botSettings.starter_buttons?.length > 0 && (
                                     <div style={{ 
-                                        display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '4px', paddingLeft: '40px', 
-                                        animation: 'slideUp 0.5s ease 0.3s both' 
+                                        display: 'flex', flexWrap: 'wrap', gap: '8px', marginTop: '12px', paddingLeft: '40px', 
+                                        animation: 'slideUp 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) both' 
                                     }}>
                                         {botSettings.starter_buttons.map((btn, i) => (
                                             <button
@@ -660,7 +675,8 @@ export default function AiChatbot() {
                                                     fontSize: '12.5px',
                                                     cursor: 'pointer',
                                                     fontWeight: '500',
-                                                    outline: 'none'
+                                                    outline: 'none',
+                                                    boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
                                                 }}
                                             >
                                                 {btn.label}
@@ -682,32 +698,51 @@ export default function AiChatbot() {
                             </div>
 
                             <div style={{ padding: '16px', background: 'rgba(15, 23, 42, 0.5)', borderTop: '1px solid rgba(255,255,255,0.05)', flexShrink: 0 }}>
-                                <div style={{ position: 'relative', display: 'flex', gap: '8px', alignItems: 'flex-end' }}>
-                                    <textarea
-                                        ref={inputRef}
-                                        value={input}
-                                        onChange={(e) => setInput(e.target.value)}
-                                        onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }}
-                                        placeholder="Tanya VION..."
-                                        style={{
-                                            flex: 1, background: 'rgba(30, 41, 59, 0.5)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '16px',
-                                            padding: '12px 45px 12px 16px', color: '#fff', fontSize: '15px', outline: 'none', resize: 'none', height: '45px', maxHeight: '120px'
-                                        }}
-                                    />
+                                <div style={{ position: 'relative', display: 'flex', alignItems: 'flex-end', gap: '8px' }}>
                                     <button
-                                        onClick={sendMessage}
-                                        disabled={isLoading || !input.trim()}
+                                        onClick={() => setShowActionsAlways(!showActionsAlways)}
+                                        title="Quick Actions"
                                         style={{
-                                            position: 'absolute', right: '6px', bottom: '6px', width: '34px', height: '34px', borderRadius: '12px',
-                                            background: input.trim() ? aiAgent.actionGradient : 'rgba(0,0,0,0.05)', border: 'none', color: '#fff',
-                                            display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.2s'
+                                            width: '40px', height: '40px', borderRadius: '14px', border: '1px solid rgba(255,255,255,0.1)',
+                                            background: showActionsAlways ? aiAgent.actionGradient : 'rgba(255,255,255,0.05)',
+                                            color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                            cursor: 'pointer', transition: 'all 0.2s', marginBottom: '1px', flexShrink: 0
                                         }}
                                     >
-                                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                                            <line x1="22" y1="2" x2="11" y2="13"></line>
-                                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+                                            <path d="M5 3v4"/><path d="M19 17v4"/><path d="M3 5h4"/><path d="M17 19h4"/>
                                         </svg>
                                     </button>
+
+                                    <div style={{ position: 'relative', flex: 1 }}>
+                                        <textarea
+                                            ref={inputRef}
+                                            value={input}
+                                            onChange={(e) => setInput(e.target.value)}
+                                            onKeyDown={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); } }}
+                                            placeholder="Tanya VION..."
+                                            style={{
+                                                width: '100%', padding: '14px 45px 14px 16px', borderRadius: '18px', background: 'rgba(255,255,255,0.05)',
+                                                border: '1px solid rgba(255,255,255,0.1)', color: '#fff', fontSize: '14px', outline: 'none',
+                                                resize: 'none', height: '48px', lineHeight: '20px', transition: 'all 0.2s', display: 'block'
+                                            }}
+                                        />
+                                        <button
+                                            onClick={sendMessage}
+                                            disabled={isLoading || !input.trim()}
+                                            style={{
+                                                position: 'absolute', right: '6px', bottom: '6px', width: '36px', height: '36px', borderRadius: '12px',
+                                                background: input.trim() ? aiAgent.actionGradient : 'rgba(0,0,0,0.05)', border: 'none', color: '#fff',
+                                                display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', transition: 'all 0.2s'
+                                            }}
+                                        >
+                                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                                                <line x1="22" y1="2" x2="11" y2="13"></line>
+                                                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                                            </svg>
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </>

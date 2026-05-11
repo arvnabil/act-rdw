@@ -3,11 +3,8 @@
 namespace Modules\AI\Filament\Pages;
 
 use Filament\Pages\Page;
-use Filament\Forms\Form;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
-use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Schemas\Components\Section;
 use Filament\Actions\Action;
 use Modules\Settings\Models\Setting;
 use Filament\Notifications\Notification;
@@ -17,10 +14,10 @@ class ManageAiSettings extends Page implements \Filament\Forms\Contracts\HasForm
     use \Filament\Forms\Concerns\InteractsWithForms;
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-sparkles';
-    protected static string | \UnitEnum | null $navigationGroup = 'Settings';
+    protected static string | \UnitEnum | null $navigationGroup = 'AI Management';
     protected static ?string $navigationLabel = 'AI Chatbot Settings';
     protected static ?string $title = 'AI Chatbot Settings';
-    protected static string $view = 'ai::filament.pages.manage-ai-settings';
+    protected string $view = 'ai::filament.pages.manage-ai-settings';
 
     public ?array $data = [];
 
@@ -39,9 +36,9 @@ class ManageAiSettings extends Page implements \Filament\Forms\Contracts\HasForm
         ]);
     }
 
-    public function form(Form $form): Form
+    public function form(\Filament\Schemas\Schema $schema): \Filament\Schemas\Schema
     {
-        return $form
+        return $schema
             ->schema([
                 Section::make('General Availability')
                     ->schema([
@@ -53,7 +50,7 @@ class ManageAiSettings extends Page implements \Filament\Forms\Contracts\HasForm
 
                 Section::make('Greetings & Welcome')
                     ->schema([
-                        Textarea::make('vion_welcome_message')
+                        \Filament\Forms\Components\Textarea::make('vion_welcome_message')
                             ->label('Welcome Message')
                             ->helperText('This message is shown right after the user fills the lead form. Use [Nama] for personalization.')
                             ->rows(3)
@@ -64,20 +61,20 @@ class ManageAiSettings extends Page implements \Filament\Forms\Contracts\HasForm
                     ->schema([
                         \Filament\Forms\Components\Placeholder::make('info')
                             ->content('If "Instant Response" is filled, Vion will answer immediately without using AI. If empty, it will use AI to handle the response.'),
-                        Repeater::make('vion_starter_buttons')
+                        \Filament\Forms\Components\Repeater::make('vion_starter_buttons')
                             ->label('Buttons')
                             ->schema([
-                                TextInput::make('label')
+                                \Filament\Forms\Components\TextInput::make('label')
                                     ->label('Button Label')
                                     ->placeholder('e.g. Solusi Meeting Room')
                                     ->required()
                                     ->columnSpan(1),
-                                TextInput::make('message')
+                                \Filament\Forms\Components\TextInput::make('message')
                                     ->label('Trigger Message (to AI)')
                                     ->placeholder('e.g. Saya tertarik solusi meeting')
                                     ->required()
                                     ->columnSpan(1),
-                                Textarea::make('instant_response')
+                                \Filament\Forms\Components\Textarea::make('instant_response')
                                     ->label('Instant Response (Optional - Hardcoded)')
                                     ->placeholder('Leave empty to let AI handle the response...')
                                     ->rows(2)

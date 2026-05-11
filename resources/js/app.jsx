@@ -32,15 +32,17 @@ createInertiaApp({
     },
     setup({ el, App, props }) {
         const root = createRoot(el);
+        const vionIsActive = props.initialPage.props.settings?.vion_is_active === '1';
+
         root.render(
             <React.StrictMode>
                 <App {...props} />
-                <div id="ai-chatbot-root">
-                    <AiChatbot />
-                </div>
+                {vionIsActive && (
+                    <div id="ai-chatbot-root">
+                        <AiChatbot serverSettings={props.initialPage.props.settings} />
+                    </div>
+                )}
             </React.StrictMode>
         );
-
     },
 });
-

@@ -14,6 +14,8 @@ class AIServiceProvider extends ServiceProvider
     {
         \Log::info('AIServiceProvider Booting...');
         
+        $this->loadViewsFrom(__DIR__ . '/../Resources/views', $this->moduleNameLower);
+
         Route::middleware('web')
             ->group(__DIR__ . '/../Routes/web.php');
 
