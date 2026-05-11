@@ -24,41 +24,160 @@ const formatMarkdown = (text) => {
     processedText = processedText.replace(/^---$/gm, '<hr />');
     
     const lines = processedText.split('\n');
-    return lines.map((line, i) => {
-        if (!line.trim()) return <div key={i} style={{ height: '12px' }} />;
+    const result = [];
+    let currentTable = null;
+
+    for (let i = 0; i < lines.length; i++) {
+        const line = lines[i].trim();
         
         // Handle Horizontal Rule
-        if (line === '<hr />') return <hr key={i} style={{ border: 'none', borderTop: '1px solid rgba(255,255,255,0.1)', margin: '15px 0' }} />;
+        if (line === '<hr />') {
+            result.push(<hr key={i} style={{ border: 'none', borderTop: '1px solid rgba(255,255,255,0.1)', margin: '15px 0' }} />);
+            continue;
+        }
 
+        // Table Detection
+        if (line.startsWith('|') && line.includes('|')) {
+            // Check if there is text after the last pipe
+            const lastPipeIndex = line.lastIndexOf('|');
+            const tablePart = line.substring(0, lastPipeIndex + 1);
+            const extraText = line.substring(lastPipeIndex + 1).trim();
+
+            if (!currentTable) {
+                currentTable = { header: null, rows: [] };
+            }
+            
+            const cells = tablePart.split('|').filter((c, idx, arr) => {
+                // Keep cells that are between pipes, even if empty
+                return idx > 0 && idx < arr.length - 1;
+            }).map(c => c.trim());
+            
+            // Check if it's a separator line (|---|)
+            if (tablePart.match(/^[|\s-:]+$/)) {
+                // If there's extra text after a separator (unlikely but possible), handle it
+                if (extraText) lines.splice(i + 1, 0, extraText); 
+                continue; 
+            }
+
+            if (!currentTable.header) {
+                currentTable.header = cells;
+            } else {
+                currentTable.rows.push(cells);
+            }
+
+            // If there's extra text after a row, push it to the next line to be processed
+            if (extraText) {
+                lines.splice(i + 1, 0, extraText);
+            }
+
+            // Check if next line is not a table line
+            if (i === lines.length - 1 || !lines[i+1].trim().startsWith('|')) {
+                const tableKey = `table-${i}`;
+                result.push(
+                    <div key={tableKey} style={{ 
+                        overflowX: 'auto', 
+                        margin: '15px 0', 
+                        borderRadius: '10px', 
+                        border: '1px solid rgba(255,255,255,0.15)',
+                        backgroundColor: 'rgba(0,0,0,0.2)',
+                        width: '100%',
+                        WebkitOverflowScrolling: 'touch' // Untuk scroll halus di iOS
+                    }}>
+                        <table style={{ 
+                            minWidth: '500px', // Memaksa lebar minimal agar muncul scrollbar
+                            width: '100%', 
+                            borderCollapse: 'collapse', 
+                            fontSize: '0.85em', 
+                            color: '#fff',
+                            tableLayout: 'auto'
+                        }}>
+                            <thead>
+                                <tr style={{ background: 'rgba(255,255,255,0.1)' }}>
+                                    {currentTable.header.map((h, idx) => (
+                                        <th key={idx} style={{ 
+                                            padding: '12px 15px', 
+                                            textAlign: 'left', 
+                                            borderBottom: '2px solid rgba(255,255,255,0.2)', 
+                                            fontWeight: '800',
+                                            whiteSpace: 'nowrap' // Mencegah judul kolom berantakan
+                                        }}>
+                                            {parseInlineFormatting(h)}
+                                        </th>
+                                    ))}
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {currentTable.rows.map((row, rowIdx) => (
+                                    <tr key={rowIdx} style={{ 
+                                        borderBottom: '1px solid rgba(255,255,255,0.05)',
+                                        backgroundColor: rowIdx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,0.02)' // Zebra striping
+                                    }}>
+                                        {row.map((cell, cellIdx) => (
+                                            <td key={cellIdx} style={{ 
+                                                padding: '10px 15px', 
+                                                opacity: 0.95,
+                                                lineHeight: '1.4'
+                                            }}>
+                                                {parseInlineFormatting(cell)}
+                                            </td>
+                                        ))}
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                );
+                currentTable = null;
+            }
+            continue;
+        }
+
+        if (!line) {
+            result.push(<div key={i} style={{ height: '12px' }} />);
+            continue;
+        }
+        
         // Handle Headings
-        if (line.startsWith('### ')) return <h3 key={i} style={{ margin: '16px 0 8px 0', fontSize: '1.2em', fontWeight: '800', color: '#fff', borderLeft: `4px solid ${aiAgent.color}`, paddingLeft: '10px' }}>{parseInlineFormatting(line.slice(4))}</h3>;
-        if (line.startsWith('#### ')) return <h4 key={i} style={{ margin: '14px 0 6px 0', fontSize: '1.05em', fontWeight: '700', color: '#fff', opacity: 0.9 }}>{parseInlineFormatting(line.slice(5))}</h4>;
-        if (line.startsWith('## ')) return <h2 key={i} style={{ margin: '20px 0 10px 0', fontSize: '1.4em', fontWeight: '800', color: '#fff', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '4px' }}>{parseInlineFormatting(line.slice(3))}</h2>;
+        if (line.startsWith('### ')) {
+            result.push(<h3 key={i} style={{ margin: '16px 0 8px 0', fontSize: '1.2em', fontWeight: '800', color: '#fff', borderLeft: `4px solid ${aiAgent.color}`, paddingLeft: '10px' }}>{parseInlineFormatting(line.slice(4))}</h3>);
+            continue;
+        }
+        if (line.startsWith('#### ')) {
+            result.push(<h4 key={i} style={{ margin: '14px 0 6px 0', fontSize: '1.05em', fontWeight: '700', color: '#fff', opacity: 0.9 }}>{parseInlineFormatting(line.slice(5))}</h4>);
+            continue;
+        }
+        if (line.startsWith('## ')) {
+            result.push(<h2 key={i} style={{ margin: '20px 0 10px 0', fontSize: '1.4em', fontWeight: '800', color: '#fff', borderBottom: '1px solid rgba(255,255,255,0.1)', paddingBottom: '4px' }}>{parseInlineFormatting(line.slice(3))}</h2>);
+            continue;
+        }
         
         // Handle Bullet Lists (* or -)
         if (line.trim().startsWith('* ') || line.trim().startsWith('- ')) {
             const content = line.trim().slice(2);
-            return (
+            result.push(
                 <div key={i} style={{ display: 'flex', gap: '10px', marginBottom: '6px', paddingLeft: '8px' }}>
                     <span style={{ color: aiAgent.color, fontWeight: 'bold' }}>•</span>
                     <span style={{ flex: 1 }}>{parseInlineFormatting(content)}</span>
                 </div>
             );
+            continue;
         }
 
         // Handle Numbered Lists (1. )
         const numberedListMatch = line.trim().match(/^(\d+)\.\s+(.*)/);
         if (numberedListMatch) {
-            return (
+            result.push(
                 <div key={i} style={{ display: 'flex', gap: '10px', marginBottom: '6px', paddingLeft: '8px' }}>
                     <span style={{ color: aiAgent.color, fontWeight: 'bold', fontSize: '0.9em' }}>{numberedListMatch[1]}.</span>
                     <span style={{ flex: 1 }}>{parseInlineFormatting(numberedListMatch[2])}</span>
                 </div>
             );
+            continue;
         }
 
-        return <div key={i} style={{ marginBottom: '8px', opacity: 0.95 }}>{parseInlineFormatting(line)}</div>;
-    });
+        result.push(<div key={i} style={{ marginBottom: '8px', opacity: 0.95 }}>{parseInlineFormatting(line)}</div>);
+    }
+    return result;
 };
 
 const parseInlineFormatting = (text) => {
