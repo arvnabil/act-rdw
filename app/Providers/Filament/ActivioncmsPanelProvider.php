@@ -50,6 +50,7 @@ class ActivioncmsPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Activioncms/Pages'), for: 'App\Filament\Activioncms\Pages')
             ->discoverPages(in: base_path('Modules/Events/Filament/Pages'), for: 'Modules\\Events\\Filament\\Pages')
             ->discoverPages(in: base_path('Modules/SEO/Filament/Pages'), for: 'Modules\\SEO\\Filament\\Pages')
+            ->discoverPages(in: base_path('Modules/WhatsApp/Filament/Pages'), for: 'Modules\\WhatsApp\\Filament\\Pages')
             ->pages([
                 Dashboard::class,
                 EventDashboard::class,

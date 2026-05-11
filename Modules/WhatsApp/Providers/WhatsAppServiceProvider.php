@@ -14,6 +14,9 @@ class WhatsAppServiceProvider extends ServiceProvider
     {
         $this->registerConfig();
 
+        $this->loadMigrationsFrom(__DIR__ . '/../Database/Migrations');
+        $this->loadViewsFrom(__DIR__ . '/../Resources/views', $this->moduleNameLower);
+
         Route::middleware('web')
             ->group(__DIR__ . '/../Routes/web.php');
     }

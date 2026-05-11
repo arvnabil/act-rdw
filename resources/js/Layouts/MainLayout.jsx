@@ -4,6 +4,7 @@ import { useTemplateInit } from "@/hooks/useTemplateInit";
 import Toast from "@/Components/Common/Toast";
 import { getWhatsAppLink } from "@/Utils/whatsapp";
 import { getImageUrl } from "@/Utils/image";
+import WhatsAppBubble from "@/Components/WhatsAppBubble";
 
 export default function MainLayout({ children }) {
     useTemplateInit();
@@ -1196,6 +1197,7 @@ export default function MainLayout({ children }) {
                     </div>
                 </div>
             </div>
+            <WhatsAppBubble />
         </>
     );
 }

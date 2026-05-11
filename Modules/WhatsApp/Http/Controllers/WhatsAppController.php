@@ -14,8 +14,14 @@ class WhatsAppController extends Controller
         $whatsappNumber = $request->input('phone');
         
         if (!$whatsappNumber) {
-            $settings = DB::table('settings')->where('key', 'whatsapp_number')->first();
-            $whatsappNumber = $settings ? $settings->value : null;
+            $settings = \Modules\WhatsApp\Models\WhatsAppSetting::getInstance();
+            $whatsappNumber = $settings ? $settings->phone : null;
+        }
+
+        if (!$whatsappNumber) {
+            // Fallback to legacy settings table if new model is empty
+            $legacySettings = DB::table('settings')->where('key', 'whatsapp_number')->first();
+            $whatsappNumber = $legacySettings ? $legacySettings->value : null;
         }
 
         if (!$whatsappNumber) {
