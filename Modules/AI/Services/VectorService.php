@@ -60,4 +60,3 @@ class VectorService
         return collect([]);
     }
 }
-}
