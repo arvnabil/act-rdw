@@ -52,8 +52,12 @@ export function useTemplateInit() {
             $(".preloader").fadeOut(500, function() {
                 $(this).css("display", "none");
                 // Force Lenis Update and forceful Unlock
-                setTimeout(() => {
-                    lenis.update();
+                const updateTimer = setTimeout(() => {
+                    if (lenis && typeof lenis.update === 'function') {
+                        lenis.update();
+                    } else if (lenis && typeof lenis.resize === 'function') {
+                        lenis.resize();
+                    }
                     // Absolute scroll unlock
                     document.body.style.overflow = "auto";
                     document.documentElement.style.overflow = "auto";

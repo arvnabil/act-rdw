@@ -527,16 +527,14 @@ export default function AiChatbot({ serverSettings }) {
     }, [sessionId]);
 
     useEffect(() => {
-        if (isOpen) { 
-            document.body.style.overflow = 'hidden';
-            if (window.lenis) window.lenis.stop(); 
-        } else { 
-            document.body.style.overflow = 'unset';
-            if (window.lenis) window.lenis.start(); 
+        if (isOpen) {
+            // Prevent body scroll if needed, but lenis-prevent should handle it
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "auto";
         }
         return () => { 
             document.body.style.overflow = 'unset'; 
-            if (window.lenis) window.lenis.start();
         };
     }, [isOpen]);
 
