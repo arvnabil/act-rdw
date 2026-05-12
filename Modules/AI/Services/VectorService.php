@@ -45,7 +45,7 @@ class VectorService
             'Content-Type' => 'application/json',
         ])->post($url, [
             'query_embedding' => '[' . implode(',', $queryVector) . ']',
-            'match_threshold' => 0.5,
+            'match_threshold' => 0.3,
             'match_count' => $limit,
         ]);
 

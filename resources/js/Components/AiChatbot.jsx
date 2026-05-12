@@ -694,8 +694,17 @@ export default function AiChatbot({ serverSettings }) {
                                 )}
 
                                 {isLoading && (
-                                    <div style={{ display: 'flex', gap: '8px', alignItems: 'center', paddingLeft: '40px' }}>
-                                        <div style={{ display: 'flex', gap: '4px' }}>
+                                    <div style={{ display: 'flex', gap: '8px', alignItems: 'flex-end', marginBottom: '16px' }}>
+                                        <div style={{
+                                            width: '32px', height: '32px', borderRadius: '50%', background: `url(${aiAgent.headerAvatar}) center/cover no-repeat, #f1f5f9`,
+                                            flexShrink: 0, border: '1px solid rgba(0,0,0,0.05)',
+                                        }} />
+                                        <div style={{ 
+                                            padding: '12px 16px', borderRadius: '18px 18px 18px 4px',
+                                            background: 'rgba(30, 41, 59, 0.8)', backdropFilter: 'blur(10px)',
+                                            border: '1px solid rgba(255,255,255,0.08)',
+                                            display: 'flex', gap: '4px', alignItems: 'center'
+                                        }}>
                                             {[0, 1, 2].map(i => (
                                                 <div key={i} style={{ width: '6px', height: '6px', borderRadius: '50%', background: '#94a3b8', animation: 'typing 1s infinite', animationDelay: `${i * 0.2}s` }} />
                                             ))}

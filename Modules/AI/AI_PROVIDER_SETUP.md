@@ -7,15 +7,15 @@ Tersedia dua pilihan provider yang bisa di-switch kapan saja via `.env`.
 
 ## ⚡ Perbandingan Provider
 
-| Fitur | Google AI Studio | Vertex AI (GCP) |
-|---|---|---|
-| **Autentikasi** | API Key | Service Account JSON |
-| **Setup** | ✅ Sangat mudah | ⚙️ Perlu konfigurasi GCP |
-| **Harga** | Freemium / Pay-as-you-go | Pay-as-you-go (lebih mahal) |
-| **Cocok untuk** | Development & Small Production | Enterprise & Large Scale |
-| **Data Privacy** | Standard | ✅ Lebih ketat (VPC, IAM) |
-| **Rate Limit** | Ada | Lebih tinggi |
-| **Region** | Global | Spesifik (us-central1, dll) |
+| Fitur            | Google AI Studio               | Vertex AI (GCP)             |
+| ---------------- | ------------------------------ | --------------------------- |
+| **Autentikasi**  | API Key                        | Service Account JSON        |
+| **Setup**        | ✅ Sangat mudah                | ⚙️ Perlu konfigurasi GCP    |
+| **Harga**        | Freemium / Pay-as-you-go       | Pay-as-you-go (lebih mahal) |
+| **Cocok untuk**  | Development & Small Production | Enterprise & Large Scale    |
+| **Data Privacy** | Standard                       | ✅ Lebih ketat (VPC, IAM)   |
+| **Rate Limit**   | Ada                            | Lebih tinggi                |
+| **Region**       | Global                         | Spesifik (us-central1, dll) |
 
 ---
 
@@ -53,6 +53,8 @@ docker-compose exec activ.test php artisan cache:clear
 
 ### ✅ Selesai!
 
+php artisan ai:sync-products
+
 Chatbot VION by ACTiV sudah aktif menggunakan Google AI Studio.
 
 ---
@@ -60,6 +62,7 @@ Chatbot VION by ACTiV sudah aktif menggunakan Google AI Studio.
 ## 🔵 Option 2: Vertex AI (Google Cloud Platform)
 
 ### Prasyarat
+
 - Akun Google Cloud dengan **billing aktif**
 - Project GCP yang sudah dibuat
 - Vertex AI API sudah di-enable
@@ -186,19 +189,23 @@ config/
 ## ❓ Troubleshooting
 
 ### Error: `Class not found: Google\Cloud\AIPlatform`
+
 ```bash
 # Install library yang dibutuhkan untuk Vertex AI
 docker-compose exec activ.test composer require google/cloud-aiplatform
 ```
 
 ### Error: `Could not load the default credentials`
+
 - Pastikan path di `GOOGLE_APPLICATION_CREDENTIALS` benar dan file bisa dibaca.
 - Cek permission file: `chmod 644 storage/gcp-service-account.json`
 
 ### Error: `Vertex AI API has not been used in project`
+
 - Enable Vertex AI API di Google Cloud Console terlebih dahulu.
 
 ### Chat tidak merespons setelah switch
+
 ```bash
 docker-compose exec activ.test php artisan config:clear
 docker-compose exec activ.test php artisan cache:clear

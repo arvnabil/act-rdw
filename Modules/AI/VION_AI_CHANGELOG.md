@@ -50,13 +50,23 @@ Menu **AI Chat Session** di bawah grup *Client Management* memungkinkan Admin un
 3.  **AI Summary**: Membaca ringkasan kebutuhan pengunjung yang dihasilkan secara otomatis oleh AI.
 4.  **Quick Follow-up**: Menghubungi calon pelanggan via WhatsApp secara langsung dari dashboard.
 
+### 4. Migrasi Arsitektur Supabase (REST API)
+*   **Motivasi**: Menghindari pemblokiran port database (5432/6543) pada shared hosting (Dewaweb) yang memiliki aturan firewall ketat dan biaya tambahan untuk pembukaan port.
+*   **Solusi**: Transisi dari *Direct Database Connection* ke **Supabase REST API (HTTPS/Port 443)**.
+*   **Perubahan**: 
+    *   `VectorService.php` kini menggunakan `Illuminate\Support\Facades\Http` untuk operasi `upsert` dan `search`.
+    *   Implementasi fungsi RPC `match_products` di Supabase untuk memfasilitasi pencarian *semantic vector* via API.
+    *   Penyesuaian izin akses (`GRANT SELECT`) pada tabel `product_embeddings` untuk role `anon` agar API dapat diakses secara publik.
+*   **Benefit**: Aplikasi lebih stabil, lebih aman, dan 100% kompatibel dengan *shared hosting* tanpa konfigurasi port khusus.
+
 ---
 
 ## Struktur File Penting
 *   `Modules/AI/Services/GeminiService.php`: Pusat logika persona dan system prompt.
+*   `Modules/AI/Services/VectorService.php`: Handler koneksi Supabase REST API.
 *   `Modules/AI/Http/Controllers/ChatbotController.php`: API Handler, sistem kadaluarsa, dan ekstraksi produk.
 *   `Modules/AI/Filament/Resources/ChatSessionResource.php`: Manajemen dashboard admin.
 *   `resources/js/Components/AiChatbot.jsx`: Parser Markdown, UI Chat, dan logika responsivitas.
 
 ---
-*Terakhir diperbarui: 11 Mei 2026*
+*Terakhir diperbarui: 12 Mei 2026*
