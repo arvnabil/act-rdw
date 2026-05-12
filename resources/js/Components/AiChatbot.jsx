@@ -243,29 +243,53 @@ const ProductCard = ({ product }) => {
     const defaultImg = '/assets/default.png';
     return (
         <a href={product.link} target="_blank" rel="noopener noreferrer" style={{
-            flexShrink: 0, width: '180px', background: 'rgba(255,255,255,0.05)', borderRadius: '16px', 
-            border: '1px solid rgba(255,255,255,0.1)', overflow: 'hidden', backdropFilter: 'blur(10px)',
-            display: 'flex', flexDirection: 'column', textDecoration: 'none', transition: 'all 0.2s', cursor: 'pointer'
-        }} onMouseEnter={e => e.currentTarget.style.transform = 'translateY(-4px)'}
-           onMouseLeave={e => e.currentTarget.style.transform = 'translateY(0)'}>
-            <div style={{ width: '100%', height: '110px', background: '#fff', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            flexShrink: 0, width: '200px', background: 'rgba(255,255,255,0.05)', borderRadius: '18px', 
+            border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', backdropFilter: 'blur(15px)',
+            display: 'flex', flexDirection: 'column', textDecoration: 'none', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)', 
+            cursor: 'pointer', boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
+        }} onMouseEnter={e => {
+            e.currentTarget.style.transform = 'translateY(-6px)';
+            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
+            e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.2)';
+        }}
+           onMouseLeave={e => {
+            e.currentTarget.style.transform = 'translateY(0)';
+            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
+            e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.1)';
+        }}>
+            <div style={{ width: '100%', height: '130px', background: '#fff', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '10px' }}>
                 <img 
                     src={product.image} 
                     onError={(e) => { e.target.onerror = null; e.target.src = defaultImg; }}
                     alt={product.name} 
-                    style={{ width: '90%', height: '90%', objectFit: 'contain', padding: '10px' }} 
+                    style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} 
                 />
-                <div style={{ position: 'absolute', top: '8px', right: '8px', background: aiAgent.actionGradient, color: '#fff', fontSize: '9px', padding: '2px 8px', borderRadius: '10px', fontWeight: 'bold' }}>
+                <div style={{ 
+                    position: 'absolute', top: '10px', right: '10px', 
+                    background: aiAgent.actionGradient, color: '#fff', 
+                    fontSize: '10px', padding: '3px 10px', borderRadius: '20px', 
+                    fontWeight: '800', letterSpacing: '0.5px', boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+                }}>
                     READY
                 </div>
             </div>
-            <div style={{ padding: '12px', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
-                <div style={{ fontSize: '12px', color: '#fff', fontWeight: '600', height: '36px', overflow: 'hidden', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', lineHeight: '1.4' }}>
+            <div style={{ padding: '15px', display: 'flex', flexDirection: 'column', gap: '10px', flex: 1 }}>
+                <div style={{ 
+                    fontSize: '13px', color: '#fff', fontWeight: '600', 
+                    height: '40px', overflow: 'hidden', display: '-webkit-box', 
+                    WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', lineHeight: '1.5' 
+                }}>
                     {product.name}
                 </div>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.5)' }}>Lihat Detail</div>
-                    <div style={{ background: 'rgba(255,255,255,0.1)', color: '#fff', padding: '2px 6px', borderRadius: '6px', fontSize: '10px' }}>x{product.qty}</div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
+                    <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.6)', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                        Detail Produk ↗
+                    </div>
+                    {product.qty && (
+                        <div style={{ background: 'rgba(255,255,255,0.12)', color: '#fff', padding: '2px 8px', borderRadius: '8px', fontSize: '10px', fontWeight: 'bold' }}>
+                            x{product.qty}
+                        </div>
+                    )}
                 </div>
             </div>
         </a>
@@ -341,9 +365,9 @@ const ProductList = ({ products }) => {
                 display: 'flex', 
                 flexDirection: 'row',
                 flexWrap: 'nowrap',
-                gap: '12px', 
+                gap: '16px', 
                 overflowX: 'auto', 
-                padding: '4px 16px 12px 16px',
+                padding: '8px 16px 16px 16px',
                 scrollbarWidth: 'none',
                 msOverflowStyle: 'none',
                 WebkitOverflowScrolling: 'touch',
@@ -367,8 +391,7 @@ const WhatsAppButton = ({ messages, waNumber }) => {
         setIsSummarizing(true);
         try {
             const { data } = await axios.post('/api/ai/summarize', { history: messages.slice(-10) });
-            const summary = data.summary || 'Tertarik diskusi lebih lanjut.';
-            const text = `Halo tim Sales ACTiV, saya ingin diskusi lebih lanjut.\n\n*Rangkuman Chat Vion by ACTiV:*\n${summary}`;
+            const text = data.summary || "Halo Tim Sales ACTiV, 👋\n\nSaya ingin diskusi lebih lanjut terkait prospek yang baru masuk.";
             const link = getWhatsAppLink(waNumber, {
                 message: text,
                 cta_position: 'vion_chatbot',
@@ -377,7 +400,7 @@ const WhatsAppButton = ({ messages, waNumber }) => {
             window.open(link, '_blank');
         } catch (err) {
             const fallbackLink = getWhatsAppLink(waNumber, {
-                message: 'Halo tim Sales ACTiV, saya ingin diskusi lebih lanjut.',
+                message: "Halo Tim Sales ACTiV, 👋\n\nSaya ingin diskusi lebih lanjut terkait prospek yang baru masuk. (Gagal membuat rangkuman otomatis)",
                 cta_position: 'vion_chatbot',
                 cta_label: 'Chatbot AI Redirection (Fallback)'
             });
@@ -443,8 +466,8 @@ const LeadForm = ({ onComplete }) => {
 
 const MessageBubble = ({ msg, allMessages, waNumber }) => {
     const isUser = msg.role === 'user';
-    const hasTrigger = !isUser && msg.content.includes('[WA_TRIGGER]');
-    const cleanContent = !isUser ? msg.content.replace('[WA_TRIGGER]', '').trim() : msg.content;
+    const hasTrigger = !isUser && (msg.content.includes('[HUBUNGI_SALES]') || msg.content.includes('[WA_TRIGGER]'));
+    const cleanContent = !isUser ? msg.content.replace(/\[HUBUNGI_SALES\]|\[WA_TRIGGER\]/g, '').trim() : msg.content;
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: isUser ? 'flex-end' : 'flex-start', marginBottom: '16px', width: '100%' }}>
@@ -457,8 +480,9 @@ const MessageBubble = ({ msg, allMessages, waNumber }) => {
                 )}
                 <div style={{
                     maxWidth: '80%', padding: '10px 14px', borderRadius: isUser ? '18px 18px 4px 18px' : '18px 18px 18px 4px',
-                    background: isUser ? aiAgent.actionGradient : 'rgba(30, 41, 59, 0.8)', color: '#fff', fontSize: '13.5px', lineHeight: '1.6',
-                    backdropFilter: 'blur(10px)', border: isUser ? 'none' : '1px solid rgba(255,255,255,0.08)', wordBreak: 'break-word',
+                    background: isUser ? aiAgent.actionGradient : 'rgba(30, 41, 59, 0.75)', color: '#fff', fontSize: '14px', lineHeight: '1.6',
+                    backdropFilter: 'blur(12px)', border: isUser ? 'none' : '1px solid rgba(255,255,255,0.1)', wordBreak: 'break-word',
+                    boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
                 }}>
                     {formatMarkdown(cleanContent)}
                     {hasTrigger && <WhatsAppButton messages={allMessages} waNumber={waNumber} />}

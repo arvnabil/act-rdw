@@ -59,10 +59,16 @@ class GoogleAIDriver implements GeminiDriverInterface
             $chatLog .= "{$role}: {$content}\n";
         }
 
-        $prompt = "Berdasarkan log percakapan berikut, buatkan rangkuman SANGAT SINGKAT (maksimal 20 kata) untuk dikirim ke tim sales. " .
-                  "Fokus pada: Produk apa yang dicari dan berapa jumlahnya/kapasitasnya.\n\n" .
-                  "LOG PERCAKAPAN:\n{$chatLog}\n\n" .
-                  "RANGKUMAN (Bahasa Indonesia):";
+        $prompt = "Buatkan rangkuman percakapan berikut dalam format pesan WhatsApp yang SANGAT RAPI untuk tim Sales. " .
+                  "PENTING: Gunakan format EXACTLY seperti template di bawah ini, jangan tambahkan kata-kata lain di luar template:\n\n" .
+                  "Halo Tim Sales ACTiV,\n\n" .
+                  "Saya ingin diskusi lebih lanjut terkait prospek yang baru masuk. Berikut adalah detail data yang diteruskan:\n\n" .
+                  "* [Sumber: Rangkuman Chat Vion by ACTiV]\n" .
+                  "* Kebutuhan Customer:\n" .
+                  "[Sebutkan produk dan kebutuhan utama user di sini dalam bentuk list poin pakai simbol -, gunakan bold bintang satu '*' untuk nama produk]\n\n" .
+                  "Mohon update untuk ketersediaan (lisensi & _hardware_) serta estimasi penawarannya agar bisa kita diskusikan langkah selanjutnya. \n\n" .
+                  "Terima kasih!\n\n" .
+                  "LOG PERCAKAPAN:\n{$chatLog}";
 
         try {
             $result = Gemini::generativeModel('models/gemini-2.0-flash')
