@@ -179,6 +179,7 @@ class ChatbotController extends Controller
             'is_active' => Setting::getValue('vion_is_active', '1') === '1',
             'welcome_message' => Setting::getValue('vion_welcome_message', 'Halo! Saya Vion, ICT Solutions Consultant Anda. Ada yang bisa saya bantu hari ini?'),
             'starter_buttons' => json_decode(Setting::getValue('vion_starter_buttons', '[]'), true),
+            'whatsapp_number' => Setting::getValue('vion_whatsapp_number', '628123456789'),
         ]);
     }
 

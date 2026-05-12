@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
+import { getWhatsAppLink } from '@/Utils/whatsapp';
 
 const aiAgent = {
     name: 'Vion Assistant',
@@ -11,7 +12,7 @@ const aiAgent = {
     actionGradient: 'linear-gradient(135deg, #10b981, #059669)',
 };
 
-const WA_NUMBER = '6281280944719'; 
+// const WA_NUMBER = '6281280944719'; // Now dynamic via botSettings.whatsapp_number
 
 const formatMarkdown = (text) => {
     if (!text) return '';
@@ -359,7 +360,7 @@ const ProductList = ({ products }) => {
     );
 };
 
-const WhatsAppButton = ({ messages }) => {
+const WhatsAppButton = ({ messages, waNumber }) => {
     const [isSummarizing, setIsSummarizing] = useState(false);
     const handleWaClick = async (e) => {
         e.preventDefault();
@@ -367,10 +368,20 @@ const WhatsAppButton = ({ messages }) => {
         try {
             const { data } = await axios.post('/api/ai/summarize', { history: messages.slice(-10) });
             const summary = data.summary || 'Tertarik diskusi lebih lanjut.';
-            const text = `Halo tim Sales ACTiV, saya ingin diskusi lebih lanjut.\n\n*Rangkuman Chat (AI):*\n${summary}`;
-            window.open(`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(text)}`, '_blank');
+            const text = `Halo tim Sales ACTiV, saya ingin diskusi lebih lanjut.\n\n*Rangkuman Chat Vion by ACTiV:*\n${summary}`;
+            const link = getWhatsAppLink(waNumber, {
+                message: text,
+                cta_position: 'vion_chatbot',
+                cta_label: 'Chatbot AI Redirection'
+            });
+            window.open(link, '_blank');
         } catch (err) {
-            window.open(`https://wa.me/${WA_NUMBER}?text=Halo tim Sales ACTiV, saya ingin diskusi lebih lanjut.`, '_blank');
+            const fallbackLink = getWhatsAppLink(waNumber, {
+                message: 'Halo tim Sales ACTiV, saya ingin diskusi lebih lanjut.',
+                cta_position: 'vion_chatbot',
+                cta_label: 'Chatbot AI Redirection (Fallback)'
+            });
+            window.open(fallbackLink, '_blank');
         } finally { setIsSummarizing(false); }
     };
     return (
@@ -430,7 +441,7 @@ const LeadForm = ({ onComplete }) => {
 };
 
 
-const MessageBubble = ({ msg, allMessages }) => {
+const MessageBubble = ({ msg, allMessages, waNumber }) => {
     const isUser = msg.role === 'user';
     const hasTrigger = !isUser && msg.content.includes('[WA_TRIGGER]');
     const cleanContent = !isUser ? msg.content.replace('[WA_TRIGGER]', '').trim() : msg.content;
@@ -450,7 +461,7 @@ const MessageBubble = ({ msg, allMessages }) => {
                     backdropFilter: 'blur(10px)', border: isUser ? 'none' : '1px solid rgba(255,255,255,0.08)', wordBreak: 'break-word',
                 }}>
                     {formatMarkdown(cleanContent)}
-                    {hasTrigger && <WhatsAppButton messages={allMessages} />}
+                    {hasTrigger && <WhatsAppButton messages={allMessages} waNumber={waNumber} />}
                 </div>
             </div>
             
@@ -484,13 +495,19 @@ export default function AiChatbot({ serverSettings }) {
                 return {
                     welcome_message: serverSettings.vion_welcome_message || '',
                     starter_buttons: JSON.parse(serverSettings.vion_starter_buttons || '[]'),
-                    is_active: serverSettings.vion_is_active === '1'
+                    is_active: serverSettings.vion_is_active === '1',
+                    whatsapp_number: serverSettings.vion_whatsapp_number || '6281280944719'
                 };
             } catch (e) {
                 console.error('Failed to parse starter buttons', e);
             }
         }
-        return { welcome_message: '', starter_buttons: [], is_active: true };
+        return { 
+            welcome_message: '', 
+            starter_buttons: [], 
+            is_active: true,
+            whatsapp_number: '6281280944719'
+        };
     });
 
     const messagesEndRef = useRef(null);
@@ -657,7 +674,7 @@ export default function AiChatbot({ serverSettings }) {
                             <div id="ai-messages" style={{ flex: 1, overflowY: 'auto', padding: '20px', display: 'flex', flexDirection: 'column', overscrollBehavior: 'contain' }}>
                                 {messages.map((msg, idx) => (
                                     <div key={idx} ref={idx === messages.length - 1 ? lastMessageRef : null}>
-                                        <MessageBubble msg={msg} allMessages={messages} />
+                                        <MessageBubble msg={msg} allMessages={messages} waNumber={botSettings.whatsapp_number} />
                                     </div>
                                 ))}
 

@@ -27,12 +27,14 @@ class ManageAiSettings extends Page implements \Filament\Forms\Contracts\HasForm
             'vion_is_active',
             'vion_welcome_message',
             'vion_starter_buttons',
+            'vion_whatsapp_number',
         ])->pluck('value', 'key');
 
         $this->form->fill([
             'vion_is_active' => ($settings['vion_is_active'] ?? '1') === '1',
             'vion_welcome_message' => $settings['vion_welcome_message'] ?? 'Halo! Saya Vion, ICT Solutions Consultant Anda. Ada yang bisa saya bantu hari ini?',
             'vion_starter_buttons' => json_decode($settings['vion_starter_buttons'] ?? '[]', true),
+            'vion_whatsapp_number' => $settings['vion_whatsapp_number'] ?? '628123456789',
         ]);
     }
 
@@ -46,6 +48,15 @@ class ManageAiSettings extends Page implements \Filament\Forms\Contracts\HasForm
                             ->label('Enable Vion Assistant')
                             ->helperText('Turn this OFF to hide the chatbot bubble from the website.')
                             ->default(true),
+                    ]),
+
+                Section::make('Sales Redirection')
+                    ->schema([
+                        \Filament\Forms\Components\TextInput::make('vion_whatsapp_number')
+                            ->label('WhatsApp Sales Number')
+                            ->helperText('Nomor WhatsApp yang akan dihubungi saat user klik tombol "Hubungi Tim Sales". Gunakan format internasional (misal: 628123456789)')
+                            ->placeholder('628123456789')
+                            ->required(),
                     ]),
 
                 Section::make('Greetings & Welcome')
@@ -104,6 +115,7 @@ class ManageAiSettings extends Page implements \Filament\Forms\Contracts\HasForm
         Setting::updateOrCreate(['key' => 'vion_is_active'], ['value' => $data['vion_is_active'] ? '1' : '0']);
         Setting::updateOrCreate(['key' => 'vion_welcome_message'], ['value' => $data['vion_welcome_message']]);
         Setting::updateOrCreate(['key' => 'vion_starter_buttons'], ['value' => json_encode($data['vion_starter_buttons'])]);
+        Setting::updateOrCreate(['key' => 'vion_whatsapp_number'], ['value' => $data['vion_whatsapp_number']]);
 
         Notification::make()
             ->title('Settings saved successfully')
