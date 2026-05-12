@@ -24,6 +24,12 @@ const formatMarkdown = (text) => {
     // 2. Fix cases where bullet points are joined to the previous sentence (e.g., "...Anda: * Solusi")
     processedText = processedText.replace(/([:!?.])\s*([\*•\-])\s+/g, '$1\n$2 ');
     
+    // Pre-processing: Clean up common AI hallucinations and normalize newlines
+    processedText = processedText
+        .replace(/<br\s*\/?>/gi, '\n') // Replace <br> tags with actual newlines
+        .replace(/\n{3,}/g, '\n\n')    // Normalize excessive newlines
+        .trim();
+    
     // 3. handle horizontal rules
     processedText = processedText.replace(/^---$/gm, '<hr />');
     
@@ -40,12 +46,18 @@ const formatMarkdown = (text) => {
             continue;
         }
 
-        // Table Detection
-        if (line.startsWith('|') && line.includes('|')) {
-            // Check if there is text after the last pipe
+        // Improved Table Detection
+        if (line.includes('|') && line.indexOf('|') !== line.lastIndexOf('|')) {
+            const firstPipeIndex = line.indexOf('|');
             const lastPipeIndex = line.lastIndexOf('|');
-            const tablePart = line.substring(0, lastPipeIndex + 1);
+            
+            const textBefore = line.substring(0, firstPipeIndex).trim();
+            const tablePart = line.substring(firstPipeIndex, lastPipeIndex + 1);
             const extraText = line.substring(lastPipeIndex + 1).trim();
+
+            if (textBefore) {
+                result.push(<div key={`text-before-${i}`} style={{ marginBottom: '8px' }}>{parseInlineFormatting(textBefore)}</div>);
+            }
 
             if (!currentTable) {
                 currentTable = { header: null, rows: [] };
@@ -75,7 +87,9 @@ const formatMarkdown = (text) => {
             }
 
             // Check if next line is not a table line
-            if (i === lines.length - 1 || !lines[i+1].trim().startsWith('|')) {
+            const nextLine = lines[i+1] ? lines[i+1].trim() : '';
+            const nextIsTable = nextLine.includes('|') && nextLine.indexOf('|') !== nextLine.lastIndexOf('|');
+            if (i === lines.length - 1 || !nextIsTable) {
                 const tableKey = `table-${i}`;
                 result.push(
                     <div key={tableKey} style={{ 
@@ -137,7 +151,7 @@ const formatMarkdown = (text) => {
         }
 
         if (!line) {
-            result.push(<div key={i} style={{ height: '12px' }} />);
+            result.push(<div key={i} style={{ height: '16px' }} />);
             continue;
         }
         
@@ -179,7 +193,7 @@ const formatMarkdown = (text) => {
             continue;
         }
 
-        result.push(<div key={i} style={{ marginBottom: '8px', opacity: 0.95 }}>{parseInlineFormatting(line)}</div>);
+        result.push(<div key={i} style={{ marginBottom: '12px', lineHeight: '1.6', opacity: 0.98 }}>{parseInlineFormatting(line)}</div>);
     }
     return result;
 };
@@ -243,21 +257,19 @@ const ProductCard = ({ product }) => {
     const defaultImg = '/assets/default.png';
     return (
         <a href={product.link} target="_blank" rel="noopener noreferrer" style={{
-            flexShrink: 0, width: '200px', background: 'rgba(255,255,255,0.05)', borderRadius: '18px', 
+            flexShrink: 0, width: '160px', background: 'rgba(255,255,255,0.05)', borderRadius: '15px', 
             border: '1px solid rgba(255,255,255,0.12)', overflow: 'hidden', backdropFilter: 'blur(15px)',
             display: 'flex', flexDirection: 'column', textDecoration: 'none', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)', 
-            cursor: 'pointer', boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
+            cursor: 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
         }} onMouseEnter={e => {
-            e.currentTarget.style.transform = 'translateY(-6px)';
+            e.currentTarget.style.transform = 'translateY(-4px)';
             e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
-            e.currentTarget.style.boxShadow = '0 10px 25px rgba(0,0,0,0.2)';
         }}
            onMouseLeave={e => {
             e.currentTarget.style.transform = 'translateY(0)';
             e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
-            e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.1)';
         }}>
-            <div style={{ width: '100%', height: '130px', background: '#fff', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '10px' }}>
+            <div style={{ width: '100%', height: '100px', background: '#fff', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '8px' }}>
                 <img 
                     src={product.image} 
                     onError={(e) => { e.target.onerror = null; e.target.src = defaultImg; }}
@@ -265,28 +277,28 @@ const ProductCard = ({ product }) => {
                     style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} 
                 />
                 <div style={{ 
-                    position: 'absolute', top: '10px', right: '10px', 
+                    position: 'absolute', top: '6px', right: '6px', 
                     background: aiAgent.actionGradient, color: '#fff', 
-                    fontSize: '10px', padding: '3px 10px', borderRadius: '20px', 
-                    fontWeight: '800', letterSpacing: '0.5px', boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+                    fontSize: '8px', padding: '2px 8px', borderRadius: '15px', 
+                    fontWeight: '800', letterSpacing: '0.4px'
                 }}>
                     READY
                 </div>
             </div>
-            <div style={{ padding: '15px', display: 'flex', flexDirection: 'column', gap: '10px', flex: 1 }}>
+            <div style={{ padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
                 <div style={{ 
-                    fontSize: '13px', color: '#fff', fontWeight: '600', 
-                    height: '40px', overflow: 'hidden', display: '-webkit-box', 
-                    WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', lineHeight: '1.5' 
+                    fontSize: '12px', color: '#fff', fontWeight: '600', 
+                    height: '36px', overflow: 'hidden', display: '-webkit-box', 
+                    WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', lineHeight: '1.4' 
                 }}>
                     {product.name}
                 </div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
-                    <div style={{ fontSize: '11px', color: 'rgba(255,255,255,0.6)', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                        Detail Produk ↗
+                    <div style={{ fontSize: '10px', color: 'rgba(255,255,255,0.5)', fontWeight: '500' }}>
+                        Detail ↗
                     </div>
                     {product.qty && (
-                        <div style={{ background: 'rgba(255,255,255,0.12)', color: '#fff', padding: '2px 8px', borderRadius: '8px', fontSize: '10px', fontWeight: 'bold' }}>
+                        <div style={{ background: 'rgba(255,255,255,0.1)', color: '#fff', padding: '1px 6px', borderRadius: '6px', fontSize: '9px', fontWeight: 'bold' }}>
                             x{product.qty}
                         </div>
                     )}

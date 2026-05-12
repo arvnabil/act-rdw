@@ -29,7 +29,7 @@ class GeminiService
                        "FORMAT WAJIB: " .
                        "1. Gunakan **BOLD** untuk setiap penyebutan nama produk. " .
                        "2. Tuliskan produk dengan format: '**NAMA_PRODUK** (ID_PRODUK: {id}) : Penjelasan singkat.' " .
-                       "3. Gunakan tabel Markdown untuk perbandingan. " .
+                       "3. Gunakan tabel Markdown untuk perbandingan. PENTING: Berikan dua baris kosong (double newline) sebelum dan sesudah tabel agar sistem bisa merendernya dengan benar.\n" .
                        "4. Gunakan baris baru (newline) yang cukup agar pesan tidak menumpuk. " .
                        "Gaya chat: Ringkas, profesional, mewah, dan berorientasi solusi.",
         ],
