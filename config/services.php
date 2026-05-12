@@ -40,4 +40,9 @@ return [
         'secret' => env('RECAPTCHA_SECRET_KEY'),
     ],
 
+    'supabase' => [
+        'url' => env('SUPABASE_URL'),
+        'key' => env('SUPABASE_KEY'),
+    ],
+
 ];
