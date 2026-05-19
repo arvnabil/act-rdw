@@ -58,9 +58,18 @@ class VertexAIDriver implements GeminiDriverInterface
 
     /**
      * Get a short-lived OAuth2 access token from the Service Account JSON file.
+     * Token is cached in Redis for 55 minutes to avoid re-fetching on every request.
+     * (Google Vertex AI tokens are valid for 1 hour)
      */
     protected function getAccessToken(): string
     {
+        $cacheKey = 'vertex_oauth2_token';
+
+        // Return from cache if still valid (avoids network roundtrip to Google Auth on every request)
+        if (Cache::has($cacheKey)) {
+            return Cache::get($cacheKey);
+        }
+
         if (!file_exists($this->credentialsPath)) {
             throw new \RuntimeException(
                 "Service Account file not found: {$this->credentialsPath}. " .
@@ -78,6 +87,11 @@ class VertexAIDriver implements GeminiDriverInterface
         if (empty($token['access_token'])) {
             throw new \RuntimeException('Failed to obtain Vertex AI access token.');
         }
+
+        // Cache for 55 minutes (token valid 1 hour, 5 min safety margin)
+        Cache::put($cacheKey, $token['access_token'], now()->addMinutes(55));
+
+        Log::info('Vertex AI: OAuth2 access token refreshed and cached.');
 
         return $token['access_token'];
     }

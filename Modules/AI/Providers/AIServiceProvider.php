@@ -4,6 +4,7 @@ namespace Modules\AI\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Modules\AI\Services\SemanticCacheService;
 
 class AIServiceProvider extends ServiceProvider
 {
@@ -13,7 +14,7 @@ class AIServiceProvider extends ServiceProvider
     public function boot()
     {
         \Log::info('AIServiceProvider Booting...');
-        
+
         $this->loadViewsFrom(__DIR__ . '/../Resources/views', $this->moduleNameLower);
 
         Route::middleware('web')
@@ -30,11 +31,10 @@ class AIServiceProvider extends ServiceProvider
         }
     }
 
-
-
-
     public function register()
     {
-        //
+        // Registrasi SemanticCacheService sebagai singleton — satu instance per request lifecycle
+        $this->app->singleton(SemanticCacheService::class, fn() => new SemanticCacheService());
     }
 }
+

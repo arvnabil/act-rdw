@@ -7,11 +7,17 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Queue\Attributes\Tries;
+use Illuminate\Queue\Attributes\Timeout;
+use Illuminate\Queue\Attributes\Backoff;
 use Modules\ProductCatalog\Models\Product;
 use Modules\AI\Services\GeminiService;
 use Modules\AI\Services\VectorService;
 use Illuminate\Support\Facades\Log;
 
+#[Tries(3)]
+#[Timeout(300)]
+#[Backoff(30)]
 class IngestProductData implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
