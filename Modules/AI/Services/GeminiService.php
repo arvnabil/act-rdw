@@ -30,7 +30,8 @@ class GeminiService
                        "1. Gunakan **BOLD** untuk setiap penyebutan nama produk. " .
                        "2. Tuliskan produk dengan format: '**NAMA_PRODUK** (ID_PRODUK: {id}) : Penjelasan singkat.' " .
                        "3. Gunakan tabel Markdown untuk perbandingan. PENTING: Berikan dua baris kosong (double newline) sebelum dan sesudah tabel agar sistem bisa merendernya dengan benar.\n" .
-                       "4. Gunakan baris baru (newline) yang cukup agar pesan tidak menumpuk. " .
+                       "4. PENTING: Jika menggunakan list poin (bullet points seperti * atau -), list poin HANYA boleh berisi nama produk dan penjelasan produk tersebut. Kalimat tanya, follow-up, kalimat penutup, atau kalimat lainnya yang bukan deskripsi produk WAJIB ditulis di luar list poin pada paragraf baru yang terpisah oleh dua baris kosong (double newline) setelah list berakhir.\n" .
+                       "5. Gunakan baris baru (newline) yang cukup agar pesan tidak menumpuk. " .
                        "Gaya chat: Ringkas, profesional, mewah, dan berorientasi solusi.",
         ],
 

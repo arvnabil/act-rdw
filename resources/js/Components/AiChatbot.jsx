@@ -24,6 +24,9 @@ const formatMarkdown = (text) => {
     // 2. Fix cases where bullet points are joined to the previous sentence (e.g., "...Anda: * Solusi")
     processedText = processedText.replace(/([:!?.])\s*([\*•\-])\s+/g, '$1\n$2 ');
     
+    // 3. Fix cases where closing remarks or follow-up questions are joined at the end of a bullet point line
+    processedText = processedText.replace(/((?:[\*•\-]\s+|\d+\.\s+)(?:\*\*.*?\*\*|[^:\n]+):?.+?[.!?])\s*(Jika Anda|Apakah Anda|Apakah ada|Masing-masing|Jangan ragu|Silakan|Hubungi|Ada yang|Bagaimana|Untuk informasi)/gi, '$1\n\n$2');
+    
     // Pre-processing: Clean up common AI hallucinations and normalize newlines
     processedText = processedText
         .replace(/<br\s*\/?>/gi, '\n') // Replace <br> tags with actual newlines
@@ -255,6 +258,7 @@ const parseInlineFormatting = (text) => {
 
 const ProductCard = ({ product }) => {
     const defaultImg = '/assets/default.png';
+    const [isHovered, setIsHovered] = useState(false);
     return (
         <a href={product.link} target="_blank" rel="noopener noreferrer" style={{
             flexShrink: 0, width: '160px', background: 'rgba(255,255,255,0.05)', borderRadius: '15px', 
@@ -262,10 +266,12 @@ const ProductCard = ({ product }) => {
             display: 'flex', flexDirection: 'column', textDecoration: 'none', transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)', 
             cursor: 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.1)'
         }} onMouseEnter={e => {
+            setIsHovered(true);
             e.currentTarget.style.transform = 'translateY(-4px)';
             e.currentTarget.style.borderColor = 'rgba(255,255,255,0.25)';
         }}
            onMouseLeave={e => {
+            setIsHovered(false);
             e.currentTarget.style.transform = 'translateY(0)';
             e.currentTarget.style.borderColor = 'rgba(255,255,255,0.12)';
         }}>
@@ -276,14 +282,30 @@ const ProductCard = ({ product }) => {
                     alt={product.name} 
                     style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }} 
                 />
-                <div style={{ 
-                    position: 'absolute', top: '6px', right: '6px', 
-                    background: aiAgent.actionGradient, color: '#fff', 
-                    fontSize: '8px', padding: '2px 8px', borderRadius: '15px', 
-                    fontWeight: '800', letterSpacing: '0.4px'
-                }}>
-                    READY
-                </div>
+                {product.link_accommerce && (
+                    <div style={{
+                        position: 'absolute', top: 0, left: 0, width: '100%', height: '100%',
+                        background: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(4px)',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        opacity: isHovered ? 1 : 0, transition: 'all 0.3s ease',
+                        pointerEvents: isHovered ? 'auto' : 'none', zIndex: 10
+                    }}>
+                        <button onClick={(e) => {
+                            e.stopPropagation();
+                            e.preventDefault();
+                            window.open(product.link_accommerce, '_blank');
+                        }} style={{
+                            background: 'linear-gradient(135deg, #3b82f6, #1d4ed8)',
+                            color: '#fff', fontSize: '10px', fontWeight: '800',
+                            padding: '6px 12px', borderRadius: '20px', textTransform: 'uppercase',
+                            boxShadow: '0 4px 10px rgba(59, 130, 246, 0.4)', border: 'none',
+                            cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px',
+                            transition: 'transform 0.2s', outline: 'none'
+                        }} onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}>
+                            🛒 Toko Online
+                        </button>
+                    </div>
+                )}
             </div>
             <div style={{ padding: '10px 12px', display: 'flex', flexDirection: 'column', gap: '8px', flex: 1 }}>
                 <div style={{ 
@@ -438,7 +460,7 @@ const getGreetingTime = () => {
 };
 
 const LeadForm = ({ onComplete }) => {
-    const [formData, setFormData] = useState({ name: '', whatsapp: '', email: '' });
+    const [formData, setFormData] = useState({ name: '', whatsapp: '', email: '', company: '' });
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const handleSubmit = async (e) => {
@@ -453,20 +475,22 @@ const LeadForm = ({ onComplete }) => {
     };
 
     return (
-        <div style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px', color: '#fff' }}>
-            <div style={{ textAlign: 'center', marginBottom: '8px' }}>
-                <h3 style={{ margin: 0, fontSize: '18px' }}>Halo, Selamat {getGreetingTime()}! 👋</h3>
-                <p style={{ margin: '4px 0 0', fontSize: '13px', opacity: 0.8 }}>Boleh tahu siapa yang kami ajak bicara?</p>
+        <div style={{ padding: '16px 20px', display: 'flex', flexDirection: 'column', gap: '12px', color: '#fff' }}>
+            <div style={{ textAlign: 'center', marginBottom: '4px' }}>
+                <h3 style={{ margin: 0, fontSize: '16px', fontWeight: '600' }}>Halo, Selamat {getGreetingTime()}! 👋</h3>
+                <p style={{ margin: '3px 0 0', fontSize: '12px', opacity: 0.8 }}>Boleh tahu siapa yang kami ajak bicara?</p>
             </div>
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 <input required placeholder="Nama Lengkap" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})}
-                       style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', padding: '12px', color: '#fff', outline: 'none' }} />
+                       style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '0 12px', height: '40px', boxSizing: 'border-box', fontSize: '13px', color: '#fff', outline: 'none' }} />
                 <input required placeholder="No. WhatsApp (Contoh: 0812...)" value={formData.whatsapp} onChange={e => setFormData({...formData, whatsapp: e.target.value})}
-                       style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', padding: '12px', color: '#fff', outline: 'none' }} />
+                       style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '0 12px', height: '40px', boxSizing: 'border-box', fontSize: '13px', color: '#fff', outline: 'none' }} />
                 <input type="email" placeholder="Email (Opsional)" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})}
-                       style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '12px', padding: '12px', color: '#fff', outline: 'none' }} />
+                       style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '0 12px', height: '40px', boxSizing: 'border-box', fontSize: '13px', color: '#fff', outline: 'none' }} />
+                <input placeholder="Nama Perusahaan (Isi 'Personal' jika tidak ada)" value={formData.company} onChange={e => setFormData({...formData, company: e.target.value})}
+                       style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)', borderRadius: '8px', padding: '0 12px', height: '40px', boxSizing: 'border-box', fontSize: '13px', color: '#fff', outline: 'none' }} />
                 <button type="submit" disabled={isSubmitting} style={{
-                    background: aiAgent.actionGradient, color: '#fff', border: 'none', borderRadius: '12px', padding: '12px', fontWeight: '700', cursor: 'pointer', marginTop: '8px'
+                    background: aiAgent.actionGradient, color: '#fff', border: 'none', borderRadius: '8px', height: '40px', boxSizing: 'border-box', fontSize: '13px', fontWeight: '700', cursor: 'pointer', marginTop: '4px', transition: 'opacity 0.2s', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%'
                 }}>
                     {isSubmitting ? '⏳ Menyiapkan...' : 'Mulai Konsultasi'}
                 </button>
