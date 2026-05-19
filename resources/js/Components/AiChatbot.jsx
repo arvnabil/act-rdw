@@ -500,9 +500,44 @@ const LeadForm = ({ onComplete }) => {
 };
 
 
+const TypingText = ({ text, onComplete }) => {
+    const [displayedText, setDisplayedText] = useState('');
+    const index = useRef(0);
+    const textRef = useRef(text);
+
+    useEffect(() => {
+        textRef.current = text;
+        setDisplayedText('');
+        index.current = 0;
+    }, [text]);
+
+    useEffect(() => {
+        let intervalId;
+        const speed = 12; // Kecepatan mengetik ultra-smooth (ms)
+
+        const type = () => {
+            if (index.current < textRef.current.length) {
+                setDisplayedText(prev => prev + textRef.current.charAt(index.current));
+                index.current += 1;
+                intervalId = setTimeout(type, speed);
+            } else if (onComplete) {
+                onComplete();
+            }
+        };
+
+        intervalId = setTimeout(type, speed);
+        return () => clearTimeout(intervalId);
+    }, [text, onComplete]);
+
+    return <>{formatMarkdown(displayedText)}</>;
+};
+
+
 const MessageBubble = ({ msg, allMessages, waNumber }) => {
     const isUser = msg.role === 'user';
-    const hasTrigger = !isUser && (msg.content.includes('[HUBUNGI_SALES]') || msg.content.includes('[WA_TRIGGER]'));
+    const [isTypingDone, setIsTypingDone] = useState(!msg.isNew);
+
+    const hasTrigger = !isUser && isTypingDone && (msg.content.includes('[HUBUNGI_SALES]') || msg.content.includes('[WA_TRIGGER]'));
     const cleanContent = !isUser ? msg.content.replace(/\[HUBUNGI_SALES\]|\[WA_TRIGGER\]/g, '').trim() : msg.content;
 
     return (
@@ -520,14 +555,20 @@ const MessageBubble = ({ msg, allMessages, waNumber }) => {
                     backdropFilter: 'blur(12px)', border: isUser ? 'none' : '1px solid rgba(255,255,255,0.1)', wordBreak: 'break-word',
                     boxShadow: '0 4px 15px rgba(0,0,0,0.1)',
                 }}>
-                    {formatMarkdown(cleanContent)}
+                    {!isUser && msg.isNew && !isTypingDone ? (
+                        <TypingText text={cleanContent} onComplete={() => setIsTypingDone(true)} />
+                    ) : (
+                        formatMarkdown(cleanContent)
+                    )}
                     {hasTrigger && <WhatsAppButton messages={allMessages} waNumber={waNumber} />}
                 </div>
             </div>
             
             {/* Horizontal Product Recommendations */}
-            {!isUser && msg.products && msg.products.length > 0 && (
-                <ProductList products={msg.products} />
+            {!isUser && isTypingDone && msg.products && msg.products.length > 0 && (
+                <div style={{ animation: 'slideUp 0.3s ease', width: '100%' }}>
+                    <ProductList products={msg.products} />
+                </div>
             )}
 
         </div>
@@ -653,7 +694,7 @@ export default function AiChatbot({ serverSettings }) {
             
             // Show hardcoded response after a small "thinking" delay for realism
             setTimeout(() => {
-                setMessages(prev => [...prev, { role: 'assistant', content: btn.instant_response }]);
+                setMessages(prev => [...prev, { role: 'assistant', content: btn.instant_response, isNew: true }]);
                 setIsLoading(false);
             }, 600);
         } else {
@@ -668,9 +709,9 @@ export default function AiChatbot({ serverSettings }) {
         setIsLoading(true);
         try {
             const { data } = await axios.post('/api/ai/chat', { message: msg, session_id: sessionId });
-            setMessages(prev => [...prev, { role: 'assistant', content: data.response, products: data.products }]);
+            setMessages(prev => [...prev, { role: 'assistant', content: data.response, products: data.products, isNew: true }]);
         } catch (err) {
-            setMessages(prev => [...prev, { role: 'assistant', content: 'Maaf, saya sedang mengalami gangguan teknis. 🙏' }]);
+            setMessages(prev => [...prev, { role: 'assistant', content: 'Maaf, saya sedang mengalami gangguan teknis. 🙏', isNew: true }]);
         } finally { setIsLoading(false); }
     };
 
