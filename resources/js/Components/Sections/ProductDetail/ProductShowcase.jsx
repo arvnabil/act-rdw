@@ -63,10 +63,11 @@ export default function ProductShowcase({ product }) {
 
     // Add Product Sheet as a conditional high-priority card
     const isDatasheetAvailable = !!(product.datasheet_url && product.datasheet_url.trim() !== "" && product.datasheet_url !== "#");
+    const isPdfUrl = isDatasheetAvailable && product.datasheet_url.toLowerCase().includes(".pdf");
     topGridItems.push({ 
         label: "Product Sheet", 
         value: isDatasheetAvailable ? null : "Belum Tersedia", 
-        icon: "fa-file-pdf", 
+        icon: isPdfUrl ? "fa-file-pdf" : "fa-file-lines", 
         link: isDatasheetAvailable ? product.datasheet_url : null,
         rel: product.datasheet_rel || "noopener noreferrer",
         isDatasheet: true
@@ -204,14 +205,17 @@ export default function ProductShowcase({ product }) {
                                     </span>
                                     <span className="premium-card-value">
                                         {item.value !== null ? (item.value || "-") : null}
-                                        {item.isDatasheet && item.link && (
-                                            <div className="mt-2">
-                                                <span className="premium-btn-tech shadow-sm">
-                                                    <i className="fa-solid fa-download"></i>
-                                                    Download PDF
-                                                </span>
-                                            </div>
-                                        )}
+                                        {item.isDatasheet && item.link && (() => {
+                                            const isPdf = item.link.toLowerCase().includes(".pdf");
+                                            return (
+                                                <div className="mt-2">
+                                                    <span className="premium-btn-tech shadow-sm">
+                                                        <i className={`fa-solid ${isPdf ? "fa-download" : "fa-arrow-up-right-from-square"} me-1`}></i>
+                                                        {isPdf ? "Download PDF" : "Lihat Datasheet"}
+                                                    </span>
+                                                </div>
+                                            );
+                                        })()}
                                     </span>
                                     {item.label === "Brand" && (product.brand?.config?.partner?.enabled !== false) && (
                                         <div 
