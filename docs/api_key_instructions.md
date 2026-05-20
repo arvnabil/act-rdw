@@ -26,6 +26,21 @@ Dokumen ini menjelaskan cara mengelola dan menggunakan API Key untuk keperluan i
 
 ---
 
+## Ruang Lingkup Akses (API Key Scopes)
+
+API Key ini **wajib** digunakan untuk mengakses endpoint otomatisasi dan penulisan data eksternal:
+*   `GET /api/automation/leads` (Mendapatkan data prospek terbaru)
+*   `POST /api/automation/leads` (Mengirimkan prospek dari eksternal)
+*   `POST /api/automation/wa-trigger` (Mencatat analytics WhatsApp trigger)
+*   `POST /api/products/import` (Melakukan import/sinkronisasi produk baru)
+*   `POST /api/news/import` (Melakukan import/sinkronisasi berita baru)
+
+> [!NOTE]
+> **Endpoint Publik Read-Only (Katalog & Berita):**
+> Endpoint katalog produk dan artikel berita yang mengimplementasikan standar **JSON:API Laravel 13** (seperti `GET /api/products` dan `GET /api/news`) bersifat **publik & read-only**, sehingga **tidak memerlukan header `X-API-KEY`** untuk diakses oleh frontend/klien.
+
+---
+
 ## Keamanan API Key
 
 > [!CAUTION]

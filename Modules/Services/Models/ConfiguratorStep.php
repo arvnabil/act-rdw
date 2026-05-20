@@ -9,27 +9,36 @@ use Modules\Services\Models\ConfiguratorQuestion;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 use App\Traits\HasImageCleanup;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 
+#[Fillable([
+    'configurator_id',
+    'name',
+    'title',
+    'description',
+    'sort_order',
+    'layout',
+    'image',
+    'conditions',
+])]
 class ConfiguratorStep extends Model
 {
     use HasFactory, HasImageCleanup;
 
     protected $cleanupFields = ['image'];
 
-    protected $fillable = [
-        'configurator_id',
-        'name',
-        'title',
-        'description',
-        'sort_order',
-        'layout',
-        'image',
-        'conditions',
-    ];
 
-    protected $casts = [
-        'conditions' => 'array',
-    ];
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'conditions' => 'array',
+        ];
+    }
 
     public function configurator(): BelongsTo
     {

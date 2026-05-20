@@ -9,26 +9,35 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 use App\Traits\HasImageCleanup;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 
+#[Fillable([
+    'question_id',
+    'label',
+    'value',
+    'metadata',
+    'sort_order',
+    'conditions',
+])]
 class ConfiguratorOption extends Model
 {
     use HasFactory, HasImageCleanup;
 
     protected $cleanupFields = ['metadata'];
 
-    protected $fillable = [
-        'question_id',
-        'label',
-        'value',
-        'metadata',
-        'sort_order',
-        'conditions',
-    ];
 
-    protected $casts = [
-        'metadata' => 'array',
-        'conditions' => 'array',
-    ];
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'metadata' => 'array',
+            'conditions' => 'array',
+        ];
+    }
 
     public function question(): BelongsTo
     {

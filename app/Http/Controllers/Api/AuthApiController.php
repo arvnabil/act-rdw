@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Routing\Attributes\Middleware;
 
 class AuthApiController extends Controller
 {
@@ -29,6 +30,7 @@ class AuthApiController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
+    #[Middleware('auth:api')]
     public function me()
     {
         return response()->json(auth('api')->user());
@@ -39,6 +41,7 @@ class AuthApiController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
+    #[Middleware('auth:api')]
     public function logout()
     {
         auth('api')->logout();
@@ -51,6 +54,7 @@ class AuthApiController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
+    #[Middleware('auth:api')]
     public function refresh()
     {
         return $this->respondWithToken(auth('api')->refresh());

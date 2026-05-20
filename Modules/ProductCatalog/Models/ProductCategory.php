@@ -4,26 +4,34 @@ namespace Modules\ProductCatalog\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 use App\Traits\HasImageCleanup;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 
+#[Fillable([
+    'name',
+    'slug',
+    'icon',
+    'sort_order',
+    'is_active',
+])]
 class ProductCategory extends Model
 {
     use HasFactory, HasImageCleanup;
 
     protected $cleanupFields = ['icon'];
 
-    protected $fillable = [
-        'name',
-        'slug',
-        'icon',
-        'sort_order',
-        'is_active',
-    ];
 
-    protected $casts = [
-        'is_active' => 'boolean',
-    ];
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'is_active' => 'boolean',
+        ];
+    }
 
     public function products()
     {

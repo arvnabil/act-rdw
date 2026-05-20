@@ -5,10 +5,11 @@ namespace Modules\Services\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 
+#[Fillable(['service_id', 'label', 'value'])]
 class ServiceCategory extends Model
 {
-    protected $fillable = ['service_id', 'label', 'value'];
 
     public function service(): BelongsTo
     {

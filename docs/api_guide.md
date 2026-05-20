@@ -96,6 +96,139 @@ Digunakan untuk mencatat aktivitas ketika sebuah otomasi eksternal mengirim What
 
 ---
 
+## Endpoint Katalog & Berita (JSON:API)
+
+Untuk memfasilitasi integrasi frontend modern, API Katalog Produk dan Berita menyajikan data yang mematuhi standar internasional **JSON:API** bawaan **Laravel 13**. 
+
+Respons dari endpoint ini selalu menyertakan header `Content-Type: application/vnd.api+json` dan dibungkus di dalam struktur standar berikut:
+* `data`: Berisi payload utama (objek tunggal atau array). Terdiri dari `id`, `type`, `attributes`, dan `relationships`.
+* `included`: Menyimpan data relasi yang dimuat secara bersarang (*eager-loaded*) untuk menghindari query berulang (*N+1 problem*).
+* `links`: Link navigasi pagination standar.
+* `meta`: Metadata halaman seperti jumlah total record, halaman saat ini, dll.
+
+### 1. Daftar Produk (Get Products)
+Mendapatkan seluruh daftar produk aktif. Relasi `brand`, `service`, `categories`, `solutions`, dan `seo` otomatis diserialisasikan secara terstandardisasi.
+
+**Endpoint:** `GET /products`
+
+**Parameter (Query):**
+* `limit` (int, optional): Batas item per halaman (default: 15).
+* `category` (string, optional): Filter berdasarkan slug kategori (misal: `video-conference`).
+* `brand` (string, optional): Filter berdasarkan slug brand (misal: `logitech`).
+
+**Contoh Respon:**
+```json
+{
+  "data": [
+    {
+      "id": "1",
+      "type": "products",
+      "attributes": {
+        "name": "Logitech Meetup 2",
+        "slug": "logitech-meetup-2",
+        "sku": "LOGI-MEET2",
+        "price": 15000000.0,
+        "description": "A huddle room camera.",
+        "image_url": "https://act-rdw.test/storage/products/meetup2.png",
+        "datasheet_url": null,
+        "specs": null,
+        "features": null,
+        "tags": null,
+        "specification_text": null,
+        "features_text": null,
+        "link_accommerce": null,
+        "whatsapp_note": null,
+        "is_active": true,
+        "is_featured": true
+      },
+      "relationships": {
+        "brand": {
+          "data": { "id": "1", "type": "brands" }
+        },
+        "categories": {
+          "data": [
+            { "id": "2", "type": "categories" }
+          ]
+        },
+        "seo": {
+          "data": { "id": "5", "type": "seo" }
+        }
+      }
+    }
+  ],
+  "included": [
+    {
+      "id": "1",
+      "type": "brands",
+      "attributes": {
+        "name": "Logitech",
+        "slug": "logitech"
+      }
+    },
+    {
+      "id": "2",
+      "type": "categories",
+      "attributes": {
+        "name": "Video Conference",
+        "slug": "video-conference"
+      }
+    },
+    {
+      "id": "5",
+      "type": "seo",
+      "attributes": {
+        "title": "Logitech Meetup 2 - ACTiV",
+        "description": "Beli Logitech Meetup 2 bergaransi resmi.",
+        "keywords": null,
+        "og_title": null,
+        "og_description": null,
+        "og_image_url": null,
+        "canonical_url": null,
+        "noindex": false
+      }
+    }
+  ],
+  "links": {
+    "first": "https://act-rdw.test/api/products?page=1",
+    "last": "https://act-rdw.test/api/products?page=1",
+    "prev": null,
+    "next": null
+  },
+  "meta": {
+    "current_page": 1,
+    "from": 1,
+    "last_page": 1,
+    "path": "https://act-rdw.test/api/products",
+    "per_page": 15,
+    "to": 1,
+    "total": 1
+  }
+}
+```
+
+---
+
+### 2. Detail Produk (Get Product Detail)
+Mendapatkan detail lengkap satu produk spesifik berdasarkan slug.
+
+**Endpoint:** `GET /products/{slug}`
+
+---
+
+### 3. Daftar Berita (Get News)
+Mendapatkan seluruh daftar berita/artikel yang diterbitkan. Relasi `categories`, `tags`, `author`, dan `seo` terintegrasi penuh.
+
+**Endpoint:** `GET /news`
+
+---
+
+### 4. Detail Berita (Get News Detail)
+Mendapatkan isi berita lengkap berdasarkan slug.
+
+**Endpoint:** `GET /news/{slug}`
+
+---
+
 ## Contoh Penggunaan (Code Snippet)
 
 ### cURL

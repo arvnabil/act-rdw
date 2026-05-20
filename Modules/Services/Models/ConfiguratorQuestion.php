@@ -8,24 +8,34 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\Services\Models\ConfiguratorOption;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+
+#[Fillable([
+    'step_id',
+    'label',
+    'variable_name',
+    'type',
+    'is_mandatory',
+    'sort_order',
+    'conditions',
+])]
 class ConfiguratorQuestion extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'step_id',
-        'label',
-        'variable_name',
-        'type',
-        'is_mandatory',
-        'sort_order',
-        'conditions',
-    ];
 
-    protected $casts = [
-        'conditions' => 'array',
-        'is_mandatory' => 'boolean',
-    ];
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'conditions' => 'array',
+            'is_mandatory' => 'boolean',
+        ];
+    }
 
     public function step(): BelongsTo
     {

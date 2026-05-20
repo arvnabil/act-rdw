@@ -4,20 +4,13 @@ namespace Modules\AI\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Attributes\Table;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 
+#[Table('ai_chat_sessions')]
+#[Fillable(['name', 'whatsapp', 'email', 'company', 'persona', 'summary', 'status'])]
 class ChatSession extends Model
 {
-    protected $table = 'ai_chat_sessions';
-
-    protected $fillable = [
-        'name',
-        'whatsapp',
-        'email',
-        'company',
-        'persona',
-        'summary',
-        'status',
-    ];
 
     public function messages(): HasMany
     {

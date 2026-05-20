@@ -656,12 +656,7 @@
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/products/zoom-ai-expert-assist</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-            </url>
-    <url>
-    <loc>http://localhost/products/maxhub-ifp-v7-series</loc>
+    <loc>http://localhost/products/zoom-ai-expert-assist-annual</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
@@ -911,7 +906,7 @@
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/products/zoom-500-participants-meeting</loc>
+    <loc>http://localhost/products/zoom-500-participants-meeting-annual</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
@@ -946,182 +941,72 @@
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/products/zoom-clips-plus</loc>
+    <loc>http://localhost/products/zoom-clips-plus-annual</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/products/zoom-events</loc>
+    <loc>http://localhost/products/zoom-events-annual</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/products/zoom-events-video-cms</loc>
+    <loc>http://localhost/products/zoom-events-video-cms-annual</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/products/zoom-mesh-for-meetings</loc>
+    <loc>http://localhost/products/zoom-mesh-for-meetings-annual</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/products/zoom-node</loc>
+    <loc>http://localhost/products/zoom-node-annual</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/products/zoom-rooms</loc>
+    <loc>http://localhost/products/zoom-rooms-annual</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/products/zoom-scheduler</loc>
+    <loc>http://localhost/products/zoom-scheduler-annual</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/products/zoom-webinar</loc>
+    <loc>http://localhost/products/zoom-webinar-annual</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/products/zoom-webinars-plus</loc>
+    <loc>http://localhost/products/zoom-webinars-plus-annual</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/products/zoom-workplace-business</loc>
+    <loc>http://localhost/products/zoom-workplace-business-annual</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/products/zoom-workplace-enterprise</loc>
+    <loc>http://localhost/products/zoom-workplace-enterprise-annual</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/products/zoom-workplace-pro</loc>
+    <loc>http://localhost/products/zoom-workplace-pro-annual</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/products/zoom-workspace-reservation</loc>
+    <loc>http://localhost/products/zoom-workspace-reservation-annual</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
-    <loc>http://localhost/products/yealink-meetingbar-a25</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-            </url>
-    <url>
-    <loc>http://localhost/products/yealink-meetingbar-a50</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-            </url>
-    <url>
-    <loc>http://localhost/products/yealink-meetingboard-pro</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-            </url>
-    <url>
-    <loc>http://localhost/products/yealink-mvc-s98</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-            </url>
-    <url>
-    <loc>http://localhost/products/yealink-mvc-s90</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-            </url>
-    <url>
-    <loc>http://localhost/products/yealink-mvc-s80</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-            </url>
-    <url>
-    <loc>http://localhost/products/jabra-evolve3-75</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-            </url>
-    <url>
-    <loc>http://localhost/products/jabra-evolve3-85</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-            </url>
-    <url>
-    <loc>http://localhost/products/jabra-speak2-75</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-            </url>
-    <url>
-    <loc>http://localhost/products/jabra-speak2-55</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-            </url>
-    <url>
-    <loc>http://localhost/products/jabra-speak2-40</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-            </url>
-    <url>
-    <loc>http://localhost/products/jabra-panacast-room-kit</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-            </url>
-    <url>
-    <loc>http://localhost/products/jabra-scheduler</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-            </url>
-    <url>
-    <loc>http://localhost/products/maxhub-xbar-w70</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-            </url>
-    <url>
-    <loc>http://localhost/products/maxhub-xboard-v7-t-series</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-            </url>
-    <url>
-    <loc>http://localhost/products/maxhub-raptor-series-v3-lite</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-            </url>
-    <url>
-    <loc>http://localhost/products/maxhub-v6-classic-series</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-            </url>
-    <url>
-    <loc>http://localhost/products/maxhub-capture-system-v3</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-            </url>
-    <url>
-    <loc>http://localhost/products/trueconf-server</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-            </url>
-    <url>
-    <loc>http://localhost/products/trueconf-server-free</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-            </url>
-    <url>
-    <loc>http://localhost/products/trueconf-room</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-            </url>
-    <url>
-    <loc>http://localhost/products/trueconf-group</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-            </url>
-    <url>
-    <loc>http://localhost/products/trueconf-enterprise</loc>
+    <loc>http://localhost/products/maxhub-ifp-v7-series</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
@@ -1427,6 +1312,41 @@
             </url>
     <url>
     <loc>http://localhost/services/platform-meeting/secure-medical-server</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>http://localhost/services/led-video-wall/digital-signage</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>http://localhost/services/led-video-wall/command-center</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>http://localhost/services/led-video-wall/ruang-kontrol</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>http://localhost/services/led-video-wall/media-iklan</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>http://localhost/services/led-video-wall/public-display</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>http://localhost/services/led-video-wall/retail</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+            </url>
+    <url>
+    <loc>http://localhost/services/led-video-wall/corporate</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
             </url>

@@ -2,20 +2,50 @@
 
 namespace Modules\News\Transformers;
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Http\Request;
+use Illuminate\Http\Resources\JsonApi\JsonApiResource;
+use Modules\SEO\Transformers\SeoMetaResource;
 
-class NewsResource extends JsonResource
+class NewsResource extends JsonApiResource
 {
     /**
-     * Transform the resource into an array.
+     * Indicate that relationship loading should automatically rely on previously loaded relationships.
      *
-     * @param  \Illuminate\Http\Request
+     * @var bool
+     */
+    protected bool $includesPreviouslyLoadedRelationships = true;
+
+    /**
+     * Get the resource's ID.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return string
+     */
+    public function toId(Request $request): string
+    {
+        return (string) $this->id;
+    }
+
+    /**
+     * Get the resource's type.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return string
+     */
+    public function toType(Request $request): string
+    {
+        return 'news';
+    }
+
+    /**
+     * Transform the resource's attributes into an array.
+     *
+     * @param  \Illuminate\Http\Request  $request
      * @return array
      */
-    public function toArray($request)
+    public function toAttributes(Request $request): array
     {
         return [
-            'id' => $this->id,
             'title' => $this->title,
             'slug' => $this->slug,
             'excerpt' => $this->excerpt,
@@ -23,26 +53,22 @@ class NewsResource extends JsonResource
             'status' => $this->status,
             'published_at' => $this->published_at,
             'thumbnail_url' => $this->thumbnail ? url('storage/' . $this->thumbnail) : null,
-            
-            'categories' => $this->whenLoaded('categories', function() {
-                return $this->categories->map(fn($c) => ['id' => $c->id, 'name' => $c->name, 'slug' => $c->slug]);
-            }),
-            'tags' => $this->whenLoaded('tags', function() {
-                return $this->tags->map(fn($t) => ['id' => $t->id, 'name' => $t->name, 'slug' => $t->slug]);
-            }),
-            'author' => $this->whenLoaded('author', function() {
-                return $this->author ? ['id' => $this->author->id, 'name' => $this->author->name] : null;
-            }),
-            
-            // SEO Meta data
-            'seo_title' => $this->whenLoaded('seo', fn() => $this->seo->title ?? null),
-            'seo_description' => $this->whenLoaded('seo', fn() => $this->seo->description ?? null),
-            'seo_keywords' => $this->whenLoaded('seo', fn() => $this->seo->keywords ?? null),
-            'og_title' => $this->whenLoaded('seo', fn() => $this->seo->og_title ?? null),
-            'og_description' => $this->whenLoaded('seo', fn() => $this->seo->og_description ?? null),
-            'og_image_url' => $this->whenLoaded('seo', fn() => ($this->seo && $this->seo->og_image) ? url('storage/' . $this->seo->og_image) : null),
-            'canonical_url' => $this->whenLoaded('seo', fn() => $this->seo->canonical_url ?? null),
-            'noindex' => $this->whenLoaded('seo', fn() => $this->seo->noindex ?? false),
+        ];
+    }
+
+    /**
+     * Get the resource's relationships.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    public function toRelationships(Request $request): array
+    {
+        return [
+            'categories' => NewsCategoryResource::class,
+            'tags' => NewsTagResource::class,
+            'author' => UserResource::class,
+            'seo' => SeoMetaResource::class,
         ];
     }
 }

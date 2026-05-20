@@ -4,23 +4,30 @@ namespace Modules\ProductCatalog\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-
 use App\Traits\HasImageCleanup;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 
+#[Fillable(['name', 'slug', 'logo_path', 'website_url', 'image', 'breadcrumb_image', 'thumbnail', 'desc', 'category', 'is_featured', 'show_breadcrumb', 'landing_config'])]
 class Brand extends Model
 {
     use HasFactory, HasImageCleanup;
 
     protected $cleanupFields = ['image', 'breadcrumb_image', 'thumbnail', 'logo_path', 'landing_config'];
 
-    protected $fillable = ['name', 'slug', 'logo_path', 'website_url', 'image', 'breadcrumb_image', 'thumbnail', 'desc', 'category', 'is_featured', 'show_breadcrumb', 'landing_config'];
 
-
-    protected $casts = [
-        'landing_config' => 'array',
-        'is_featured' => 'boolean',
-        'show_breadcrumb' => 'boolean',
-    ];
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'landing_config' => 'array',
+            'is_featured' => 'boolean',
+            'show_breadcrumb' => 'boolean',
+        ];
+    }
 
     public function products()
     {

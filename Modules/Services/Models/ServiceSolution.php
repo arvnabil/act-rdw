@@ -8,6 +8,24 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Modules\ProductCatalog\Models\Brand;
 
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+
+#[Fillable([
+    'service_id',
+    'title',
+    'slug',
+    'subtitle',
+    'description',
+    'thumbnail',
+    'breadcrumb_image',
+    'show_breadcrumb',
+    'features',
+    'showcase',
+    'wa_message',
+    'configurator_slug',
+    'show_showcase',
+    'sort_order'
+])]
 class ServiceSolution extends Model
 {
     use \Modules\SEO\Traits\HasSeoMeta;
@@ -15,28 +33,20 @@ class ServiceSolution extends Model
 
     protected $cleanupFields = ['thumbnail', 'breadcrumb_image', 'features', 'showcase'];
 
-    protected $fillable = [
-        'service_id',
-        'title',
-        'slug',
-        'subtitle',
-        'description',
-        'thumbnail',
-        'breadcrumb_image',
-        'show_breadcrumb',
-        'features',
-        'showcase',
-        'wa_message',
-        'configurator_slug',
-        'show_showcase',
-        'sort_order'
-    ];
 
-    protected $casts = [
-        'features' => 'array',
-        'showcase' => 'array',
-        'show_showcase' => 'boolean',
-    ];
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'features' => 'array',
+            'showcase' => 'array',
+            'show_showcase' => 'boolean',
+        ];
+    }
 
     public function service(): BelongsTo
     {

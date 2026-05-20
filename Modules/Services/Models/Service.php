@@ -9,29 +9,29 @@ use Modules\SEO\Traits\HasSeoMeta;
 
 
 use App\Traits\HasImageCleanup;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 
+#[Fillable([
+    'name',
+    'slug',
+    'description',
+    'content',
+    'excerpt',
+    'featured_image',
+    'thumbnail',
+    'icon',
+    'breadcrumb_image',
+    'show_breadcrumb',
+    'hero_subtitle',
+    'grid_title',
+    'sort_order'
+])]
 class Service extends Model
 {
     use HasFactory, HasSeoMeta, HasImageCleanup;
 
     protected $cleanupFields = ['featured_image', 'breadcrumb_image', 'thumbnail', 'icon'];
     protected $richEditorCleanupFields = ['content'];
-
-    protected $fillable = [
-        'name',
-        'slug',
-        'description',
-        'content',
-        'excerpt',
-        'featured_image',
-        'thumbnail',
-        'icon',
-        'breadcrumb_image',
-        'show_breadcrumb',
-        'hero_subtitle',
-        'grid_title',
-        'sort_order'
-    ];
 
     // A service has many products (e.g. Surveillance sets)
     public function products()

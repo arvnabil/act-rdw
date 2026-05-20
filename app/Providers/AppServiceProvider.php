@@ -4,6 +4,11 @@ namespace App\Providers;
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Gate;
+use App\Models\User;
+use Dedoc\Scramble\Scramble;
+use Dedoc\Scramble\Support\Generator\OpenApi;
+use Dedoc\Scramble\Support\Generator\SecurityScheme;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -72,6 +77,24 @@ class AppServiceProvider extends ServiceProvider
 
             return $this;
         });
+
+        // Register API Documentation authorization gate (Dedoc Scramble)
+        Gate::define('viewApiDocs', function (?User $user) {
+            // In local development environment, anyone can access
+            if (app()->environment('local')) {
+                return true;
+            }
+
+            // In other environments (production, staging), user must be authenticated
+            return $user !== null;
+        });
+
+        // Configure OpenAPI Document with X-API-KEY security scheme
+        Scramble::configure()
+            ->withDocumentTransformers(function (OpenApi $openApi) {
+                $openApi->components->securitySchemes['ApiKey'] = SecurityScheme::apiKey('header', 'X-API-KEY');
+                $openApi->secure(SecurityScheme::apiKey('header', 'X-API-KEY'));
+            });
     }
 
 }

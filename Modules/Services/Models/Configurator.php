@@ -8,20 +8,20 @@ use Modules\Services\Models\ConfiguratorStep;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 use App\Traits\HasImageCleanup;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 
+#[Fillable([
+    'name',
+    'slug',
+    'description',
+    'image',
+    'is_active',
+])]
 class Configurator extends Model
 {
     use HasFactory, HasImageCleanup;
 
     protected $cleanupFields = ['image'];
-
-    protected $fillable = [
-        'name',
-        'slug',
-        'description',
-        'image',
-        'is_active',
-    ];
 
     public function steps(): HasMany
     {

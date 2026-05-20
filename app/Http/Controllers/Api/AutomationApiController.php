@@ -8,7 +8,9 @@ use Modules\FormBuilder\Models\FormSubmission;
 use Modules\Analytics\Models\AnalyticsClickEvent;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Illuminate\Routing\Attributes\Middleware;
 
+#[Middleware('api_key')]
 class AutomationApiController extends Controller
 {
     /**

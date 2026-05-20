@@ -6,9 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Modules\Services\Models\Service;
 use Modules\SEO\Traits\HasSeoMeta;
-
 use App\Traits\HasImageCleanup;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 
+#[Fillable([
+    'service_id', 'brand_id', 'name', 'slug',
+    'description', 'image_path', 'thumbnail_path', 'sku', 'solution_type',
+    'datasheet_url', 'tags', 'specs', 'specification_text',
+    'features', 'features_text', 'is_active', 'is_featured', 'is_new',
+    'breadcrumb_image', 'show_breadcrumb',
+    'price', 'link_accommerce', 'whatsapp_note'
+])]
 class Product extends Model
 {
     use HasFactory, HasSeoMeta, HasImageCleanup;
@@ -16,24 +24,24 @@ class Product extends Model
     protected $cleanupFields = ['image_path', 'thumbnail_path', 'breadcrumb_image', 'datasheet_url'];
     protected $richEditorCleanupFields = ['description', 'specification_text', 'features_text'];
 
-    protected $fillable = [
-        'service_id', 'brand_id', 'name', 'slug',
-        'description', 'image_path', 'thumbnail_path', 'sku', 'solution_type',
-        'datasheet_url', 'tags', 'specs', 'specification_text',
-        'features', 'features_text', 'is_active', 'is_featured', 'is_new',
-        'breadcrumb_image', 'show_breadcrumb',
-        'price', 'link_accommerce', 'whatsapp_note'
-    ];
 
-    protected $casts = [
-        'specs' => 'array',
-        'tags' => 'array',
-        'features' => 'array',
-        'is_active' => 'boolean',
-        'is_featured' => 'boolean',
-        'is_new' => 'boolean',
-        'show_breadcrumb' => 'boolean',
-    ];
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'specs' => 'array',
+            'tags' => 'array',
+            'features' => 'array',
+            'is_active' => 'boolean',
+            'is_featured' => 'boolean',
+            'is_new' => 'boolean',
+            'show_breadcrumb' => 'boolean',
+        ];
+    }
 
     public function service()
     {
