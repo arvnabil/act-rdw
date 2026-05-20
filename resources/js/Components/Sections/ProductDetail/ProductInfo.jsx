@@ -73,9 +73,13 @@ export default function ProductInfo({ product }) {
                                         Datasheet
                                     </span>
                                     <h4 className="team-info-title">
-                                        <a href={product.datasheet_url} target="_blank" rel={product.datasheet_rel || "noopener noreferrer"}>
-                                            See datasheet
-                                        </a>
+                                        {product.datasheet_url && product.datasheet_url.trim() !== "" && product.datasheet_url !== "#" ? (
+                                            <a href={product.datasheet_url} target="_blank" rel={product.datasheet_rel || "noopener noreferrer"}>
+                                                See datasheet
+                                            </a>
+                                        ) : (
+                                            <span className="text-muted" style={{ fontSize: '0.9rem', fontWeight: 600 }}>Belum Tersedia</span>
+                                        )}
                                     </h4>
                                 </div>
                             </div>

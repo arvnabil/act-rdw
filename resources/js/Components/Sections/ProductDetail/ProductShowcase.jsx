@@ -62,11 +62,12 @@ export default function ProductShowcase({ product }) {
     ];
 
     // Add Product Sheet as a conditional high-priority card
+    const isDatasheetAvailable = !!(product.datasheet_url && product.datasheet_url.trim() !== "" && product.datasheet_url !== "#");
     topGridItems.push({ 
         label: "Product Sheet", 
-        value: product.datasheet_url ? null : "Tidak tersedia", 
+        value: isDatasheetAvailable ? null : "Belum Tersedia", 
         icon: "fa-file-pdf", 
-        link: product.datasheet_url || null,
+        link: isDatasheetAvailable ? product.datasheet_url : null,
         rel: product.datasheet_rel || "noopener noreferrer",
         isDatasheet: true
     });
