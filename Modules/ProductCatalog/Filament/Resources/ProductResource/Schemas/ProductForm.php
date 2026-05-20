@@ -77,13 +77,37 @@ class ProductForm
                                                 ->visible(false),
                                             TextInput::make('datasheet_url')
                                                 ->url(),
+                                            Toggle::make('edit_description_html')
+                                                ->label('⚡ Mode HTML / Code Editor')
+                                                ->live()
+                                                ->dehydrated(false)
+                                                ->columnSpanFull()
+                                                ->afterStateUpdated(function (Get $get, Set $set, $state) {
+                                                    if ($state) {
+                                                        $set('description_html', $get('description'));
+                                                    } else {
+                                                        $set('description', $get('description_html'));
+                                                    }
+                                                }),
+
                                             RichEditor::make('description')
                                                 ->columnSpanFull()
+                                                ->visible(fn (Get $get) => ! $get('edit_description_html'))
                                                 ->fileAttachmentsAcceptedFileTypes(['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'])
                                                 ->fileAttachmentsMaxSize(2048)
                                                 ->fileAttachmentsDisk('public')
                                                 ->fileAttachmentsDirectory(fn ($get) => 'products/' . ($get('slug') ?? 'default') . '/media-descriptions')
                                                 ->fileAttachmentsVisibility('public'),
+
+                                            Textarea::make('description_html')
+                                                ->label('Description (HTML Code)')
+                                                ->columnSpanFull()
+                                                ->visible(fn (Get $get) => (bool) $get('edit_description_html'))
+                                                ->rows(15)
+                                                ->extraInputAttributes(['style' => 'font-family: monospace; font-size: 14px; line-height: 1.5;'])
+                                                ->live(onBlur: true)
+                                                ->afterStateUpdated(fn (Set $set, $state) => $set('description', $state))
+                                                ->dehydrated(false),
                                                
                                         ])->columns(2),
 

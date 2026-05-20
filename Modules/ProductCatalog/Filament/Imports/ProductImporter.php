@@ -40,6 +40,15 @@ class ProductImporter extends Importer
                 ->example('25000000'),
             ImportColumn::make('description')
                 ->label('Description')
+                ->fillRecordUsing(function ($record, $state) {
+                    // Check if the imported state is truly blank, even if it contains empty HTML tags like <p></p> or &nbsp;
+                    $isImportedBlank = blank($state) || blank(trim(str_replace(["\xc2\xa0", "\xa0"], '', html_entity_decode(strip_tags($state), ENT_QUOTES | ENT_HTML5, 'UTF-8'))));
+                    
+                    if ($isImportedBlank && !blank($record->description)) {
+                        return;
+                    }
+                    $record->description = $state;
+                })
                 ->example('Microsoft Teams Room System for Large Rooms'),
             ImportColumn::make('image_path')
                 ->label('Image Path / URL')
