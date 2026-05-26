@@ -25,9 +25,9 @@ class ProductTable
                     ->label('SKU')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('category.name')
+                Tables\Columns\TextColumn::make('categories.name')
                     ->label('Category')
-                    ->sortable(),
+                    ->badge(),
                 Tables\Columns\TextColumn::make('brand.name')
                     ->label('Brand')
                     ->sortable(),

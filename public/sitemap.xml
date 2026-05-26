@@ -1006,12 +1006,57 @@
     <priority>0.8</priority>
             </url>
     <url>
+    <loc>http://localhost/products/maxhub-xbar-u50-usb</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+            </url>
+    <url>
     <loc>http://localhost/products/maxhub-ifp-v7-series</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
     <url>
     <loc>http://localhost/products/maxhub-cmb-series</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+            </url>
+    <url>
+    <loc>http://localhost/products/maxhub-e30-series</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+            </url>
+    <url>
+    <loc>http://localhost/products/maxhub-xbar-v70-kit</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+            </url>
+    <url>
+    <loc>http://localhost/products/maxhub-uc-p10-ptz-camera</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+            </url>
+    <url>
+    <loc>http://localhost/products/maxhub-uc-p25-ptz-camera</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+            </url>
+    <url>
+    <loc>http://localhost/products/maxhub-speakerphone-uc-bm35</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+            </url>
+    <url>
+    <loc>http://localhost/products/maxhub-speakerphone-uc-bm45</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+            </url>
+    <url>
+    <loc>http://localhost/products/maxhub-v3-raptor-aio-led</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+            </url>
+    <url>
+    <loc>http://localhost/products/maxhub-smart-podium-sl22mc</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>
