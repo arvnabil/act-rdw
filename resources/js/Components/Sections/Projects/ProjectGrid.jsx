@@ -237,7 +237,7 @@ export default function ProjectGrid({ projects }) {
                                     <div className="flex flex-wrap gap-2">
                                         {project.brands.slice(0, 2).map((brand) => (
                                             <div key={brand.id} className="brand-pill">
-                                                {brand.image && <img src={`/storage/${brand.image}`} alt={brand.name} />}
+                                                {brand.thumbnail && <img src={`/storage/${brand.thumbnail}`} alt={brand.name} />}
                                                 <span>{brand.name}</span>
                                             </div>
                                         ))}

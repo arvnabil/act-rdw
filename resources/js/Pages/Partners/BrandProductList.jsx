@@ -48,12 +48,12 @@ const BrandProductList = ({
         ? {
             title: currentCategory.name,
             desc: `Explore ${currentCategory.name} solutions from ${brand.name}.`,
-            image: getImageUrl(currentCategory.image || brand.logo_path), // Use Category Icon if available
+            image: getImageUrl(currentCategory.image || brand.thumbnail), // Use Category Icon if available
         }
         : {
             title: `${brand.name} Products`,
             desc: `Browse our extensive collection of ${brand.name} technology solutions.`,
-            image: getImageUrl(brand.logo_path),
+            image: getImageUrl(brand.thumbnail),
         };
 
     return (

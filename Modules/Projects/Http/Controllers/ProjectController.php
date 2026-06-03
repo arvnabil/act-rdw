@@ -56,7 +56,7 @@ class ProjectController extends Controller
                     'industry' => $project->category,
                     'year' => $project->project_date ? $project->project_date->format('Y') : null,
                     'excerpt' => \Illuminate\Support\Str::limit($project->excerpt ?? strip_tags($project->content), 120),
-                    'brands' => $project->brands->map(fn($b) => ['id' => $b->id, 'name' => $b->name, 'image' => $b->logo_path]),
+                    'brands' => $project->brands->map(fn($b) => ['id' => $b->id, 'name' => $b->name, 'image' => $b->image, 'thumbnail' => $b->thumbnail]),
                     'solutions' => $project->solutions->map(fn($s) => ['id' => $s->id, 'title' => $s->title]),
                     'tags' => $project->tags ?? [],
                 ];

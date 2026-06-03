@@ -67,6 +67,6 @@ Menu **AI Chat Session** di bawah grup *Client Management* memungkinkan Admin un
 *   `Modules/AI/Http/Controllers/ChatbotController.php`: API Handler, sistem kadaluarsa, dan ekstraksi produk.
 *   `Modules/AI/Filament/Resources/ChatSessionResource.php`: Manajemen dashboard admin.
 *   `resources/js/Components/AiChatbot.jsx`: Parser Markdown, UI Chat, dan logika responsivitas.
-
+php artisan ai:sync-products --force
 ---
 *Terakhir diperbarui: 12 Mei 2026*

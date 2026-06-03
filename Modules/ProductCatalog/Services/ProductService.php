@@ -60,7 +60,7 @@ class ProductService
                     'price' => $related->price,
                     'brand' => [
                          'name' => $related->brand?->name ?? '',
-                         'logo' => $related->brand?->logo ?? ''
+                         'logo' => $related->brand?->thumbnail ?? $related->brand?->image ?? ''
                     ]
                 ];
             });
@@ -96,7 +96,7 @@ class ProductService
             })->values(),
             'brand' => [
                 'name' => $product->brand->name,
-                'logo' => $product->brand->logo,
+                'logo' => $product->brand->thumbnail ?? $product->brand->image,
                 'slug' => $product->brand->slug,
                 'config' => $product->brand->landing_config,
             ],

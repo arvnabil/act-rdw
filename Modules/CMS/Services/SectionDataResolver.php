@@ -261,7 +261,6 @@ class SectionDataResolver
                 ->limit($limit)
                 ->get()
                 ->map(function($b) {
-                    $logoPath = $b->thumbnail ?? $b->image;
                     return [
                         'image' => (function($path) {
                             if (!$path) return null;
@@ -270,7 +269,15 @@ class SectionDataResolver
                                 return str_starts_with($path, '/') ? $path : "/{$path}";
                             }
                             return "/storage/{$path}";
-                        })($logoPath) ?? "/assets/default.png",
+                        })($b->image) ?? "/assets/default.png",
+                        'thumbnail' => (function($path) {
+                            if (!$path) return null;
+                            if (str_starts_with($path, 'http')) return $path;
+                            if (str_starts_with($path, 'assets') || str_starts_with($path, '/assets')) {
+                                return str_starts_with($path, '/') ? $path : "/{$path}";
+                            }
+                            return "/storage/{$path}";
+                        })($b->thumbnail),
                         'name' => $b->name,
                         'website_url' => $b->website_url ?? null,
                         'slug' => $b->slug ?? null
@@ -423,7 +430,8 @@ class SectionDataResolver
                 'id' => $b->id,
                 'name' => $b->name,
                 'slug' => $b->slug,
-                'image' => $this->resolvePath($b->thumbnail ?? $b->image),
+                'image' => $this->resolvePath($b->image) ?? "/assets/default.png",
+                'thumbnail' => $this->resolvePath($b->thumbnail),
                 'website_url' => $b->website_url,
                 'categories' => $cats,
                 'is_featured' => (bool)$b->is_featured

@@ -60,7 +60,8 @@ Route::middleware(['web'])->group(function () {
                 'brands' => $solution->brands->map(fn ($b) => [
                     'name' => $b->name,
                     'slug' => $b->slug,
-                    'image' => $b->image, // Fix: Use correct column name from migration
+                    'image' => $b->image,
+                    'thumbnail' => $b->thumbnail,
                     'desc' => $b->short_desc
                 ]),
                 'projects' => $dummyProjects,

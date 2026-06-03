@@ -67,12 +67,12 @@ export default function BrandSection({
                                     >
                                         <img
                                             className="original"
-                                            src={brand.image}
+                                            src={brand.thumbnail}
                                             alt={brand.name || "Brand Logo"}
                                         />
                                         <img
                                             className="gray"
-                                            src={brand.image}
+                                            src={brand.thumbnail}
                                             alt={brand.name || "Brand Logo"}
                                         />
                                     </Link>

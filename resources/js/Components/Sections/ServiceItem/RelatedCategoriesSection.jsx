@@ -57,7 +57,7 @@ export default function RelatedCategoriesSection({ item, getImageUrl }) {
                                     >
                                         <div className="brand-logo-wrapper">
                                             <img
-                                                src={getImageUrl(brand.image)}
+                                                src={getImageUrl(brand.thumbnail)}
                                                 alt={brand.name}
                                                 className="brand-logo"
                                             />
