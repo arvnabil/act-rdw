@@ -4,6 +4,10 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use Modules\Menu\Services\MenuResolver;
+use Modules\SEO\Helpers\SeoHelper;
+use Modules\Settings\Models\Setting;
+use Modules\WhatsApp\Models\WhatsAppSetting;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -39,7 +43,7 @@ class HandleInertiaRequests extends Middleware
         //     ...parent::share($request),
         //     //
         // ];
-        $menuResolver = app(\Modules\Menu\Services\MenuResolver::class);
+        $menuResolver = app(MenuResolver::class);
 
         return array_merge(parent::share($request), [
             'auth' => [
@@ -55,15 +59,16 @@ class HandleInertiaRequests extends Middleware
                 'footer' => $menuResolver->resolve('footer', $request->user()),
                 'top_header' => $menuResolver->resolve('top_header', $request->user()),
             ],
-            'settings' => collect(\Modules\Settings\Models\Setting::pluck('value', 'key')->toArray())
+            'settings' => collect(Setting::getPublicSettings())
                 ->mapWithKeys(function ($value, $key) {
                     $data = [$key => $value];
                     if (str_ends_with($key, '_url') || $key === 'header_button_url') {
-                        $data[$key . '_rel'] = \Modules\SEO\Helpers\SeoHelper::get_rel($value);
+                        $data[$key.'_rel'] = SeoHelper::get_rel($value);
                     }
+
                     return $data;
                 })->toArray(),
-            'whatsapp_bubble' => \Modules\WhatsApp\Models\WhatsAppSetting::getInstance(),
+            'whatsapp_bubble' => WhatsAppSetting::getInstance(),
         ]);
     }
 }

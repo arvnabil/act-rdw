@@ -2,32 +2,47 @@
 
 namespace Modules\SEO\Filament\Pages;
 
-use Filament\Pages\Page;
-use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Schemas\Schema;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Components\Textarea;
-use Filament\Schemas\Components\Section;
+use App\Helpers\UploadHelper;
 use Filament\Actions\Action;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Concerns\InteractsWithForms;
+use Filament\Forms\Contracts\HasForms;
 use Filament\Notifications\Notification;
+use Filament\Pages\Page;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Livewire\Features\SupportFileUploads\TemporaryUploadedFile;
 use Modules\Settings\Models\Setting;
 
 class ManageSeoSettings extends Page implements HasForms
 {
     use InteractsWithForms;
 
-    protected static string | \BackedEnum | null $navigationIcon = 'heroicon-o-globe-alt';
-    protected static string | \UnitEnum | null $navigationGroup = 'Seo Management';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-globe-alt';
+
+    protected static string|\UnitEnum|null $navigationGroup = 'Seo Management';
+
     protected static ?string $navigationLabel = 'Global SEO';
+
     protected static ?string $title = 'Global SEO Settings';
+
     protected string $view = 'filament.activioncms.pages.manage-seo-settings';
 
     public ?array $data = [];
 
+    /**
+     * Server-side flag (never the credential itself) used to render a masked
+     * "Configured" state for the Service Account JSON field.
+     */
+    public bool $serviceAccountConfigured = false;
+
     public function mount(): void
     {
-        // Load existing settings
+        // Load existing settings. The Service Account JSON secret is deliberately
+        // NOT loaded here so it never enters Livewire state / the browser.
         $settings = Setting::whereIn('key', [
             'seo_ga4_id',
             'seo_gtm_id',
@@ -37,12 +52,14 @@ class ManageSeoSettings extends Page implements HasForms
             'seo_favicon',
             'seo_default_og_image',
             'seo_ga4_property_id',
-            'seo_ga4_service_account_json',
         ])->pluck('value', 'key')->toArray();
 
-        // Check if we use form->fill or something else.
-        // If the signature changes to Schema, InteractsWithForms might work differently.
-        // But for now, let's keep it and see. The error was ONLY about the form() signature.
+        $this->serviceAccountConfigured = Setting::query()
+            ->where('key', 'seo_ga4_service_account_json')
+            ->whereNotNull('value')
+            ->where('value', '!=', '')
+            ->exists();
+
         $this->form->fill($settings);
     }
 
@@ -79,7 +96,7 @@ class ManageSeoSettings extends Page implements HasForms
                             ->label('Default Meta Description')
                             ->rows(3),
 
-                        \Filament\Forms\Components\FileUpload::make('seo_favicon')
+                        FileUpload::make('seo_favicon')
                             ->label('Site Favicon')
                             ->image()
                             ->disk('public')
@@ -88,11 +105,11 @@ class ManageSeoSettings extends Page implements HasForms
                             ->downloadable()
                             ->openable()
                             ->helperText('Nama file akan otomatis disesuaikan. Ukuran maks: 2MB.')
-                            ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file): string {
-                                return \App\Helpers\UploadHelper::getSluggedFilename($file, 'seo/favicon');
+                            ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                                return UploadHelper::getSluggedFilename($file, 'seo/favicon');
                             }),
 
-                        \Filament\Forms\Components\FileUpload::make('seo_default_og_image')
+                        FileUpload::make('seo_default_og_image')
                             ->label('Default OG Image (Social Share)')
                             ->image()
                             ->disk('public')
@@ -101,8 +118,8 @@ class ManageSeoSettings extends Page implements HasForms
                             ->downloadable()
                             ->openable()
                             ->helperText('Nama file akan otomatis disesuaikan. Ukuran maks: 2MB.')
-                            ->getUploadedFileNameForStorageUsing(function (\Livewire\Features\SupportFileUploads\TemporaryUploadedFile $file): string {
-                                return \App\Helpers\UploadHelper::getSluggedFilename($file, 'seo/og-default');
+                            ->getUploadedFileNameForStorageUsing(function (TemporaryUploadedFile $file): string {
+                                return UploadHelper::getSluggedFilename($file, 'seo/og-default');
                             }),
                     ]),
 
@@ -114,11 +131,19 @@ class ManageSeoSettings extends Page implements HasForms
                             ->placeholder('123456789')
                             ->helperText('Get this from Admin > Property Settings > Property Details in GA4 Console.'),
 
-                        Textarea::make('seo_ga4_service_account_json')
+                        Placeholder::make('service_account_status')
                             ->label('Service Account JSON Content')
+                            ->content(fn (): string => $this->serviceAccountConfigured
+                                ? 'Configured. The credential is stored encrypted and is never shown again. Leave the field below empty to keep it, or paste a new JSON key file to replace it.'
+                                : 'Not configured yet. Paste the entire content of your Google Service Account JSON key file below.'),
+
+                        Textarea::make('seo_ga4_service_account_json')
+                            ->label('Replace Service Account JSON (optional)')
                             ->rows(10)
-                            ->placeholder('{"type": "service_account", ...}')
-                            ->helperText('Paste the entire content of your Google Service Account JSON key file.'),
+                            ->placeholder($this->serviceAccountConfigured
+                                ? '•••••••••••••• (configured) — leave blank to keep the existing credential'
+                                : '{"type": "service_account", ...}')
+                            ->helperText('Only filled in when replacing the credential. The existing value is never loaded into this form.'),
                     ]),
             ])
             ->statePath('data');
@@ -137,17 +162,68 @@ class ManageSeoSettings extends Page implements HasForms
     {
         $data = $this->form->getState();
 
+        // Validate a replacement Service Account JSON before persisting anything.
+        if (filled($data['seo_ga4_service_account_json'] ?? null)
+            && ! $this->isValidServiceAccountJson($data['seo_ga4_service_account_json'])) {
+            Notification::make()
+                ->danger()
+                ->title('Invalid Service Account JSON')
+                ->body('The pasted value must be a valid JSON Google service account key file containing type, project_id, private_key and client_email.')
+                ->send();
+
+            return;
+        }
+
         foreach ($data as $key => $value) {
+            // Secret keys are handled explicitly: a blank value keeps the
+            // existing credential. The stored secret is never returned to
+            // the browser, and the model encrypts it at rest on write.
+            if (Setting::isSecretKey($key)) {
+                if (blank($value)) {
+                    continue;
+                }
+
+                Setting::updateOrCreate(
+                    ['key' => $key],
+                    ['label' => $this->getLabelForKey($key), 'value' => $value]
+                );
+
+                continue;
+            }
+
             Setting::updateOrCreate(
                 ['key' => $key],
                 ['label' => $this->getLabelForKey($key), 'value' => $value]
             );
         }
 
+        $this->serviceAccountConfigured = Setting::query()
+            ->where('key', 'seo_ga4_service_account_json')
+            ->whereNotNull('value')
+            ->where('value', '!=', '')
+            ->exists();
+
         Notification::make()
             ->success()
             ->title(__('filament-panels::resources/pages/edit-record.notifications.saved.title'))
             ->send();
+    }
+
+    protected function isValidServiceAccountJson(string $json): bool
+    {
+        $decoded = json_decode($json, true);
+
+        if (! is_array($decoded)) {
+            return false;
+        }
+
+        foreach (['type', 'project_id', 'private_key', 'client_email'] as $requiredKey) {
+            if (empty($decoded[$requiredKey])) {
+                return false;
+            }
+        }
+
+        return ($decoded['type'] ?? null) === 'service_account';
     }
 
     protected function getLabelForKey($key): string

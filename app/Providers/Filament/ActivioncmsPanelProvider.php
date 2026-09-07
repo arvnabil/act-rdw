@@ -2,11 +2,11 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Activioncms\Pages\Dashboard;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use App\Filament\Activioncms\Pages\Dashboard;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -17,9 +17,10 @@ use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-
 use Modules\Events\Filament\Pages\EventDashboard;
+use Modules\Settings\Models\Setting;
 
 class ActivioncmsPanelProvider extends PanelProvider
 {
@@ -97,7 +98,7 @@ class ActivioncmsPanelProvider extends PanelProvider
             ])
             ->renderHook(
                 'panels::body.end',
-                fn () => \Illuminate\Support\Facades\Blade::render("
+                fn () => Blade::render("
                     @viteReactRefresh
                     @vite(['resources/js/filament-serp.jsx'])
                     <style>
@@ -112,24 +113,33 @@ class ActivioncmsPanelProvider extends PanelProvider
     public function boot(): void
     {
         try {
-            // Only try to fetch settings if the application is not running in CLI (unless it's a specific command we want)
-            // Or better, just catch the exception if the table doesn't exist yet.
-            $settings = \Modules\Settings\Models\Setting::whereIn('key', [
-                'seo_ga4_property_id',
-                'seo_ga4_service_account_json'
-            ])->pluck('value', 'key');
+            // Server-side only: pull GA4 credentials & reCAPTCHA secret from the
+            // database. Secret values are encrypted at rest and decrypted here;
+            // they are NEVER shared with Inertia, Livewire or any browser payload.
+            $propertyId = Setting::getValue('seo_ga4_property_id');
+            $serviceAccountJson = Setting::getValue('seo_ga4_service_account_json');
 
-            if (isset($settings['seo_ga4_property_id'])) {
-                config(['analytics.property_id' => $settings['seo_ga4_property_id']]);
+            if ($propertyId) {
+                config(['analytics.property_id' => $propertyId]);
             }
 
-            if (isset($settings['seo_ga4_service_account_json'])) {
-                $json = json_decode($settings['seo_ga4_service_account_json'], true);
-                if ($json) {
+            if ($serviceAccountJson) {
+                $json = json_decode($serviceAccountJson, true);
+                if (is_array($json)) {
                     config(['analytics.service_account_credentials_json' => $json]);
                 }
             }
-        } catch (\Exception $e) {
+
+            // Fall back to the DB-managed reCAPTCHA secret when no .env secret is
+            // configured, so server-side verification keeps working.
+            if (blank(config('services.recaptcha.secret'))) {
+                $recaptchaSecret = Setting::getValue('recaptcha_secret_key');
+
+                if (filled($recaptchaSecret)) {
+                    config(['services.recaptcha.secret' => $recaptchaSecret]);
+                }
+            }
+        } catch (\Throwable $e) {
             // Silently fail if database is not ready or table doesn't exist
         }
     }
