@@ -17,7 +17,9 @@ return [
     Modules\Analytics\Providers\AnalyticsServiceProvider::class,
     Modules\AI\Providers\AIServiceProvider::class,
 
-    
+    // Campaign — registered before CMS so /campaign/{slug} takes priority over catch-all
+    Modules\Campaign\Providers\CampaignServiceProvider::class,
+
     // CMS — MUST BE REGISTERED LAST for catch-all route to work properly
     Modules\CMS\Providers\CMSServiceProvider::class,
     

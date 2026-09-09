@@ -48,6 +48,7 @@ class ActivioncmsPanelProvider extends PanelProvider
             ->discoverResources(in: base_path('Modules/Projects/Filament/Resources'), for: 'Modules\\Projects\\Filament\\Resources')
             ->discoverResources(in: base_path('Modules/Clients/Filament/Resources'), for: 'Modules\\Clients\\Filament\\Resources')
             ->discoverResources(in: base_path('Modules/AI/Filament/Resources'), for: 'Modules\\AI\\Filament\\Resources')
+            ->discoverResources(in: base_path('Modules/Campaign/Filament/Resources'), for: 'Modules\\Campaign\\Filament\\Resources')
             ->discoverPages(in: base_path('Modules/CMS/Filament/Pages'), for: 'Modules\\CMS\\Filament\\Pages')
             ->discoverPages(in: app_path('Filament/Activioncms/Pages'), for: 'App\Filament\Activioncms\Pages')
             ->discoverPages(in: base_path('Modules/Events/Filament/Pages'), for: 'Modules\\Events\\Filament\\Pages')
@@ -82,6 +83,7 @@ class ActivioncmsPanelProvider extends PanelProvider
             ])
             ->navigationGroups([
                 'Dashboard',
+                'Marketing',
                 'Analytics',
                 'Product Catalog',
                 'Service Management',
