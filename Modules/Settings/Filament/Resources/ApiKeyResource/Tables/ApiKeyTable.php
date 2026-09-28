@@ -22,9 +22,12 @@ class ApiKeyTable
                     ->sortable(),
                 
                 TextColumn::make('key')
-                    ->label('Key Prefix')
-                    ->formatStateUsing(fn ($state) => substr((string) $state, 0, 8) . '************************')
-                    ->description('Full key is hidden for security'),
+                    ->label('API Key')
+                    ->formatStateUsing(fn ($state) => substr((string) $state, 0, 10) . '••••••••••••••••••••••••')
+                    ->description('Klik teks untuk copy ke clipboard')
+                    ->copyable()
+                    ->copyableState(fn ($record) => $record->key)
+                    ->copyMessage('API Key berhasil disalin ke clipboard!'),
 
                 TextColumn::make('capabilities')
                     ->badge()

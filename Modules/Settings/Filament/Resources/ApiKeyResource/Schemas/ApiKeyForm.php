@@ -21,7 +21,14 @@ class ApiKeyForm
                     TextInput::make('name')
                         ->required()
                         ->placeholder('e.g. Hermes MCP')
-                        ->helperText('Name this key to remember its purpose.'),
+                        ->helperText('Beri nama key ini agar mudah diingat fungsinya.'),
+
+                    TextInput::make('key')
+                        ->label('API Key (Secret Token)')
+                        ->disabled()
+                        ->dehydrated(false)
+                        ->visible(fn ($record) => $record !== null)
+                        ->helperText('Token API key lengkap. Anda bisa langsung copy dari field ini.'),
                     
                     CheckboxList::make('capabilities')
                         ->label('Capabilities')
@@ -60,12 +67,12 @@ class ApiKeyForm
                             
                             Toggle::make('debug_mode')
                                 ->label('Debug Mode')
-                                ->helperText('If enabled, full request/response payloads will be logged.')
+                                ->helperText('Jika aktif, seluruh payload request & response akan dicatat di log.')
                                 ->default(false),
                             
                             DateTimePicker::make('expires_at')
                                 ->label('Expires At')
-                                ->placeholder('Leave empty for no expiry'),
+                                ->placeholder('Kosongkan jika tanpa batas waktu (no expiry)'),
                         ]),
                 ])
         ];
