@@ -35,6 +35,7 @@ class VerifyApiKey
         // Update last used timestamp
         $apiKey->update(['last_used_at' => now()]);
 
+        $request->attributes->set('apiKey', $apiKey);
         $response = $next($request);
 
         $duration = (microtime(true) - $startTime) * 1000;

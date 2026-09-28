@@ -2,6 +2,7 @@
 
 return [
     App\Providers\AppServiceProvider::class,
+    App\MCP\MCPServiceProvider::class,
     Modules\Settings\Providers\SettingsServiceProvider::class,
     Modules\SEO\Providers\SEOServiceProvider::class,
     Modules\Menu\Providers\MenuServiceProvider::class,

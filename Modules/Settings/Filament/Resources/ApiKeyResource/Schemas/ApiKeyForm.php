@@ -3,9 +3,9 @@
 namespace Modules\Settings\Filament\Resources\ApiKeyResource\Schemas;
 
 use Filament\Forms\Components;
-use Filament\Schemas\Components\Section;
-use Filament\Schemas\Components\Grid;
-use Filament\Actions\Action;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Grid;
+use Filament\Forms\Set;
 
 class ApiKeyForm
 {
@@ -16,20 +16,37 @@ class ApiKeyForm
                 ->schema([
                     Components\TextInput::make('name')
                         ->required()
-                        ->placeholder('e.g. n8n Integration')
+                        ->placeholder('e.g. Hermes MCP')
                         ->helperText('Name this key to remember its purpose.'),
                     
-                    Components\TextInput::make('key')
-                        ->label('API Key')
-                        ->disabled()
-                        ->dehydrated(false)
-                        ->visible(fn ($record) => $record !== null)
-                        ->suffixAction(
-                            Action::make('copyUrl')
-                                ->icon('heroicon-s-clipboard')
-                                ->action(fn ($record) => $record->key)
+                    Components\CheckboxList::make('capabilities')
+                        ->label('Capabilities')
+                        ->options([
+                            'product.read' => 'Product → Read',
+                            'product.write' => 'Product → Write',
+                            'product.delete' => 'Product → Delete',
+                            'news.read' => 'News → Read',
+                            'news.write' => 'News → Write',
+                            'news.delete' => 'News → Delete',
+                        ])
+                        ->columns(2)
+                        ->bulkToggleable()
+                        ->hintAction(
+                            Components\Actions\Action::make('setReadOnly')
+                                ->label('Read Only MCP')
+                                ->action(function (Set $set) {
+                                    $set('capabilities', ['product.read', 'news.read']);
+                                })
                         )
-                        ->helperText('This key is generated automatically on creation.'),
+                        ->hintAction(
+                            Components\Actions\Action::make('setFullAccess')
+                                ->label('Full MCP Access')
+                                ->requiresConfirmation()
+                                ->action(function (Set $set) {
+                                    $set('capabilities', ['product.read', 'product.write', 'product.delete', 'news.read', 'news.write', 'news.delete']);
+                                })
+                                ->color('danger')
+                        ),
 
                     Grid::make(3)
                         ->schema([

@@ -12,6 +12,7 @@ class ApiKey extends Model
         'key',
         'is_active',
         'debug_mode',
+        'capabilities',
         'last_used_at',
         'expires_at',
     ];
@@ -19,6 +20,7 @@ class ApiKey extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'debug_mode' => 'boolean',
+        'capabilities' => 'array',
         'last_used_at' => 'datetime',
         'expires_at' => 'datetime',
     ];

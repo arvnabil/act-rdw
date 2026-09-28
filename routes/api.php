@@ -17,3 +17,8 @@ Route::group(['prefix' => 'automation'], function () {
     Route::post('/leads', [AutomationApiController::class, 'pushLead']);
     Route::post('/wa-trigger', [AutomationApiController::class, 'trackWaTrigger']);
 });
+
+// MCP Route
+Route::group(['middleware' => [\App\Http\Middleware\VerifyApiKey::class]], function () {
+    Route::post('/mcp', [\App\MCP\Http\Controllers\MCPController::class, 'handle']);
+});
