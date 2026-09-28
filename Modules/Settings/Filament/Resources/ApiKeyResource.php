@@ -23,7 +23,7 @@ class ApiKeyResource extends Resource
     public static function form(Schema $schema): Schema
     {
         return $schema
-            ->components(ApiKeyForm::schema());
+            ->schema(ApiKeyForm::schema());
     }
 
     public static function table(Table $table): Table

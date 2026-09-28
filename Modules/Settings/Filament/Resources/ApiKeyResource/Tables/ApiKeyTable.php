@@ -2,13 +2,14 @@
 
 namespace Modules\Settings\Filament\Resources\ApiKeyResource\Tables;
 
-use Filament\Tables\Actions\BulkActionGroup;
-use Filament\Tables\Actions\DeleteBulkAction;
-use Filament\Tables\Actions\EditAction;
-use Filament\Tables\Actions\DeleteAction;
-use Filament\Tables;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
-use Filament\Tables\Columns;
 
 class ApiKeyTable
 {
@@ -16,36 +17,36 @@ class ApiKeyTable
     {
         return $table
             ->columns([
-                Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
                 
-                Columns\TextColumn::make('key')
+                TextColumn::make('key')
                     ->label('Key Prefix')
-                    ->formatStateUsing(fn ($state) => substr($state, 0, 8) . '************************')
+                    ->formatStateUsing(fn ($state) => substr((string) $state, 0, 8) . '************************')
                     ->description('Full key is hidden for security'),
 
-                Columns\TextColumn::make('capabilities')
+                TextColumn::make('capabilities')
                     ->badge()
                     ->separator(',')
                     ->label('Capabilities'),
 
-                Columns\IconColumn::make('is_active')
+                IconColumn::make('is_active')
                     ->boolean()
                     ->label('Active'),
 
-                Columns\TextColumn::make('last_used_at')
+                TextColumn::make('last_used_at')
                     ->dateTime()
                     ->sortable()
                     ->placeholder('Never used'),
 
-                Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->label('Created At'),
             ])
             ->filters([
-                Tables\Filters\TernaryFilter::make('is_active'),
+                TernaryFilter::make('is_active'),
             ])
             ->actions([
                 EditAction::make(),

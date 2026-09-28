@@ -2,10 +2,14 @@
 
 namespace Modules\Settings\Filament\Resources\ApiKeyResource\Schemas;
 
-use Filament\Forms\Components;
-use Filament\Forms\Components\Section;
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Set;
+use Filament\Actions\Action;
+use Filament\Forms\Components\CheckboxList;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Set;
 
 class ApiKeyForm
 {
@@ -14,12 +18,12 @@ class ApiKeyForm
         return [
             Section::make('API Key Details')
                 ->schema([
-                    Components\TextInput::make('name')
+                    TextInput::make('name')
                         ->required()
                         ->placeholder('e.g. Hermes MCP')
                         ->helperText('Name this key to remember its purpose.'),
                     
-                    Components\CheckboxList::make('capabilities')
+                    CheckboxList::make('capabilities')
                         ->label('Capabilities')
                         ->options([
                             'product.read' => 'Product → Read',
@@ -32,14 +36,14 @@ class ApiKeyForm
                         ->columns(2)
                         ->bulkToggleable()
                         ->hintAction(
-                            Components\Actions\Action::make('setReadOnly')
+                            Action::make('setReadOnly')
                                 ->label('Read Only MCP')
                                 ->action(function (Set $set) {
                                     $set('capabilities', ['product.read', 'news.read']);
                                 })
                         )
                         ->hintAction(
-                            Components\Actions\Action::make('setFullAccess')
+                            Action::make('setFullAccess')
                                 ->label('Full MCP Access')
                                 ->requiresConfirmation()
                                 ->action(function (Set $set) {
@@ -50,16 +54,16 @@ class ApiKeyForm
 
                     Grid::make(3)
                         ->schema([
-                            Components\Toggle::make('is_active')
+                            Toggle::make('is_active')
                                 ->label('Active')
                                 ->default(true),
                             
-                            Components\Toggle::make('debug_mode')
+                            Toggle::make('debug_mode')
                                 ->label('Debug Mode')
                                 ->helperText('If enabled, full request/response payloads will be logged.')
                                 ->default(false),
                             
-                            Components\DateTimePicker::make('expires_at')
+                            DateTimePicker::make('expires_at')
                                 ->label('Expires At')
                                 ->placeholder('Leave empty for no expiry'),
                         ]),
