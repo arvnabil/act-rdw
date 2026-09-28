@@ -1,18 +1,19 @@
 <?php
+
 namespace App\MCP\Protocol;
 
 class ProtocolNegotiator
 {
-    private array \ = [
+    private array $supportedVersions = [
         '2024-11-05',
-        '2024-10-01'
+        '2024-10-01',
     ];
 
-    public function negotiate(string \): string
+    public function negotiate(string $clientVersion): string
     {
-        if (in_array(\, \->supportedVersions)) {
-            return \;
+        if (in_array($clientVersion, $this->supportedVersions)) {
+            return $clientVersion;
         }
-        return \->supportedVersions[0];
+        return $this->supportedVersions[0];
     }
 }

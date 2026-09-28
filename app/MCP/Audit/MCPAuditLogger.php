@@ -1,45 +1,46 @@
 <?php
+
 namespace App\MCP\Audit;
 
 use Modules\Settings\Models\ApiLog;
 use App\MCP\Contracts\MCPTool;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class MCPAuditLogger
 {
-    public function log(MCPTool \, array \, array \, bool \, ?string \ = null, float \ = 0): void
+    public function log(MCPTool $tool, array $arguments, array $context, bool $success, ?string $errorMessage = null, float $duration = 0): void
     {
         try {
-            if (isset(\['apiKey'])) {
+            if (isset($context['apiKey'])) {
                 ApiLog::create([
-                    'api_key_id' => \['apiKey']->id,
-                    'endpoint' => 'mcp:tool:' . \->name(),
+                    'api_key_id' => $context['apiKey']->id,
+                    'endpoint' => 'mcp:tool:' . $tool->name(),
                     'method' => 'MCP',
-                    'status_code' => \ ? 200 : 500,
+                    'status_code' => $success ? 200 : 500,
                     'ip_address' => request()->ip() ?? '127.0.0.1',
                     'user_agent' => request()->userAgent() ?? 'MCP-Client',
-                    // Sanitize arguments by removing passwords/secrets if any exist
-                    'payload' => \->sanitize(\),
-                    'response' => \ ? ['error' => \] : null,
-                    'duration_ms' => \,
+                    'payload' => $this->sanitize($arguments),
+                    'response' => $errorMessage ? ['error' => $errorMessage] : null,
+                    'duration_ms' => $duration,
                 ]);
             }
-        } catch (\Throwable \) {
-            Log::error("Failed to log MCP audit: " . \->getMessage());
+        } catch (Throwable $e) {
+            Log::error("Failed to log MCP audit: " . $e->getMessage());
         }
     }
 
-    private function sanitize(array \): array
+    private function sanitize(array $arguments): array
     {
-        \ = \;
-        \ = ['password', 'secret', 'token', 'key'];
-        foreach (\ as \ => \) {
-            foreach (\ as \) {
-                if (stripos(\, \) !== false) {
-                    \[\] = '***';
+        $sanitized = $arguments;
+        $sensitiveKeys = ['password', 'secret', 'token', 'key'];
+        foreach ($sanitized as $k => $v) {
+            foreach ($sensitiveKeys as $sensitive) {
+                if (stripos((string)$k, $sensitive) !== false) {
+                    $sanitized[$k] = '***';
                 }
             }
         }
-        return \;
+        return $sanitized;
     }
 }
