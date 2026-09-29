@@ -31,7 +31,7 @@ class JsonRpcHandler
                     $negotiatedVersion = $this->negotiator->negotiate($clientVersion);
                     return $this->success($id, [
                         'protocolVersion' => $negotiatedVersion,
-                        'capabilities' => ['tools' => []],
+                        'capabilities' => ['tools' => (object)[]],
                         'serverInfo' => ['name' => 'LaravelMCP', 'version' => '1.0.0']
                     ]);
                 

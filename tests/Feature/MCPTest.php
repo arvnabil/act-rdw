@@ -72,18 +72,50 @@ class MCPTest extends TestCase
             ]);
 
         $response->assertStatus(200)
+            ->assertJsonStructure([
+                'jsonrpc', 'id',
+                'result' => ['protocolVersion', 'capabilities', 'serverInfo'],
+            ])
             ->assertJson([
                 'jsonrpc' => '2.0',
                 'id' => 1,
                 'result' => [
                     'protocolVersion' => '2024-11-05',
-                    'capabilities' => ['tools' => []],
                     'serverInfo' => [
                         'name' => 'LaravelMCP',
-                        'version' => '1.0.0'
-                    ]
-                ]
+                        'version' => '1.0.0',
+                    ],
+                ],
             ]);
+    }
+
+    public function test_mcp_initialize_capabilities_tools_is_json_object()
+    {
+        $response = $this->withHeaders(['X-API-KEY' => $this->adminApiKey->key])
+            ->postJson('/api/mcp', [
+                'jsonrpc' => '2.0',
+                'id' => 1,
+                'method' => 'initialize',
+                'params' => ['protocolVersion' => '2024-11-05'],
+            ]);
+
+        $response->assertStatus(200);
+
+        // Decode raw JSON preserving object/array distinction (assoc=false)
+        $raw = json_decode($response->getContent(), false);
+
+        $this->assertObjectHasProperty('result', $raw, 'Response must have result');
+        $this->assertObjectHasProperty('protocolVersion', $raw->result, 'result must have protocolVersion');
+        $this->assertObjectHasProperty('serverInfo', $raw->result, 'result must have serverInfo');
+        $this->assertObjectHasProperty('capabilities', $raw->result, 'result must have capabilities');
+        $this->assertObjectHasProperty('tools', $raw->result->capabilities, 'capabilities must have tools');
+
+        // Critical: tools must be a JSON object {}, not an array
+        $this->assertInstanceOf(
+            \stdClass::class,
+            $raw->result->capabilities->tools,
+            'capabilities.tools must serialize as JSON object {}, not array'
+        );
     }
 
     public function test_mcp_tools_list()
