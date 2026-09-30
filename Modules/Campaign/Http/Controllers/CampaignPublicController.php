@@ -49,6 +49,17 @@ class CampaignPublicController extends Controller
             $html = $seoTags . $html;
         }
 
+        // Inject GTM noscript into body
+        $settings = \Modules\Settings\Models\Setting::whereIn('key', ['seo_gtm_id'])->pluck('value', 'key');
+        if (!empty($settings['seo_gtm_id'])) {
+            $noscript = '
+<!-- Google Tag Manager (noscript) --><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=' . e($settings['seo_gtm_id']) . '" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) -->
+';
+            if (stripos($html, '<body') !== false) {
+                $html = preg_replace('/(<body[^>]*>)/i', '\g<1>' . $noscript, $html, 1);
+            }
+        }
+
         return response($html, 200)->header('Content-Type', 'text/html; charset=UTF-8');
     }
 
@@ -76,6 +87,44 @@ class CampaignPublicController extends Controller
             $tags .= '<script type="application/ld+json">'
                 . json_encode($schema, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES)
                 . '</script>' . "\n";
+        }
+
+        $settings = \Modules\Settings\Models\Setting::whereIn('key', ['seo_gtm_id', 'seo_ga4_id'])->pluck('value', 'key');
+        if (!empty($settings['seo_gtm_id'])) {
+            $gtmId = $settings['seo_gtm_id'];
+            $tags .= "
+<!-- Google Tag Manager -->
+";
+            $tags .= "<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+";
+            $tags .= "new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+";
+            $tags .= "j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+";
+            $tags .= "'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+";
+            $tags .= "})(window,document,'script','dataLayer','" . e($gtmId) . "');</script>
+";
+            $tags .= "<!-- End Google Tag Manager -->
+";
+        }
+        if (!empty($settings['seo_ga4_id'])) {
+            $ga4Id = $settings['seo_ga4_id'];
+            $tags .= "
+<!-- Google Analytics 4 -->
+";
+            $tags .= "<script async src="https://www.googletagmanager.com/gtag/js?id=" . e($ga4Id) . ""></script>
+";
+            $tags .= "<script>
+window.dataLayer = window.dataLayer || [];
+";
+            $tags .= "function gtag(){dataLayer.push(arguments);}
+";
+            $tags .= "gtag('js', new Date());
+";
+            $tags .= "gtag('config', '" . e($ga4Id) . "');
+</script>
+";
         }
 
         return $tags;

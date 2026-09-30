@@ -15,3 +15,4 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/activioncms/campaigns/{id}/preview', [CampaignPreviewController::class, 'preview'])
         ->name('campaign.preview');
 });
+Route::get('/campaigns/{slug}', [CampaignPublicController::class, 'show']);
