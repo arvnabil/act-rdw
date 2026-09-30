@@ -35,28 +35,28 @@ class CampaignPublicController extends Controller
         $meta   = $this->seoService->getMetaTags($campaign);
         $jsonLd = $this->seoService->getJsonLd($campaign);
 
-        // ─── Inject SEO meta tags into <head> ────────────────────────────────
+        // Inject SEO meta tags into <head>
         $seoTags = $this->buildSeoTags($meta, $jsonLd);
 
         if (stripos($html, '</head>') !== false) {
-            // Inject before closing </head>
             $html = str_ireplace('</head>', $seoTags . '</head>', $html);
         } elseif (stripos($html, '<head>') !== false) {
-            // Append after opening <head>
             $html = str_ireplace('<head>', '<head>' . $seoTags, $html);
         } else {
-            // No head element — prepend to document
             $html = $seoTags . $html;
         }
 
-        // Inject GTM noscript into body
-        $settings = \Modules\Settings\Models\Setting::whereIn('key', ['seo_gtm_id'])->pluck('value', 'key');
-        if (!empty($settings['seo_gtm_id'])) {
-            $noscript = '
-<!-- Google Tag Manager (noscript) --><noscript><iframe src="https://www.googletagmanager.com/ns.html?id=' . e($settings['seo_gtm_id']) . '" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript><!-- End Google Tag Manager (noscript) -->
-';
+        // Inject GTM noscript right after <body>
+        $trackingSettings = \Modules\Settings\Models\Setting::whereIn('key', ['seo_gtm_id'])->pluck('value', 'key');
+        if (!empty($trackingSettings['seo_gtm_id'])) {
+            $gtmId    = e($trackingSettings['seo_gtm_id']);
+            $noscript = "\n" . '<!-- Google Tag Manager (noscript) -->'
+                . '<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=' . $gtmId . '"'
+                . ' height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>'
+                . '<!-- End Google Tag Manager (noscript) -->' . "\n";
+
             if (stripos($html, '<body') !== false) {
-                $html = preg_replace('/(<body[^>]*>)/i', '\g<1>' . $noscript, $html, 1);
+                $html = preg_replace('/(<body[^>]*>)/i', '$1' . $noscript, $html, 1);
             }
         }
 
@@ -67,8 +67,8 @@ class CampaignPublicController extends Controller
     {
         $tags = '';
 
-        // Override/add title if not already in document
-        $tags .= "\n<!-- Campaign SEO — injected by ACT RDW -->\n";
+        // SEO meta tags
+        $tags .= "\n<!-- Campaign SEO - injected by ACT RDW -->\n";
         $tags .= '<meta name="description" content="' . e($meta['description']) . '">' . "\n";
         $tags .= '<meta name="robots" content="' . e($meta['robots']) . '">' . "\n";
         $tags .= '<link rel="canonical" href="' . e($meta['canonical']) . '">' . "\n";
@@ -89,42 +89,30 @@ class CampaignPublicController extends Controller
                 . '</script>' . "\n";
         }
 
+        // Auto-inject GTM & GA4 from database settings
         $settings = \Modules\Settings\Models\Setting::whereIn('key', ['seo_gtm_id', 'seo_ga4_id'])->pluck('value', 'key');
+
         if (!empty($settings['seo_gtm_id'])) {
-            $gtmId = $settings['seo_gtm_id'];
-            $tags .= "
-<!-- Google Tag Manager -->
-";
-            $tags .= "<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-";
-            $tags .= "new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-";
-            $tags .= "j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-";
-            $tags .= "'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-";
-            $tags .= "})(window,document,'script','dataLayer','" . e($gtmId) . "');</script>
-";
-            $tags .= "<!-- End Google Tag Manager -->
-";
+            $gtmId = e($settings['seo_gtm_id']);
+            $tags .= "\n<!-- Google Tag Manager -->\n";
+            $tags .= '<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({\'gtm.start\':' . "\n";
+            $tags .= 'new Date().getTime(),event:\'gtm.js\'});var f=d.getElementsByTagName(s)[0],' . "\n";
+            $tags .= 'j=d.createElement(s),dl=l!=\'dataLayer\'?\'&l=\'+l:\'\';j.async=true;j.src=' . "\n";
+            $tags .= '\'https://www.googletagmanager.com/gtm.js?id=\'+i+dl;f.parentNode.insertBefore(j,f);' . "\n";
+            $tags .= '})(window,document,\'script\',\'dataLayer\',\'' . $gtmId . '\');</script>' . "\n";
+            $tags .= "<!-- End Google Tag Manager -->\n";
         }
+
         if (!empty($settings['seo_ga4_id'])) {
-            $ga4Id = $settings['seo_ga4_id'];
-            $tags .= "
-<!-- Google Analytics 4 -->
-";
-            $tags .= "<script async src="https://www.googletagmanager.com/gtag/js?id=" . e($ga4Id) . ""></script>
-";
-            $tags .= "<script>
-window.dataLayer = window.dataLayer || [];
-";
-            $tags .= "function gtag(){dataLayer.push(arguments);}
-";
-            $tags .= "gtag('js', new Date());
-";
-            $tags .= "gtag('config', '" . e($ga4Id) . "');
-</script>
-";
+            $ga4Id = e($settings['seo_ga4_id']);
+            $tags .= "\n<!-- Google Analytics 4 -->\n";
+            $tags .= '<script async src="https://www.googletagmanager.com/gtag/js?id=' . $ga4Id . '"></script>' . "\n";
+            $tags .= '<script>' . "\n";
+            $tags .= 'window.dataLayer = window.dataLayer || [];' . "\n";
+            $tags .= 'function gtag(){dataLayer.push(arguments);}' . "\n";
+            $tags .= 'gtag(\'js\', new Date());' . "\n";
+            $tags .= 'gtag(\'config\', \'' . $ga4Id . '\');' . "\n";
+            $tags .= '</script>' . "\n";
         }
 
         return $tags;
