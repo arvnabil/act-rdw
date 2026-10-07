@@ -141,6 +141,12 @@ class RolesAndPermissionsSeeder extends Seeder
         );
         $admin->assignRole('administrator');
 
+        // Assign administrator role to nabil@activ.co.id if exists
+        $nabil = User::where('email', 'nabil@activ.co.id')->first();
+        if ($nabil) {
+            $nabil->assignRole('administrator');
+        }
+
         $this->command->info('Roles & Permissions seeded successfully!');
         $this->command->table(
             ['Role', 'Permissions Count'],
