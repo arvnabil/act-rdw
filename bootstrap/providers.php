@@ -2,6 +2,7 @@
 
 return [
     App\Providers\AppServiceProvider::class,
+    Spatie\Permission\PermissionServiceProvider::class,
     App\MCP\MCPServiceProvider::class,
     Modules\Settings\Providers\SettingsServiceProvider::class,
     Modules\SEO\Providers\SEOServiceProvider::class,
@@ -18,13 +19,12 @@ return [
     Modules\Analytics\Providers\AnalyticsServiceProvider::class,
     Modules\AI\Providers\AIServiceProvider::class,
 
-    // Campaign — registered before CMS so /campaign/{slug} takes priority over catch-all
+    // Campaign registered before CMS so /campaign/{slug} takes priority over catch-all
     Modules\Campaign\Providers\CampaignServiceProvider::class,
 
-    // CMS — MUST BE REGISTERED LAST for catch-all route to work properly
+    // CMS MUST BE REGISTERED LAST for catch-all route to work properly
     Modules\CMS\Providers\CMSServiceProvider::class,
-    
+
     App\Providers\Filament\ActivioncmsPanelProvider::class,
     App\Providers\AuthServiceProvider::class,
 ];
-
