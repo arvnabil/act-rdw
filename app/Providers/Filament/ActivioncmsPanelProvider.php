@@ -35,6 +35,7 @@ class ActivioncmsPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->discoverResources(in: app_path('Filament/Activioncms/Resources'), for: 'App\\Filament\\Activioncms\\Resources')
             ->discoverResources(in: base_path('Modules/CMS/Filament/Resources'), for: 'Modules\\CMS\\Filament\\Resources')
             ->discoverResources(in: base_path('Modules/Events/Filament/Resources'), for: 'Modules\\Events\\Filament\\Resources')
             ->discoverResources(in: base_path('Modules/Services/Filament/Resources'), for: 'Modules\\Services\\Filament\\Resources')
@@ -96,6 +97,7 @@ class ActivioncmsPanelProvider extends PanelProvider
                 'Site Management',
                 'Event Manage Data',
                 'Event Management',
+                'User Management',
                 'Settings',
             ])
             ->renderHook(
