@@ -24,9 +24,11 @@ class EditRole extends EditRecord
         $modules = RoleResource::getPermissionModules();
 
         foreach ($modules as $key => $module) {
-            $data["permissions_{$key}"] = array_values(
+            $selected = array_values(
                 array_intersect(array_keys($module['permissions']), $rolePermissions)
             );
+            $data["permissions_{$key}"] = $selected;
+            $data["toggle_{$key}"] = (count($selected) > 0 && count($selected) === count($module['permissions']));
         }
 
         return $data;

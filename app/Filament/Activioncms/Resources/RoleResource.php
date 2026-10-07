@@ -12,6 +12,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\DeleteAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\CheckboxList;
+use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Grid;
 use Spatie\Permission\Models\Role;
@@ -225,25 +226,15 @@ class RoleResource extends Resource
                 ->icon($module['icon'])
                 ->collapsible()
                 ->compact()
-                ->headerActions([
-                    Action::make("select_all_{$key}")
-                        ->label('Select All')
-                        ->icon('heroicon-m-check')
-                        ->size('xs')
-                        ->color('success')
-                        ->action(function ($set) use ($key, $permKeys) {
-                            $set("permissions_{$key}", $permKeys);
-                        }),
-                    Action::make("deselect_all_{$key}")
-                        ->label('Clear')
-                        ->icon('heroicon-m-x-mark')
-                        ->size('xs')
-                        ->color('gray')
-                        ->action(function ($set) use ($key) {
-                            $set("permissions_{$key}", []);
-                        }),
-                ])
                 ->schema([
+                    Toggle::make("toggle_{$key}")
+                        ->label('Select All')
+                        ->inline(true)
+                        ->live()
+                        ->afterStateUpdated(function ($state, $set) use ($key, $permKeys) {
+                            $set("permissions_{$key}", $state ? $permKeys : []);
+                        })
+                        ->dehydrated(false),
                     CheckboxList::make("permissions_{$key}")
                         ->hiddenLabel()
                         ->options($module['permissions'])
@@ -251,6 +242,10 @@ class RoleResource extends Resource
                             'default' => 1,
                             'sm'      => 2,
                         ])
+                        ->live()
+                        ->afterStateUpdated(function ($state, $set) use ($key, $permKeys) {
+                            $set("toggle_{$key}", count($state ?? []) === count($permKeys));
+                        })
                         ->dehydrated(false),
                 ]);
         }
@@ -272,7 +267,7 @@ class RoleResource extends Resource
                     ->columnSpanFull(),
 
                 Section::make('Permissions Matrix')
-                    ->description('Kelola hak akses untuk setiap modul. Anda dapat memilih seluruh modul sekaligus atau menggunakan tombol pada masing-masing kartu.')
+                    ->description('Kelola hak akses untuk setiap modul. Gunakan switch toggle "Select All" di tiap kartu atau tombol di bawah untuk seluruh modul sekaligus.')
                     ->headerActions([
                         Action::make('checkAllGlobal')
                             ->label('Select All Modules')
@@ -283,6 +278,7 @@ class RoleResource extends Resource
                             ->action(function ($set) use ($modules) {
                                 foreach ($modules as $key => $module) {
                                     $set("permissions_{$key}", array_keys($module['permissions']));
+                                    $set("toggle_{$key}", true);
                                 }
                             }),
                         Action::make('uncheckAllGlobal')
@@ -294,6 +290,7 @@ class RoleResource extends Resource
                             ->action(function ($set) use ($modules) {
                                 foreach ($modules as $key => $module) {
                                     $set("permissions_{$key}", []);
+                                    $set("toggle_{$key}", false);
                                 }
                             }),
                     ])
