@@ -9,7 +9,6 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Table;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ImageColumn;
-use Filament\Tables\Columns\BadgeColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Filters\TernaryFilter;
@@ -24,25 +23,24 @@ use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Spatie\Permission\Models\Role;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class UserResource extends Resource
 {
-    protected static ?string  = User::class;
+    protected static ?string $model = User::class;
 
-    protected static \BackedEnum|string|null  = 'heroicon-o-users';
+    protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-users';
 
-    protected static string|\UnitEnum|null  = 'User Management';
+    protected static string|\UnitEnum|null $navigationGroup = 'User Management';
 
-    protected static ?int  = 1;
+    protected static ?int $navigationSort = 1;
 
-    protected static ?string  = 'Users';
+    protected static ?string $navigationLabel = 'Users';
 
-    protected static ?string  = 'User';
+    protected static ?string $modelLabel = 'User';
 
-    protected static ?string  = 'Users';
+    protected static ?string $pluralModelLabel = 'Users';
 
     /**
      * Hanya Administrator yang bisa mengakses User Management
@@ -57,19 +55,19 @@ class UserResource extends Resource
         return Auth::user()?->hasRole('administrator') ?? false;
     }
 
-    public static function canEdit(): bool
+    public static function canEdit($record): bool
     {
         return Auth::user()?->hasRole('administrator') ?? false;
     }
 
-    public static function canDelete(): bool
+    public static function canDelete($record): bool
     {
-        return Auth::user()?->hasRole('administrator') && ->id !== Auth::id();
+        return (Auth::user()?->hasRole('administrator') ?? false) && $record->id !== Auth::id();
     }
 
-    public static function form(Schema ): Schema
+    public static function form(Schema $schema): Schema
     {
-        return ->components([
+        return $schema->components([
             Section::make('User Information')
                 ->description('Basic user account details')
                 ->schema([
@@ -97,9 +95,9 @@ class UserResource extends Resource
                             ->label('Password')
                             ->password()
                             ->revealable()
-                            ->dehydrateStateUsing(fn() => Hash::make())
-                            ->dehydrated(fn() => filled())
-                            ->required(fn(string ) =>  === 'create')
+                            ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                            ->dehydrated(fn ($state) => filled($state))
+                            ->required(fn (string $operation) => $operation === 'create')
                             ->minLength(8)
                             ->helperText('Leave blank to keep current password when editing'),
                     ]),
@@ -112,7 +110,10 @@ class UserResource extends Resource
                         Select::make('roles')
                             ->label('Role')
                             ->relationship('roles', 'name')
-                            ->options(Role::all()->pluck('name', 'id')->map(fn() => ucwords(str_replace('-', ' ', ))))
+                            ->options(
+                                Role::all()->pluck('name', 'id')
+                                    ->map(fn ($name) => ucwords(str_replace('-', ' ', $name)))
+                            )
                             ->required()
                             ->searchable()
                             ->preload()
@@ -141,15 +142,15 @@ class UserResource extends Resource
         ]);
     }
 
-    public static function table(Table ): Table
+    public static function table(Table $table): Table
     {
-        return 
+        return $table
             ->columns([
                 ImageColumn::make('avatar')
                     ->label('Avatar')
                     ->disk('public')
                     ->circular()
-                    ->defaultImageUrl(fn() => 'https://ui-avatars.com/api/?name=' . urlencode(->name) . '&color=7F9CF5&background=EBF4FF')
+                    ->defaultImageUrl(fn ($record) => 'https://ui-avatars.com/api/?name=' . urlencode($record->name) . '&color=7F9CF5&background=EBF4FF')
                     ->size(40),
 
                 TextColumn::make('name')
@@ -168,21 +169,17 @@ class UserResource extends Resource
                     ->placeholder('-')
                     ->toggleable(),
 
-                BadgeColumn::make('roles.name')
+                TextColumn::make('roles.name')
                     ->label('Role')
-                    ->formatStateUsing(fn() => ucwords(str_replace('-', ' ', )))
-                    ->colors([
-                        'danger'  => 'administrator',
-                        'warning' => 'co-admin',
-                        'success' => 'editor',
-                        'gray'    => 'viewer',
-                    ])
-                    ->icons([
-                        'heroicon-m-shield-check'  => 'administrator',
-                        'heroicon-m-user-circle'   => 'co-admin',
-                        'heroicon-m-pencil-square' => 'editor',
-                        'heroicon-m-eye'           => 'viewer',
-                    ]),
+                    ->badge()
+                    ->formatStateUsing(fn ($state) => ucwords(str_replace('-', ' ', $state)))
+                    ->color(fn ($state) => match ($state) {
+                        'administrator' => 'danger',
+                        'co-admin'      => 'warning',
+                        'editor'        => 'success',
+                        'viewer'        => 'gray',
+                        default         => 'primary',
+                    }),
 
                 ToggleColumn::make('is_active')
                     ->label('Active')
@@ -198,7 +195,10 @@ class UserResource extends Resource
                 SelectFilter::make('roles')
                     ->label('Filter by Role')
                     ->relationship('roles', 'name')
-                    ->options(Role::all()->pluck('name', 'id')->map(fn() => ucwords(str_replace('-', ' ', )))),
+                    ->options(
+                        Role::all()->pluck('name', 'id')
+                            ->map(fn ($name) => ucwords(str_replace('-', ' ', $name)))
+                    ),
 
                 TernaryFilter::make('is_active')
                     ->label('Account Status')
@@ -209,7 +209,7 @@ class UserResource extends Resource
             ->actions([
                 EditAction::make(),
                 DeleteAction::make()
-                    ->hidden(fn() => ->id === Auth::id()),
+                    ->hidden(fn ($record) => $record->id === Auth::id()),
             ])
             ->bulkActions([
                 BulkActionGroup::make([

@@ -8,17 +8,17 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::table('users', function (Blueprint ) {
-            ->string('avatar')->nullable()->after('email');
-            ->string('phone')->nullable()->after('avatar');
-            ->boolean('is_active')->default(true)->after('phone');
+        Schema::table('users', function (Blueprint $table) {
+            $table->string('avatar')->nullable()->after('email');
+            $table->string('phone')->nullable()->after('avatar');
+            $table->boolean('is_active')->default(true)->after('phone');
         });
     }
 
     public function down(): void
     {
-        Schema::table('users', function (Blueprint ) {
-            ->dropColumn(['avatar', 'phone', 'is_active']);
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn(['avatar', 'phone', 'is_active']);
         });
     }
 };

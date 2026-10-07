@@ -7,10 +7,10 @@ use Filament\Resources\Pages\CreateRecord;
 
 class CreateUser extends CreateRecord
 {
-    protected static string \ = UserResource::class;
+    protected static string $resource = UserResource::class;
 
     protected function getRedirectUrl(): string
     {
-        return \->getResource()::getUrl('index');
+        return $this->getResource()::getUrl('index');
     }
 }
