@@ -12,6 +12,8 @@ use Filament\Tables\Table;
 
 class NewsResource extends Resource
 {
+    use \App\Traits\HasAuthorScope;
+
     protected static ?string $model = News::class;
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-newspaper';
@@ -44,3 +46,4 @@ class NewsResource extends Resource
         ];
     }
 }
+

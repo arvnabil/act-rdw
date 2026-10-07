@@ -12,8 +12,9 @@ use Filament\Panel;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Attributes\Hidden;
+use Spatie\Permission\Traits\HasRoles;
 
-#[Fillable(['name', 'email', 'password'])]
+#[Fillable(['name', 'email', 'password', 'avatar', 'phone', 'is_active'])]
 #[Hidden(['password', 'remember_token'])]
 class User extends Authenticatable implements FilamentUser, JWTSubject
 {
@@ -27,15 +28,33 @@ class User extends Authenticatable implements FilamentUser, JWTSubject
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
         ];
     }
 
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return true;
+        // Only users with roles can access the panel
+        return $this->is_active && $this->hasAnyRole(['administrator', 'co-admin', 'editor', 'viewer']);
+    }
+
+    /**
+     * Check if user is an Administrator (can see all data)
+     */
+    public function isAdministrator(): bool
+    {
+        return $this->hasRole('administrator');
+    }
+
+    /**
+     * Check if user is a Co-Admin (can only manage own data)
+     */
+    public function isCoAdmin(): bool
+    {
+        return $this->hasRole('co-admin');
     }
 
     /**

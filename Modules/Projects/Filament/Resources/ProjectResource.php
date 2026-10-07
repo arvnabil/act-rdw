@@ -12,6 +12,8 @@ use Filament\Tables\Table;
 
 class ProjectResource extends Resource
 {
+    use \App\Traits\HasAuthorScope;
+
     protected static ?string $model = Project::class;
 
     protected static \BackedEnum|string|null $navigationIcon = 'heroicon-o-briefcase';
@@ -44,3 +46,4 @@ class ProjectResource extends Resource
         ];
     }
 }
+

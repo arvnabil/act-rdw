@@ -25,4 +25,6 @@ return [
     Modules\CMS\Providers\CMSServiceProvider::class,
     
     App\Providers\Filament\ActivioncmsPanelProvider::class,
+    App\Providers\AuthServiceProvider::class,
 ];
+

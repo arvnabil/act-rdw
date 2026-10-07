@@ -10,12 +10,9 @@ use App\Traits\HasImageCleanup;
 
 class Project extends Model
 {
-    use HasFactory, HasSeoMeta, HasImageCleanup;
+    use HasFactory, HasSeoMeta, HasImageCleanup, \App\Traits\HasAuthor;
 
-    public function author()
-    {
-        return $this->belongsTo(\App\Models\User::class, 'user_id');
-    }
+    
 
     public function brands()
     {
@@ -45,3 +42,4 @@ class Project extends Model
         return \Modules\SEO\Helpers\SeoHelper::parse_links($value);
     }
 }
+

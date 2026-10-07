@@ -10,7 +10,7 @@ use App\Traits\HasImageCleanup;
 
 class News extends Model
 {
-    use HasFactory, HasSeoMeta, HasImageCleanup;
+    use HasFactory, HasSeoMeta, HasImageCleanup, \App\Traits\HasAuthor;
 
     protected $cleanupFields = ['featured_image', 'breadcrumb_image'];
     protected $richEditorCleanupFields = ['content'];
@@ -37,8 +37,6 @@ class News extends Model
         return $this->belongsToMany(NewsTag::class, 'news_tag_post', 'news_id', 'news_tag_id');
     }
 
-    public function author()
-    {
-        return $this->belongsTo(\App\Models\User::class, 'user_id');
-    }
+    
 }
+
