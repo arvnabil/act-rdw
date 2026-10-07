@@ -36,6 +36,10 @@ class ActivioncmsPanelProvider extends PanelProvider
                 'primary' => Color::Amber,
             ])
             ->discoverResources(in: app_path('Filament/Activioncms/Resources'), for: 'App\\Filament\\Activioncms\\Resources')
+            ->resources([
+                \App\Filament\Activioncms\Resources\UserResource::class,
+                \App\Filament\Activioncms\Resources\RoleResource::class,
+            ])
             ->discoverResources(in: base_path('Modules/CMS/Filament/Resources'), for: 'Modules\\CMS\\Filament\\Resources')
             ->discoverResources(in: base_path('Modules/Events/Filament/Resources'), for: 'Modules\\Events\\Filament\\Resources')
             ->discoverResources(in: base_path('Modules/Services/Filament/Resources'), for: 'Modules\\Services\\Filament\\Resources')
