@@ -57,18 +57,18 @@ class RoleResource extends Resource
                 'icon'  => 'heroicon-o-newspaper',
                 'permissions' => [
                     'view_any_news'          => 'View Any News',
-                    'view_news'              => 'View News Details',
+                    'view_news'              => 'View Details',
                     'create_news'            => 'Create News',
                     'update_news'            => 'Update News',
                     'delete_news'            => 'Delete News',
                     'delete_any_news'        => 'Delete Any News',
                     'view_any_news_category' => 'View Categories',
-                    'view_news_category'     => 'View Category Details',
+                    'view_news_category'     => 'Category Details',
                     'create_news_category'   => 'Create Category',
                     'update_news_category'   => 'Update Category',
                     'delete_news_category'   => 'Delete Category',
                     'view_any_news_tag'      => 'View Tags',
-                    'view_news_tag'          => 'View Tag Details',
+                    'view_news_tag'          => 'Tag Details',
                     'create_news_tag'        => 'Create Tag',
                     'update_news_tag'        => 'Update Tag',
                     'delete_news_tag'        => 'Delete Tag',
@@ -79,7 +79,7 @@ class RoleResource extends Resource
                 'icon'  => 'heroicon-o-folder',
                 'permissions' => [
                     'view_any_project'   => 'View Any Projects',
-                    'view_project'       => 'View Project Details',
+                    'view_project'       => 'View Details',
                     'create_project'     => 'Create Project',
                     'update_project'     => 'Update Project',
                     'delete_project'     => 'Delete Project',
@@ -91,7 +91,7 @@ class RoleResource extends Resource
                 'icon'  => 'heroicon-o-document-text',
                 'permissions' => [
                     'view_any_page'   => 'View Any Pages',
-                    'view_page'       => 'View Page Details',
+                    'view_page'       => 'View Details',
                     'create_page'     => 'Create Page',
                     'update_page'     => 'Update Page',
                     'delete_page'     => 'Delete Page',
@@ -103,7 +103,7 @@ class RoleResource extends Resource
                 'icon'  => 'heroicon-o-wrench-screwdriver',
                 'permissions' => [
                     'view_any_service'   => 'View Any Services',
-                    'view_service'       => 'View Service Details',
+                    'view_service'       => 'View Details',
                     'create_service'     => 'Create Service',
                     'update_service'     => 'Update Service',
                     'delete_service'     => 'Delete Service',
@@ -115,13 +115,13 @@ class RoleResource extends Resource
                 'icon'  => 'heroicon-o-shopping-bag',
                 'permissions' => [
                     'view_any_product'   => 'View Any Products',
-                    'view_product'       => 'View Product Details',
+                    'view_product'       => 'View Details',
                     'create_product'     => 'Create Product',
                     'update_product'     => 'Update Product',
                     'delete_product'     => 'Delete Product',
                     'delete_any_product' => 'Delete Any Product',
                     'view_any_brand'     => 'View Brands',
-                    'view_brand'         => 'View Brand Details',
+                    'view_brand'         => 'Brand Details',
                     'create_brand'       => 'Create Brand',
                     'update_brand'       => 'Update Brand',
                     'delete_brand'       => 'Delete Brand',
@@ -132,7 +132,7 @@ class RoleResource extends Resource
                 'icon'  => 'heroicon-o-user-group',
                 'permissions' => [
                     'view_any_client'   => 'View Any Clients',
-                    'view_client'       => 'View Client Details',
+                    'view_client'       => 'View Details',
                     'create_client'     => 'Create Client',
                     'update_client'     => 'Update Client',
                     'delete_client'     => 'Delete Client',
@@ -144,7 +144,7 @@ class RoleResource extends Resource
                 'icon'  => 'heroicon-o-calendar',
                 'permissions' => [
                     'view_any_event'   => 'View Any Events',
-                    'view_event'       => 'View Event Details',
+                    'view_event'       => 'View Details',
                     'create_event'     => 'Create Event',
                     'update_event'     => 'Update Event',
                     'delete_event'     => 'Delete Event',
@@ -156,7 +156,7 @@ class RoleResource extends Resource
                 'icon'  => 'heroicon-o-megaphone',
                 'permissions' => [
                     'view_any_campaign' => 'View Any Campaigns',
-                    'view_campaign'     => 'View Campaign Details',
+                    'view_campaign'     => 'View Details',
                     'create_campaign'   => 'Create Campaign',
                     'update_campaign'   => 'Update Campaign',
                     'delete_campaign'   => 'Delete Campaign',
@@ -198,7 +198,7 @@ class RoleResource extends Resource
                 'icon'  => 'heroicon-o-shield-check',
                 'permissions' => [
                     'view_any_user'   => 'View Any Users',
-                    'view_user'       => 'View User Details',
+                    'view_user'       => 'View Details',
                     'create_user'     => 'Create User',
                     'update_user'     => 'Update User',
                     'delete_user'     => 'Delete User',
@@ -227,15 +227,17 @@ class RoleResource extends Resource
                 ->compact()
                 ->headerActions([
                     Action::make("select_all_{$key}")
-                        ->label('Check All')
+                        ->label('Select All')
                         ->icon('heroicon-m-check')
+                        ->size('xs')
                         ->color('success')
                         ->action(function ($set) use ($key, $permKeys) {
                             $set("permissions_{$key}", $permKeys);
                         }),
                     Action::make("deselect_all_{$key}")
-                        ->label('Uncheck All')
+                        ->label('Clear')
                         ->icon('heroicon-m-x-mark')
+                        ->size('xs')
                         ->color('gray')
                         ->action(function ($set) use ($key) {
                             $set("permissions_{$key}", []);
@@ -245,55 +247,65 @@ class RoleResource extends Resource
                     CheckboxList::make("permissions_{$key}")
                         ->hiddenLabel()
                         ->options($module['permissions'])
-                        ->columns(2)
-                        ->bulkToggleable()
+                        ->columns([
+                            'default' => 1,
+                            'sm'      => 2,
+                        ])
                         ->dehydrated(false),
                 ]);
         }
 
-        return $schema->components([
-            Section::make('Role Details')
-                ->schema([
-                    TextInput::make('name')
-                        ->label('Role Name')
-                        ->required()
-                        ->unique(ignoreRecord: true)
-                        ->maxLength(100)
-                        ->helperText('Use lowercase with hyphens: e.g. content-writer')
-                        ->disabled(fn ($record) => $record && in_array($record->name, ['administrator', 'co-admin', 'editor', 'viewer'])),
-                ]),
+        return $schema
+            ->columns(1)
+            ->components([
+                Section::make('Role Details')
+                    ->description('Nama dan identitas role sistem.')
+                    ->schema([
+                        TextInput::make('name')
+                            ->label('Role Name')
+                            ->required()
+                            ->unique(ignoreRecord: true)
+                            ->maxLength(100)
+                            ->helperText('Gunakan huruf kecil dengan tanda minus: contoh content-writer')
+                            ->disabled(fn ($record) => $record && in_array($record->name, ['administrator', 'co-admin', 'editor', 'viewer'])),
+                    ])
+                    ->columnSpanFull(),
 
-            Section::make('Permissions Matrix')
-                ->description('Pilih hak akses untuk role ini. Gunakan tombol "Check All / Uncheck All" di bawah ini untuk semua modul sekaligus, atau tombol di masing-masing kartu modul.')
-                ->headerActions([
-                    Action::make('checkAllGlobal')
-                        ->label('Check All (Semua Modul)')
-                        ->icon('heroicon-m-check-badge')
-                        ->color('success')
-                        ->button()
-                        ->action(function ($set) use ($modules) {
-                            foreach ($modules as $key => $module) {
-                                $set("permissions_{$key}", array_keys($module['permissions']));
-                            }
-                        }),
-                    Action::make('uncheckAllGlobal')
-                        ->label('Uncheck All (Hapus Semua)')
-                        ->icon('heroicon-m-x-circle')
-                        ->color('danger')
-                        ->button()
-                        ->action(function ($set) use ($modules) {
-                            foreach ($modules as $key => $module) {
-                                $set("permissions_{$key}", []);
-                            }
-                        }),
-                ])
-                ->schema([
-                    Grid::make([
-                        'default' => 1,
-                        'xl'      => 2,
-                    ])->schema($moduleSections),
-                ]),
-        ]);
+                Section::make('Permissions Matrix')
+                    ->description('Kelola hak akses untuk setiap modul. Anda dapat memilih seluruh modul sekaligus atau menggunakan tombol pada masing-masing kartu.')
+                    ->headerActions([
+                        Action::make('checkAllGlobal')
+                            ->label('Select All Modules')
+                            ->icon('heroicon-m-check-badge')
+                            ->color('success')
+                            ->size('sm')
+                            ->button()
+                            ->action(function ($set) use ($modules) {
+                                foreach ($modules as $key => $module) {
+                                    $set("permissions_{$key}", array_keys($module['permissions']));
+                                }
+                            }),
+                        Action::make('uncheckAllGlobal')
+                            ->label('Clear All Modules')
+                            ->icon('heroicon-m-x-circle')
+                            ->color('gray')
+                            ->size('sm')
+                            ->button()
+                            ->action(function ($set) use ($modules) {
+                                foreach ($modules as $key => $module) {
+                                    $set("permissions_{$key}", []);
+                                }
+                            }),
+                    ])
+                    ->schema([
+                        Grid::make([
+                            'default' => 1,
+                            'md'      => 2,
+                            '2xl'     => 3,
+                        ])->schema($moduleSections),
+                    ])
+                    ->columnSpanFull(),
+            ]);
     }
 
     public static function table(Table $table): Table
