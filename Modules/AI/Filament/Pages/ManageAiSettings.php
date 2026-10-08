@@ -131,4 +131,10 @@ class ManageAiSettings extends Page implements \Filament\Forms\Contracts\HasForm
                 ->submit('save'),
         ];
     }
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasAnyPermission(['view_settings', 'update_settings']);
+    }
 }

@@ -57,4 +57,22 @@ class FormSubmissionResource extends Resource
     {
         return false;
     }
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasAnyPermission(['view_any_form', 'view_form', 'create_form', 'update_form', 'delete_form']);
+    }
+
+    public static function canEdit($record): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasPermissionTo('update_form');
+    }
+
+    public static function canDelete($record): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasPermissionTo('delete_form');
+    }
 }

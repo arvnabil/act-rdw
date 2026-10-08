@@ -43,4 +43,28 @@ class ClientResource extends Resource
             'edit' => Pages\EditClient::route('/{record}/edit'),
         ];
     }
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasAnyPermission(['view_any_client', 'view_client', 'create_client', 'update_client', 'delete_client', 'delete_any_client']);
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasPermissionTo('create_client');
+    }
+
+    public static function canEdit($record): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasPermissionTo('update_client');
+    }
+
+    public static function canDelete($record): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasPermissionTo('delete_client');
+    }
 }

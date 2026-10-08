@@ -241,4 +241,10 @@ class ManageSeoSettings extends Page implements HasForms
             default => ucwords(str_replace(['seo_', '_'], ['', ' '], $key)),
         };
     }
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasAnyPermission(['view_seo', 'update_seo']);
+    }
 }

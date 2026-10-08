@@ -157,4 +157,10 @@ class IndexCoverage extends Page implements HasTable
 
         return route($routeName, ['record' => $record->model_id]);
     }
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasAnyPermission(['view_seo', 'update_seo']);
+    }
 }

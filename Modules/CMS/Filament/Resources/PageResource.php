@@ -52,4 +52,28 @@ class PageResource extends Resource
             'edit' => Pages\EditPage::route('/{record}/edit'),
         ];
     }
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasAnyPermission(['view_any_page', 'view_page', 'create_page', 'update_page', 'delete_page', 'delete_any_page']);
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasPermissionTo('create_page');
+    }
+
+    public static function canEdit($record): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasPermissionTo('update_page');
+    }
+
+    public static function canDelete($record): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasPermissionTo('delete_page');
+    }
 }

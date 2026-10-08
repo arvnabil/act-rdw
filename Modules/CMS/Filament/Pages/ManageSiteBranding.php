@@ -192,4 +192,10 @@ class ManageSiteBranding extends Page implements HasForms
             default => ucwords(str_replace('_', ' ', $key)),
         };
     }
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasAnyPermission(['view_settings', 'update_settings']);
+    }
 }

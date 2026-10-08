@@ -45,5 +45,12 @@ class ProjectResource extends Resource
             'edit' => Pages\EditProject::route('/{record}/edit'),
         ];
     }
-}
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasAnyPermission([
+                'view_any_project', 'view_project', 'create_project', 'update_project', 'delete_project', 'delete_any_project',
+            ]);
+    }
+}

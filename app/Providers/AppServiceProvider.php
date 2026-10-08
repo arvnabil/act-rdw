@@ -78,6 +78,11 @@ class AppServiceProvider extends ServiceProvider
             return $this;
         });
 
+        // Implicitly grant "administrator" role all permissions
+        Gate::before(function ($user, $ability) {
+            return $user->hasRole('administrator') ? true : null;
+        });
+
         // Register API Documentation authorization gate (Dedoc Scramble)
         Gate::define('viewApiDocs', function (?User $user) {
             // In local development environment, anyone can access

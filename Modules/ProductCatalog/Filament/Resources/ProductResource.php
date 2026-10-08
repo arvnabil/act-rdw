@@ -45,4 +45,28 @@ class ProductResource extends Resource
             'edit' => Pages\EditProduct::route('/{record}/edit'),
         ];
     }
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasAnyPermission(['view_any_product', 'view_product', 'create_product', 'update_product', 'delete_product', 'delete_any_product']);
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasPermissionTo('create_product');
+    }
+
+    public static function canEdit($record): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasPermissionTo('update_product');
+    }
+
+    public static function canDelete($record): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasPermissionTo('delete_product');
+    }
 }

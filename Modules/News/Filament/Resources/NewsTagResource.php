@@ -45,4 +45,28 @@ class NewsTagResource extends Resource
             'edit' => Pages\EditNewsTags::route('/{record}/edit'),
         ];
     }
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasAnyPermission(['view_any_news_tag', 'view_news_tag', 'create_news_tag', 'update_news_tag', 'delete_news_tag']);
+    }
+
+    public static function canCreate(): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasPermissionTo('create_news_tag');
+    }
+
+    public static function canEdit($record): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasPermissionTo('update_news_tag');
+    }
+
+    public static function canDelete($record): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasPermissionTo('delete_news_tag');
+    }
 }

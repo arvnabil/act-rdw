@@ -47,7 +47,10 @@ class UserResource extends Resource
      */
     public static function canAccess(): bool
     {
-        return Auth::user()?->hasRole('administrator') ?? false;
+        return Auth::user()?->hasRole('administrator')
+            || (bool) Auth::user()?->hasAnyPermission([
+                'view_any_user', 'view_user', 'create_user', 'update_user', 'delete_user', 'delete_any_user',
+            ]);
     }
 
     public static function canCreate(): bool

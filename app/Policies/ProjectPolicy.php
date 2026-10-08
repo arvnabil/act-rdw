@@ -12,7 +12,9 @@ class ProjectPolicy
 
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo('view_any_project');
+        return $user->hasRole('administrator') || $user->hasAnyPermission([
+            'view_any_project', 'view_project', 'create_project', 'update_project', 'delete_project', 'delete_any_project',
+        ]);
     }
 
     public function view(User $user, Project $project): bool

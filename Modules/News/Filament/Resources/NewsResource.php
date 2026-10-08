@@ -45,5 +45,14 @@ class NewsResource extends Resource
             'edit' => Pages\EditNews::route('/{record}/edit'),
         ];
     }
-}
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasAnyPermission([
+                'view_any_news', 'view_news', 'create_news', 'update_news', 'delete_news', 'delete_any_news',
+                'view_any_news_category', 'view_news_category', 'create_news_category', 'update_news_category', 'delete_news_category',
+                'view_any_news_tag', 'view_news_tag', 'create_news_tag', 'update_news_tag', 'delete_news_tag',
+            ]);
+    }
+}

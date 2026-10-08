@@ -91,6 +91,11 @@
     <priority>0.6</priority>
             </url>
     <url>
+    <loc>http://localhost/ledman</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+            </url>
+    <url>
     <loc>http://localhost/activ-raih-penghargaan-terbaik-logitech-di-asia-tenggara</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -1057,6 +1062,41 @@
             </url>
     <url>
     <loc>http://localhost/products/maxhub-smart-podium-sl22mc</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+            </url>
+    <url>
+    <loc>http://localhost/products/jabra-panacast-50-room-system-2</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+            </url>
+    <url>
+    <loc>http://localhost/products/jabra-panacast-20</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+            </url>
+    <url>
+    <loc>http://localhost/products/jabra-panacast-50</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+            </url>
+    <url>
+    <loc>http://localhost/products/jabra-panacast-40-vbs</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+            </url>
+    <url>
+    <loc>http://localhost/products/jabra-control-ip</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+            </url>
+    <url>
+    <loc>http://localhost/products/jabra-scheduler</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+            </url>
+    <url>
+    <loc>http://localhost/products/ledhub-series-smart-conference-system</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
             </url>

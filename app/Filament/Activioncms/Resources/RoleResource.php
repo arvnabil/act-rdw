@@ -31,7 +31,10 @@ class RoleResource extends Resource
 
     public static function canAccess(): bool
     {
-        return Auth::user()?->hasRole('administrator') ?? false;
+        return Auth::user()?->hasRole('administrator')
+            || (bool) Auth::user()?->hasAnyPermission([
+                'view_any_role', 'view_role', 'create_role', 'update_role', 'delete_role',
+            ]);
     }
 
     public static function canCreate(): bool

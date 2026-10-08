@@ -48,4 +48,10 @@ class ClickEventResource extends Resource
     {
         return false;
     }
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasAnyPermission(['view_analytics']);
+    }
 }

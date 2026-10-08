@@ -34,4 +34,10 @@ class EventDashboard extends Page
             LatestRegistrationsTable::class,
         ];
     }
+
+    public static function canAccess(): bool
+    {
+        return auth()->user()?->hasRole('administrator')
+            || (bool) auth()->user()?->hasAnyPermission(['view_any_event', 'view_event']);
+    }
 }
