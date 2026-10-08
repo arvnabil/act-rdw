@@ -49,11 +49,11 @@ class NewsForm
                                                 ->required()
                                                 ->columnSpanFull()
                                                 ->profile('full')
-                                                ->disk('public')
-                                                ->directory(fn ($get) => 'news/' . ($get('slug') ?? 'default') . '/content-media')
-                                                ->visibility('public')
-                                                ->acceptedFileTypes(['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'])
-                                                ->maxSize(2048)
+                                                ->fileAttachmentsDisk('public')
+                                                ->fileAttachmentsDirectory(fn ($get) => 'news/' . ($get('slug') ?? 'default') . '/content-media')
+                                                ->fileAttachmentsVisibility('public')
+                                                ->fileAttachmentsAcceptedFileTypes(['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'])
+                                                ->fileAttachmentsMaxSize(2048)
                                                 ->minHeight(600),
                                         ]),
 
@@ -120,9 +120,9 @@ class NewsForm
                                                 ->schema([
                                                     FileUpload::make('thumbnail')
                                                         ->image()
-                                                        ->disk('public')
-                                                        ->visibility('public')
-                                                        ->maxSize(2048)
+                                                        ->fileAttachmentsDisk('public')
+                                                        ->fileAttachmentsVisibility('public')
+                                                        ->fileAttachmentsMaxSize(2048)
                                                         ->downloadable()
                                                         ->openable()
                                                         ->helperText('Nama file akan otomatis disesuaikan (Contoh: judul-berita.png). Ukuran maks: 2MB.')
