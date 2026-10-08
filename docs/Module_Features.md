@@ -16,9 +16,9 @@ Sistem keamanan dan otorisasi ActivonCMS dibangun di atas **Spatie Laravel Permi
    - Akses langsung via URL address bar pada modul yang tidak diizinkan otomatis diblokir (**403 Forbidden**).
 
 2. **Granular Action Protection (Proteksi Tombol Aksi)**:
-   - Tidak memiliki izin `create_*` $\rightarrow$ Tombol **"New / Tambah"** disembunyikan.
-   - Tidak memiliki izin `update_*` $\rightarrow$ Tombol aksi **"Edit"** disembunyikan.
-   - Tidak memiliki izin `delete_*` $\rightarrow$ Tombol aksi **"Delete / Hapus"** disembunyikan.
+   - Tidak memiliki izin `create_*` -> Tombol **"New / Tambah"** disembunyikan.
+   - Tidak memiliki izin `update_*` -> Tombol aksi **"Edit"** disembunyikan.
+   - Tidak memiliki izin `delete_*` -> Tombol aksi **"Delete / Hapus"** disembunyikan.
 
 3. **Super Administrator Bypass**:
    - Pengguna dengan role `administrator` secara otomatis memiliki akses penuh tanpa batas ke semua modul melalui `Gate::before`.
@@ -35,7 +35,7 @@ Berikut adalah 15 modul lengkap beserta menu navigasi dan permission yang mengen
 
 ---
 
-### ?? 1. Campaign Management
+### [Campaign] 1. Campaign Management
 Modul untuk membuat landing page promosi dan marketing campaigns dengan integrasi Google Tag Manager / GA4 otomatis.
 
 - **Grup Navigasi**: `Marketing`
@@ -50,7 +50,7 @@ Modul untuk membuat landing page promosi dan marketing campaigns dengan integras
 
 ---
 
-### ?? 2. CMS / Pages Management
+### [CMS] 2. CMS / Pages Management
 Modul manajemen halaman statis, layout builder, serta branding identitas website.
 
 - **Grup Navigasi**: `Site Management`
@@ -69,7 +69,7 @@ Modul manajemen halaman statis, layout builder, serta branding identitas website
 
 ---
 
-### ??? 3. Services Management
+### [Services] 3. Services Management
 Modul katalog layanan, solusi integrasi sistem, dan formulir kalkulator/konfigurator kebutuhan layanan.
 
 - **Grup Navigasi**: `Service Management`
@@ -87,7 +87,7 @@ Modul katalog layanan, solusi integrasi sistem, dan formulir kalkulator/konfigur
 
 ---
 
-### ??? 4. Product Catalog
+### [Products] 4. Product Catalog
 Modul katalog produk hardware/software enterprise, brand prinsipal resmi, dan kategori perangkat.
 
 - **Grup Navigasi**: `Product Catalog`
@@ -111,7 +111,7 @@ Modul katalog produk hardware/software enterprise, brand prinsipal resmi, dan ka
 
 ---
 
-### ?? 5. Clients Management
+### [Clients] 5. Clients Management
 Modul portofolio klien dan testimoni korporasi yang bekerjasama dengan ACTiV.
 
 - **Grup Navigasi**: `Client Management`
@@ -127,7 +127,7 @@ Modul portofolio klien dan testimoni korporasi yang bekerjasama dengan ACTiV.
 
 ---
 
-### ?? 6. Events Management
+### [Events] 6. Events Management
 Modul manajemen event/seminar/webinar lengkap beserta pendaftaran peserta, sertifikat, organizer, dan dokumentasi.
 
 - **Grup Navigasi**: `Event Management`, `Event Manage Data`
@@ -151,7 +151,7 @@ Modul manajemen event/seminar/webinar lengkap beserta pendaftaran peserta, serti
 
 ---
 
-### ?? 7. News Management (Dengan Author Scope)
+### [News] 7. News Management (Dengan Author Scope)
 Modul artikel berita, press release, wawasan teknologi, kategori artikel, dan tag berita.
 
 - **Grup Navigasi**: `News Management`
@@ -160,7 +160,7 @@ Modul artikel berita, press release, wawasan teknologi, kategori artikel, dan ta
   - `Modules\News\Filament\Resources\NewsResource`
   - `Modules\News\Filament\Resources\NewsCategoryResource`
   - `Modules\News\Filament\Resources\NewsTagResource`
-- **Fitur Khusus**: **`HasAuthorScope`** $\rightarrow$ Co-Admin hanya melihat berita miliknya sendiri.
+- **Fitur Khusus**: **`HasAuthorScope`** -> Co-Admin hanya melihat berita miliknya sendiri.
 - **Daftar Permissions**:
   - `view_any_news` : Melihat daftar artikel berita
   - `view_news` : Membaca artikel
@@ -173,13 +173,13 @@ Modul artikel berita, press release, wawasan teknologi, kategori artikel, dan ta
 
 ---
 
-### ?? 8. Projects Management (Dengan Author Scope)
+### [Projects] 8. Projects Management (Dengan Author Scope)
 Modul portofolio studi kasus proyek integrasi sistem (System Integrator Case Studies).
 
 - **Grup Navigasi**: `Project Management`
 - **Menu Navigasi**: `Projects`
 - **Resource Terkait**: `Modules\Projects\Filament\Resources\ProjectResource`
-- **Fitur Khusus**: **`HasAuthorScope`** $\rightarrow$ Co-Admin hanya melihat proyek buatannya sendiri.
+- **Fitur Khusus**: **`HasAuthorScope`** -> Co-Admin hanya melihat proyek buatannya sendiri.
 - **Daftar Permissions**:
   - `view_any_project` : Melihat daftar proyek portofolio
   - `view_project` : Melihat detail studi kasus proyek
@@ -190,7 +190,7 @@ Modul portofolio studi kasus proyek integrasi sistem (System Integrator Case Stu
 
 ---
 
-### ?? 9. Analytics Management
+### [Analytics] 9. Analytics Management
 Modul tracking konversi dan audit log klik tombol CTA / interaksi WhatsApp di website publik.
 
 - **Grup Navigasi**: `Analytics`
@@ -204,7 +204,7 @@ Modul tracking konversi dan audit log klik tombol CTA / interaksi WhatsApp di we
 
 ---
 
-### ?? 10. SEO Management
+### [SEO] 10. SEO Management
 Modul optimalisasi mesin pencari (SEO Meta, SERP Preview, Domain Whitelist, dan Google Index Coverage).
 
 - **Grup Navigasi**: `Seo Management`
@@ -220,7 +220,7 @@ Modul optimalisasi mesin pencari (SEO Meta, SERP Preview, Domain Whitelist, dan 
 
 ---
 
-### ?? 11. Settings & API Keys
+### [Settings] 11. Settings & API Keys
 Modul konfigurasi global website dan kredensial API Key untuk integrasi aplikasi pihak ketiga (REST API / Mobile App).
 
 - **Grup Navigasi**: `Settings`
@@ -234,7 +234,7 @@ Modul konfigurasi global website dan kredensial API Key untuk integrasi aplikasi
 
 ---
 
-### ?? 12. Menu & Form Builder
+### [Menu & Forms] 12. Menu & Form Builder
 Modul navigasi header/footer dinamis serta perekam data formulir kustom (*Contact Us*, Penawaran, dll).
 
 - **Grup Navigasi**: `Menu Management`, `Form Management`
@@ -248,7 +248,7 @@ Modul navigasi header/footer dinamis serta perekam data formulir kustom (*Contac
 
 ---
 
-### ?? 13. WhatsApp Management
+### [WhatsApp] 13. WhatsApp Management
 Modul kustomisasi widget floating chat WhatsApp di website publik.
 
 - **Grup Navigasi**: `Settings`
@@ -260,7 +260,7 @@ Modul kustomisasi widget floating chat WhatsApp di website publik.
 
 ---
 
-### ?? 14. AI Management
+### [AI] 14. AI Management
 Modul integrasi Google Gemini AI untuk pembuatan konten otomatis dan riwayat chat interaktif.
 
 - **Grup Navigasi**: `AI Management`
@@ -273,7 +273,7 @@ Modul integrasi Google Gemini AI untuk pembuatan konten otomatis dan riwayat cha
 
 ---
 
-### ??? 15. User & Role Management (Fitur Utama Sistem)
+### [Users & Roles] 15. User & Role Management (Fitur Utama Sistem)
 Pusat kendali hak akses pengguna dan pembuatan peran (Role) kustom.
 
 - **Grup Navigasi**: `User Management`
