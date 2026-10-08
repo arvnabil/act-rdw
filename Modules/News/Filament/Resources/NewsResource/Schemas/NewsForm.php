@@ -5,7 +5,6 @@ namespace Modules\News\Filament\Resources\NewsResource\Schemas;
 use Modules\News\Models\News;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -16,6 +15,7 @@ use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Forms;
 use Illuminate\Support\Str;
+use AmidEsfahani\FilamentTinyEditor\TinyEditor;
 
 class NewsForm
 {
@@ -45,14 +45,16 @@ class NewsForm
                                                 ->rows(3)
                                                 ->columnSpanFull(),
 
-                                            RichEditor::make('content')
+                                            TinyEditor::make('content')
                                                 ->required()
                                                 ->columnSpanFull()
-                                                ->fileAttachmentsAcceptedFileTypes(['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'])
-                                                ->fileAttachmentsMaxSize(2048)
-                                                ->fileAttachmentsDisk('public')
-                                                ->fileAttachmentsDirectory(fn ($get) => 'news/' . ($get('slug') ?? 'default') . '/content-media')
-                                                ->fileAttachmentsVisibility('public'),
+                                                ->profile('full')
+                                                ->disk('public')
+                                                ->directory(fn ($get) => 'news/' . ($get('slug') ?? 'default') . '/content-media')
+                                                ->visibility('public')
+                                                ->acceptedFileTypes(['image/png', 'image/jpeg', 'image/jpg', 'image/gif', 'image/webp'])
+                                                ->maxSize(2048)
+                                                ->minHeight(600),
                                         ]),
 
                                     Group::make()
