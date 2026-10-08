@@ -120,9 +120,9 @@ class NewsForm
                                                 ->schema([
                                                     FileUpload::make('thumbnail')
                                                         ->image()
-                                                        ->fileAttachmentsDisk('public')
-                                                        ->fileAttachmentsVisibility('public')
-                                                        ->fileAttachmentsMaxSize(2048)
+                                                        ->disk('public')
+                                                        ->visibility('public')
+                                                        ->maxSize(2048)
                                                         ->downloadable()
                                                         ->openable()
                                                         ->helperText('Nama file akan otomatis disesuaikan (Contoh: judul-berita.png). Ukuran maks: 2MB.')
