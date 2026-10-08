@@ -6,12 +6,12 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class AnalyticsClickEventPolicy
 {
     use HandlesAuthorization;
-    public function viewAny(User \): bool { return \->hasAnyPermission(['view_analytics']); }
-    public function view(User \, AnalyticsClickEvent \): bool { return \->hasPermissionTo('view_analytics'); }
-    public function create(User \): bool { return false; }
-    public function update(User \, AnalyticsClickEvent \): bool { return false; }
-    public function delete(User \, AnalyticsClickEvent \): bool { return false; }
-    public function deleteAny(User \): bool { return false; }
-    public function restore(User \, AnalyticsClickEvent \): bool { return false; }
-    public function forceDelete(User \, AnalyticsClickEvent \): bool { return false; }
+    public function viewAny(User $user): bool { return $user->hasAnyPermission(['view_analytics']); }
+    public function view(User $user, AnalyticsClickEvent $r): bool { return $user->hasPermissionTo('view_analytics'); }
+    public function create(User $user): bool { return false; }
+    public function update(User $user, AnalyticsClickEvent $r): bool { return false; }
+    public function delete(User $user, AnalyticsClickEvent $r): bool { return false; }
+    public function deleteAny(User $user): bool { return false; }
+    public function restore(User $user, AnalyticsClickEvent $r): bool { return false; }
+    public function forceDelete(User $user, AnalyticsClickEvent $r): bool { return false; }
 }

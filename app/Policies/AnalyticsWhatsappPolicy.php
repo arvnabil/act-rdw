@@ -6,12 +6,12 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 class AnalyticsWhatsappPolicy
 {
     use HandlesAuthorization;
-    public function viewAny(User \): bool { return \->hasAnyPermission(['view_analytics', 'view_whatsapp']); }
-    public function view(User \, AnalyticsWhatsapp \): bool { return \->hasAnyPermission(['view_analytics', 'view_whatsapp']); }
-    public function create(User \): bool { return false; }
-    public function update(User \, AnalyticsWhatsapp \): bool { return false; }
-    public function delete(User \, AnalyticsWhatsapp \): bool { return false; }
-    public function deleteAny(User \): bool { return false; }
-    public function restore(User \, AnalyticsWhatsapp \): bool { return false; }
-    public function forceDelete(User \, AnalyticsWhatsapp \): bool { return false; }
+    public function viewAny(User $user): bool { return $user->hasAnyPermission(['view_analytics', 'view_whatsapp']); }
+    public function view(User $user, AnalyticsWhatsapp $r): bool { return $user->hasAnyPermission(['view_analytics', 'view_whatsapp']); }
+    public function create(User $user): bool { return false; }
+    public function update(User $user, AnalyticsWhatsapp $r): bool { return false; }
+    public function delete(User $user, AnalyticsWhatsapp $r): bool { return false; }
+    public function deleteAny(User $user): bool { return false; }
+    public function restore(User $user, AnalyticsWhatsapp $r): bool { return false; }
+    public function forceDelete(User $user, AnalyticsWhatsapp $r): bool { return false; }
 }
