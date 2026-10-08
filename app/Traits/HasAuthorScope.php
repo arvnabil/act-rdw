@@ -20,15 +20,15 @@ trait HasAuthorScope
      */
     public static function getEloquentQuery(): Builder
     {
-        \ = parent::getEloquentQuery();
+        $query = parent::getEloquentQuery();
 
-        \ = Auth::user();
+        $user = Auth::user();
 
-        if (!\) {
-            return \->whereRaw('1 = 0'); // return empty
+        if (!$user) {
+            return $query->whereRaw('1 = 0'); // return empty
         }
 
         // Semua role bisa melihat semua data agar kolaborasi lebih mudah
-        return \;
+        return $query;
     }
 }
