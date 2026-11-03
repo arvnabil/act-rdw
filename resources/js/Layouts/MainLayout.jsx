@@ -856,7 +856,7 @@ export default function MainLayout({ children }) {
                                                         style={{
                                                             color: "#fff",
                                                         }}
-                                                        href={getWhatsAppLink(settings?.whatsapp_number || '6285162994602', {
+                                                        href={getWhatsAppLink(settings?.whatsapp_number || '6287780116800', {
                                                             cta_position: 'footer_info',
                                                             cta_label: 'Footer Support'
                                                         })}
@@ -864,7 +864,7 @@ export default function MainLayout({ children }) {
                                                         rel="noopener noreferrer"
                                                         className="info-box_link"
                                                     >
-                                                        WA: (+62) 851-6299-4602
+                                                        WA: (+62) 877 8011 6800
                                                     </a>
                                                 </p>
                                             </div>
